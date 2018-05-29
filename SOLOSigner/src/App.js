@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, View, Button } from 'react-native';
+import { TextInput, Text, View, Button } from 'react-native';
+import styles from './style/common.js';
 
 export default class App extends Component {
     constructor(prods) {
@@ -9,24 +10,17 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={{width:200, height: 40, padding: 10}}
+        
+        <TextInput style={styles.text_input}
           placeholder="key"
           onChangeText={(text) => this.setState({text})}
         />
+
         <Button title="Click me!" onPress= { () =>
             console.log('clicked ' + this.state.count++)
         }/>
+
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
