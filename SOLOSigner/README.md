@@ -6,6 +6,12 @@
   * [Android devices](#android-devices)
   * [MacOS](#macos)
 * [Getting Started](#getting-started)
+  * [Install nodejs and npm](#install-nodejs-v-811-and-npm-v-61)
+  * [Install yarn](#install-yarn)
+  * [Install React Native CLI](#install-react-native-cli)
+  * [Android SDK Setup](#android-sdk-setup)
+  * [Checkout `master` branch & install node_modules](#checkout-master-branch--install-node_modules)
+* [Build and run debug](#build-and-run-debug)
 
 ## Requirements
   #### Android devices
