@@ -1,23 +1,5 @@
-'use strict';
+import './shim.js';
+import { AppRegistry } from 'react-native';
+import App from './src/App';
 
-var _expo = require('expo');
-
-var _expo2 = _interopRequireDefault(_expo);
-
-var _App = require('./src/App');
-
-var _App2 = _interopRequireDefault(_App);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactNative = require('react-native');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-if (process.env.NODE_ENV === 'development') {
-  _expo2.default.KeepAwake.activate();
-}
-
-_expo2.default.registerRootComponent(_App2.default);
+AppRegistry.registerComponent('SOLOSigner', () => App);
