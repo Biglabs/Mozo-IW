@@ -23,6 +23,7 @@
     "querystring-es3": "~0.2.0",
     "react": "16.3.1",
     "react-native": "0.55.4",
+    "react-native-bitcoinjs-lib": "^2.3.9",
     "react-native-crypto": "^2.1.2",
     "react-native-http": "tradle/react-native-http#834492d",
     "react-native-level-fs": "^3.0.0",
