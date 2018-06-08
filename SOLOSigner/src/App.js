@@ -1,81 +1,53 @@
-/**
- * SOLo Signer App
- * https://github.com/Biglabs/Mozo-IW/tree/master/SOLOSigner
- * @flow
- */
-
 import React, {Component} from 'react';
-import {Button, Picker, Platform, StyleSheet, Text, View} from 'react-native';
-import bip39 from 'bip39';
+import {Text} from 'react-native';
+import {Router, Scene} from 'react-native-router-flux';
+import SvgUri from 'react-native-svg-uri';
 
-type Props = {};
-export default class App extends Component<Props> {
+import SplashScreen from './screens/SplashScreen';
+import Bip39 from './screens/Bip39';
+import Bip44 from './screens/Bip44';
+import Bip38 from './screens/Bip38';
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            language: bip39.wordlists.english,
-            mnemonic: '',
-            seed: ''
-        };
-    }
+const TabIcon = ({selected, title}) => {
+    return (
+        <SvgUri source={require('./images/ic_monetization.svg')}/>
+    );
+};
 
-    generatePhrase() {
-        this.setState({
-            mnemonic: bip39.generateMnemonic(128, null, this.state.language),
-            seed: bip39.mnemonicToSeedHex(this.state.mnemonic)
-        });
-    }
+const App = () => {
+    return (
+        <Router>
+            <Scene key="root">
 
-    render() {
-        const languages = {
-            "English": bip39.wordlists.english,
-            "Japanese": bip39.wordlists.japanese,
-            "Spanish": bip39.wordlists.spanish,
-            "Chinese Simplified": bip39.wordlists.chinese_simplified,
-            "Chinese Traditional": bip39.wordlists.chinese_traditional,
-            "French": bip39.wordlists.french,
-            "Italian": bip39.wordlists.italian,
-            "Korean": bip39.wordlists.korean
-        };
+                <Scene key="splash" component={SplashScreen} hideNavBar/>
 
-        return (
-            <View style={styles.container}>
-                <Picker style={{height: 50, width: 200}}
-                        selectedValue={this.state.language}
-                        onValueChange={(itemValue, itemIndex) => {
-                            this.setState({language: itemValue}, () => this.generatePhrase());
-                        }}>
-                    {Object.keys(languages).map((key) => {
-                        return (<Picker.Item label={key} value={languages[key]}/>)
-                    })}
-                </Picker>
+                <Scene key="tabbar" tabs={true} tabBarStyle={{backgroundColor: '#FFFFFF'}} hideNavBar>
+                    <Scene key="tab_bip39" title="39" icon={TabIcon}>
+                        <Scene
+                            key="bip39"
+                            component={Bip39}
+                            hideNavBar
+                        />
+                    </Scene>
+                    <Scene key="tab_bip44" title="44" icon={TabIcon}>
+                        <Scene
+                            key="bip4"
+                            component={Bip44}
+                            hideNavBar
+                        />
+                    </Scene>
+                    <Scene key="tab_bip38" title="38" icon={TabIcon}>
+                        <Scene
+                            key="bip38"
+                            component={Bip38}
+                            hideNavBar
+                        />
+                    </Scene>
+                </Scene>
 
-                <Text style={styles.text}>
-                    {this.state.mnemonic}
-                    {console.log(this.state.mnemonic)}
-                </Text>
-                <Text style={styles.text}>
-                    {this.state.seed}
-                    {console.log(this.state.seed)}
-                </Text>
+            </Scene>
+        </Router>
+    );
+};
 
-                <Button title='create recovery phrase' onPress={() => this.generatePhrase()}/>
-            </View>
-        );
-    }
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    text: {
-        textAlign: 'center',
-        color: '#333333',
-        margin: 5,
-    },
-});
+export default App;
