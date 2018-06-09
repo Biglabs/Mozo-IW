@@ -11,7 +11,7 @@ export default class SplashScreen extends Component<Props> {
     componentDidMount() {
         this.timer = TimerMixin.setTimeout(
             () => {
-                Actions.replace("tabbar");
+                Actions.main_tab_bar();
             }, 3000
         );
     }

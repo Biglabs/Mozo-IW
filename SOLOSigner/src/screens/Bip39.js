@@ -46,7 +46,7 @@ export default class Bip39 extends Component<Props> {
         };
 
         return (
-            <View key="bip39" style={styles.container}>
+            <View style={styles.container}>
                 <Picker style={{height: 50, width: 200}}
                         selectedValue={this.state.language}
                         onValueChange={(itemValue) => {

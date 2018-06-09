@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Text} from 'react-native';
-import {Router, Scene} from 'react-native-router-flux';
+import {Router, Modal, Scene} from 'react-native-router-flux';
 import SvgUri from 'react-native-svg-uri';
 
 import SplashScreen from './screens/SplashScreen';
@@ -14,14 +13,14 @@ const TabIcon = ({selected, title}) => {
     );
 };
 
-const App = () => {
+export default () => {
     return (
         <Router>
-            <Scene key="root">
+            <Modal key="root" hideNavBar>
 
                 <Scene key="splash" component={SplashScreen} hideNavBar/>
 
-                <Scene key="tabbar" tabs={true} tabBarStyle={{backgroundColor: '#FFFFFF'}} hideNavBar>
+                <Scene key="main_tab_bar" tabs={true} tabBarStyle={{backgroundColor: '#FFFFFF'}} hideNavBar>
                     <Scene key="tab_bip39" title="39" icon={TabIcon}>
                         <Scene
                             key="bip39"
@@ -45,9 +44,7 @@ const App = () => {
                     </Scene>
                 </Scene>
 
-            </Scene>
+            </Modal>
         </Router>
     );
 };
-
-export default App;

@@ -6,7 +6,7 @@ export default class Bip38 extends Component<Props> {
 
     render() {
         return (
-            <View key="bip38" style={styles.container}>
+            <View style={styles.container}>
                 <Text>
                     Bip38
                 </Text>
