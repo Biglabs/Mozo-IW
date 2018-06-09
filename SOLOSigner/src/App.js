@@ -25,32 +25,19 @@ export default () => {
         <Router>
             <Modal key="root" hideNavBar>
 
-                <Scene key="splash" component={SplashScreen} hideNavBar/>
+                <Scene key="splash" component={SplashScreen} hideNavBar initial/>
 
-                <Scene key="welcome" component={WelcomeScreen} hideNavBar/>
+                <Scene key="welcome" component={WelcomeScreen} hideNavBar type="reset"/>
 
-                <Scene key="main_tab_bar" tabs={true} tabBarStyle={{backgroundColor: '#FFFFFF'}} tabBarPosition="bottom" hideNavBar>
-                    <Scene key="tab_bip39" title="39" icon={TabIcon}>
-                        <Scene
-                            key="bip39"
-                            component={Bip39}
-                            hideNavBar
-                        />
-                    </Scene>
-                    <Scene key="tab_bip44" title="44" icon={TabIcon}>
-                        <Scene
-                            key="bip4"
-                            component={Bip44}
-                            hideNavBar
-                        />
-                    </Scene>
-                    <Scene key="tab_bip38" title="38" icon={TabIcon}>
-                        <Scene
-                            key="bip38"
-                            component={Bip38}
-                            hideNavBar
-                        />
-                    </Scene>
+                <Scene key="main_tab_bar"
+                       tabs={true}
+                       tabBarStyle={{backgroundColor: '#FFFFFF'}}
+                       tabBarPosition="bottom"
+                       hideNavBar
+                       type="reset">
+                    <Scene key="tab_bip39" title="39" icon={TabIcon} component={Bip39} hideNavBar/>
+                    <Scene key="tab_bip44" title="44" icon={TabIcon} component={Bip44} hideNavBar/>
+                    <Scene key="tab_bip38" title="38" icon={TabIcon} component={Bip38} hideNavBar/>
                 </Scene>
 
             </Modal>

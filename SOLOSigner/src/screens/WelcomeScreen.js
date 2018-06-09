@@ -6,15 +6,20 @@ import SvgUri from 'react-native-svg-uri';
 import {Button, Text} from "../components/SoloComponent";
 
 export default class WelcomeScreen extends Component<Props> {
-    render() {
-        let {width} = Dimensions.get('window');
-        let logoWidth = 64 * width / 100;
-        let logoHeight = 37.8 * logoWidth / 100;
 
+    constructor(props) {
+        super(props);
+
+        let {width} = Dimensions.get('window');
+        this.logoWidth = 64 * width / 100;
+        this.logoHeight = 37.8 * this.logoWidth / 100;
+    }
+
+    render() {
         return (
             <View style={styles.container}>
-                <SvgUri width={logoWidth}
-                        height={logoHeight}
+                <SvgUri width={this.logoWidth}
+                        height={this.logoHeight}
                         fill={StyleSheet.value('$primaryColor')}
                         source={require('../res/images/logo.svg')}
                         style={{
@@ -26,11 +31,16 @@ export default class WelcomeScreen extends Component<Props> {
                 <Text style={styles.welcome_text}>Welcome to SOLO Signer</Text>
 
                 <View style={styles.button_container}>
-                    <Button title='Create New Wallet' style={[styles.buttons, {marginBottom: 15}]} type='solid'
-                            onPress={() => Actions.main_tab_bar()}/>
-                    <Button title='Import Wallet' style={styles.buttons} onPress={() => {
-                        console.log('Import Wallet');
-                    }}/>
+                    <Button title='Create New Wallet'
+                            style={[styles.buttons, {marginBottom: 15}]}
+                            type='solid'
+                            onPress={() => Actions.reset('main_tab_bar')}/>
+
+                    <Button title='Import Wallet'
+                            style={styles.buttons}
+                            onPress={() => {
+                                console.log('Import Wallet');
+                            }}/>
                 </View>
             </View>
         );

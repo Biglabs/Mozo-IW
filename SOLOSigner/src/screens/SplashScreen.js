@@ -4,6 +4,7 @@ import {Actions} from 'react-native-router-flux';
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
+import {FadeInView} from "../components/SoloComponent";
 
 export default class SplashScreen extends Component<Props> {
 
@@ -11,7 +12,7 @@ export default class SplashScreen extends Component<Props> {
         YellowBox.ignoreWarnings(['Warning: isMounted(...)']);
         this.timer = TimerMixin.setTimeout(
             () => {
-                Actions.welcome();
+                Actions.reset('welcome');
             }, 3000
         );
     }
@@ -26,7 +27,9 @@ export default class SplashScreen extends Component<Props> {
         let logoHeight = 37.8 * logoWidth / 100;
         return (
             <View style={styles.container}>
-                <SvgUri width={logoWidth} height={logoHeight} source={require('../res/images/logo.svg')}/>
+                <FadeInView duration={500}>
+                    <SvgUri width={logoWidth} height={logoHeight} source={require('../res/images/logo.svg')}/>
+                </FadeInView>
             </View>
         );
     }

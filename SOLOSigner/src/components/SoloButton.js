@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     common: {
         borderRadius: 5,
         color: '#ffffff',
-        fontFamily: 'UTM Avo',
+        fontFamily: 'utm-avo',
         fontSize: 16,
         paddingLeft: 20,
         paddingTop: 12,
