@@ -9,8 +9,7 @@ export default class Bip44 extends Component<Props> {
         super(props);
         this.state = {
             rootKey: '',
-            adrBip44Test: '',
-            seed: this.props.seed
+            adrBip44Test: ''
         };
     }
 
@@ -22,7 +21,7 @@ export default class Bip44 extends Component<Props> {
                 </Text>
                 <Button title='test bip44 from bip39' onPress={() => {
                     // Generate BIP32 Root Key from BIP39 Seed
-                    let rootKey = Bitcoin.HDNode.fromSeedHex(this.state.seed, Bitcoin.networks.testnet);
+                    let rootKey = Bitcoin.HDNode.fromSeedHex(this.props.seed, Bitcoin.networks.testnet);
                     this.setState({
                         rootKey: "Root key: " + rootKey.toBase58()
                     });

@@ -49,11 +49,11 @@ export default class Bip39 extends Component<Props> {
             <View key="bip39" style={styles.container}>
                 <Picker style={{height: 50, width: 200}}
                         selectedValue={this.state.language}
-                        onValueChange={(itemValue, itemIndex) => {
+                        onValueChange={(itemValue) => {
                             this.setState({language: itemValue}, () => this.generatePhrase());
                         }}>
-                    {Object.keys(languages).map((key) => {
-                        return (<Picker.Item label={key} value={languages[key]}/>)
+                    {Object.keys(languages).map((key, index) => {
+                        return (<Picker.Item key={index} label={key} value={languages[key]}/>)
                     })}
                 </Picker>
 
