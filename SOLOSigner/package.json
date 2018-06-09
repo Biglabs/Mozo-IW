@@ -8,6 +8,11 @@
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
     "test": "jest"
   },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
+  },
   "dependencies": {
     "assert": "^1.1.1",
     "bip39": "^2.5.0",
@@ -25,6 +30,7 @@
     "react-native": "0.55.4",
     "react-native-bitcoinjs-lib": "^2.3.9",
     "react-native-crypto": "^2.1.2",
+    "react-native-extended-stylesheet": "^0.8.1",
     "react-native-http": "tradle/react-native-http#834492d",
     "react-native-level-fs": "^3.0.0",
     "react-native-os": "^1.0.1",

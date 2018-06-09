@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Platform, StyleSheet, Text, View} from 'react-native';
 
-type Props = {};
 export default class Bip38 extends Component<Props> {
 
     render() {

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Button, Platform, StyleSheet, Text, View, Alert} from 'react-native';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 
-type Props = {};
 export default class Bip44 extends Component<Props> {
 
     constructor(props) {

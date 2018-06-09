@@ -10,7 +10,6 @@ import {Actions} from 'react-native-router-flux';
 
 import bip39 from 'bip39';
 
-type Props = {};
 export default class Bip39 extends Component<Props> {
 
     constructor(props) {
@@ -47,7 +46,7 @@ export default class Bip39 extends Component<Props> {
 
         return (
             <View style={styles.container}>
-                <Picker style={{height: 50, width: 200}}
+                <Picker style={{height: 50, width: 200, marginBottom: 200}}
                         selectedValue={this.state.language}
                         onValueChange={(itemValue) => {
                             this.setState({language: itemValue}, () => this.generatePhrase());
@@ -75,6 +74,7 @@ export default class Bip39 extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
