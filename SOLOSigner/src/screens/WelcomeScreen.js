@@ -34,7 +34,7 @@ export default class WelcomeScreen extends Component<Props> {
                     <Button title='Create New Wallet'
                             style={[styles.buttons, {marginBottom: 15}]}
                             type='solid'
-                            onPress={() => Actions.reset('main_tab_bar')}/>
+                            onPress={() => Actions.create_wallet()}/>
 
                     <Button title='Import Wallet'
                             style={styles.buttons}

@@ -33,7 +33,7 @@ export default class SoloButton extends Component {
 
 const styles = StyleSheet.create({
     common: {
-        borderRadius: 5,
+        borderRadius: '$buttonRadius',
         color: '#ffffff',
         fontFamily: 'utm-avo',
         fontSize: 16,
