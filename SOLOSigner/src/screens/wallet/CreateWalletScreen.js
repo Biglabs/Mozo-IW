@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {Button, WalletButton, Text} from "../../components/SoloComponent";
+import {Button, Text, WalletButton} from "../../components/SoloComponent";
 
 export default class CreateWalletScreen extends Component<Props> {
     render() {
@@ -13,6 +13,7 @@ export default class CreateWalletScreen extends Component<Props> {
 
                 <WalletButton label="Express"
                               content="Select this option if you’d like to access your new SOLO Wallet quickly. Please note that you’ll always be able to customize at a later time."
+                              icon={require('../../res/icons/ic_flash.svg')}
                               style={styles.buttons}
                               onPress={() => {
                                   Actions.main_tab_bar();
@@ -20,6 +21,7 @@ export default class CreateWalletScreen extends Component<Props> {
 
                 <WalletButton title="Custom"
                               content="Select this option if you’d like to customize your wallet. You’ll be able to select your wallet Tokens and Currencies, set up a security PIN, and back up your wallet."
+                              icon={require('../../res/icons/ic_settings.svg')}
                               style={[styles.buttons, {marginTop: 20}]}
                               onPress={() => {
                                   Actions.main_tab_bar();

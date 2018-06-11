@@ -41,11 +41,10 @@ local.properties
 .env.production.local
 
 # node.js
-#
 node_modules/
 npm-debug.log
 yarn-error.log
-*.lock
+yarn.lock
 
 # BUCK
 buck-out/

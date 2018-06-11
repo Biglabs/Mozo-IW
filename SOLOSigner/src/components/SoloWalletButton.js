@@ -6,6 +6,8 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import Text from "./SoloText";
 import * as ButtonStyles from '../res/button.styles';
+// noinspection JSUnusedLocalSymbols, exclude color, fontFamily, fontSize, textAlign from ButtonStyles.BorderGrayStyle
+const {color, fontFamily, fontSize, textAlign, ...buttonGrayStyle} = ButtonStyles.BorderGrayStyle;
 
 export default class SoloWalletButton extends Component {
     constructor(props) {
@@ -15,14 +17,24 @@ export default class SoloWalletButton extends Component {
     }
 
     render() {
+        let horizontalPadding = this.props.icon ? 40 : 16;
         return (
-            <TouchableOpacity {...this.props} style={[styles.buttons, this.props.style]} onPress={this.props.onPress}>
-                <SvgUri width={18}
-                        height={18}
-                        fill={StyleSheet.value('$primaryColor')}
-                        source={require('../res/icons/ic_monetization.svg')}
-                        style={styles.icon}
-                />
+            <TouchableOpacity {...this.props} style={[styles.buttons, {
+                paddingLeft: horizontalPadding,
+                paddingRight: horizontalPadding
+            }, this.props.style]} onPress={this.props.onPress}>
+                {
+                    this.props.icon
+                    && <SvgUri width={18}
+                               height={18}
+                               fill={this.props.iconColor || StyleSheet.value('$textTitleColor')}
+                               source={this.props.icon}
+                               style={{
+                                   position: 'absolute',
+                                   marginLeft: 14,
+                                   marginTop: 18,
+                               }}/>
+                }
 
                 <Text style={styles.button_name}>{this.label}</Text>
 
@@ -33,26 +45,21 @@ export default class SoloWalletButton extends Component {
 }
 
 const styles = StyleSheet.create({
-    icon: {
-        position: 'absolute',
-        marginLeft: 14,
-        marginTop: 18,
-    },
     buttons: {
-        ...ButtonStyles.BorderGrayStyle,
-        paddingLeft: 40,
+        ...buttonGrayStyle,
+        paddingLeft: 16,
         paddingTop: 14,
-        paddingRight: 40,
+        paddingRight: 16,
         paddingBottom: 16,
         minHeight: 130
     },
     button_name: {
-        fontFamily: 'utm-avo-bold',
+        fontFamily: '$primaryFontBold',
         fontSize: 16,
         color: '$textTitleColor',
     },
     button_content: {
-        fontFamily: 'utm-avo',
+        fontFamily: '$primaryFont',
         fontSize: 12,
         color: '$textContentColor',
     },

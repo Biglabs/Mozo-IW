@@ -1,7 +1,11 @@
+import {Platform} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const primaryColor = '#006DFF';
 EStyleSheet.build({
+    $primaryFont: Platform.OS === 'ios' ? 'UTM Avo' : 'utm-avo',
+    $primaryFontBold: Platform.OS === 'ios' ? 'UTMAvoBold' : 'utm-avo-bold',
+
     $primaryColor: primaryColor,
     $screenBackground: '#FFFFFF',
     $textTitleColor: '#141a22',

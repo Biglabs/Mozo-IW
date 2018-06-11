@@ -1,7 +1,7 @@
 const common = {
     borderRadius: '$buttonRadius',
     color: '#ffffff',
-    fontFamily: 'utm-avo',
+    fontFamily: '$primaryFont',
     fontSize: 16,
     paddingLeft: 20,
     paddingTop: 12,
@@ -28,7 +28,7 @@ const BorderPrimaryStyle = {
     color: '$primaryColor',
     borderColor: '$primaryColor',
     borderWidth: 1,
-    fontFamily: 'utm-avo-bold',
+    fontFamily: '$primaryFontBold',
     fontSize: 14,
 };
 
