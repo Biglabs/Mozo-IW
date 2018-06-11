@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router, Modal, Scene} from 'react-native-router-flux';
+import {Router, Modal, Scene, Lightbox} from 'react-native-router-flux';
 import SvgUri from 'react-native-svg-uri';
 import './res/common.styles.js'; // initial common styles
 
@@ -7,6 +7,8 @@ import SplashScreen from './screens/SplashScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import AddWalletScreen from './screens/wallet/AddWalletScreen';
 import CreateWalletScreen from './screens/wallet/CreateWalletScreen';
+
+import ExportQRCode from './components/lightbox/ExportQRCode';
 
 import Bip39 from './screens/Bip39';
 import Bip44 from './screens/Bip44';
@@ -39,6 +41,9 @@ export default () => {
                     <Scene key="tab_bip38" title="38" icon={TabIcon} component={Bip38} hideNavBar/>
                 </Scene>
 
+                <Lightbox key="lightbox">
+                    <Scene key="export_qrcode" component={ExportQRCode} />
+                </Lightbox>
             </Modal>
         </Router>
     );

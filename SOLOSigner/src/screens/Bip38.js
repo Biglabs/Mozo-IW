@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Platform, StyleSheet, Text, View, TextInput, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import { Actions } from 'react-native-router-flux';
+
 var bip38 = require('bip38')
 var wif = require('wif')
 
@@ -64,6 +66,8 @@ export default class Bip38 extends Component<Props> {
                         address: ''
                     });
                 }}/>
+
+                <Button title="Export QR code" onPress={() => Actions.export_qrcode({data: this.state.address})} />
 
                 <Text style={styles.instructions}>
                     {this.state.decryptedKey}
