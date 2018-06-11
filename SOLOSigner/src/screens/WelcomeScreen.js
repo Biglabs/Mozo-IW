@@ -38,9 +38,7 @@ export default class WelcomeScreen extends Component<Props> {
 
                     <Button title='Import Wallet'
                             style={styles.buttons}
-                            onPress={() => {
-                                console.log('Import Wallet');
-                            }}/>
+                            onPress={() => Actions.add_wallet()}/>
                 </View>
             </View>
         );

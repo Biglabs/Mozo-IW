@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {Button, Text} from "../components/SoloComponent";
+import {Button, Text} from "../../components/SoloComponent";
 
 
 export default class CreateWalletScreen extends Component<Props> {
@@ -14,7 +14,7 @@ export default class CreateWalletScreen extends Component<Props> {
 
                 <TouchableOpacity style={styles.buttons}
                                   onPress={() => {
-                                      Actions.reset('main_tab_bar');
+                                      Actions.main_tab_bar();
                                   }}>
                     <Text style={styles.button_name}>Express</Text>
 
@@ -23,7 +23,7 @@ export default class CreateWalletScreen extends Component<Props> {
 
                 <TouchableOpacity style={styles.buttons}
                                   onPress={() => {
-                                      Actions.reset('main_tab_bar');
+                                      Actions.main_tab_bar();
                                   }}>
                     <Text style={styles.button_name}>Custom</Text>
 
