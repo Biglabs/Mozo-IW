@@ -35,9 +35,9 @@ export default class Bip44 extends Component<Props> {
                     });
                 }}/>
                 <Button title='Generate ETH Wallet' onPress={() => {
-                    var hdkey = require('ethereumjs-wallet-react-native/hdkey')
+                    /*var hdkey = require('ethereumjs-wallet-react-native/hdkey');
                     let seed = this.state.seed;
-                    let mnemonic = "advice seat receive device street fever mean one curve lazy flight bundle fantasy item portion"; 
+                    let mnemonic = "punch bullet board enrich live pattern soul priority mail spy fix cotton letter inhale exile";
                     seed = bip39.mnemonicToSeedHex(mnemonic);
                     this.setState({
                         seedTest: "Seed: " + seed
@@ -45,12 +45,37 @@ export default class Bip44 extends Component<Props> {
                     var ethereumHDKey = hdkey.fromMasterSeed(seed);
                     ethereumHDKey = ethereumHDKey.derivePath("m/44'/60'/0'/0");
                     this.setState({
-                        rootKey: "Private extended key: " + ethereumHDKey.privateExtendedKey(),
-                        xpub : "Public extended key: " + ethereumHDKey.publicExtendedKey()
+                        rootKey: "Bip32 Private extended key: " + ethereumHDKey.privateExtendedKey(),
+                        xpub : "Bip32 Public extended key: " + ethereumHDKey.publicExtendedKey()
                     });
                     let wallet = ethereumHDKey.getWallet();
                     this.setState({
                         adrBip44Test: "Address: " + wallet.getAddressString()
+                    });*/
+                    let mnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
+                    let seed = bip39.mnemonicToSeedHex(mnemonic);
+                    let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
+                    var bip32ExtendedKey = rootKey.derivePath("m/44'/60'/0'/0");
+                    this.setState({
+                        rootKey: "Bip32 Private extended key: " + bip32ExtendedKey.toBase58(),
+                        xpub : "Bip32 Public extended key: " + bip32ExtendedKey.neutered().toBase58()
+                    });
+                    bip32ExtendedKey = bip32ExtendedKey.derive(0);
+                    var keyPair = bip32ExtendedKey.keyPair;
+                    var privKeyBuffer = keyPair.d.toBuffer(32);
+                    var privkey = privKeyBuffer.toString('hex');
+                    var ethUtil = require('ethereumjs-util');
+                    var addressBuffer = ethUtil.privateToAddress(privKeyBuffer);
+                    var hexAddress = addressBuffer.toString('hex');
+                    var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
+                    var address = ethUtil.addHexPrefix(checksumAddress);
+                    console.log("Ethereum address: [" + address  + "]")
+                    privkey = ethUtil.addHexPrefix(privkey);
+                    var pubkey = ethUtil.addHexPrefix(pubkey);
+                    this.setState({
+                        adrBip44Test: "Address: " + address,
+                        pubkey: "Public key: " + pubkey,
+                        privkey: "Private key: " + privkey
                     });
                 }}/>
                 <Text style={styles.instructions}>
@@ -67,6 +92,10 @@ export default class Bip44 extends Component<Props> {
                 </Text>
                 <Text style={styles.instructions}>
                     {this.state.adrBip44Test}
+                    {'\n'}
+                    {this.state.pubkey}
+                    {'\n'}
+                    {this.state.privkey}
                 </Text>
             </View>
         );
