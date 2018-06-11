@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
+import SvgUri from 'react-native-svg-uri';
 import * as ButtonStyles from '../res/button.styles';
 
 export default class SoloButton extends Component {
@@ -20,20 +21,62 @@ export default class SoloButton extends Component {
                 this.style = styles.border_gray;
                 break;
         }
+
+        this.hasIcon = (typeof props.icon !== 'undefined') || false;
+        this.iconColor = props.iconColor || StyleSheet.value('$textTitleColor');
+        this.iconSize = 20;
+        this.paddingVertical = 27;
+        this.paddingHorizontal = 30;
+        let spacing = 9;
+
+        this.font = StyleSheet.value(props.titleBold === true ? '$primaryFontBold' : '$primaryFont');
+        this.fontSize = props.fontSize || 16;
+        this.textPadding = ((this.iconSize + this.paddingVertical * 2) - this.fontSize) / 2;
+        this.textPaddingHorizontal = this.paddingHorizontal + this.iconSize + spacing
     }
 
     render() {
+        // this.props.iconPosition
         return (
             <TouchableOpacity {...this.props}>
-                <Text style={this.style} suppressHighlighting={true}>
+                <Text style={
+                    this.hasIcon ? [
+                        styles.width_icon, {
+                            color: this.iconColor,
+                            fontFamily: this.font,
+                            fontSize: this.fontSize,
+                            paddingTop: this.textPadding - 5,
+                            paddingLeft: this.textPaddingHorizontal,
+                            paddingBottom: this.textPadding
+                        }
+                    ] : this.style
+                }
+                      suppressHighlighting={true}>
                     {this.props.title}
                 </Text>
+                {
+                    this.hasIcon
+                    && <SvgUri width={this.iconSize}
+                               height={this.iconSize}
+                               fill={this.iconColor}
+                               source={this.props.icon}
+                               style={{
+                                   position: 'absolute',
+                                   // alignSelf: 'flex-end',
+                                   top: this.paddingVertical,
+                                   left: this.paddingHorizontal
+                               }}/>
+                }
             </TouchableOpacity>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    width_icon: {
+        ...ButtonStyles.SolidStyle,
+        backgroundColor: 'transparent',
+    },
     solid: {
         ...ButtonStyles.SolidStyle
     },
