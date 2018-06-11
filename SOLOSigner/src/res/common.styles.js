@@ -4,6 +4,9 @@ const primaryColor = '#006DFF';
 EStyleSheet.build({
     $primaryColor: primaryColor,
     $screenBackground: '#FFFFFF',
+    $textTitleColor: '#141a22',
+    $textContentColor: '#747474',
+
     $buttonRadius: 5,
 
     $screen_title_text: {

@@ -14,7 +14,7 @@ import Bip38 from './screens/Bip38';
 
 const TabIcon = ({selected, title}) => {
     return (
-        <SvgUri source={require('./res/images/ic_monetization.svg')}/>
+        <SvgUri source={require('./res/icons/ic_monetization.svg')}/>
     );
 };
 

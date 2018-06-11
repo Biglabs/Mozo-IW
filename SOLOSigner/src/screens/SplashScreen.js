@@ -10,6 +10,7 @@ export default class SplashScreen extends Component<Props> {
 
     componentDidMount() {
         YellowBox.ignoreWarnings(['Warning: isMounted(...)']);
+        YellowBox.ignoreWarnings(['Warning: Failed prop type']);
         this.timer = TimerMixin.setTimeout(
             () => {
                 Actions.reset('welcome');
@@ -28,7 +29,7 @@ export default class SplashScreen extends Component<Props> {
         return (
             <View style={styles.container}>
                 <FadeInView duration={500}>
-                    <SvgUri width={logoWidth} height={logoHeight} source={require('../res/images/logo.svg')}/>
+                    <SvgUri width={logoWidth} height={logoHeight} source={require('../res/icons/logo.svg')}/>
                 </FadeInView>
             </View>
         );

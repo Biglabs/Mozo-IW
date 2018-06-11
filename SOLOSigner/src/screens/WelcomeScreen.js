@@ -21,7 +21,7 @@ export default class WelcomeScreen extends Component<Props> {
                 <SvgUri width={this.logoWidth}
                         height={this.logoHeight}
                         fill={StyleSheet.value('$primaryColor')}
-                        source={require('../res/images/logo.svg')}
+                        source={require('../res/icons/logo.svg')}
                         style={{
                             flex: .5,
                             justifyContent: 'flex-end',

@@ -3,19 +3,21 @@
 import React, {Component} from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
+import * as ButtonStyles from '../res/button.styles';
 
 export default class SoloButton extends Component {
     constructor(props) {
         super(props);
-
-        this.style = [styles.common];
-
         switch (props.type ? props.type : '') {
             case "solid":
-                this.style.push(styles.solid);
+                this.style = styles.solid;
                 break;
+            case "border-primary":
+                this.style = styles.border_primary;
+                break;
+            case "border-gray":
             default:
-                this.style.push(styles.border);
+                this.style = styles.border_gray;
                 break;
         }
     }
@@ -32,24 +34,13 @@ export default class SoloButton extends Component {
 }
 
 const styles = StyleSheet.create({
-    common: {
-        borderRadius: '$buttonRadius',
-        color: '#ffffff',
-        fontFamily: 'utm-avo',
-        fontSize: 16,
-        paddingLeft: 20,
-        paddingTop: 12,
-        paddingRight: 20,
-        paddingBottom: 14,
-        textAlign: 'center',
-    },
     solid: {
-        backgroundColor: '$primaryColor',
-        overflow: 'hidden'
+        ...ButtonStyles.SolidStyle
     },
-    border: {
-        color: '#666666',
-        borderColor: '#cdcdcd',
-        borderWidth: 1,
+    border_gray: {
+        ...ButtonStyles.BorderGrayStyle
+    },
+    border_primary: {
+        ...ButtonStyles.BorderPrimaryStyle
     }
 });
