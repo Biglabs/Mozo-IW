@@ -97,8 +97,8 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "com.solosigner"
-        minSdkVersion 19
+        applicationId "com.big_labs.solo.signer"
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -136,7 +136,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-svg')
+    implementation project(':react-native-svg')
     implementation project(':react-native-randombytes')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:27.1.1"

@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Text, View, YellowBox} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
+import StyleSheet from 'react-native-extended-stylesheet';
+import {FadeInView} from "../components/SoloComponent";
 
-type Props = {};
 export default class SplashScreen extends Component<Props> {
 
     componentDidMount() {
+        YellowBox.ignoreWarnings(['Warning: isMounted(...)']);
         this.timer = TimerMixin.setTimeout(
             () => {
-                Actions.replace("tabbar");
+                Actions.reset('welcome');
             }, 3000
         );
     }
@@ -21,9 +22,14 @@ export default class SplashScreen extends Component<Props> {
     }
 
     render() {
+        let {width} = Dimensions.get('window');
+        let logoWidth = 64 * width / 100;
+        let logoHeight = 37.8 * logoWidth / 100;
         return (
             <View style={styles.container}>
-                <SvgUri source={require('../images/logo.svg')}/>
+                <FadeInView duration={500}>
+                    <SvgUri width={logoWidth} height={logoHeight} source={require('../res/images/logo.svg')}/>
+                </FadeInView>
             </View>
         );
     }
@@ -34,6 +40,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#006DFF'
+        backgroundColor: '$primaryColor'
     }
 });
