@@ -23,15 +23,17 @@ export default class SoloWalletButton extends Component {
                 paddingLeft: horizontalPadding,
                 paddingRight: horizontalPadding
             }, this.props.style]} onPress={this.props.onPress}>
-                {this.props.icon && <SvgUri width={18}
-                                            height={18}
-                                            fill={this.props.iconColor || StyleSheet.value('$textTitleColor')}
-                                            source={this.props.icon}
-                                            style={{
-                                                position: 'absolute',
-                                                marginLeft: 14,
-                                                marginTop: 18,
-                                            }}/>
+                {
+                    this.props.icon
+                    && <SvgUri width={18}
+                               height={18}
+                               fill={this.props.iconColor || StyleSheet.value('$textTitleColor')}
+                               source={this.props.icon}
+                               style={{
+                                   position: 'absolute',
+                                   marginLeft: 14,
+                                   marginTop: 18,
+                               }}/>
                 }
 
                 <Text style={styles.button_name}>{this.label}</Text>
