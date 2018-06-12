@@ -13,7 +13,9 @@ export default class SoloSelectionGroup extends Component {
         this.setState({
             selectedIndex: index
         }, () => {
-            console.log('onChildPress');
+            if (this.props.onSelectionChanged !== 'undefined') {
+                this.props.onSelectionChanged(this.state.selectedIndex);
+            }
         });
     }
 
