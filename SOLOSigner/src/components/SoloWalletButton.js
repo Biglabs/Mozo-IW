@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {TouchableOpacity, Image, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import Text from "./SoloText";
@@ -23,16 +23,17 @@ export default class SoloWalletButton extends Component {
             <View {...this.props} style={[this.props.style, styles.container]} onLayout={(event) => {
                 this.containerWidth = event.nativeEvent.layout.width;
             }}>
-                <TouchableOpacity style={[
-                    styles.button_inside,
-                    {
-                        paddingLeft: horizontalPadding,
-                        paddingRight: horizontalPadding,
-                        backgroundColor: StyleSheet.value(isSelected ? '$primaryColor' : '$screenBackground'),
-                        borderWidth: isSelected ? 0 : 1,
-                    },
-                    this.props.style
-                ]} onPress={this.props.onPress}>
+                <TouchableOpacity
+                    style={[
+                        styles.button_inside,
+                        {
+                            paddingLeft: horizontalPadding,
+                            paddingRight: horizontalPadding,
+                            backgroundColor: StyleSheet.value(isSelected ? '$primaryColor' : '$screenBackground'),
+                            borderWidth: isSelected ? 0 : 1,
+                        },
+                        this.props.style]}
+                    onPress={this.props.onPress}>
                     {
                         this.props.icon
                         && <SvgUri width={18}
@@ -72,14 +73,14 @@ export default class SoloWalletButton extends Component {
                     ]}>{this.content}</Text>
                 </TouchableOpacity>
 
-                <Image style={[
-                    styles.shadow,
-                    {
-                        opacity: isSelected ? 1.0 : 0.0,
-                        width: this.containerWidth * 0.85 || 0
-                    }]}
-                       source={require('../res/images/im_button_shadow.png')}
-                />
+                <Image
+                    style={[
+                        styles.shadow,
+                        {
+                            opacity: isSelected ? 1.0 : 0.0,
+                            width: this.containerWidth * 0.85 || 0
+                        }]}
+                    source={require('../res/images/im_button_shadow.png')}/>
             </View>
         )
     }
@@ -106,9 +107,9 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     shadow: {
-        height: 50,
-        marginTop: -18,
-        resizeMode: 'contain',
+        height: 20,
+        marginTop: -1,
+        resizeMode: 'stretch',
         zIndex: -1
     }
 });

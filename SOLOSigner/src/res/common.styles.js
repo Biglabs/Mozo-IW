@@ -18,6 +18,7 @@ EStyleSheet.build({
     $screenBackground: '#FFFFFF',
     $disableColor: '#d1d7dd',
 
+    $screen_padding_bottom: 70,
     $buttonRadius: 5,
 
     $screen_title_text: {
