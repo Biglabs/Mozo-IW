@@ -75,7 +75,7 @@ export default class Bip44 extends Component<Props> {
                     privkey = ethUtil.addHexPrefix(privkey);
                     var pubkey = ethUtil.addHexPrefix(pubkey);
                     this.setState({
-                        adrBip44Test: "Address: " + address,
+                        adrBip44Test: address,
                         pubkey: "Public key: " + pubkey,
                         privkey: "Private key: " + privkey
                     });
@@ -83,8 +83,9 @@ export default class Bip44 extends Component<Props> {
                 <Button title='View balance' onPress={() => {
                     let Web3 = require('web3');
                     const testnet = 'https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir';
-                    let walletAddress = this.state.adrBip44Test;
+                    const walletAddress = this.state.adrBip44Test;
                     const web3 = new Web3(new Web3.providers.HttpProvider(testnet));
+                    console.log(walletAddress);
                     web3.eth.getBalance(walletAddress).then( (data)=> {
                         console.log(data);
                         let value = web3.utils.fromWei(data);
@@ -92,6 +93,8 @@ export default class Bip44 extends Component<Props> {
                             balance: "Balance: " + value
                         });
                     });
+                    //walletAddress); //Will give value in.
+
                 }}/>
                 <Text style={styles.instructions}>
                     {this.state.seedTest}
