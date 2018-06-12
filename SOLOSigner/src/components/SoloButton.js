@@ -21,7 +21,7 @@ export default class SoloButton extends Component {
                 this.style = styles.border_gray;
                 break;
         }
-
+        this.disableColor = StyleSheet.value('$disableColor');
         this.hasIcon = (typeof props.icon !== 'undefined') || false;
         this.iconColor = props.iconColor || StyleSheet.value('$textTitleColor');
         this.iconSize = 20;
@@ -32,40 +32,74 @@ export default class SoloButton extends Component {
         this.font = StyleSheet.value(props.titleBold === true ? '$primaryFontBold' : '$primaryFont');
         this.fontSize = props.fontSize || 16;
         this.textPadding = ((this.iconSize + this.paddingVertical * 2) - this.fontSize) / 2;
-        this.textPaddingHorizontal = this.paddingHorizontal + this.iconSize + spacing
+        this.textPaddingHorizontal = this.paddingHorizontal + this.iconSize + spacing;
+
+        this.isIconRight = props.iconPosition === 'right';
+        const offsetFontPadding = 6;
+        if (this.isIconRight) {
+            this.textStyle = {
+                color: this.iconColor,
+                fontFamily: this.font,
+                fontSize: this.fontSize,
+                paddingTop: this.textPadding - offsetFontPadding,
+                paddingRight: this.textPaddingHorizontal,
+                paddingBottom: this.textPadding,
+            };
+            this.iconStyle = {
+                position: 'absolute',
+                alignSelf: 'flex-end',
+                top: this.paddingVertical,
+                right: this.paddingHorizontal
+            };
+        } else {
+            this.textStyle = {
+                color: this.iconColor,
+                fontFamily: this.font,
+                fontSize: this.fontSize,
+                paddingTop: this.textPadding - offsetFontPadding,
+                paddingLeft: this.textPaddingHorizontal,
+                paddingBottom: this.textPadding,
+            };
+            this.iconStyle = {
+                position: 'absolute',
+                top: this.paddingVertical,
+                left: this.paddingHorizontal
+            };
+        }
     }
 
     render() {
-        // this.props.iconPosition
+        let finalTextStyle = [];
+        if (this.hasIcon) {
+            finalTextStyle.push(styles.width_icon);
+            finalTextStyle.push(this.textStyle);
+        } else {
+            finalTextStyle.push(this.style);
+        }
+
+        let finalIconColor = this.iconColor;
+
+        let isEnabled = (typeof this.props.enabled === 'undefined') || this.props.enabled;
+        if(!isEnabled){
+            finalTextStyle.push({
+                color: this.disableColor,
+            });
+            finalIconColor = this.disableColor;
+        }
+
         return (
-            <TouchableOpacity {...this.props}>
-                <Text style={
-                    this.hasIcon ? [
-                        styles.width_icon, {
-                            color: this.iconColor,
-                            fontFamily: this.font,
-                            fontSize: this.fontSize,
-                            paddingTop: this.textPadding - 5,
-                            paddingLeft: this.textPaddingHorizontal,
-                            paddingBottom: this.textPadding
-                        }
-                    ] : this.style
-                }
-                      suppressHighlighting={true}>
+            <TouchableOpacity {...this.props} disabled={!isEnabled}>
+                <Text style={finalTextStyle} suppressHighlighting={true}>
                     {this.props.title}
                 </Text>
+
                 {
                     this.hasIcon
                     && <SvgUri width={this.iconSize}
                                height={this.iconSize}
-                               fill={this.iconColor}
+                               fill={finalIconColor}
                                source={this.props.icon}
-                               style={{
-                                   position: 'absolute',
-                                   // alignSelf: 'flex-end',
-                                   top: this.paddingVertical,
-                                   left: this.paddingHorizontal
-                               }}/>
+                               style={this.iconStyle}/>
                 }
             </TouchableOpacity>
         )

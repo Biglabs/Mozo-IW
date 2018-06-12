@@ -7,6 +7,7 @@ import SplashScreen from './screens/SplashScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import AddWalletScreen from './screens/wallet/AddWalletScreen';
 import CreateWalletScreen from './screens/wallet/CreateWalletScreen';
+import ImportWalletScreen from './screens/wallet/ImportWalletScreen';
 
 import ExportQRCode from './components/lightbox/ExportQRCode';
 
@@ -29,6 +30,7 @@ export default () => {
                 <Scene key="welcome" component={WelcomeScreen} hideNavBar type="reset"/>
                 <Scene key="add_wallet" component={AddWalletScreen} hideNavBar/>
                 <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
+                <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
 
                 <Scene key="main_tab_bar"
                        tabs={true}

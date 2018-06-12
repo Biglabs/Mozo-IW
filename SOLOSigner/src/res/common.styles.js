@@ -10,6 +10,7 @@ EStyleSheet.build({
     $screenBackground: '#FFFFFF',
     $textTitleColor: '#141a22',
     $textContentColor: '#747474',
+    $disableColor: '#d1d7dd',
 
     $buttonRadius: 5,
 
