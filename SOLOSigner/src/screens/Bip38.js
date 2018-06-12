@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Platform, StyleSheet, Text, View, TextInput, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {Button, Platform, StyleSheet, Text, View, TextInput, Keyboard, TouchableWithoutFeedback, Alert} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 var bip38 = require('bip38')
@@ -24,12 +24,17 @@ export default class Bip38 extends Component<Props> {
         };
     }
 
+    scanQRCodeCallback(qrcode) {
+      this.setState({address: qrcode});
+    }
+
     render() {
         return (
           <DissmissKeyboard>
             <View key="bip38" style={styles.container}>
                 <Text>Address: </Text>
                 <TextInput
+                  value={this.state.address}
                   style={styles.textinput}
                   placeholder="Type address here to encrypt or decrypt!"
                   onChangeText={(address) => this.setState({address})}
@@ -68,6 +73,9 @@ export default class Bip38 extends Component<Props> {
                 }}/>
 
                 <Button title="Export QR code" onPress={() => Actions.export_qrcode({data: this.state.address})} />
+                <Button title='Import QR code' onPress={() =>
+                  this.props.navigation.navigate('scan_qrcode', {scanQRCodeCallback: this.scanQRCodeCallback.bind(this)})
+                }/>
 
                 <Text style={styles.instructions}>
                     {this.state.decryptedKey}

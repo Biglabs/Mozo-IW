@@ -10,6 +10,7 @@ import CreateWalletScreen from './screens/wallet/CreateWalletScreen';
 import ImportWalletScreen from './screens/wallet/ImportWalletScreen';
 
 import ExportQRCode from './components/lightbox/ExportQRCode';
+import ScanQRCode from './components/lightbox/ScanQRCode';
 
 import Bip39 from './screens/Bip39';
 import Bip44 from './screens/Bip44';
@@ -46,6 +47,7 @@ export default () => {
                 <Lightbox key="lightbox">
                     <Scene key="export_qrcode" component={ExportQRCode} />
                 </Lightbox>
+                <Scene key="scan_qrcode" component={ScanQRCode}/>
             </Modal>
         </Router>
     );
