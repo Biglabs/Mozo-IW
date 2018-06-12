@@ -16,11 +16,16 @@ const SolidStyle = {
     overflow: 'hidden'
 };
 
-const BorderGrayStyle = {
-    ...common,
-    color: '#666666',
+const BaseBorderStyle = {
+    borderRadius: '$buttonRadius',
     borderColor: '#cdcdcd',
     borderWidth: 1,
+};
+
+const BorderGrayStyle = {
+    ...common,
+    ...BaseBorderStyle,
+    color: '#666666',
 };
 
 const BorderPrimaryStyle = {
@@ -33,6 +38,7 @@ const BorderPrimaryStyle = {
 };
 
 export {
+    BaseBorderStyle,
     SolidStyle,
     BorderGrayStyle,
     BorderPrimaryStyle
