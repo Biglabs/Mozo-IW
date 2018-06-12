@@ -15,6 +15,8 @@ export default class Bip44 extends Component<Props> {
         };
     }
 
+
+
     render() {
         return (
             <View key="bip44" style={styles.container}>
@@ -78,6 +80,19 @@ export default class Bip44 extends Component<Props> {
                         privkey: "Private key: " + privkey
                     });
                 }}/>
+                <Button title='View balance' onPress={() => {
+                    let Web3 = require('web3');
+                    const testnet = 'https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir';
+                    let walletAddress = this.state.adrBip44Test;
+                    const web3 = new Web3(new Web3.providers.HttpProvider(testnet));
+                    web3.eth.getBalance(walletAddress).then( (data)=> {
+                        console.log(data);
+                        let value = web3.utils.fromWei(data);
+                        this.setState({
+                            balance: "Balance: " + value
+                        });
+                    });
+                }}/>
                 <Text style={styles.instructions}>
                     {this.state.seedTest}
                     {}
@@ -96,6 +111,10 @@ export default class Bip44 extends Component<Props> {
                     {this.state.pubkey}
                     {'\n'}
                     {this.state.privkey}
+                </Text>
+                <Text style={styles.instructions}>
+                    {this.state.balance}
+                    {}
                 </Text>
             </View>
         );

@@ -24,3 +24,4 @@ let crypto = global.crypto || global.msCrypto;
 if (typeof crypto === 'undefined') {
     crypto = require('react-native-crypto');
 }
+window.btoa = window.btoa || require('Base64').btoa;
