@@ -14,6 +14,7 @@ export default class AddWalletScreen extends Component<Props> {
 
                 <Button title='Back'
                         style={styles.button_back}
+                        icon={require('../../res/icons/ic_arrow_left.svg')}
                         onPress={() => {
                             Actions.pop();
                         }}/>
@@ -31,5 +32,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         paddingLeft: 30,
         paddingRight: 30
+    },
+    button_back: {
+        position: 'absolute',
+        bottom: 0,
     },
 });
