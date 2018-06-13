@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Platform, StyleSheet, Text, View, Alert } from 'react-native';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
-const testnet = 'https://ropsten.infura.io/'; //Onb2hCxHKDYIL0LNn8Ir
+const testnet = 'https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir';
 import Web3 from 'web3';
 
 type Props = {};
@@ -115,40 +115,43 @@ export default class Bip44 extends Component<Props> {
                 <Button title='Send 1 ETH to account 2' onPress={() => {
                     const EthereumTx = require('ethereumjs-tx');
                     //Create a new transaction
-                    const txParams = {
-                        nonce: '00',
-                        gasPrice: 5000000000,
-                        gasLimit: 210000,
-                        to: this.state.adrTest2,
-                        value: '1',
-                        data: '0x00',
-                        // EIP 155 chainId - mainnet: 1, ropsten: 3
-                        chainId: 3
-                    }
-                    const tx = new EthereumTx(txParams);
-                    //var key = new Buffer(this.state.privkey, 'hex');
-                    tx.sign(this.state.privKeyBuffer);
-                    const serializedTx = tx.serialize();
                     const web3 = new Web3(
                         new Web3.providers.HttpProvider(testnet)
                     );
-                    //Verify connection is successful
-                    web3.eth.net.isListening()
-                        .then(() => console.log('is connected'))
-                        .catch(e => console.log('Wow. Something went wrong'));
-                    let data = `0x${serializedTx.toString('hex')}`;
-                    web3.eth.sendSignedTransaction(data,
-                        (error, result) => {
-                            if (error) { 
-                                console.log(`Error: ${error}`);
-                                this.displayAlert("Error", error.message); 
-                            }
-                            else { 
-                                console.log(`Result: ${result}`);
-                                this.displayAlert("Result", result.data);
-                            }
+                    web3.eth.getTransactionCount(this.state.adrBip44Test).then(_nonce => {
+                        const txParams = {
+                            nonce: _nonce,
+                            gasLimit: 3000000,
+                            gasPrice: web3.utils.toHex(web3.utils.toWei('20', 'gwei')),
+                            from: this.state.adrBip44Test,
+                            to: this.state.adrTest2,
+                            value: web3.utils.toHex(web3.utils.toWei('1', 'ether')),
+                            data: '0x00',
+                            // EIP 155 chainId - mainnet: 1, ropsten: 3
+                            chainId: 3
                         }
-                    );
+                        const tx = new EthereumTx(txParams);
+                        tx.sign(this.state.privKeyBuffer);
+                        const serializedTx = tx.serialize();
+                        //Verify connection is successful
+                        web3.eth.net.isListening()
+                            .then(() => console.log('is connected'))
+                            .catch(e => console.log('Wow. Something went wrong'));
+                        let data = `0x${serializedTx.toString('hex')}`;
+                        web3.eth.sendSignedTransaction(data)
+                            .on('transactionHash', function (hash) {
+                                console.log("trans hash: " + hash)
+                            })
+                            .on('receipt', function (receipt) {
+                                console.log("receipt: " + receipt)
+                            })
+                            .on('confirmation', function (confirmationNumber, receipt) {
+                                console.log("conf: " + confirmationNumber, receipt)
+                            })
+                            .on('error', (e) => {
+                                console.log("Sending Error: " + e)
+                            });
+                    });
                 }} />
                 <Text style={styles.instructions}>
                     {this.state.seedTest}
