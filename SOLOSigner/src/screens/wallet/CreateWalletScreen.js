@@ -34,7 +34,7 @@ export default class CreateWalletScreen extends Component<Props> {
                 </SelectionGroup>
 
                 <Button title='Back'
-                        style={styles.button_back}
+                        style={StyleSheet.value('$back_button')}
                         fontSize={16}
                         icon={require('../../res/icons/ic_arrow_left.svg')}
                         onPress={() => {
@@ -43,7 +43,7 @@ export default class CreateWalletScreen extends Component<Props> {
 
                 <Button title='Continue'
                         titleBold={true}
-                        style={styles.button_continue}
+                        style={StyleSheet.value('$continue_button')}
                         enabled={this.state.selectedIndex >= 0}
                         fontSize={16}
                         icon={require('../../res/icons/ic_arrow_right.svg')}
@@ -76,14 +76,5 @@ const styles = StyleSheet.create({
     },
     buttons: {
         width: '100%'
-    },
-    button_back: {
-        position: 'absolute',
-        bottom: 0,
-    },
-    button_continue: {
-        position: 'absolute',
-        bottom: 0,
-        alignSelf: 'flex-end',
     },
 });

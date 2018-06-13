@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 204 204">
+    <rect fill="#F8F8F8" x="10" y="10" width="184" height="184"/>
+    <polygon fill="#BBC3CB" points="0,0 16,0 16,4 4,4 4,16 0,16 "/>
+    <polygon fill="#BBC3CB" points="204,0 204,16 200,16 200,4 188,4 188,0 "/>
+    <polygon fill="#BBC3CB" points="0,204 0,188 4,188 4,200 16,200 16,204 "/>
+    <polygon fill="#BBC3CB" points="204,204 188,204 188,200 200,200 200,188 204,188 "/>
+    <path fill="#D1D7DD" d="M88.1,116.7v5.7h-5.7v-5.7H88.1z M88.1,82.4v5.7h-5.7v-5.7H88.1z M122.4,82.4v5.7h-5.7v-5.7
+	H122.4z M76.7,128.1h17.1V111H76.7V128.1z M76.7,93.9h17.1V76.7H76.7V93.9z M111,93.9h17.1V76.7H111V93.9z M99.6,105.3v28.6H71
+	v-28.6H99.6z M122.4,128.1v5.7h-5.7v-5.7H122.4z M133.9,128.1v5.7h-5.7v-5.7H133.9z M133.9,105.3v17.1h-17.1v-5.7H111v17.1h-5.7
+	v-28.6h17.1v5.7h5.7v-5.7H133.9z M99.6,71v28.6H71V71H99.6z M133.9,71v28.6h-28.6V71H133.9z"/>
+</svg>
