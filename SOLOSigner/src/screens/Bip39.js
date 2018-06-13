@@ -60,7 +60,8 @@ export default class Bip39 extends Component<Props> {
                     {this.state.mnemonic}
                     {console.log(this.state.mnemonic)}
                 </Text>
-                <Text style={styles.text}>
+                <Text selectable={true}
+                    style={styles.text}>
                     {this.state.seed}
                     {console.log(this.state.seed)}
                 </Text>

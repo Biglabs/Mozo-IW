@@ -18,12 +18,11 @@ const styles = StyleSheet.create({
 
 const ExportQRCode = ({ data, children }) => (
   <Lightbox verticalPercent={0.5} horizontalPercent={0.9}>
-    <Text>{data}</Text>
     <QRCode
       value={data}
-      size={312}
-      bgColor={'#fff'}
-      fgColor={'#008dc2'}
+      size={260}
+      bgColor={'#000'}
+      fgColor={'#FFF'}
     />
   </Lightbox>
 );

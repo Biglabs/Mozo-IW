@@ -20,7 +20,7 @@ export default class Bip38 extends Component<Props> {
             encryptedKey: '',
             decryptedKey: '',
             passphrase: '',
-            address: ''
+            address: this.props.seed
         };
     }
 
