@@ -15,6 +15,7 @@ import ScanQRCode from './components/lightbox/ScanQRCode';
 import Bip39 from './screens/Bip39';
 import Bip44 from './screens/Bip44';
 import Bip38 from './screens/Bip38';
+import './screens/LinkingManager';
 
 const TabIcon = ({selected, title}) => {
     return (

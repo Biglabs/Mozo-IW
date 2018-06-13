@@ -5,7 +5,6 @@ import bip39 from 'bip39';
 const testnet = 'https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir';
 import Web3 from 'web3';
 
-type Props = {};
 export default class Bip44 extends Component<Props> {
     constructor(props) {
         super(props);
@@ -13,8 +12,7 @@ export default class Bip44 extends Component<Props> {
             rootKey: '',
             adrBip44Test: '',
             privKeyBuffer: '',
-            adrTest2: '0x213DE50319F5954D821F704d46e4fd50Fb09B459',
-            seed: this.props.seed
+            adrTest2: '0x213DE50319F5954D821F704d46e4fd50Fb09B459'
         };
     }
 
@@ -54,9 +52,8 @@ export default class Bip44 extends Component<Props> {
         return (
             <View key="bip44" style={styles.container}>
                 <Button title='Generate BTC Wallet' onPress={() => {
-                    let seed = this.state.seed;
                     // Generate BIP32 Root Key from BIP39 Seed
-                    let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
+                    let rootKey = Bitcoin.HDNode.fromSeedHex(this.props.seed);
                     this.setState({
                         rootKey: "Root key: " + rootKey.toBase58()
                     });
