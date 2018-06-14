@@ -393,6 +393,7 @@
 		B5552D7CE6F24C0EBD8EE582 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
 		B893D3B797674863B0450526 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "utm-avo-bold.ttf"; path = "../assets/fonts/utm-avo-bold.ttf"; sourceTree = "<group>"; };
 		C61B8DE320CF5DE8003614A3 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
+		C639DCAA20D2574E0051669B /* SOLOSigner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SOLOSigner.entitlements; path = SOLOSigner/SOLOSigner.entitlements; sourceTree = "<group>"; };
 		D210EC87B05940F6AD1179B2 /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRandomBytes.xcodeproj; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -538,6 +539,7 @@
 		13B07FAE1A68108700A75B9A /* SOLOSigner */ = {
 			isa = PBXGroup;
 			children = (
+				C639DCAA20D2574E0051669B /* SOLOSigner.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -802,6 +804,14 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = BUAMMZ5MW6;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1389,6 +1399,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SOLOSigner/SOLOSigner.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = BUAMMZ5MW6;
@@ -1404,7 +1415,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.big-labs.solo.signer";
+				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.solo.signer;
 				PRODUCT_NAME = SOLOSigner;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1414,6 +1425,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SOLOSigner/SOLOSigner.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BUAMMZ5MW6;
 				HEADER_SEARCH_PATHS = (
@@ -1428,7 +1440,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.big-labs.solo.signer";
+				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.solo.signer;
 				PRODUCT_NAME = SOLOSigner;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1614,7 +1626,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1649,7 +1661,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
