@@ -5,8 +5,8 @@ const primaryColor = '#006DFF';
 const textTitleColor = '#141a22';
 const textContentColor = '#747474';
 
-const fontRegular = Platform.OS === 'ios' ? 'UTM Avo' : 'utm-avo';
-const fontBold = Platform.OS === 'ios' ? 'UTMAvoBold' : 'utm-avo-bold';
+const fontRegular = Platform.select({ios: 'UTM Avo', android: 'utm-avo'});
+const fontBold = Platform.select({ios: 'UTMAvoBold', android: 'utm-avo-bold'});
 
 EStyleSheet.build({
     $primaryFont: fontRegular,
