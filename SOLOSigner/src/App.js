@@ -37,7 +37,7 @@ export default () => {
 
                 <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
 
-                <Scene key="main_tab_bar"
+                <Scene key="home"
                        tabs={true}
                        tabBarStyle={{backgroundColor: '#FFFFFF'}}
                        tabBarPosition="bottom"

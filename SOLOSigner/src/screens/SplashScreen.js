@@ -24,7 +24,7 @@ export default class SplashScreen extends Component<Props> {
     }
 
     checkScheme(url) {
-        if (url && url.startsWith('solosigner')) {
+        if (url && String(url).startsWith('solosigner')) {
             SchemeHandler(url);
         } else {
             Actions.reset('welcome');

@@ -52,7 +52,7 @@ export default class CreateWalletScreen extends Component<Props> {
                         onPress={() => {
                             switch (this.state.selectedIndex) {
                                 case 0:
-                                    Actions.main_tab_bar();
+                                    Actions.home();
                                     break;
                                 case 1:
                                     Actions.add_wallet();
