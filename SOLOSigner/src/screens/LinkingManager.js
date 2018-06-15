@@ -3,9 +3,26 @@ import { Actions } from 'react-native-router-flux';
 
 function handleOpenURL(url) {
     if (url && url.startsWith('solosigner')) {
-        // TODO handle solosigner scheme
         console.log(url);
-        Actions.replace('tab_bip44');
+        // TODO handle solosigner scheme
+        // Sample: solosigner://{toAdr : '', value : '', data : ''}
+        let urls = url.split("://");
+        if (urls.length > 1) {
+            var value = urls[1];
+            value = decodeURI(value);
+            console.log(value);
+            var obj = JSON.parse(JSON.stringify(value));
+            console.log(`JSON data [${obj}]`);
+            Actions.reset('trans_confirm', {txData : obj});
+        } else {
+            Alert.alert(
+                "Error",
+                url,
+                [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+              );
+        }
     }
 };
 
