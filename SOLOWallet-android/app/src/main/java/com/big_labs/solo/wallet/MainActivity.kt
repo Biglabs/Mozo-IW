@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.big_labs.solo.signer.library.Signer
 import com.big_labs.solo.signer.library.SignerListener
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        buttonGetBalance.visibility = View.GONE
         buttonGetBalance.setOnClickListener {
             if (radios.checkedRadioButtonId > 0 && radios.checkedRadioButtonId <= accounts.size) {
                 Signer.getInstance().getBalance(accounts[radios.checkedRadioButtonId], object : SignerListener() {
@@ -66,11 +64,7 @@ class MainActivity : AppCompatActivity() {
 
                     val from = radios.checkedRadioButtonId - 1
                     val to = accounts.size - from - 1
-                    Signer.getInstance().sendTransaction(this, accounts[from], accounts[to], value, message_input.text.toString(), BuildConfig.APPLICATION_ID, object : SignerListener() {
-                        override fun onReceivedTransactionResult(msg: String?) {
-                            textBalance.text = msg
-                        }
-                    })
+                    Signer.getInstance().sendTransaction(this, accounts[from], accounts[to], value, message_input.text.toString(), BuildConfig.APPLICATION_ID)
                 }
             } else {
                 Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()

@@ -18,12 +18,14 @@ public class Signer {
     }
 
     public void getBalance(String address, SignerListener listener) {
+
+
         if (listener != null) {
             listener.onReceivedBalance("blala");
         }
     }
 
-    public void sendTransaction(Context context, String fromAddress, String toAddress, String value, String msg, String appId, SignerListener listener) {
+    public void sendTransaction(Context context, String fromAddress, String toAddress, String value, String msg, String appId) {
         String receiverScheme = "wallet-" + appId;
 
         String signerLink = String.format(
@@ -37,11 +39,6 @@ public class Signer {
             context.startActivity(intent);
         } else {
             Toast.makeText(context, "Could not found SOLO Signer app!", Toast.LENGTH_LONG).show();
-        }
-
-        if (listener != null) {
-            listener.onReceivedTransactionResult("from " + fromAddress + "\nto " + toAddress + "\n value " + value
-                    + "msg " + msg);
         }
     }
 }
