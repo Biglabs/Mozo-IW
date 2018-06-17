@@ -4,7 +4,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, SelectionGroup, Text, WalletButton} from "../../components/SoloComponent";
 
-export default class CreateWalletScreen extends Component<Props> {
+export default class CreateWalletScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {selectedIndex: -1}
@@ -39,7 +39,7 @@ export default class CreateWalletScreen extends Component<Props> {
                     onContinuePress={() => {
                         switch (this.state.selectedIndex) {
                             case 0:
-                                Actions.home();
+                                Actions.security_pin();
                                 break;
                             case 1:
                                 Actions.add_wallet();

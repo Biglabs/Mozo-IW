@@ -9,7 +9,7 @@ import Transaction from 'ethereumjs-tx';
 import Web3 from 'web3';
 import Bitcoin from "react-native-bitcoinjs-lib";
 
-export default class ConfirmationScreen extends Component<Props> {
+export default class ConfirmationScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -88,7 +88,7 @@ export default class ConfirmationScreen extends Component<Props> {
             if (!supported) {
                 this.showAlert('Can\'t handle url: ' + url);
             } else {
-                Actions.reset('home');
+                Actions.main_stack();
                 return Linking.openURL(url);
             }
         }).catch(err => this.showAlert('An error occurred ' + err));

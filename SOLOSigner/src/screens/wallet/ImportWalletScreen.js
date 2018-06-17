@@ -7,7 +7,7 @@ import {FooterActions, Text, TextInput} from "../../components/SoloComponent";
 import {RNCamera} from 'react-native-camera';
 import bip39 from 'bip39';
 
-export default class ImportWalletScreen extends Component<Props> {
+export default class ImportWalletScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -57,7 +57,10 @@ export default class ImportWalletScreen extends Component<Props> {
                             isScanningQRCode: false
                         })}
                         blurOnSubmit={true}
-                        onSubmitEditing={text => this.onSubmitPhrase(text)}/>
+                        value={this.state.backupPhrase}
+                        onChangeText={text => this.onSubmitPhrase(text)}
+                        onSubmitEditing={() => {
+                        }}/>
 
                     <Text style={[styles.error_text, {opacity: this.state.isShowError ? 1 : 0}]}>
                         * Backup Phrase is invalid
@@ -106,8 +109,7 @@ export default class ImportWalletScreen extends Component<Props> {
                     onBackPress={() => Actions.pop()}
                     enabledContinue={this.state.isPhraseValid}
                     onContinuePress={() => {
-                        Actions.pop()
-                        // open security screen
+                        Actions.security_pin()
                     }}/>
             </View>
         )

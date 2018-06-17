@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, Text} from "../../components/SoloComponent";
 
-export default class AddWalletScreen extends Component<Props> {
+export default class AddWalletScreen extends Component {
     render() {
         return (
             <View style={styles.container}>

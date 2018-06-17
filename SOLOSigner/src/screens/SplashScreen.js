@@ -5,9 +5,9 @@ import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import { FadeInView } from "../components/SoloComponent";
-import {SchemeHandler} from "./LinkingManager";
+import {SchemeHandler} from "../utils/LinkingManager";
 
-export default class SplashScreen extends Component<Props> {
+export default class SplashScreen extends Component {
 
     componentDidMount() {
         YellowBox.ignoreWarnings(['Warning: isMounted(...)']);

@@ -5,7 +5,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Button, Text} from "../components/SoloComponent";
 
-export default class WelcomeScreen extends Component<Props> {
+export default class WelcomeScreen extends Component {
 
     constructor(props) {
         super(props);
