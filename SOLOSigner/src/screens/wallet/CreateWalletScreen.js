@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {Button, SelectionGroup, Text, WalletButton} from "../../components/SoloComponent";
+import {FooterActions, SelectionGroup, Text, WalletButton} from "../../components/SoloComponent";
 
 export default class CreateWalletScreen extends Component<Props> {
     constructor(props) {
@@ -33,32 +33,19 @@ export default class CreateWalletScreen extends Component<Props> {
                                   style={styles.buttons}/>
                 </SelectionGroup>
 
-                <Button title='Back'
-                        style={StyleSheet.value('$back_button')}
-                        fontSize={16}
-                        icon={require('../../res/icons/ic_arrow_left.svg')}
-                        onPress={() => {
-                            Actions.pop();
-                        }}/>
-
-                <Button title='Continue'
-                        titleBold={true}
-                        style={StyleSheet.value('$continue_button')}
-                        enabled={this.state.selectedIndex >= 0}
-                        fontSize={16}
-                        icon={require('../../res/icons/ic_arrow_right.svg')}
-                        iconColor={StyleSheet.value('$primaryColor')}
-                        iconPosition='right'
-                        onPress={() => {
-                            switch (this.state.selectedIndex) {
-                                case 0:
-                                    Actions.home();
-                                    break;
-                                case 1:
-                                    Actions.add_wallet();
-                                    break;
-                            }
-                        }}/>
+                <FooterActions
+                    onBackPress={() => Actions.pop()}
+                    enabledContinue={this.state.selectedIndex >= 0}
+                    onContinuePress={() => {
+                        switch (this.state.selectedIndex) {
+                            case 0:
+                                Actions.home();
+                                break;
+                            case 1:
+                                Actions.add_wallet();
+                                break;
+                        }
+                    }}/>
             </View>
         )
     }
@@ -71,8 +58,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: 30,
-        paddingRight: 30
+        paddingLeft: '$screen_padding_horizontal',
+        paddingRight: '$screen_padding_horizontal',
     },
     buttons: {
         width: '100%'

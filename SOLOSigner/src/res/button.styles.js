@@ -18,7 +18,7 @@ const SolidStyle = {
 
 const BaseBorderStyle = {
     borderRadius: '$buttonRadius',
-    borderColor: '#cdcdcd',
+    borderColor: '$borderColor',
     borderWidth: 1,
 };
 

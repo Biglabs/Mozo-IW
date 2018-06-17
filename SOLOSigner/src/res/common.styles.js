@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const primaryColor = '#006DFF';
@@ -8,6 +8,9 @@ const textContentColor = '#747474';
 const fontRegular = Platform.select({ios: 'UTM Avo', android: 'utm-avo'});
 const fontBold = Platform.select({ios: 'UTMAvoBold', android: 'utm-avo-bold'});
 
+let {width} = Dimensions.get('window');
+const titleTextSize = width / 375 * Platform.select({ios: 30, android: 28});
+
 EStyleSheet.build({
     $primaryFont: fontRegular,
     $primaryFontBold: fontBold,
@@ -15,15 +18,18 @@ EStyleSheet.build({
     $primaryColor: primaryColor,
     $textTitleColor: textTitleColor,
     $textContentColor: textContentColor,
+    $borderColor: '#cdcdcd',
     $screenBackground: '#FFFFFF',
     $disableColor: '#d1d7dd',
+    $errorColor: '#f05454',
 
     $screen_padding_bottom: 70,
+    $screen_padding_horizontal: 30,
     $buttonRadius: 5,
 
     $screen_title_text: {
         color: primaryColor,
-        fontSize: 30,
+        fontSize: titleTextSize,
         marginTop: 53,
         marginBottom: 23,
     },

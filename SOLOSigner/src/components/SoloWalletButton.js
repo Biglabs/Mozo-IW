@@ -30,7 +30,7 @@ export default class SoloWalletButton extends Component {
                             paddingLeft: horizontalPadding,
                             paddingRight: horizontalPadding,
                             backgroundColor: StyleSheet.value(isSelected ? '$primaryColor' : '$screenBackground'),
-                            borderWidth: isSelected ? 0 : 1,
+                            borderColor: StyleSheet.value(isSelected ? '$primaryColor' : '$borderColor'),
                         },
                         this.props.style]}
                     onPress={this.props.onPress}>
