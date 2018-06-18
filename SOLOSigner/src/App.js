@@ -14,6 +14,8 @@ import SecurityPinScreen from './screens/SecurityPinScreen';
 import AddWalletScreen from './screens/wallet/AddWalletScreen';
 import CreateWalletScreen from './screens/wallet/CreateWalletScreen';
 import ImportWalletScreen from './screens/wallet/ImportWalletScreen';
+import BackupWalletScreen from './screens/wallet/BackupWalletScreen';
+import PaperWalletScreen from './screens/wallet/PaperWalletScreen';
 
 /* transaction screens */
 import ConfirmationScreen from './screens/transaction/ConfirmationScreen';
@@ -36,6 +38,8 @@ export default () => {
                 <Scene key="add_wallet" component={AddWalletScreen} hideNavBar/>
                 <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
                 <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
+                <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
+                <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
 
                 <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
 

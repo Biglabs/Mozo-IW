@@ -160,18 +160,20 @@ const styles = StyleSheet.create({
         marginBottom: 7,
     },
     numbers_touch: {
-        borderRadius: 33,
-    },
-    numbers: {
         width: 66,
         height: 66,
+        borderRadius: 33,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        overflow: 'hidden',
+    },
+    numbers: {
         color: '#429ffd',
         fontSize: 23.8,
-        backgroundColor: 'white',
-        borderRadius: 33,
-        overflow: 'hidden',
         textAlign: 'center',
         textAlignVertical: 'center',
         includeFontPadding: false,
+        paddingBottom: 2
     }
 });

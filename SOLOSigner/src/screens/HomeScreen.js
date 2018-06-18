@@ -3,7 +3,7 @@ import {TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {Button} from "../components/SoloComponent";
+import {Button, Text} from "../components/SoloComponent";
 
 export default class HomeScreen extends Component<Props> {
     render() {
@@ -20,6 +20,70 @@ export default class HomeScreen extends Component<Props> {
                             marginBottom: 10,
                         }}/>
                 </View>
+
+                <TouchableOpacity
+                    style={[styles.buttons, {marginTop: 20}]}
+                    onPress={() => Actions.backup_wallet()}>
+                    <SvgUri
+                        width={24}
+                        height={20}
+                        fill={StyleSheet.value('$primaryColor')}
+                        source={require('../res/icons/ic_backup.svg')}/>
+                    <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
+
+                    <SvgUri
+                        width={20}
+                        height={20}
+                        source={require('../res/icons/ic_check.svg')}
+                        style={{margin: 9}}/>
+
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SvgUri
+                            width={20}
+                            height={20}
+                            source={require('../res/icons/ic_information.svg')}/>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+
+                <View style={styles.dash}/>
+
+                <TouchableOpacity style={styles.buttons}>
+                    <SvgUri
+                        width={20}
+                        height={20}
+                        fill={StyleSheet.value('$primaryColor')}
+                        source={require('../res/icons/ic_sync.svg')}/>
+                    <Text style={styles.buttons_text}>Pair Devices</Text>
+
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SvgUri
+                            width={20}
+                            height={20}
+                            source={require('../res/icons/ic_information.svg')}/>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+
+                <View style={styles.dash}/>
+
+                <TouchableOpacity
+                    style={styles.buttons}
+                    onPress={() => Actions.paper_wallet()}>
+                    <SvgUri
+                        width={20}
+                        height={20}
+                        fill={StyleSheet.value('$primaryColor')}
+                        source={require('../res/icons/ic_note.svg')}/>
+                    <Text style={styles.buttons_text}>Paper Wallet</Text>
+
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SvgUri
+                            width={20}
+                            height={20}
+                            source={require('../res/icons/ic_information.svg')}/>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+
+                <View style={styles.dash}/>
 
                 <View style={styles.content}>
                     <Button title='Bip 39' onPress={() => Actions.tab_bip39()}/>
@@ -49,7 +113,41 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 0, height: 3.5},
         shadowOpacity: 0.25,
         shadowRadius: 11,
-        elevation: 11,
+        elevation: 6,
+    },
+    buttons: {
+        width: '100%',
+        height: 60,
+        color: '$textTitleColor',
+        fontSize: 14,
+        flexDirection: 'row',
+        paddingLeft: '$screen_padding_horizontal',
+        paddingRight: '$screen_padding_horizontal',
+        alignItems: 'center',
+        justifyContent: 'flex-start'
+    },
+    buttons_text: {
+        color: '$textTitleColor',
+        fontSize: 14,
+        marginLeft: 11,
+        paddingBottom: 4,
+    },
+    buttons_icon: {
+        height: '100%',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        paddingLeft: '$screen_padding_horizontal',
+        paddingRight: '$screen_padding_horizontal',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    dash: {
+        width: '84%',
+        height: 1,
+        backgroundColor: '$disableColor',
+        marginLeft: '$screen_padding_horizontal',
+        marginRight: '$screen_padding_horizontal',
     },
     content: {
         alignItems: 'center',
