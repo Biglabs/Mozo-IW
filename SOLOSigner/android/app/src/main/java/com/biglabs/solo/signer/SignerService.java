@@ -1,4 +1,4 @@
-package com.big_labs.solo.signer;
+package com.biglabs.solo.signer;
 
 import android.app.Service;
 import android.content.Intent;
@@ -33,7 +33,7 @@ public class SignerService extends Service {
                 }
 
                 Bundle bundle = new Bundle();
-                bundle.putString("response", "hello " + name);
+                bundle.putString("balance", "hello " + name);
 
                 Message responseMessage = Message.obtain();
                 responseMessage.setData(bundle);

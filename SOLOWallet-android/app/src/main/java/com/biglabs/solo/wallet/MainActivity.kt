@@ -1,15 +1,15 @@
-package com.big_labs.solo.wallet
+package com.biglabs.solo.wallet
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
-import com.big_labs.solo.signer.library.Signer
-import com.big_labs.solo.signer.library.SignerListener
+import com.biglabs.solo.signer.library.Signer
+import com.biglabs.solo.signer.library.SignerListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        radios.setOnCheckedChangeListener { group, checkedId ->
+        radios.setOnCheckedChangeListener { _, checkedId ->
             run {
                 Log.e("VU", "$checkedId")
 
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonGetBalance.setOnClickListener {
             if (radios.checkedRadioButtonId > 0 && radios.checkedRadioButtonId <= accounts.size) {
-                Signer.getInstance().getBalance(accounts[radios.checkedRadioButtonId], object : SignerListener() {
+                Signer.getInstance().getBalance(this, accounts[radios.checkedRadioButtonId - 1], object : SignerListener() {
                     override fun onReceivedBalance(balance: String?) {
                         textBalance.text = balance
                     }

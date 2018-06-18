@@ -97,7 +97,7 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "com.big_labs.solo.signer"
+        applicationId "com.biglabs.solo.signer"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1

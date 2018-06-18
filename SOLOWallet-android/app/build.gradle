@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.big_labs.solo.wallet"
+        applicationId "com.biglabs.solo.wallet"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1

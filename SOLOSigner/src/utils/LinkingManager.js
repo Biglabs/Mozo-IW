@@ -10,7 +10,7 @@ function handleOpenURL(url) {
             let jsonData = JSON.parse(stringData);
 
             console.log(`Scheme data: ${stringData}`);
-            Actions.reset('trans_confirm', {txData : jsonData});
+            Actions.jump('trans_confirm', {txData : jsonData});
         } else {
             Alert.alert(
                 "Error",

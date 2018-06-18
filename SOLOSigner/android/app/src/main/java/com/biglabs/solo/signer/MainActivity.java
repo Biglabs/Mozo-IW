@@ -1,4 +1,4 @@
-package com.big_labs.solo.signer;
+package com.biglabs.solo.signer;
 
 import com.facebook.react.ReactActivity;
 

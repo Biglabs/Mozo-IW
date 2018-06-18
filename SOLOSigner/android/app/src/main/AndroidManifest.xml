@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.big_labs.solo.signer">
+    package="com.biglabs.solo.signer">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -41,7 +41,7 @@
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="com.big_labs.solo.signer.service" />
+                <action android:name="com.biglabs.solo.signer.service" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>

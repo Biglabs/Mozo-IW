@@ -20,6 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.big_labs.solo.signer.library.Signer { public *; }
--keep public interface com.big_labs.solo.signer.library.* { *; }
--keep public abstract class com.big_labs.solo.signer.library.* { public *; }
+-keep class com.biglabs.solo.signer.library.Signer { public *; }
+-keep public interface com.biglabs.solo.signer.library.* { *; }
+-keep public abstract class com.biglabs.solo.signer.library.* { public *; }

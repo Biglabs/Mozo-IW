@@ -1,7 +1,8 @@
-package com.big_labs.solo.signer;
+package com.biglabs.solo.signer;
 
 import android.app.Application;
 
+import com.biglabs.solo.signer.BuildConfig;
 import com.facebook.react.ReactApplication;
 import org.reactnative.camera.RNCameraPackage;
 import com.horcrux.svg.SvgPackage;

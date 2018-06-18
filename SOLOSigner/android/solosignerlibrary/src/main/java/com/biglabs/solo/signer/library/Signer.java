@@ -1,14 +1,17 @@
-package com.big_labs.solo.signer.library;
+package com.biglabs.solo.signer.library;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Locale;
 
 public class Signer {
     private static Signer instance = null;
+    private SignerListener mListener;
 
     public static synchronized Signer getInstance() {
         if (instance == null) {
@@ -17,12 +20,27 @@ public class Signer {
         return instance;
     }
 
-    public void getBalance(String address, SignerListener listener) {
+    void onReceivedResponse(Bundle data) {
+        if (data == null) return;
 
+        Log.e("vu", "ServiceResponseHandler: " + data.toString());
 
-        if (listener != null) {
-            listener.onReceivedBalance("blala");
+        String balance = data.getString("balance", "");
+        if (mListener != null) {
+            mListener.onReceivedBalance(balance);
         }
+    }
+
+    void onServiceError(Exception e) {
+        e.printStackTrace();
+    }
+
+    public void getBalance(Context context, String address, SignerListener listener) {
+        this.mListener = listener;
+
+        Bundle bundle = new Bundle();
+        bundle.putString("message", address);
+        SignerServiceHelper.getInstance().send(context, bundle);
     }
 
     public void sendTransaction(Context context, String fromAddress, String toAddress, String value, String msg, String appId) {
