@@ -73,7 +73,9 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-  NSLog( @"deviceToken: %@", deviceToken );
+  NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+  token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+  NSLog(@"Device Token %@: ", token);
 }
 
 -(void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void
