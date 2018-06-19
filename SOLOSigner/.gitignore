@@ -24,9 +24,9 @@ DerivedData
 project.xcworkspace
 
 # Android/IntelliJ
-#
 build/
 .idea
+/.idea/libraries
 .gradle
 local.properties
 *.iml

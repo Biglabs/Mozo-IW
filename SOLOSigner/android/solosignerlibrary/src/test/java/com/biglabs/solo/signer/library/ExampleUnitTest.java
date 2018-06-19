@@ -1,4 +1,4 @@
-package com.big_labs.solo.signer.library;
+package com.biglabs.solo.signer.library;
 
 import org.junit.Test;
 

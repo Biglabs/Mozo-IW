@@ -1,4 +1,4 @@
-package com.big_labs.solo.signer.library;
+package com.biglabs.solo.signer.library;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.big_labs.solo.signer.library.test", appContext.getPackageName());
+        assertEquals("com.biglabs.solo.signer.library.test", appContext.getPackageName());
     }
 }
