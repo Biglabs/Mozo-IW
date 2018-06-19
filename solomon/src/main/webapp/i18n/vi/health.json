@@ -1,0 +1,27 @@
+{
+    "health": {
+        "title": "Tình trạng hệ thống",
+        "refresh.button": "Làm mới",
+        "stacktrace": "Theo dõi",
+        "details": {
+            "details": "Chi tiết",
+            "properties": "Các thuộc tính",
+            "name": "Tên",
+            "value": "Giá trị",
+            "error": "Lỗi"
+        },
+        "indicator": {
+            "diskSpace": "Dung lượng trống",
+            "mail": "Email",
+            "db": "Cơ sở dữ liệu"
+        },
+        "table": {
+            "service": "Tên dịch vụ",
+            "status": "Trạng thái"
+        },
+        "status": {
+            "UP": "Đang hoạt động",
+            "DOWN": "Đã tắt"
+        }
+    }
+}

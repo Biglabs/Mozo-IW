@@ -1,0 +1,14 @@
+version: '2'
+services:
+    solomon-app:
+        image: solomon
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://solomon-postgresql:5432/solomon
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+        ports:
+            - 8080:8080
+    solomon-postgresql:
+        extends:
+            file: postgresql.yml
+            service: solomon-postgresql
