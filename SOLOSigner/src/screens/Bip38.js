@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Platform, StyleSheet, Text, View, TextInput, Keyboard, TouchableWithoutFeedback, Alert} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
+let encryption = require('../components/encryption/encryption');
 var bip38 = require('bip38')
 var wif = require('wif')
 
@@ -49,27 +50,41 @@ export default class Bip38 extends Component<Props> {
                 />
 
                 <Button title='Encrypt' onPress={() => {
-                    let decoded = wif.decode(this.state.address)
-                    let encryptedKey = bip38.encrypt(decoded.privateKey, decoded.compressed, this.state.passphrase)
+                    // let decoded = wif.decode(this.state.address)
+                    // let encryptedKey = bip38.encrypt(decoded.privateKey, decoded.compressed, this.state.passphrase)
+
+                    let encrypted = encryption.encrypt(this.state.address, this.state.passphrase);
                     // Generate BIP38 from BIP44
                     this.setState({
-                        encryptedKey: 'encryptedKey: ' + encryptedKey,
+                        encryptedKey: 'encryptedKey: ' + encrypted,
                         decryptedKey: '',
                         passphrase: 'TestingOneTwoThree',
                         address: ''
                     });
                 }}/>
                 <Button title='Decrypt' onPress={() => {
-                    let decryptedKey = bip38.decrypt(this.state.address, this.state.passphrase, function (status) {
-                      console.log(status.percent) // will print the percent every time current increases by 1000
-                    })
-                    // Generate BIP38 from BIP44
-                    this.setState({
-                        encryptedKey: '',
-                        decryptedKey: 'decryptedKey: ' + wif.encode(0x80, decryptedKey.privateKey, decryptedKey.compressed),
-                        passphrase: 'TestingOneTwoThree',
-                        address: ''
-                    });
+                    // let decryptedKey = bip38.decrypt(this.state.address, this.state.passphrase, function (status) {
+                    //   console.log(status.percent) // will print the percent every time current increases by 1000
+                    // })
+                    // // Generate BIP38 from BIP44
+                    // this.setState({
+                    //     encryptedKey: '',
+                    //     decryptedKey: 'decryptedKey: ' + wif.encode(0x80, decryptedKey.privateKey, decryptedKey.compressed),
+                    //     passphrase: 'TestingOneTwoThree',
+                    //     address: ''
+                    // });
+
+                    try {
+                        let decrypted = encryption.decrypt(this.state.address, this.state.passphrase);
+                        this.setState({
+                            encryptedKey: '',
+                            decryptedKey: 'decryptedKey: ' + decrypted,
+                            passphrase: 'TestingOneTwoThree',
+                            address: ''
+                        });
+                    } catch (e) {
+                        console.log(e.message);
+                    }
                 }}/>
 
                 <Button title="Export QR code" onPress={() => Actions.export_qrcode({data: this.state.address})} />
@@ -77,11 +92,11 @@ export default class Bip38 extends Component<Props> {
                   this.props.navigation.navigate('scan_qrcode', {scanQRCodeCallback: this.scanQRCodeCallback.bind(this)})
                 }/>
 
-                <Text style={styles.instructions}>
+                <Text selectable={true} style={styles.instructions}>
                     {this.state.decryptedKey}
                     {}
                 </Text>
-                <Text style={styles.instructions}>
+                <Text selectable={true} style={styles.instructions}>
                     {this.state.encryptedKey}
                     {}
                 </Text>

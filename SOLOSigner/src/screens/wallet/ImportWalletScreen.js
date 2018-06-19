@@ -3,18 +3,31 @@ import {ScrollView, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import SvgUri from 'react-native-svg-uri';
-import {Button, Text, TextInput} from "../../components/SoloComponent";
+import {FooterActions, Text, TextInput} from "../../components/SoloComponent";
 import {RNCamera} from 'react-native-camera';
+import bip39 from 'bip39';
 
-export default class ImportWalletScreen extends Component<Props> {
+export default class ImportWalletScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {scanningQRCode: false}
+        this.state = {
+            isScanningQRCode: false,
+            isPhraseValid: false,
+            isShowError: false,
+            backupPhrase: ''
+        }
     }
 
     onSubmitPhrase(phrase) {
-        console.log(phrase);
+        let isValid = phrase && bip39.validateMnemonic(phrase);
+        this.setState({
+            backupPhrase: phrase,
+            isPhraseValid: isValid,
+            isShowError: !isValid
+        }, () => {
+            console.log(this.state.backupPhrase);
+        });
     }
 
     render() {
@@ -23,25 +36,35 @@ export default class ImportWalletScreen extends Component<Props> {
 
                 <Text style={StyleSheet.value('$screen_title_text')}>Import/Restore Wallet</Text>
 
-                <Text style={StyleSheet.value('$screen_sub_title_text')}>
-                    Type in your wallet’s Backup Phrase in the correct sequence below to pair.
-                </Text>
-
                 <ScrollView
                     style={styles.scroll_container}
                     contentContainerStyle={{alignItems: 'center'}}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     overScrollMode='never'>
+
+                    <Text style={StyleSheet.value('$screen_sub_title_text')}>
+                        Type in your wallet’s Backup Phrase in the correct sequence below to pair.
+                    </Text>
+
                     <TextInput
                         style={styles.phrase_input}
                         placeholder='Enter Backup Phrase'
                         multiline={true}
-                        returnKeyType='go'
+                        numberOfLines={3}
+                        returnKeyType='done'
                         onFocus={() => this.setState({
-                            scanningQRCode: false
+                            isScanningQRCode: false
                         })}
-                        onEndEditing={(text) => this.onSubmitPhrase(text)}/>
+                        blurOnSubmit={true}
+                        value={this.state.backupPhrase}
+                        onChangeText={text => this.onSubmitPhrase(text)}
+                        onSubmitEditing={() => {
+                        }}/>
+
+                    <Text style={[styles.error_text, {opacity: this.state.isShowError ? 1 : 0}]}>
+                        * Backup Phrase is invalid
+                    </Text>
 
                     <View style={styles.separator_container}>
                         <View style={styles.dash}/>
@@ -49,31 +72,45 @@ export default class ImportWalletScreen extends Component<Props> {
                         <View style={styles.dash}/>
                     </View>
 
-                    <View>
+                    <TouchableOpacity
+                        disabled={this.state.isScanningQRCode}
+                        onPress={() => this.setState({
+                            isScanningQRCode: true
+                        })}>
                         <SvgUri width={200}
                                 height={200}
                                 source={require('../../res/icons/ic_scan_area.svg')}/>
                         {
-                            this.state.scanningQRCode &&
-                            <RNCamera style={{width: 180, height: 180, position: 'absolute', top: 10, left: 10}}/>
+                            this.state.isScanningQRCode &&
+                            <RNCamera
+                                style={{width: 180, height: 180, position: 'absolute', top: 10, left: 10}}
+                                ratio='1:1'
+                                permissionDialogTitle={'Permission to use camera'}
+                                permissionDialogMessage={'We need your permission to use your camera phone'}
+                                onBarCodeRead={(event) => {
+                                    this.setState({isScanningQRCode: false});
+                                    this.onSubmitPhrase(event.data);
+                                }}/>
                         }
-                    </View>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                         style={{marginBottom: 30}}
                         onPress={() => this.setState({
-                            scanningQRCode: !this.state.scanningQRCode
+                            isScanningQRCode: !this.state.isScanningQRCode
                         })}>
-                        <Text style={styles.scan_text_button}>Scan QR Code</Text>
+                        <Text style={styles.scan_text_button}>{
+                            this.state.isScanningQRCode ? 'Cancel' : 'Scan QR Code'
+                        }</Text>
                     </TouchableOpacity>
                 </ScrollView>
 
-                <Button title='Back'
-                        style={StyleSheet.value('$back_button')}
-                        icon={require('../../res/icons/ic_arrow_left.svg')}
-                        onPress={() => {
-                            Actions.pop();
-                        }}/>
+                <FooterActions
+                    onBackPress={() => Actions.pop()}
+                    enabledContinue={this.state.isPhraseValid}
+                    onContinuePress={() => {
+                        Actions.security_pin()
+                    }}/>
             </View>
         )
     }
@@ -92,24 +129,29 @@ const styles = StyleSheet.create({
     scroll_container: {
         width: '100%',
         flex: 1,
-        marginTop: 20,
         marginBottom: '$screen_padding_bottom',
     },
     phrase_input: {
         width: '100%',
         minHeight: 90,
-        paddingTop: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        paddingBottom: 20,
-        textAlign: 'auto'
+        marginTop: 20,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+
+    },
+    error_text: {
+        width: '100%',
+        color: '$errorColor',
+        fontSize: 12
     },
     separator_container: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 25,
+        marginTop: 0,
         marginBottom: 30,
     },
     separator_text: {

@@ -1,28 +1,30 @@
 import React from 'react';
-import {Router, Modal, Scene, Lightbox} from 'react-native-router-flux';
-import SvgUri from 'react-native-svg-uri';
-import './res/common.styles.js'; // initial common styles
+import {Router, Modal, Scene, Stack, Lightbox} from 'react-native-router-flux';
+/* initial common styles */
+import './res/common.styles.js';
+/* handle open URL scheme when app resume from background */
+import './utils/LinkingManager';
 
 import SplashScreen from './screens/SplashScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
+import HomeScreen from './screens/HomeScreen';
+import SecurityPinScreen from './screens/SecurityPinScreen';
+
+/* wallet screens */
 import AddWalletScreen from './screens/wallet/AddWalletScreen';
 import CreateWalletScreen from './screens/wallet/CreateWalletScreen';
 import ImportWalletScreen from './screens/wallet/ImportWalletScreen';
+import BackupWalletScreen from './screens/wallet/BackupWalletScreen';
+import PaperWalletScreen from './screens/wallet/PaperWalletScreen';
+
+/* transaction screens */
 import ConfirmationScreen from './screens/transaction/ConfirmationScreen';
 
 import ExportQRCode from './components/lightbox/ExportQRCode';
 import ScanQRCode from './components/lightbox/ScanQRCode';
-
 import Bip39 from './screens/Bip39';
 import Bip44 from './screens/Bip44';
 import Bip38 from './screens/Bip38';
-import './screens/LinkingManager';
-
-const TabIcon = ({selected, title}) => {
-    return (
-        <SvgUri source={require('./res/icons/ic_monetization.svg')}/>
-    );
-};
 
 export default () => {
     return (
@@ -31,22 +33,23 @@ export default () => {
 
                 <Scene key="splash" component={SplashScreen} hideNavBar initial/>
                 <Scene key="welcome" component={WelcomeScreen} hideNavBar type="reset"/>
+                <Scene key="security_pin" component={SecurityPinScreen} hideNavBar/>
+
                 <Scene key="add_wallet" component={AddWalletScreen} hideNavBar/>
                 <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
                 <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
+                <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
+                <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
 
                 <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
 
-                <Scene key="main_tab_bar"
-                       tabs={true}
-                       tabBarStyle={{backgroundColor: '#FFFFFF'}}
-                       tabBarPosition="bottom"
-                       hideNavBar
-                       type="reset">
-                    <Scene key="tab_bip39" title="39" icon={TabIcon} component={Bip39} hideNavBar/>
-                    <Scene key="tab_bip44" title="44" icon={TabIcon} component={Bip44} hideNavBar/>
-                    <Scene key="tab_bip38" title="38" icon={TabIcon} component={Bip38} hideNavBar/>
-                </Scene>
+                <Stack back backTitle="Home" key="main_stack" type="reset">
+                    <Scene key="home" component={HomeScreen} hideNavBar/>
+                    <Scene key="tab_bip39" title="39" component={Bip39}/>
+                    <Scene key="tab_bip44" title="44" component={Bip44}/>
+                    <Scene key="tab_bip38" title="38" component={Bip38}/>
+                </Stack>
+
 
                 <Lightbox key="lightbox">
                     <Scene key="export_qrcode" component={ExportQRCode} />

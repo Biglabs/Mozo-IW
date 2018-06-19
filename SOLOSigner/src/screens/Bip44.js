@@ -4,6 +4,7 @@ import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 const testnet = 'https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir';
 import Web3 from 'web3';
+import Transaction from "ethereumjs-tx";
 
 export default class Bip44 extends Component<Props> {
     constructor(props) {
@@ -110,24 +111,24 @@ export default class Bip44 extends Component<Props> {
                     this.loadBalances();
                 }} />
                 <Button title='Send 1 ETH to account 2' onPress={() => {
-                    const EthereumTx = require('ethereumjs-tx');
                     //Create a new transaction
                     const web3 = new Web3(
                         new Web3.providers.HttpProvider(testnet)
                     );
                     web3.eth.getTransactionCount(this.state.adrBip44Test).then(_nonce => {
+                        const etherAmount = '0.01';
                         const txParams = {
                             nonce: _nonce,
                             gasLimit: 3000000,
-                            gasPrice: web3.utils.toHex(web3.utils.toWei('20', 'gwei')),
+                            gasPrice: web3.utils.toHex(web3.utils.toWei('21', 'gwei')),
                             from: this.state.adrBip44Test,
                             to: this.state.adrTest2,
-                            value: web3.utils.toHex(web3.utils.toWei('1', 'ether')),
-                            data: '0x00',
+                            value: web3.utils.toHex(web3.utils.toWei(etherAmount, 'ether')),
+                            data: web3.utils.fromUtf8('send ' + etherAmount + 'ETH from account 1 to account 2'),
                             // EIP 155 chainId - mainnet: 1, ropsten: 3
                             chainId: 3
-                        }
-                        const tx = new EthereumTx(txParams);
+                        };
+                        const tx = new Transaction(txParams);
                         tx.sign(this.state.privKeyBuffer);
                         const serializedTx = tx.serialize();
                         //Verify connection is successful
@@ -150,19 +151,19 @@ export default class Bip44 extends Component<Props> {
                             });
                     });
                 }} />
-                <Text style={styles.instructions}>
+                <Text style={styles.instructions} selectable={true}>
                     {this.state.seedTest}
                     {}
                 </Text>
-                <Text style={styles.instructions}>
+                <Text style={styles.instructions} selectable={true}>
                     {this.state.rootKey}
                     {}
                 </Text>
-                <Text style={styles.instructions}>
+                <Text style={styles.instructions} selectable={true}>
                     {this.state.xpub}
                     {}
                 </Text>
-                <Text style={styles.instructions}>
+                <Text style={styles.instructions} selectable={true}>
                     Address 1: {this.state.adrBip44Test}
                     {'\n'}
                     Address 1 - Private key: {this.state.privkey}

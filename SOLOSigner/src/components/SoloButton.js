@@ -26,7 +26,7 @@ export default class SoloButton extends Component {
         this.iconColor = props.iconColor || StyleSheet.value('$textTitleColor');
         this.iconSize = 20;
         this.paddingVertical = 27;
-        this.paddingHorizontal = 30;
+        this.paddingHorizontal = StyleSheet.value('$screen_padding_horizontal');
         let spacing = 9;
 
         this.font = StyleSheet.value(props.titleBold === true ? '$primaryFontBold' : '$primaryFont');
