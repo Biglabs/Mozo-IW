@@ -32,26 +32,52 @@ class DataManager {
         return DataManager.myInstance;
     }
 
+    sendRequest(url, params){
+        return new Promise((resolve, reject) => {
+            try {
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(params),
+                })
+                .then((response) => { 
+                    console.log(response);
+                })
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    reject(error);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    }
+
     registerWallet(publicKey) {
         try {
-            fetch('http://192.168.1.16/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+            this.sendRequest('http://192.168.1.16/', {
                 key: publicKey,
-            }),
             })
-            .then((response) => { 
-                saveUserInfo(response); 
-            })
-            .then((responseJson) => {
-                saveUserInfo(responseJson);
-            })
-            .catch((error) => {
+            .then((userInfo) => {
+                this.saveUserInfo(userInfo);
+            }); 
+        } catch (error) {
             console.error(error);
+        }
+    }
+
+    syncAddress(uuid, address) {
+        try {
+            this.sendRequest('http://192.168.1.16/', {
+                uuid: uuid,
+                address: address
             });
         } catch (error) {
             console.error(error);
