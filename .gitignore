@@ -79,6 +79,8 @@ local.properties
 Pods
 Podfile.lock
 *.xcworkspace
+# SOLO
+xcuserdata
 
 # expo
 .expo/
