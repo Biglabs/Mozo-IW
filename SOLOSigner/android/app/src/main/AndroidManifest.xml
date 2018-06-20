@@ -34,17 +34,5 @@
             </intent-filter>
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-
-        <service
-            android:name=".SignerService"
-            android:enabled="true"
-            android:exported="true"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="com.biglabs.solo.signer.service" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
     </application>
-
 </manifest>

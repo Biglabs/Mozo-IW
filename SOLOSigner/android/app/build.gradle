@@ -95,14 +95,14 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion compile_version
 
     defaultConfig {
         applicationId "com.biglabs.solo.signer"
-        minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion min_version
+        targetSdkVersion compile_version
+        versionCode version_code
+        versionName version_name
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -162,7 +162,7 @@ dependencies {
     implementation project(':react-native-svg')
     implementation project(':react-native-randombytes')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.android.support:appcompat-v7:$android_support_version"
     implementation "com.facebook.react:react-native:0.20.1"  // From node_modules
 }
 

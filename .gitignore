@@ -69,8 +69,10 @@ yarn.lock
 .gradle
 .idea/libraries
 .idea/caches
+.idea/workspace.xml
 SOLOSigner/android/.idea/libraries
 SOLOSigner/android/.idea/caches
+SOLOSigner/android/.idea/workspace.xml
 build/
 local.properties
 *.jks

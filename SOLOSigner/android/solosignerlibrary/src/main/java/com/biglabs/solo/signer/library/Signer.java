@@ -3,60 +3,77 @@ package com.biglabs.solo.signer.library;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.util.Locale;
 
 public class Signer {
+
+    private static final String ACTION_NONE = "NONE";
+    private static final String ACTION_GET_USER = "GET_USER";
+    private static final String ACTION_SIGN = "SIGN";
+
     private static Signer instance = null;
-    private SignerListener mListener;
+    private final Context mContext;
+    private final String appId;
+
+    public static synchronized void initialize(Context context, String applicationId) {
+        if (instance == null) {
+            instance = new Signer(context, applicationId);
+        }
+    }
 
     public static synchronized Signer getInstance() {
         if (instance == null) {
-            instance = new Signer();
+            throw new RuntimeException("");
         }
         return instance;
     }
 
-    void onReceivedResponse(Bundle data) {
-        if (data == null) return;
+    private Signer(Context context, String appId) {
+        this.mContext = context;
+        this.appId = appId;
+    }
 
-        Log.e("vu", "ServiceResponseHandler: " + data.toString());
+    private String prepareSignerDeepLink(String action, JSONObject params) {
+        String receiver = String.format(Locale.ENGLISH, "%s.solowallet", appId);
 
-        String balance = data.getString("balance", "");
-        if (mListener != null) {
-            mListener.onReceivedBalance(balance);
+        JSONObject data = new JSONObject();
+        try {
+            data.put("action", action);
+            data.put("receiver", receiver);
+            if (params != null) {
+                data.put("params", params);
+            }
+        } catch (Exception ignored) {
         }
+        return String.format(Locale.US, "solosigner://%s", data.toString());
     }
 
-    void onServiceError(Exception e) {
-        e.printStackTrace();
+    public void getUserInfo() {
+
     }
 
-    public void getBalance(Context context, String address, SignerListener listener) {
-        this.mListener = listener;
+    public void sendTransaction(String fromAddress, String toAddress, String coinType, String value, String msg) {
+        try {
+            JSONObject params = new JSONObject()
+                    .put("from", fromAddress)
+                    .put("to", toAddress)
+                    .put("coinType", coinType)
+                    .put("value", value)
+                    .put("txData", msg);
+            String signerLink = prepareSignerDeepLink(ACTION_SIGN, params);
 
-        Bundle bundle = new Bundle();
-        bundle.putString("message", address);
-        SignerServiceHelper.getInstance().send(context, bundle);
-    }
-
-    public void sendTransaction(Context context, String fromAddress, String toAddress, String value, String msg, String appId) {
-        String receiverScheme = "wallet-" + appId;
-
-        String signerLink = String.format(
-                Locale.US,
-                "solosigner://{\"from\": \"%s\", \"to\": \"%s\", \"value\": \"%s\", \"message\": \"%s\", \"receiver\": \"%s\"}",
-                fromAddress, toAddress, value, msg, receiverScheme);
-
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(signerLink));
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            context.startActivity(intent);
-        } else {
-            Toast.makeText(context, "Could not found SOLO Signer app!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(signerLink));
+            if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                mContext.startActivity(intent);
+            } else {
+                Toast.makeText(mContext, "Could not found SOLO Signer app!", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception ignored) {
         }
     }
 }
