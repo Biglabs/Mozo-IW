@@ -53,6 +53,7 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+yarn.lock
 
 # dotenv environment variables file
 .env
@@ -60,11 +61,24 @@ typings/
 # next.js build output
 .next
 
+# OSX
+.DS_Store
+
 # Android
+*.iml
 .gradle
 .idea/libraries
+.idea/caches
+SOLOSigner/android/.idea/libraries
+SOLOSigner/android/.idea/caches
+build/
+local.properties
+*.jks
 
 # IOS
 Pods
 Podfile.lock
 *.xcworkspace
+
+# expo
+.expo/

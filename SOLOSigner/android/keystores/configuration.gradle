@@ -1,0 +1,10 @@
+allprojects {
+    ext.debug_key_alias = 'androiddebugkey'
+    ext.debug_key_pass = 'android'
+    ext.debug_key_file = '../keystores/debug.keystore'
+
+    ext.release_key_alias = 'androiddebugkey'
+    ext.release_key_pass = 'android'
+    ext.release_key_file = '../keystores/debug.keystore'
+    ext.release_store_pass = 'android'
+}
