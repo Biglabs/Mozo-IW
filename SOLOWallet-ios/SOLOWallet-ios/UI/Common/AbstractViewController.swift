@@ -14,26 +14,25 @@ public class AbstractViewController: UIViewController {
     fileprivate var logoBarButton: UIBarButtonItem!
     fileprivate var menuBarButton: UIBarButtonItem!
     
+    var coin: CoinDTO!
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
-        self.automaticallyAdjustsScrollViewInsets = false
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.tabBarController?.tabBar.isTranslucent = false
+        //dummy data
+        coin = CoinDTO.init(id: 0, key: "BTC", name: "BTC", icon: "ic_bitcoin", addesses: [AddressDTO.init(id: "123321", age: 1415637900, balance: 7.320)!])
         
         let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: self.view.frame.width, height: 44))
-        
         self.view.addSubview(navigationBar)
-        let navItem = UINavigationItem(title: "BTC")
-        self.menuBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_menu"), style: .plain, target: self, action: #selector(self.rightDrawerButtonPress(_:)))
-        navItem.rightBarButtonItem = self.menuBarButton
         
+        self.menuBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_menu"), style: .plain, target: self, action: #selector(self.rightDrawerButtonPress(_:)))
         self.logoBarButton = UIBarButtonItem.init(title: "Solo", style: .plain, target: self, action: nil)
         self.logoBarButton.tintColor = ThemeManager.shared.main
-        navItem.leftBarButtonItem = self.logoBarButton
         
-        navItem.titleView = UIImageView.init(image: UIImage.init(named: "ic_bitcoin"))
+        let navItem = UINavigationItem(title: coin.name!)
+        navItem.rightBarButtonItem = self.menuBarButton
+        navItem.leftBarButtonItem = self.logoBarButton
+        navItem.titleView = UIImageView.init(image: UIImage.init(named: coin.icon!))
         navigationBar.setItems([navItem], animated: false)
         
         //effect relax

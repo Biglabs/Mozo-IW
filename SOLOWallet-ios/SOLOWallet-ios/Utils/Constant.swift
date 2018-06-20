@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Coin {
+public enum COINTYPE {
     case BTC
     case ETH
     

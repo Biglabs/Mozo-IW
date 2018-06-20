@@ -13,14 +13,20 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
     
     public var id: String?
     public var age: Int64?
-    public var balance: Int64?
-    public var usd: Int64?
+    public var balance: Double?
+    public var usd: Double?
+    
+    public required init?(id: String?, age: Int64?, balance: Double?) {
+        self.id = id
+        self.age = age
+        self.balance = balance
+    }
     
     public required init?(json: SwiftyJSON.JSON) {
         self.id = json["id"].string
         self.age = json["age"].int64
-        self.balance = json["balance"].int64
-        self.usd = json["usd"].int64
+        self.balance = json["balance"].double
+        self.usd = json["usd"].double
     }
     
     public required init?(){}
