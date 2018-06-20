@@ -6,4 +6,11 @@
 //  Copyright © 2018 biglabs. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+public class SendViewController: AbstractViewController {
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = UIColor.yellow
+    }
+}

@@ -1,0 +1,11 @@
+# Podfile
+platform :ios, '9.1'
+use_frameworks!
+
+target 'SOLOWallet-ios' do
+
+  pod 'MMDrawerController', '~> 0.5.7'
+  pod 'SideMenu', '~> 3.0.2'
+  pod 'SwiftyJSON', '~> 3.1.4'
+	
+end

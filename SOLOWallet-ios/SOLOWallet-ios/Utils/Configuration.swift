@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+public class Configuration {
+    public static var FONT_SIZE: UIFontTextSize = UIFontTextSize(.xSmall)
+}

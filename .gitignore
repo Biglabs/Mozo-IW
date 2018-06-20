@@ -63,3 +63,8 @@ typings/
 # Android
 .gradle
 .idea/libraries
+
+# IOS
+Pods
+Podfile.lock
+*.xcworkspace

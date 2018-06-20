@@ -7,3 +7,30 @@
 //
 
 import Foundation
+
+public enum Coin {
+    case BTC
+    case ETH
+    
+    public var key : String {
+        switch self {
+        case .BTC: return "BTC"
+        case .ETH: return "ETH"
+        }
+    }
+    
+    public var value : String {
+        switch self {
+        case .BTC: return "BTC"
+        case .ETH: return "ETH"
+        }
+    }
+    
+    public var icon : String {
+        switch self {
+        case .BTC: return "ic_bitcoin"
+        case .ETH: return "ic_ethereum"
+        }
+    }
+    
+}

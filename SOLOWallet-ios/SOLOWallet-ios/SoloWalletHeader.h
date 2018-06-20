@@ -9,5 +9,5 @@
 #ifndef SoloWalletHeader_h
 #define SoloWalletHeader_h
 
-
+#import <MMDrawerController/MMDrawerController.h>
 #endif /* SoloWalletHeader_h */

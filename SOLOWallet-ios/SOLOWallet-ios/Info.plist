@@ -41,5 +41,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>utm-avo.ttf</string>
+		<string>utm-avo-bold.ttf</string>
+	</array>
 </dict>
 </plist>

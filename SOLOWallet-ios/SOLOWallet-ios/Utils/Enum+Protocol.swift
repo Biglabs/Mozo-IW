@@ -7,3 +7,9 @@
 //
 
 import Foundation
+import SwiftyJSON
+
+public protocol ResponseObjectSerializable: class {
+    init?(json: JSON)
+}
+
