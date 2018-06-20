@@ -51,7 +51,7 @@ public class SoloWalletViewController: UITabBarController, UITabBarControllerDel
         topBorder.backgroundColor = ThemeManager.shared.border.cgColor
         self.tabBar.layer.addSublayer(topBorder)
         
-        UIView.appearance(whenContainedInInstancesOf: [UITabBar.self]).tintColor = ThemeManager.shared.font
+        UIView.appearance(whenContainedInInstancesOf: [UITabBar.self]).tintColor = ThemeManager.shared.title
         self.tabBar.barTintColor = UIColor.white
         self.tabBar.tintColor = ThemeManager.shared.main
     }
