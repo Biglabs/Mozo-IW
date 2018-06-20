@@ -1,0 +1,575 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DEEE20D8BFA400258ACE /* AppDelegate.swift */; };
+		C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */; };
+		C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C616DEF820D8BFA700258ACE /* Assets.xcassets */; };
+		C616DEFC20D8BFA700258ACE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C616DEFA20D8BFA700258ACE /* LaunchScreen.storyboard */; };
+		C616DF0B20D8D8C400258ACE /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF0A20D8D8C400258ACE /* WalletViewController.swift */; };
+		C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF0C20D8D93400258ACE /* SendViewController.swift */; };
+		C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF0E20D8D94500258ACE /* ReceiveViewController.swift */; };
+		C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1020D8D95800258ACE /* ExchangeViewController.swift */; };
+		C616DF1520D8DCF800258ACE /* SoloWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1420D8DCF800258ACE /* SoloWalletViewController.swift */; };
+		C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1620D8E09400258ACE /* ThemeManager.swift */; };
+		C616DF1920D8E34300258ACE /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1820D8E34300258ACE /* UIColor+Extensions.swift */; };
+		C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */; };
+		C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */; };
+		C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1E20D8E7F100258ACE /* Configuration.swift */; };
+		C616DF4420D8FAEE00258ACE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C616DF4320D8FAED00258ACE /* Main.storyboard */; };
+		C616DF4E20D90B6000258ACE /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF4D20D90B6000258ACE /* Constant.swift */; };
+		C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF5020D916A800258ACE /* AbstractViewController.swift */; };
+		C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */; };
+		C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */; };
+		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
+		C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */; };
+		C69AF7BF20DA180300C61FA4 /* Enum+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */; };
+		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.release.xcconfig"; sourceTree = "<group>"; };
+		79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SOLOWallet_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		832B69B3E43B23B9D77FAD04 /* Pods-SOLOWallet-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOWallet-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C616DEEE20D8BFA400258ACE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C616DEF620D8BFA400258ACE /* SOLOWallet_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SOLOWallet_ios.xcdatamodel; sourceTree = "<group>"; };
+		C616DEF820D8BFA700258ACE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C616DEFB20D8BFA700258ACE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C616DEFD20D8BFA700258ACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C616DF0A20D8D8C400258ACE /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
+		C616DF0C20D8D93400258ACE /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
+		C616DF0E20D8D94500258ACE /* ReceiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveViewController.swift; sourceTree = "<group>"; };
+		C616DF1020D8D95800258ACE /* ExchangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeViewController.swift; sourceTree = "<group>"; };
+		C616DF1420D8DCF800258ACE /* SoloWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoloWalletViewController.swift; sourceTree = "<group>"; };
+		C616DF1620D8E09400258ACE /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		C616DF1820D8E34300258ACE /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerMenuViewController.swift; sourceTree = "<group>"; };
+		C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTextSize.swift; sourceTree = "<group>"; };
+		C616DF1E20D8E7F100258ACE /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		C616DF4220D8F58F00258ACE /* SoloWalletHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloWalletHeader.h; sourceTree = "<group>"; };
+		C616DF4320D8FAED00258ACE /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C616DF4D20D90B6000258ACE /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		C616DF5020D916A800258ACE /* AbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
+		C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo-bold.ttf"; sourceTree = "<group>"; };
+		C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo.ttf"; sourceTree = "<group>"; };
+		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
+		C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDTO.swift; sourceTree = "<group>"; };
+		C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Enum+Protocol.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C616DEE820D8BFA400258ACE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		72A9A5814D0A3E2DFCAB009F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		77E3D72FACEF476A2AA5EEE1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				832B69B3E43B23B9D77FAD04 /* Pods-SOLOWallet-ios.debug.xcconfig */,
+				0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C616DEE220D8BFA400258ACE = {
+			isa = PBXGroup;
+			children = (
+				C616DEED20D8BFA400258ACE /* SOLOWallet-ios */,
+				C616DEEC20D8BFA400258ACE /* Products */,
+				77E3D72FACEF476A2AA5EEE1 /* Pods */,
+				72A9A5814D0A3E2DFCAB009F /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C616DEEC20D8BFA400258ACE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C616DEED20D8BFA400258ACE /* SOLOWallet-ios */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF2020D8EE4C00258ACE /* Resources */,
+				C616DF0420D8C4EE00258ACE /* UI */,
+				C69AF7B720DA0F6D00C61FA4 /* Data */,
+				C616DF0320D8C4EE00258ACE /* Utils */,
+				C616DEEE20D8BFA400258ACE /* AppDelegate.swift */,
+				C616DF1420D8DCF800258ACE /* SoloWalletViewController.swift */,
+				C616DEF820D8BFA700258ACE /* Assets.xcassets */,
+				C616DEFA20D8BFA700258ACE /* LaunchScreen.storyboard */,
+				C616DEFD20D8BFA700258ACE /* Info.plist */,
+				C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */,
+				C616DF4220D8F58F00258ACE /* SoloWalletHeader.h */,
+				C616DF4320D8FAED00258ACE /* Main.storyboard */,
+			);
+			path = "SOLOWallet-ios";
+			sourceTree = "<group>";
+		};
+		C616DF0320D8C4EE00258ACE /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF1620D8E09400258ACE /* ThemeManager.swift */,
+				C616DF1820D8E34300258ACE /* UIColor+Extensions.swift */,
+				C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */,
+				C616DF1E20D8E7F100258ACE /* Configuration.swift */,
+				C616DF4D20D90B6000258ACE /* Constant.swift */,
+				C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		C616DF0420D8C4EE00258ACE /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF4F20D9167200258ACE /* Common */,
+				C616DF0720D8D86C00258ACE /* Exchange */,
+				C616DF0820D8D86C00258ACE /* Menu */,
+				C616DF0520D8D86C00258ACE /* Receive */,
+				C616DF0620D8D86C00258ACE /* Send */,
+				C616DF0920D8D86C00258ACE /* Wallet */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		C616DF0520D8D86C00258ACE /* Receive */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF0E20D8D94500258ACE /* ReceiveViewController.swift */,
+			);
+			path = Receive;
+			sourceTree = "<group>";
+		};
+		C616DF0620D8D86C00258ACE /* Send */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF0C20D8D93400258ACE /* SendViewController.swift */,
+			);
+			path = Send;
+			sourceTree = "<group>";
+		};
+		C616DF0720D8D86C00258ACE /* Exchange */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF1020D8D95800258ACE /* ExchangeViewController.swift */,
+			);
+			path = Exchange;
+			sourceTree = "<group>";
+		};
+		C616DF0820D8D86C00258ACE /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		C616DF0920D8D86C00258ACE /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF0A20D8D8C400258ACE /* WalletViewController.swift */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		C616DF2020D8EE4C00258ACE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C69AF7B220D9EDA200C61FA4 /* fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C616DF4F20D9167200258ACE /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C616DF5020D916A800258ACE /* AbstractViewController.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		C69AF7B220D9EDA200C61FA4 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */,
+				C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		C69AF7B720DA0F6D00C61FA4 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */,
+				C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C616DEEA20D8BFA400258ACE /* SOLOWallet-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C616DF0020D8BFA700258ACE /* Build configuration list for PBXNativeTarget "SOLOWallet-ios" */;
+			buildPhases = (
+				46B6C4B61AB7A6DF6828D214 /* [CP] Check Pods Manifest.lock */,
+				C616DEE720D8BFA400258ACE /* Sources */,
+				C616DEE820D8BFA400258ACE /* Frameworks */,
+				C616DEE920D8BFA400258ACE /* Resources */,
+				83894A1C56603E32E3C9C741 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SOLOWallet-ios";
+			productName = "SOLOWallet-ios";
+			productReference = C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C616DEE320D8BFA400258ACE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = biglabs;
+				TargetAttributes = {
+					C616DEEA20D8BFA400258ACE = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+				};
+			};
+			buildConfigurationList = C616DEE620D8BFA400258ACE /* Build configuration list for PBXProject "SOLOWallet-ios" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C616DEE220D8BFA400258ACE;
+			productRefGroup = C616DEEC20D8BFA400258ACE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C616DEEA20D8BFA400258ACE /* SOLOWallet-ios */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C616DEE920D8BFA400258ACE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C616DEFC20D8BFA700258ACE /* LaunchScreen.storyboard in Resources */,
+				C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */,
+				C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */,
+				C616DF4420D8FAEE00258ACE /* Main.storyboard in Resources */,
+				C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		46B6C4B61AB7A6DF6828D214 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SOLOWallet-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		83894A1C56603E32E3C9C741 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
+				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C616DEE720D8BFA400258ACE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C616DF1520D8DCF800258ACE /* SoloWalletViewController.swift in Sources */,
+				C616DF4E20D90B6000258ACE /* Constant.swift in Sources */,
+				C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */,
+				C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */,
+				C616DF0B20D8D8C400258ACE /* WalletViewController.swift in Sources */,
+				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
+				C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */,
+				C69AF7BF20DA180300C61FA4 /* Enum+Protocol.swift in Sources */,
+				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
+				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
+				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
+				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
+				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
+				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
+				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
+				C616DF1920D8E34300258ACE /* UIColor+Extensions.swift in Sources */,
+				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C616DEFA20D8BFA700258ACE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C616DEFB20D8BFA700258ACE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C616DEFE20D8BFA700258ACE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C616DEFF20D8BFA700258ACE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C616DF0120D8BFA700258ACE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 832B69B3E43B23B9D77FAD04 /* Pods-SOLOWallet-ios.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BUAMMZ5MW6;
+				INFOPLIST_FILE = "SOLOWallet-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.solowallet.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C616DF0220D8BFA700258ACE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BUAMMZ5MW6;
+				INFOPLIST_FILE = "SOLOWallet-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.solowallet.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C616DEE620D8BFA400258ACE /* Build configuration list for PBXProject "SOLOWallet-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C616DEFE20D8BFA700258ACE /* Debug */,
+				C616DEFF20D8BFA700258ACE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C616DF0020D8BFA700258ACE /* Build configuration list for PBXNativeTarget "SOLOWallet-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C616DF0120D8BFA700258ACE /* Debug */,
+				C616DF0220D8BFA700258ACE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C616DEF620D8BFA400258ACE /* SOLOWallet_ios.xcdatamodel */,
+			);
+			currentVersion = C616DEF620D8BFA400258ACE /* SOLOWallet_ios.xcdatamodel */;
+			path = SOLOWallet_ios.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = C616DEE320D8BFA400258ACE /* Project object */;
+}
