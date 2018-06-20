@@ -53,6 +53,7 @@
     "react-native-udp": "^2.1.0",
     "react-timer-mixin": "^0.13.3",
     "readable-stream": "1.0.33",
+    "realm": "^2.10.0",
     "save": "^2.3.2",
     "stream-browserify": "^1.0.0",
     "string_decoder": "~0.10.25",

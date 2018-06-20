@@ -136,6 +136,7 @@ android {
 }
 
 dependencies {
+    compile project(':realm')
     implementation project(':react-native-camera')
     implementation project(':react-native-svg')
     implementation project(':react-native-randombytes')

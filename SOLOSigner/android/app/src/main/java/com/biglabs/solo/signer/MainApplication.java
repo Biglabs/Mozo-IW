@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.biglabs.solo.signer.BuildConfig;
 import com.facebook.react.ReactApplication;
+import io.realm.react.RealmReactPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.horcrux.svg.SvgPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RealmReactPackage(),
             new RNCameraPackage(),
             new SvgPackage(),
             new RandomBytesPackage()

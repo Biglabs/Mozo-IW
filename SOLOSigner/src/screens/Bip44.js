@@ -5,6 +5,7 @@ import bip39 from 'bip39';
 const testnet = 'https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir';
 import Web3 from 'web3';
 import Transaction from "ethereumjs-tx";
+import DataManager from '../utils/DataManager';
 
 export default class Bip44 extends Component<Props> {
     constructor(props) {
@@ -106,6 +107,13 @@ export default class Bip44 extends Component<Props> {
                         adrBip44Test: address,
                         privkey: privkey
                     });
+                    // let manager = DataManager.getInstance();
+                    // let userInfo = { uuid: "1094049101", name : "aaa"};
+                    // manager.saveUserInfo(userInfo);
+                    // let data = manager.getUserInfo();
+                    // this.setState({
+                    //     privkey: data.uuid
+                    // });
                 }} />
                 <Button title='View balance' onPress={() => {
                     this.loadBalances();
