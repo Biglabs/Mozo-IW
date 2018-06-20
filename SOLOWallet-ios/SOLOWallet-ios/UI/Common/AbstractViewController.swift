@@ -13,16 +13,20 @@ import MMDrawerController
 public class AbstractViewController: UIViewController {
     fileprivate var logoBarButton: UIBarButtonItem!
     fileprivate var menuBarButton: UIBarButtonItem!
+    var heightStatusBarFrame = CGFloat(0)
+    var heightNavigationBar = CGFloat(44)
     
     var coin: CoinDTO!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = ThemeManager.shared.background
         
         //dummy data
-        coin = CoinDTO.init(id: 0, key: "BTC", name: "BTC", icon: "ic_bitcoin", addesses: [AddressDTO.init(id: "123321", age: 1415637900, balance: 7.320)!])
+        coin = CoinDTO.init(id: 0, key: "BTC", name: "BTC", icon: "ic_bitcoin", addesses: [AddressDTO.init(id: "123321", name: "Wallet BTC No.1", age: 1415637900, balance: 7.020020030)!])
         
-        let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: self.view.frame.width, height: 44))
+        heightStatusBarFrame = UIApplication.shared.statusBarFrame.height
+        let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: heightStatusBarFrame, width: self.view.frame.width, height: heightNavigationBar))
         self.view.addSubview(navigationBar)
         
         self.menuBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_menu"), style: .plain, target: self, action: #selector(self.rightDrawerButtonPress(_:)))

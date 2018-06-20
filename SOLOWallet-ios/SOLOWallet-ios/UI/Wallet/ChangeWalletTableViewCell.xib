@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChangeWalletTableViewCell" rowHeight="43" id="pkh-qX-MUX" customClass="ChangeWalletTableViewCell" customModule="SOLOWallet_ios" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="387" height="43"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pkh-qX-MUX" id="Z1X-lW-GFH">
+                <rect key="frame" x="0.0" y="0.0" width="387" height="42.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3N-rH-jI4">
+                        <rect key="frame" x="10" y="0.0" width="367" height="40.5"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hYu-NN-1f2">
+                                <rect key="frame" x="0.0" y="0.0" width="183.5" height="20.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zAS-uC-nP2">
+                                        <rect key="frame" x="0.0" y="0.0" width="43" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fph-Jb-iVP">
+                                        <rect key="frame" x="53" y="0.0" width="20" height="20.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="6xq-Ea-e4j"/>
+                                            <constraint firstAttribute="height" constant="20" id="ex4-fL-RSm"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="zAS-uC-nP2" firstAttribute="top" secondItem="hYu-NN-1f2" secondAttribute="top" id="9wF-E6-hhN"/>
+                                    <constraint firstItem="fph-Jb-iVP" firstAttribute="top" secondItem="hYu-NN-1f2" secondAttribute="top" id="RQs-Li-Vbg"/>
+                                    <constraint firstItem="zAS-uC-nP2" firstAttribute="leading" secondItem="hYu-NN-1f2" secondAttribute="leading" id="Wue-NI-pYk"/>
+                                    <constraint firstAttribute="bottom" secondItem="fph-Jb-iVP" secondAttribute="bottom" id="XVp-3A-iBl"/>
+                                    <constraint firstItem="fph-Jb-iVP" firstAttribute="leading" secondItem="zAS-uC-nP2" secondAttribute="trailing" constant="10" id="cda-1e-cja"/>
+                                    <constraint firstAttribute="bottom" secondItem="zAS-uC-nP2" secondAttribute="bottom" id="qLW-od-WgN"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ron-Jp-KYS">
+                                <rect key="frame" x="183.5" y="0.0" width="183.5" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="5YS-p5-gpB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Change Address"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w22-GK-lkx">
+                                <rect key="frame" x="0.0" y="20.5" width="183.5" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="YiT-Um-42Q"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="w22-GK-lkx" firstAttribute="top" secondItem="hYu-NN-1f2" secondAttribute="bottom" id="5Pn-Bg-E8m"/>
+                            <constraint firstAttribute="bottom" secondItem="w22-GK-lkx" secondAttribute="bottom" id="Fxc-Og-fDD"/>
+                            <constraint firstItem="w22-GK-lkx" firstAttribute="width" secondItem="Ron-Jp-KYS" secondAttribute="width" id="dJb-cG-1Iw"/>
+                            <constraint firstItem="Ron-Jp-KYS" firstAttribute="width" secondItem="hYu-NN-1f2" secondAttribute="width" id="e1X-7n-mUX"/>
+                            <constraint firstItem="Ron-Jp-KYS" firstAttribute="top" secondItem="g3N-rH-jI4" secondAttribute="top" id="eRQ-oA-aVr"/>
+                            <constraint firstAttribute="trailing" secondItem="Ron-Jp-KYS" secondAttribute="trailing" id="fTy-oj-O3A"/>
+                            <constraint firstItem="Ron-Jp-KYS" firstAttribute="height" secondItem="hYu-NN-1f2" secondAttribute="height" id="ghn-MY-tag"/>
+                            <constraint firstItem="hYu-NN-1f2" firstAttribute="leading" secondItem="g3N-rH-jI4" secondAttribute="leading" id="jv3-OV-XFg"/>
+                            <constraint firstItem="w22-GK-lkx" firstAttribute="leading" secondItem="g3N-rH-jI4" secondAttribute="leading" id="nAQ-gC-5Lx"/>
+                            <constraint firstItem="Ron-Jp-KYS" firstAttribute="leading" secondItem="hYu-NN-1f2" secondAttribute="trailing" id="stB-GC-LQY"/>
+                            <constraint firstItem="hYu-NN-1f2" firstAttribute="top" secondItem="g3N-rH-jI4" secondAttribute="top" id="w9e-8O-Fsj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Hvn-uy-kWX"/>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="g3N-rH-jI4" secondAttribute="trailing" constant="10" id="RTC-fs-yR9"/>
+                    <constraint firstAttribute="bottom" secondItem="g3N-rH-jI4" secondAttribute="bottom" constant="10" id="afG-EM-Uql"/>
+                    <constraint firstItem="g3N-rH-jI4" firstAttribute="top" secondItem="Z1X-lW-GFH" secondAttribute="top" id="jCb-bT-nsn"/>
+                    <constraint firstItem="g3N-rH-jI4" firstAttribute="leading" secondItem="Z1X-lW-GFH" secondAttribute="leading" constant="10" id="t7g-wD-DEN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="addressLabel" destination="w22-GK-lkx" id="isw-sC-sjo"/>
+                <outlet property="changeAddressButton" destination="Ron-Jp-KYS" id="Zjd-fQ-7aW"/>
+                <outlet property="copyButton" destination="fph-Jb-iVP" id="tbi-xa-GHR"/>
+                <outlet property="nameLabel" destination="zAS-uC-nP2" id="nAF-3S-U3G"/>
+            </connections>
+            <point key="canvasLocation" x="8" y="-177"/>
+        </tableViewCell>
+    </objects>
+</document>

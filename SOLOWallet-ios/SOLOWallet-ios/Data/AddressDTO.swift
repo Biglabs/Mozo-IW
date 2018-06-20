@@ -12,6 +12,7 @@ import SwiftyJSON
 public class AddressDTO: Equatable, ResponseObjectSerializable {
     
     public var id: String?
+    public var name: String?
     public var age: Int64?
     public var balance: Double?
     public var usd: Double?
@@ -22,8 +23,16 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
         self.balance = balance
     }
     
+    public required init?(id: String?, name: String?, age: Int64?, balance: Double?) {
+        self.id = id
+        self.name = name
+        self.age = age
+        self.balance = balance
+    }
+    
     public required init?(json: SwiftyJSON.JSON) {
         self.id = json["id"].string
+        self.name = json["name"].string
         self.age = json["age"].int64
         self.balance = json["balance"].double
         self.usd = json["usd"].double
@@ -35,6 +44,9 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
         var json = Dictionary<String, Any>()
         if let id = self.id {
             json["id"] = id
+        }
+        if let name = self.name {
+            json["name"] = name
         }
         if let age = self.age {
             json["age"] =  NSNumber(value: age)

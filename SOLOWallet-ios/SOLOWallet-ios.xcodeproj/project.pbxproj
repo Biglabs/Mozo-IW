@@ -11,7 +11,6 @@
 		C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */; };
 		C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C616DEF820D8BFA700258ACE /* Assets.xcassets */; };
 		C616DEFC20D8BFA700258ACE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C616DEFA20D8BFA700258ACE /* LaunchScreen.storyboard */; };
-		C616DF0B20D8D8C400258ACE /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF0A20D8D8C400258ACE /* WalletViewController.swift */; };
 		C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF0C20D8D93400258ACE /* SendViewController.swift */; };
 		C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF0E20D8D94500258ACE /* ReceiveViewController.swift */; };
 		C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1020D8D95800258ACE /* ExchangeViewController.swift */; };
@@ -29,6 +28,11 @@
 		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
 		C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */; };
 		C69AF7BF20DA180300C61FA4 /* Enum+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */; };
+		C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */; };
+		C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */; };
+		C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7CC20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift */; };
+		C69AF7CF20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */; };
+		C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7D020DA602400C61FA4 /* WalletViewController.swift */; };
 		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +46,6 @@
 		C616DEF820D8BFA700258ACE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C616DEFB20D8BFA700258ACE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C616DEFD20D8BFA700258ACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C616DF0A20D8D8C400258ACE /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
 		C616DF0C20D8D93400258ACE /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
 		C616DF0E20D8D94500258ACE /* ReceiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveViewController.swift; sourceTree = "<group>"; };
 		C616DF1020D8D95800258ACE /* ExchangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeViewController.swift; sourceTree = "<group>"; };
@@ -61,6 +64,11 @@
 		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
 		C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDTO.swift; sourceTree = "<group>"; };
 		C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Enum+Protocol.swift"; sourceTree = "<group>"; };
+		C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoWalletTableViewCell.xib; sourceTree = "<group>"; };
+		C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoWalletTableViewCell.swift; sourceTree = "<group>"; };
+		C69AF7CC20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeWalletTableViewCell.swift; sourceTree = "<group>"; };
+		C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeWalletTableViewCell.xib; sourceTree = "<group>"; };
+		C69AF7D020DA602400C61FA4 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,7 +198,11 @@
 		C616DF0920D8D86C00258ACE /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
-				C616DF0A20D8D8C400258ACE /* WalletViewController.swift */,
+				C69AF7D020DA602400C61FA4 /* WalletViewController.swift */,
+				C69AF7CC20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift */,
+				C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */,
+				C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */,
+				C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -289,10 +301,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C69AF7CF20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib in Resources */,
 				C616DEFC20D8BFA700258ACE /* LaunchScreen.storyboard in Resources */,
 				C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */,
 				C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */,
 				C616DF4420D8FAEE00258ACE /* Main.storyboard in Resources */,
+				C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */,
 				C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,9 +363,10 @@
 			files = (
 				C616DF1520D8DCF800258ACE /* SoloWalletViewController.swift in Sources */,
 				C616DF4E20D90B6000258ACE /* Constant.swift in Sources */,
+				C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */,
 				C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */,
 				C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */,
-				C616DF0B20D8D8C400258ACE /* WalletViewController.swift in Sources */,
+				C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */,
 				C69AF7BF20DA180300C61FA4 /* Enum+Protocol.swift in Sources */,
@@ -361,6 +376,7 @@
 				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
 				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
+				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
 				C616DF1920D8E34300258ACE /* UIColor+Extensions.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,
