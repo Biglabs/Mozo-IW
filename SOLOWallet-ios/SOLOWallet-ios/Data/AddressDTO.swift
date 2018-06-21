@@ -13,29 +13,37 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
     
     public var id: String?
     public var name: String?
-    public var age: Int64?
+    public var time: Int64?
     public var balance: Double?
-    public var usd: Double?
+    public var transactions: [TransactionDTO]?
     
-    public required init?(id: String?, age: Int64?, balance: Double?) {
+    public required init?(id: String?, time: Int64?, balance: Double?) {
         self.id = id
-        self.age = age
+        self.time = time
         self.balance = balance
     }
     
-    public required init?(id: String?, name: String?, age: Int64?, balance: Double?) {
+    public required init?(id: String?, name: String?, time: Int64?, balance: Double?) {
         self.id = id
         self.name = name
-        self.age = age
+        self.time = time
         self.balance = balance
+    }
+    
+    public required init?(id: String?, name: String?, time: Int64?, balance: Double?, transactions: [TransactionDTO]?) {
+        self.id = id
+        self.name = name
+        self.time = time
+        self.balance = balance
+        self.transactions = transactions
     }
     
     public required init?(json: SwiftyJSON.JSON) {
         self.id = json["id"].string
         self.name = json["name"].string
-        self.age = json["age"].int64
+        self.time = json["time"].int64
         self.balance = json["balance"].double
-        self.usd = json["usd"].double
+        self.transactions = json["transactions"].array?.filter({ TransactionDTO(json: $0) != nil }).map({ TransactionDTO(json: $0)! })
     }
     
     public required init?(){}
@@ -48,14 +56,14 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
         if let name = self.name {
             json["name"] = name
         }
-        if let age = self.age {
-            json["age"] =  NSNumber(value: age)
+        if let time = self.time {
+            json["time"] =  NSNumber(value: time)
         }
         if let balance = self.balance {
-            json["balance"] = NSNumber(value: balance)
+            json["balance"] = balance
         }
-        if let usd = self.usd {
-            json["usd"] = NSNumber(value: usd)
+        if let transactions = self.transactions {
+            json["transactions"] = transactions.map({$0.toJSON()})
         }
         return json
     }

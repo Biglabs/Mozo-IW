@@ -7,7 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/../node_modules/react-native-camera/android/react-native-camera.iml" filepath="$PROJECT_DIR$/../node_modules/react-native-camera/android/react-native-camera.iml" />
       <module fileurl="file://$PROJECT_DIR$/../node_modules/react-native-randombytes/android/react-native-randombytes.iml" filepath="$PROJECT_DIR$/../node_modules/react-native-randombytes/android/react-native-randombytes.iml" />
       <module fileurl="file://$PROJECT_DIR$/../node_modules/react-native-svg/android/react-native-svg.iml" filepath="$PROJECT_DIR$/../node_modules/react-native-svg/android/react-native-svg.iml" />
-      <module fileurl="file://$PROJECT_DIR$/solosignerlibrary/solosignerlibrary.iml" filepath="$PROJECT_DIR$/solosignerlibrary/solosignerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../node_modules/realm/android/realm.iml" filepath="$PROJECT_DIR$/../node_modules/realm/android/realm.iml" />
     </modules>
   </component>
 </project>

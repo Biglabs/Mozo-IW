@@ -42,9 +42,6 @@ public class InfoWalletTableViewCell: UITableViewCell {
             if let balance = address.balance {
                 self.balanceLabel.text = String(balance)
             }
-            if let usd = address.usd {
-                self.usdLabel.text = String(usd)
-            }
         }
     }
     

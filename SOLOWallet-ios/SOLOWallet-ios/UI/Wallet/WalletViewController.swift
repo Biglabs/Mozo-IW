@@ -26,9 +26,10 @@ public class WalletViewController: AbstractViewController {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         self.tableView.allowsSelection = false
         
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
         self.tableView.register(UINib.init(nibName: "ChangeWalletTableViewCell", bundle: nil), forCellReuseIdentifier: "ChangeWalletTableViewCell")
         self.tableView.register(UINib.init(nibName: "InfoWalletTableViewCell", bundle: nil), forCellReuseIdentifier: "InfoWalletTableViewCell")
+        self.tableView.register(UINib.init(nibName: "TransactionWalletTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionWalletTableViewCell")
+        
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.view.addSubview(self.tableView)
@@ -43,7 +44,7 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 2 {
-            return 1
+            return self.coin.addesses?.first?.transactions?.count ?? 0
         }
         return 1
     }
@@ -84,8 +85,11 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
             //            cell.delegate = self
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath as IndexPath)
-            cell.textLabel!.text = "test"
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "TransactionWalletTableViewCell", for: indexPath) as! TransactionWalletTableViewCell
+            if let trans = self.coin.addesses?.first?.transactions?[indexPath.row], let name = self.coin.name, let address = self.coin.addesses?.first?.id {
+                cell.bindData(trans, coinName: name, address: address)
+            }
+            //            cell.delegate = self
             return cell
         }
     }

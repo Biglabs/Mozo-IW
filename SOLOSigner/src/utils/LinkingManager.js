@@ -2,9 +2,12 @@ import { Alert, Linking } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import DataManager from '../utils/DataManager';
 
+const ACTION_NONE = "NONE";
+const ACTION_GET_USER = "GET_USER";
+const ACTION_SIGN = "SIGN";
+
 function handleOpenURL(url) {
     if (url && String(url).startsWith('solosigner')) {
-        // URL format: solosigner://{"from": "", "to": "", "value": "0.03", "message": "hello", "receiver": "wallet-com.big_labs.solo.wallet"}
         let urls = url.split("://");
         if (urls.length > 1 && urls[1]) {
             const stringData = decodeURI(urls[1]);
@@ -16,17 +19,21 @@ function handleOpenURL(url) {
             if(!data){
                 //INCASE: Wallet is not registered.
             } else {
-                //Wallet is registered.
-                Actions.jump('trans_confirm', {txData : jsonData});
-            }       
+                switch (jsonData.action) {
+                    case ACTION_SIGN:
+                        //Wallet is registered.
+                        Actions.jump('trans_confirm', {txData: jsonData});
+                        break;
+                }
+            }
         } else {
             Alert.alert(
                 "Error",
                 url,
                 [
-                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
                 ],
-              );
+            );
         }
     }
 }
