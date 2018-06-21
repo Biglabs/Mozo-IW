@@ -53,16 +53,16 @@ export default class ConfirmationScreen extends Component {
         if (!this.privateKeyInBuffer) {
             this.generatePrivateKey();
         }
-        this.ethProvider.getTransactionCount(this.props.txData.from).then(_nonce => {
-            const etherAmount = this.props.txData.value;
+        this.ethProvider.getTransactionCount(this.props.txData.params.from).then(_nonce => {
+            const etherAmount = this.props.txData.params.value;
             const txParams = {
                 nonce: _nonce,
                 gasLimit: 3000000,
                 gasPrice: Web3.utils.toHex(Web3.utils.toWei('21', 'gwei')),
-                from: this.props.txData.from,
-                to: this.props.txData.to,
+                from: this.props.txData.params.from,
+                to: this.props.txData.params.to,
                 value: Web3.utils.toHex(Web3.utils.toWei(etherAmount, 'ether')),
-                data: Web3.utils.fromUtf8('send ' + etherAmount + 'ETH from account 1 to account 2\nmessage: ' + this.props.txData.message + "\nfrom: " + this.props.txData.receiver),
+                data: Web3.utils.fromUtf8('send ' + etherAmount + 'ETH from account 1 to account 2\nmessage: ' + this.props.txData.params.txData + "\nfrom: " + this.props.txData.receiver),
                 // EIP 155 chainId - mainnet: 1, ropsten: 3
                 chainId: 3
             };
@@ -99,10 +99,10 @@ export default class ConfirmationScreen extends Component {
             <View style={styles.container}>
 
                 <Text style={StyleSheet.value('$screen_title_text')}>SEND CONFIRMATION</Text>
-                <Text>From: {this.props.txData.from}</Text>
-                <Text>To: {this.props.txData.to}</Text>
-                <Text>value: {this.props.txData.value}</Text>
-                <Text>message: {this.props.txData.message}</Text>
+                <Text>From: {this.props.txData.params.from}</Text>
+                <Text>To: {this.props.txData.params.to}</Text>
+                <Text>value: {this.props.txData.params.value}</Text>
+                <Text>message: {this.props.txData.params.txData}</Text>
                 <Text>receiver: {this.props.txData.receiver}</Text>
 
                 <Button title='Confirm Transaction'

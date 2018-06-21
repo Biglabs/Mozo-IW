@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import com.biglabs.solo.signer.library.Signer
-import com.biglabs.solo.signer.library.SignerListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Signer.initialize(this, BuildConfig.APPLICATION_ID)
         setContentView(R.layout.activity_main)
 
         radios.setOnCheckedChangeListener { _, checkedId ->
@@ -45,11 +45,11 @@ class MainActivity : AppCompatActivity() {
 
         buttonGetBalance.setOnClickListener {
             if (radios.checkedRadioButtonId > 0 && radios.checkedRadioButtonId <= accounts.size) {
-                Signer.getInstance().getBalance(this, accounts[radios.checkedRadioButtonId - 1], object : SignerListener() {
-                    override fun onReceivedBalance(balance: String?) {
-                        textBalance.text = balance
-                    }
-                })
+//                Signer.getInstance().getBalance(this, accounts[radios.checkedRadioButtonId - 1], object : SignerListener() {
+//                    override fun onReceivedBalance(balance: String?) {
+//                        textBalance.text = balance
+//                    }
+//                })
             } else {
                 Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
             }
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
                     val from = radios.checkedRadioButtonId - 1
                     val to = accounts.size - from - 1
-                    Signer.getInstance().sendTransaction(this, accounts[from], accounts[to], value, message_input.text.toString(), BuildConfig.APPLICATION_ID)
+                    Signer.getInstance().sendTransaction(accounts[from], accounts[to], "ETH", value, message_input.text.toString())
                 }
             } else {
                 Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-        val scheme = "wallet-${BuildConfig.APPLICATION_ID}://"
+        val scheme = "${BuildConfig.APPLICATION_ID}.solowallet://"
         if (TextUtils.equals(intent.scheme, scheme) && intent.data != null) {
             textBalance.text = intent.dataString.replaceFirst(scheme, "")
         }
