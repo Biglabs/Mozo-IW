@@ -19,9 +19,9 @@ function handleOpenURL(url) {
             if(!data){
                 //INCASE: Wallet is not registered.
             } else {
+                //Wallet is registered.
                 switch (jsonData.action) {
                     case ACTION_SIGN:
-                        //Wallet is registered.
                         Actions.jump('trans_confirm', {txData: jsonData});
                         break;
                 }

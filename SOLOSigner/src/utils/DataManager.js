@@ -91,13 +91,10 @@ class DataManager {
             //Remove old PIN
             DataManager.realm.write(() => {
                 DataManager.realm.delete(appInfo);
-                //Add new
-                this.addPin(hashPin);
             });
-        } else {
-            //Add new
-            this.addPin(hashPin);
-        }
+        } 
+        //Add new
+        this.addPin(hashPin);
         return hashPin;
     }
 
