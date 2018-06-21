@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, View, YellowBox, Linking } from 'react-native';
+import { Dimensions, View, YellowBox, Linking, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
@@ -23,11 +23,32 @@ export default class SplashScreen extends Component {
         Linking.getInitialURL().then(this.checkScheme).catch(this.checkScheme);
     }
 
+    isDbExisting(){
+        try {
+            const value = await AsyncStorage.getItem('@DbExisting:key');
+            if (value !== null){
+              console.log(value);
+              return value;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        return false;
+    }
+    
     checkScheme(url) {
         if (url && String(url).startsWith('solosigner')) {
             SchemeHandler(url);
         } else {
-            Actions.reset('welcome');
+            //If DB is existing, open PIN screen for user to enter their PIN
+            // let dbExisting = this.isDbExisting();
+            // if(dbExisting){
+            //     Actions.security_pin();
+            // } else {
+            //     //Else open welcome screen
+            //     Actions.reset('welcome');
+            // }
+            Actions.reset('welcome');            
         }
     }
 

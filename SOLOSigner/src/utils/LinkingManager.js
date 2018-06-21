@@ -1,5 +1,6 @@
 import { Alert, Linking } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import DataManager from '../utils/DataManager';
 
 function handleOpenURL(url) {
     if (url && String(url).startsWith('solosigner')) {
@@ -10,7 +11,14 @@ function handleOpenURL(url) {
             let jsonData = JSON.parse(stringData);
 
             console.log(`Scheme data: ${stringData}`);
-            Actions.jump('trans_confirm', {txData : jsonData});
+            let manager = DataManager.getInstance();
+            let data = manager.getUserInfo();
+            if(!data){
+                //INCASE: Wallet is not registered.
+            } else {
+                //Wallet is registered.
+                Actions.jump('trans_confirm', {txData : jsonData});
+            }       
         } else {
             Alert.alert(
                 "Error",

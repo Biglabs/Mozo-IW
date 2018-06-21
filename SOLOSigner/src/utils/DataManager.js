@@ -1,3 +1,13 @@
+import Realm from "realm";
+
+const AppSchema = {
+    name: 'App',
+    primaryKey: 'pin',
+    properties: {
+        pin: 'string',
+    },
+}
+
 const UserSchema = {
     name: 'User',
     primaryKey: 'uuid',
@@ -15,6 +25,8 @@ const AddressSchema = {
         prvKey: 'string'
     },
 };
+const configuration = {schema: [UserSchema, AddressSchema], path : "solo.signer"};
+
 class DataManager {
     static myInstance = null;
 
@@ -26,10 +38,70 @@ class DataManager {
     static getInstance() {
         if (DataManager.myInstance == null) {
             DataManager.myInstance = new DataManager();
-            DataManager.realm = new Realm({schema: [UserSchema, AddressSchema]});
+            DataManager.realm = new Realm(configuration);
         }
 
         return DataManager.myInstance;
+    }
+
+    /*
+    
+    splash -> check path
+        -> co -> pin screen -> check pin (thu open DB)
+            -> dung -> open DB 
+            -> sai -> nhap lai pin
+
+        -> ko -> welcome ... -> pin -> open Db moi
+
+    */
+
+    convertToHash(inputPIN){
+        let pinString = null;
+        if(typeof(responseData) === 'string'){
+            pinString = inputPIN;
+        } else {
+            pinString = JSON.stringify(inputPIN);
+        }
+        var sha512 = require('js-sha512');
+        let hashPin = sha512(pinString);
+        return hashPin;
+    }
+
+    checkPin(expectedPin, onSuccess, onFail){
+        let appInfo = this.getAppInfo();
+        if(appInfo && appInfo.pin) {
+            let actualHashPin = appInfo.pin;
+            let expectedHashPin = this.convertToHash(expectedPin);
+            if(expectedHashPin.equalTo(actualHashPin)){
+                onSuccess();
+            } else {
+                onFail("Incorrect PIN");
+            }
+        } else {
+            onFail("No PIN is existing");
+        }
+    }
+
+    updatePin(pin){
+        let appInfo = this.getAppInfo();
+        if(appInfo){
+            //Remove old PIN
+            DataManager.realm.write(() => {
+                DataManager.realm.delete(appInfo);
+                //Add new
+                this.addPin(pin);
+            });
+        } else {
+            //Add new
+            this.addPin(pin);
+        }
+    }
+
+    addPin(pin){
+        let hashPin = this.convertToHash(pin);
+        DataManager.realm.write(() => {
+            DataManager.realm.create('App', { pin : hashPin });
+        });
     }
 
     sendRequest(url, params){
@@ -45,10 +117,15 @@ class DataManager {
                 })
                 .then((response) => { 
                     console.log(response);
+                    if(!response.ok){
+                        reject(response);
+                    }
                 })
                 .then((responseJson) => {
                     console.log(responseJson);
-                    resolve(responseJson);
+                    if(responseJson){
+                        resolve(responseJson);
+                    }
                 })
                 .catch((error) => {
                     console.error(error);
@@ -62,11 +139,16 @@ class DataManager {
 
     registerWallet(publicKey) {
         try {
-            this.sendRequest('http://192.168.1.16/', {
-                key: publicKey,
+            let hash = this.convertToHash(publicKey);
+            this.sendRequest('http://192.168.1.91:8080/api/solo-wallets', {
+                walletKey: hash,
             })
             .then((userInfo) => {
-                this.saveUserInfo(userInfo);
+                console.log(userInfo);
+                //this.saveUserInfo(userInfo);
+            })
+            .catch((error) => {
+                console.log(error);
             }); 
         } catch (error) {
             console.error(error);
@@ -91,8 +173,11 @@ class DataManager {
     }
 
     getUserInfo() {
-        let user = DataManager.realm.objects('User')[0];
-        return user;
+        let users = DataManager.realm.objects('User');
+        if(users.length > 0) {
+            return users[0];
+        }
+        return null;
     }
 
     addAddress(address, prvKey) {
@@ -108,6 +193,13 @@ class DataManager {
         }
         return null;
     }
+
+    getAppInfo() {
+        let apps = DataManager.realm.objects('App');
+        if(apps.length > 0) {
+            return apps[0];
+        }
+        return null;
+    }
 }
-//DataManager.realm = new Realm({schema: [UserSchema, AddressSchema]});
 export default DataManager;

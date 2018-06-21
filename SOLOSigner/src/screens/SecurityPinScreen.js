@@ -3,6 +3,7 @@ import {TouchableHighlight, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, Text} from "../components/SoloComponent";
+import DataManager from '../utils/DataManager';
 
 const accentColor = '#00fffc';
 const numbersPressedColor = '#003c8d';
@@ -20,6 +21,24 @@ export default class ImportWalletScreen extends Component {
         this.state = {pinIndex: -1};
     }
 
+    continuePress(){
+        //TODO: Should show spinning view here
+        // let manager = DataManager.getInstance();
+        // manager.checkPin(this.pinCode.buffer, (result) => {
+        //     alert(result);
+        //     //Actions.main_stack();
+        // }, (error) => {
+        //     this.clearPin();
+        // });
+        Actions.main_stack();
+    }
+
+    clearPin() {
+        this.setState({pinIndex: -1}, () => {
+            this.pinCode = [null, null, null, null];
+        });
+    }
+
     keyPress(key) {
         if (key === 'CLR') {
             if (this.state.pinIndex === -1) return;
@@ -29,9 +48,7 @@ export default class ImportWalletScreen extends Component {
             return;
 
         } else if (key === 'DEL') {
-            this.setState({pinIndex: -1}, () => {
-                this.pinCode = [null, null, null, null];
-            });
+            this.clearPin();
             return;
         }
 
@@ -91,7 +108,7 @@ export default class ImportWalletScreen extends Component {
                     buttonsColor={{back: accentColor, continue: accentColor}}
                     onBackPress={() => Actions.pop()}
                     enabledContinue={this.state.pinIndex === 3}
-                    onContinuePress={() => Actions.main_stack()}/>
+                    onContinuePress={() =>  this.continuePress()}/>
             </View>
         )
     }

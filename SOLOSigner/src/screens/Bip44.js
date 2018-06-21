@@ -54,6 +54,7 @@ export default class Bip44 extends Component<Props> {
         return (
             <View key="bip44" style={styles.container}>
                 <Button title='Generate BTC Wallet' onPress={() => {
+                    console.log("Generate BTC Wallet");
                     // Generate BIP32 Root Key from BIP39 Seed
                     let rootKey = Bitcoin.HDNode.fromSeedHex(this.props.seed);
                     this.setState({
@@ -87,9 +88,14 @@ export default class Bip44 extends Component<Props> {
                     let seed = bip39.mnemonicToSeedHex(mnemonic);
                     let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
                     var bip32ExtendedKey = rootKey.derivePath("m/44'/60'/0'/0");
+
+                    let publicKey = bip32ExtendedKey.neutered().toBase58();
+                    let manager = DataManager.getInstance();
+                    manager.registerWallet(publicKey);
+                    
                     this.setState({
                         rootKey: "Bip32 Private extended key: " + bip32ExtendedKey.toBase58(),
-                        xpub: "Bip32 Public extended key: " + bip32ExtendedKey.neutered().toBase58()
+                        xpub: "Bip32 Public extended key: " + publicKey
                     });
                     bip32ExtendedKey = bip32ExtendedKey.derive(0);
                     var keyPair = bip32ExtendedKey.keyPair;
@@ -107,9 +113,9 @@ export default class Bip44 extends Component<Props> {
                         adrBip44Test: address,
                         privkey: privkey
                     });
-                    // let manager = DataManager.getInstance();
-                    // let userInfo = { uuid: "1094049101", name : "aaa"};
-                    // manager.saveUserInfo(userInfo);
+                    //let manager = DataManager.getInstance();
+                    //let userInfo = { uuid: "1094049101", name : "aaa"};
+                    //manager.saveUserInfo(userInfo);
                     // let data = manager.getUserInfo();
                     // this.setState({
                     //     privkey: data.uuid
