@@ -14,23 +14,46 @@ const numberPad = [
     ['CLR', 0, 'DEL']
 ];
 
-export default class ImportWalletScreen extends Component {
+const inputNewPIN = "Create a new PIN";
+const inputExistingPIN = "Enter PIN";
+
+export default class ImportWalletScreen extends Component<Props> {
     constructor(props) {
         super(props);
         this.pinCode = [null, 2, null, null];
         this.state = {pinIndex: -1};
+        this.state.title = inputExistingPIN;
+        if(this.props.isNewPIN){
+            this.state.title = inputNewPIN;
+        }
     }
 
     continuePress(){
         //TODO: Should show spinning view here
-        // let manager = DataManager.getInstance();
-        // manager.checkPin(this.pinCode.buffer, (result) => {
-        //     alert(result);
-        //     //Actions.main_stack();
-        // }, (error) => {
-        //     this.clearPin();
-        // });
-        Actions.main_stack();
+        let manager = DataManager.getInstance();
+        if(this.props.isNewPIN){
+            //If this is the first launch, AsyncStorage will store isDbExisting true
+            // Save PIN
+            manager.updatePin(this.pinCode);
+            
+            // Register wallet and save uid
+            manager.registerWallet();
+            // Store isDbExisting true
+            AsyncStorage.setItem('@DbExisting:key', true);
+            this.props.isNewPIN = false;
+        } else {
+            // Set isDbExisting true
+            AsyncStorage.setItem('@DbExisting:key', true);
+            //Compare PIN
+            let isEqual = manager.checkPin(this.pinCode);
+            if(isEqual){
+                // Open Home Screen
+                Actions.main_stack();
+            } else {
+                this.clearPin();
+            }
+            
+        }
     }
 
     clearPin() {
@@ -65,7 +88,7 @@ export default class ImportWalletScreen extends Component {
 
                 <Text style={[StyleSheet.value('$screen_title_text'), styles.title]}>Security Pin</Text>
 
-                <Text style={styles.sub_title}>Create a new PIN</Text>
+                <Text style={styles.sub_title}>{this.state.title}</Text>
 
                 <View style={styles.radio_container}>
                     <View style={styles.radios}>{

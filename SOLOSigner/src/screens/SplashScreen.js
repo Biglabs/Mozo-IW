@@ -23,7 +23,7 @@ export default class SplashScreen extends Component {
         Linking.getInitialURL().then(this.checkScheme).catch(this.checkScheme);
     }
 
-    isDbExisting(){
+    isDbExisting = async function(){
         try {
             const value = await AsyncStorage.getItem('@DbExisting:key');
             if (value !== null){
@@ -41,14 +41,13 @@ export default class SplashScreen extends Component {
             SchemeHandler(url);
         } else {
             //If DB is existing, open PIN screen for user to enter their PIN
-            // let dbExisting = this.isDbExisting();
-            // if(dbExisting){
-            //     Actions.security_pin();
-            // } else {
-            //     //Else open welcome screen
-            //     Actions.reset('welcome');
-            // }
-            Actions.reset('welcome');            
+            var dbExisting = this.isDbExisting;
+            if(dbExisting){
+                Actions.security_pin({ isNewPin : false });
+            } else {
+                //Else open welcome screen
+                Actions.reset('welcome');
+            }
         }
     }
 

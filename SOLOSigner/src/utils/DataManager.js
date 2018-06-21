@@ -10,10 +10,12 @@ const AppSchema = {
 
 const UserSchema = {
     name: 'User',
-    primaryKey: 'uuid',
+    primaryKey: 'id',
     properties: {
-        uuid: 'string',
-        name: 'string'
+        id: 'int',
+        walletKey : 'string',
+        walletId : 'string',
+        name: 'string?'
     },
 };
 
@@ -25,7 +27,7 @@ const AddressSchema = {
         prvKey: 'string'
     },
 };
-const configuration = {schema: [UserSchema, AddressSchema], path : "solo.signer"};
+const configuration = {schema: [UserSchema, AddressSchema, AppSchema], path : "solo.signer"};
 
 class DataManager {
     static myInstance = null;
@@ -67,18 +69,18 @@ class DataManager {
         return hashPin;
     }
 
-    checkPin(expectedPin, onSuccess, onFail){
+    checkPin(expectedPin){
         let appInfo = this.getAppInfo();
         if(appInfo && appInfo.pin) {
             let actualHashPin = appInfo.pin;
             let expectedHashPin = this.convertToHash(expectedPin);
             if(expectedHashPin.equalTo(actualHashPin)){
-                onSuccess();
+                return true;
             } else {
-                onFail("Incorrect PIN");
+                return false;
             }
         } else {
-            onFail("No PIN is existing");
+            return false;
         }
     }
 
@@ -145,7 +147,7 @@ class DataManager {
             })
             .then((userInfo) => {
                 console.log(userInfo);
-                //this.saveUserInfo(userInfo);
+                this.saveUserInfo(userInfo);
             })
             .catch((error) => {
                 console.log(error);
@@ -168,7 +170,7 @@ class DataManager {
 
     saveUserInfo(userInfo) {
         DataManager.realm.write(() => {
-            DataManager.realm.create('User', { uuid : userInfo.uuid, name : userInfo.name});
+            DataManager.realm.create('User', userInfo);
         });
     }
 
@@ -182,7 +184,7 @@ class DataManager {
 
     addAddress(address, prvKey) {
         DataManager.realm.write(() => {
-            DataManager.realm.create('Address', { address : address, prvKey : prvKey});
+            DataManager.realm.create('Address', { address : address, prvKey : prvKey });
         });
     }
 

@@ -39,7 +39,7 @@ export default class CreateWalletScreen extends Component {
                     onContinuePress={() => {
                         switch (this.state.selectedIndex) {
                             case 0:
-                                Actions.security_pin();
+                                Actions.security_pin({isNewPIN : true});
                                 break;
                             case 1:
                                 Actions.add_wallet();
