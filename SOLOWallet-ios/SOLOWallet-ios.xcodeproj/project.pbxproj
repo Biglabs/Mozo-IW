@@ -26,6 +26,7 @@
 		C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */; };
 		C63A844120DB56650073EB08 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844020DB56650073EB08 /* Utils.swift */; };
 		C63A844320DB57840073EB08 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844220DB57840073EB08 /* UIButton+Extension.swift */; };
+		C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C63A844420DB62BF0073EB08 /* SendViewController.storyboard */; };
 		C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */; };
 		C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */; };
 		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
@@ -65,6 +66,7 @@
 		C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		C63A844020DB56650073EB08 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		C63A844220DB57840073EB08 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		C63A844420DB62BF0073EB08 /* SendViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendViewController.storyboard; sourceTree = "<group>"; };
 		C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo-bold.ttf"; sourceTree = "<group>"; };
 		C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo.ttf"; sourceTree = "<group>"; };
 		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				C616DF0C20D8D93400258ACE /* SendViewController.swift */,
+				C63A844420DB62BF0073EB08 /* SendViewController.storyboard */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */,
 				C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */,
 				C616DF4420D8FAEE00258ACE /* Main.storyboard in Resources */,
+				C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */,
 				C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */,
 				C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */,
 			);

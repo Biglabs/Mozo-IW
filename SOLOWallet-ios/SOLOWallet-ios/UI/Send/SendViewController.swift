@@ -11,6 +11,6 @@ import UIKit
 public class SendViewController: AbstractViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.yellow
+        
     }
 }

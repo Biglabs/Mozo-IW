@@ -22,23 +22,22 @@ public class SoloWalletViewController: UITabBarController, UITabBarControllerDel
         
         //Tab 1: Wallet
         let walletVC = WalletViewController()
-        walletVC.title = "Wallet"
-        walletVC.tabBarItem = UITabBarItem.init(title: "Wallet", image: UIImage.init(named: "ic_wallet"), tag: 0)
+        walletVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Wallet.value, image: UIImage.init(named: SOLOTAB.Wallet.icon), tag: 0)
         tabBars.append(walletVC)
         
         //Tab 2: Receive
         let receiveVC = ReceiveViewController()
-        receiveVC.tabBarItem = UITabBarItem.init(title: "Receive", image: UIImage.init(named: "ic_down_arrow"), tag: 1)
+        receiveVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Receive.value, image: UIImage.init(named: SOLOTAB.Receive.icon), tag: 1)
         tabBars.append(receiveVC)
         
         //Tab 3: Exchange
         let exchangeVC = ExchangeViewController()
-        exchangeVC.tabBarItem = UITabBarItem.init(title: "Exchange", image: UIImage.init(named: "ic_exchange_arrows"), tag: 2)
+        exchangeVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Exchange.value, image: UIImage.init(named: SOLOTAB.Exchange.icon), tag: 2)
         tabBars.append(exchangeVC)
         
         //Tab 4: Send
         let sendVC = SendViewController()
-        sendVC.tabBarItem = UITabBarItem.init(title: "Send", image: UIImage.init(named: "ic_up_arrow"), tag: 3)
+        sendVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Send.value, image: UIImage.init(named: SOLOTAB.Send.icon), tag: 3)
         tabBars.append(sendVC)
         
         self.viewControllers = tabBars
