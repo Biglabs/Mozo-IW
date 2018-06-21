@@ -1,0 +1,23 @@
+{
+    "solomonApp": {
+        "address" : {
+            "home": {
+                "title": "Addresses",
+                "createLabel": "Thêm mới một Address",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Address"
+            },
+            "created": "Một Address mới được tạo với định danh {{ param }}",
+            "updated": "Một Address cập nhật với định danh {{ param }}",
+            "deleted": "Một Address đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Address {{ id }}?"
+            },
+            "detail": {
+                "title": "Address"
+            },
+            "coin": "Coin",
+            "network": "Network",
+            "address": "Address"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "solomonApp": {
+        "Network" : {
+            "null": "",
+            "BTC_MAIN": "BTC_MAIN",
+            "BTC_TEST": "BTC_TEST",
+            "ETH_MAIN": "ETH_MAIN",
+            "ETH_TEST": "ETH_TEST"
+        }
+    }
+}

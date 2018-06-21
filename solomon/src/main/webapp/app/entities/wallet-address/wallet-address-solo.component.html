@@ -1,0 +1,68 @@
+<div>
+    <h2>
+        <span jhiTranslate="solomonApp.walletAddress.home.title">Wallet Addresses</span>
+        <button class="btn btn-primary float-right jh-create-entity create-wallet-address-solo" [routerLink]="['/', { outlets: { popup: ['wallet-address-solo-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="solomonApp.walletAddress.home.createLabel">
+            Create new Wallet Address
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="walletAddresses">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="solomonApp.walletAddress.inUse">In Use</span></th>
+            <th><span jhiTranslate="solomonApp.walletAddress.address">Address</span></th>
+            <th><span jhiTranslate="solomonApp.walletAddress.wallet">Wallet</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let walletAddress of walletAddresses ;trackBy: trackId">
+                <td><a [routerLink]="['../wallet-address-solo', walletAddress.id ]">{{walletAddress.id}}</a></td>
+                <td>{{walletAddress.inUse}}</td>
+                <td>
+                    <div *ngIf="walletAddress.address">
+                        <a [routerLink]="['../address-solo', walletAddress.address?.id ]" >{{walletAddress.address?.address}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="walletAddress.wallet">
+                        <a [routerLink]="['../wallet-solo', walletAddress.wallet?.id ]" >{{walletAddress.wallet?.walletId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../wallet-address-solo', walletAddress.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'wallet-address-solo/'+ walletAddress.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'wallet-address-solo/'+ walletAddress.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

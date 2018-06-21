@@ -1,0 +1,23 @@
+{
+    "solomonApp": {
+        "walletAddress" : {
+            "home": {
+                "title": "Wallet Addresses",
+                "createLabel": "Create a new Wallet Address",
+                "createOrEditLabel": "Create or edit a Wallet Address"
+            },
+            "created": "A new Wallet Address is created with identifier {{ param }}",
+            "updated": "A Wallet Address is updated with identifier {{ param }}",
+            "deleted": "A Wallet Address is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Wallet Address {{ id }}?"
+            },
+            "detail": {
+                "title": "Wallet Address"
+            },
+            "inUse": "In Use",
+            "address": "Address",
+            "wallet": "Wallet"
+        }
+    }
+}

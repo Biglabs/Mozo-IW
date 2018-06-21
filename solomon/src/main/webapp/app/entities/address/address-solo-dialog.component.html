@@ -1,0 +1,66 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAddressLabel" jhiTranslate="solomonApp.address.home.createOrEditLabel">Create or edit a Address</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!address.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="address.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.coin" for="field_coin">Coin</label>
+            <select class="form-control" name="coin" [(ngModel)]="address.coin" id="field_coin"  required>
+                <option value="BTC">{{'solomonApp.CoinType.BTC' | translate}}</option>
+                <option value="ETC">{{'solomonApp.CoinType.ETC' | translate}}</option>
+                <option value="MOZO">{{'solomonApp.CoinType.MOZO' | translate}}</option>
+                <option value="SOLO">{{'solomonApp.CoinType.SOLO' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.coin?.dirty && editForm.controls.coin?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.coin?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.network" for="field_network">Network</label>
+            <select class="form-control" name="network" [(ngModel)]="address.network" id="field_network"  required>
+                <option value="BTC_MAIN">{{'solomonApp.Network.BTC_MAIN' | translate}}</option>
+                <option value="BTC_TEST">{{'solomonApp.Network.BTC_TEST' | translate}}</option>
+                <option value="ETH_MAIN">{{'solomonApp.Network.ETH_MAIN' | translate}}</option>
+                <option value="ETH_TEST">{{'solomonApp.Network.ETH_TEST' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.network?.dirty && editForm.controls.network?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.network?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.address" for="field_address">Address</label>
+            <input type="text" class="form-control" name="address" id="field_address"
+                [(ngModel)]="address.address" required />
+            <div [hidden]="!(editForm.controls.address?.dirty && editForm.controls.address?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.address?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

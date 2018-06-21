@@ -1,0 +1,37 @@
+
+<div *ngIf="walletAddress">
+    <h2><span jhiTranslate="solomonApp.walletAddress.detail.title">Wallet Address</span> {{walletAddress.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="solomonApp.walletAddress.inUse">In Use</span></dt>
+        <dd>
+            <span>{{walletAddress.inUse}}</span>
+        </dd>
+        <dt><span jhiTranslate="solomonApp.walletAddress.address">Address</span></dt>
+        <dd>
+            <div *ngIf="walletAddress.address">
+                <a [routerLink]="['/address-solo', walletAddress.address?.id]">{{walletAddress.address?.address}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="solomonApp.walletAddress.wallet">Wallet</span></dt>
+        <dd>
+            <div *ngIf="walletAddress.wallet">
+                <a [routerLink]="['/wallet-solo', walletAddress.wallet?.id]">{{walletAddress.wallet?.walletId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'wallet-address-solo/'+ walletAddress.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

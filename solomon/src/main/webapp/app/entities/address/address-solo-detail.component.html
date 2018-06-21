@@ -1,0 +1,33 @@
+
+<div *ngIf="address">
+    <h2><span jhiTranslate="solomonApp.address.detail.title">Address</span> {{address.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="solomonApp.address.coin">Coin</span></dt>
+        <dd>
+            <span jhiTranslate="{{'solomonApp.CoinType.' + address.coin}}">{{address.coin}}</span>
+        </dd>
+        <dt><span jhiTranslate="solomonApp.address.network">Network</span></dt>
+        <dd>
+            <span jhiTranslate="{{'solomonApp.Network.' + address.network}}">{{address.network}}</span>
+        </dd>
+        <dt><span jhiTranslate="solomonApp.address.address">Address</span></dt>
+        <dd>
+            <span>{{address.address}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'address-solo/'+ address.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

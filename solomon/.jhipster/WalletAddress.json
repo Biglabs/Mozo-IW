@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "address",
+            "otherEntityName": "address",
+            "otherEntityField": "address",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "walletAddress"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "wallet",
+            "otherEntityName": "wallet",
+            "otherEntityField": "walletId"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "inUse",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180621103733",
+    "entityTableName": "wallet_address",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "solo"
+}

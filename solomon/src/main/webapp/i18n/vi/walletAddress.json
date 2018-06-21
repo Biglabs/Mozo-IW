@@ -1,0 +1,23 @@
+{
+    "solomonApp": {
+        "walletAddress" : {
+            "home": {
+                "title": "Wallet Addresses",
+                "createLabel": "Thêm mới một Wallet Address",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Wallet Address"
+            },
+            "created": "Một Wallet Address mới được tạo với định danh {{ param }}",
+            "updated": "Một Wallet Address cập nhật với định danh {{ param }}",
+            "deleted": "Một Wallet Address đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Wallet Address {{ id }}?"
+            },
+            "detail": {
+                "title": "Wallet Address"
+            },
+            "inUse": "In Use",
+            "address": "Address",
+            "wallet": "Wallet"
+        }
+    }
+}

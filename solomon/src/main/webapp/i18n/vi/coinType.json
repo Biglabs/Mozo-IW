@@ -1,0 +1,11 @@
+{
+    "solomonApp": {
+        "CoinType" : {
+            "null": "",
+            "BTC": "BTC",
+            "ETC": "ETC",
+            "MOZO": "MOZO",
+            "SOLO": "SOLO"
+        }
+    }
+}

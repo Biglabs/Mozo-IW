@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "coin",
+            "fieldType": "CoinType",
+            "fieldValues": "BTC,ETC,MOZO,SOLO",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "network",
+            "fieldType": "Network",
+            "fieldValues": "BTC_MAIN,BTC_TEST,ETH_MAIN,ETH_TEST",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "address",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180621103732",
+    "entityTableName": "address",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "solo"
+}
