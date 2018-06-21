@@ -86,21 +86,22 @@ class DataManager {
 
     updatePin(pin){
         let appInfo = this.getAppInfo();
+        let hashPin = this.convertToHash(pin);
         if(appInfo){
             //Remove old PIN
             DataManager.realm.write(() => {
                 DataManager.realm.delete(appInfo);
                 //Add new
-                this.addPin(pin);
+                this.addPin(hashPin);
             });
         } else {
             //Add new
-            this.addPin(pin);
+            this.addPin(hashPin);
         }
+        return hashPin;
     }
 
-    addPin(pin){
-        let hashPin = this.convertToHash(pin);
+    addPin(hashPin){
         DataManager.realm.write(() => {
             DataManager.realm.create('App', { pin : hashPin });
         });
@@ -140,28 +141,32 @@ class DataManager {
     }
 
     registerWallet(publicKey) {
-        try {
-            let hash = this.convertToHash(publicKey);
-            this.sendRequest('http://192.168.1.91:8080/api/solo-wallets', {
-                walletKey: hash,
-            })
-            .then((userInfo) => {
-                console.log(userInfo);
-                this.saveUserInfo(userInfo);
-            })
-            .catch((error) => {
-                console.log(error);
-            }); 
-        } catch (error) {
-            console.error(error);
-        }
+        return new Promise((resolve, reject) => {
+            try {
+                let hash = this.convertToHash(publicKey);
+                this.sendRequest('http://192.168.1.91:8080/api/solo-wallets', {
+                    walletKey: hash,
+                })
+                .then((userInfo) => {
+                    console.log(userInfo);
+                    resolve(userInfo);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    reject(error);
+                }); 
+            } catch (error) {
+                console.error(error);
+                reject(error);
+            }
+        });
     }
 
-    syncAddress(uuid, address) {
+    syncAddress(address, walletId) {
         try {
-            this.sendRequest('http://192.168.1.16/', {
-                uuid: uuid,
-                address: address
+            this.sendRequest('http://192.168.1.91:8080/api/wallet-addresses', {
+                addressId: address,
+                soloWalletId: walletId
             });
         } catch (error) {
             console.error(error);

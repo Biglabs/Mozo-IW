@@ -88,10 +88,6 @@ export default class Bip44 extends Component<Props> {
                     let seed = bip39.mnemonicToSeedHex(mnemonic);
                     let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
                     var bip32ExtendedKey = rootKey.derivePath("m/44'/60'/0'/0");
-
-                    let publicKey = bip32ExtendedKey.neutered().toBase58();
-                    let manager = DataManager.getInstance();
-                    manager.registerWallet(publicKey);
                     
                     this.setState({
                         rootKey: "Bip32 Private extended key: " + bip32ExtendedKey.toBase58(),

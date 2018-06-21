@@ -4,6 +4,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, Text} from "../components/SoloComponent";
 import DataManager from '../utils/DataManager';
+import Bitcoin from 'react-native-bitcoinjs-lib';
 
 const accentColor = '#00fffc';
 const numbersPressedColor = '#003c8d';
@@ -28,16 +29,58 @@ export default class ImportWalletScreen extends Component<Props> {
         }
     }
 
+    createNewWallet(){
+        let mnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
+        let seed = bip39.mnemonicToSeedHex(mnemonic);
+        let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
+        var bip32ExtendedKey = rootKey.derivePath("m/44'/60'/0'/0");
+        
+        return bip32ExtendedKey;
+    }
+
+    getAddressAtIndex(wallet, index){
+        try {
+            let userWallet = wallet.derive(index);
+            var keyPair = userWallet.keyPair;
+            this.state.privKeyBuffer = keyPair.d.toBuffer(32);
+            var privkey = this.state.privKeyBuffer.toString('hex');
+            var ethUtil = require('ethereumjs-util');
+            var addressBuffer = ethUtil.privateToAddress(this.state.privKeyBuffer);
+            var hexAddress = addressBuffer.toString('hex');
+            var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
+            var address = ethUtil.addHexPrefix(checksumAddress);
+            console.log("Ethereum address: [" + address + "]")
+            privkey = ethUtil.addHexPrefix(privkey);
+            return {address : address, privkey : privkey};
+        } catch (error) {
+            console.error(error);
+        }
+        return null;
+    }
+
     continuePress(){
         //TODO: Should show spinning view here
         let manager = DataManager.getInstance();
         if(this.props.isNewPIN){
             //If this is the first launch, AsyncStorage will store isDbExisting true
             // Save PIN
-            manager.updatePin(this.pinCode);
-            
+            let hashPin = manager.updatePin(this.pinCode);
+            let ethWallet = this.createNewWallet();
+            let publicKey = ethWallet.neutered().toBase58();
             // Register wallet and save uid
-            manager.registerWallet();
+            manager.registerWallet(publicKey).then((userInfo) => {
+                alert('Register success');
+                // Save User Info
+                manager.saveUserInfo(userInfo);
+                let walletData = this.getAddressAtIndex(ethWallet, 0);
+                // Save address and private key
+                //TODO: Use bip38 to encrypt private key before saving to DB, password: hashPin
+                manager.addAddress(walletData.address, walletData.privkey);
+                // Synchronize address to server
+                manager.syncAddress(walletData.address, userInfo.soloWalletId);
+            }).catch((error) => {
+                alert('Register fail');
+            });
             // Store isDbExisting true
             AsyncStorage.setItem('@DbExisting:key', true);
             this.props.isNewPIN = false;
