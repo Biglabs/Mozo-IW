@@ -10,27 +10,40 @@ import UIKit
 
 public class InfoWalletTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var curvedLabel: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var copyButton: UIButton!
-    @IBOutlet weak var changeAddressButton: UIButton!
+    @IBOutlet weak var balanceLabel: UILabel!
+    @IBOutlet weak var usdLabel: UILabel!
+    @IBOutlet weak var qrcodeLabel: UILabel!
+    @IBOutlet weak var qrcodeImageView: UIImageView!
+    @IBOutlet weak var infoView: UIView!
     
     public override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.nameLabel.textColor = ThemeManager.shared.font
-        self.addressLabel.textColor = ThemeManager.shared.font
-        self.copyButton.tintColor = ThemeManager.shared.font
-        self.changeAddressButton.tintColor = ThemeManager.shared.main
+        self.curvedLabel.tintColor = ThemeManager.shared.disable
+        self.curvedLabel.setImage(UIImage.init(named: "ic_curved_arrows"), for: .normal)
+        self.nameLabel.textColor = ThemeManager.shared.highlight
+        self.balanceLabel.textColor = ThemeManager.shared.main
+        self.usdLabel.textColor = ThemeManager.shared.font
+        self.qrcodeLabel.textColor = ThemeManager.shared.font
+        self.qrcodeImageView.image = UIImage.init(named: "ic_qr_code")
+        self.infoView.layer.cornerRadius = 5
+        self.infoView.layer.borderWidth = 0.5
+        self.infoView.layer.borderColor = ThemeManager.shared.border.cgColor
     }
     
     public func bindData(_ coin: CoinDTO){
+        if let name = coin.name {
+            self.nameLabel.text = name
+        }
+        
         if let address = coin.addesses?.first {
-            if let name = address.name {
-                self.nameLabel.text = name
+            if let balance = address.balance {
+                self.balanceLabel.text = String(balance)
             }
-            if let address = address.id {
-                self.addressLabel.text = String(address)
+            if let usd = address.usd {
+                self.usdLabel.text = String(usd)
             }
         }
     }

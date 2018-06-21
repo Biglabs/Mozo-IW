@@ -56,7 +56,7 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44))
         view.backgroundColor = ThemeManager.shared.background
         let label = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.bounds.width - 20, height: 34))
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = ThemeManager.shared.title
         
         let name = self.coin.name ?? ""

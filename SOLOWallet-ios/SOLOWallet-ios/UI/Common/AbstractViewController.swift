@@ -36,8 +36,16 @@ public class AbstractViewController: UIViewController {
         let navItem = UINavigationItem(title: coin.name!)
         navItem.rightBarButtonItem = self.menuBarButton
         navItem.leftBarButtonItem = self.logoBarButton
-        navItem.titleView = UIImageView.init(image: UIImage.init(named: coin.icon!))
+        
+        let titleLabel = UILabel.init()
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        titleLabel.textColor = ThemeManager.shared.title
+        if let icon = self.coin.icon {
+            titleLabel.addTextWithImage(text: " \(self.coin.name ?? "")", image: UIImage.init(named: icon)!, imageBehindText: false, keepPreviousText: false)
+        }
+        navItem.titleView = titleLabel
         navigationBar.setItems([navItem], animated: false)
+        
         
         //effect relax
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(self.doubleTap))

@@ -1,5 +1,5 @@
 //
-//  UIColor+Extensions.swift
+//  UIColor+Extension.swift
 //  SOLOWallet-ios
 //
 //  Created by Tam Nguyen on 6/19/18.

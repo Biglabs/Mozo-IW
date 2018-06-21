@@ -16,13 +16,16 @@
 		C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1020D8D95800258ACE /* ExchangeViewController.swift */; };
 		C616DF1520D8DCF800258ACE /* SoloWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1420D8DCF800258ACE /* SoloWalletViewController.swift */; };
 		C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1620D8E09400258ACE /* ThemeManager.swift */; };
-		C616DF1920D8E34300258ACE /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1820D8E34300258ACE /* UIColor+Extensions.swift */; };
+		C616DF1920D8E34300258ACE /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1820D8E34300258ACE /* UIColor+Extension.swift */; };
 		C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */; };
 		C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */; };
 		C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1E20D8E7F100258ACE /* Configuration.swift */; };
 		C616DF4420D8FAEE00258ACE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C616DF4320D8FAED00258ACE /* Main.storyboard */; };
 		C616DF4E20D90B6000258ACE /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF4D20D90B6000258ACE /* Constant.swift */; };
 		C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF5020D916A800258ACE /* AbstractViewController.swift */; };
+		C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */; };
+		C63A844120DB56650073EB08 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844020DB56650073EB08 /* Utils.swift */; };
+		C63A844320DB57840073EB08 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844220DB57840073EB08 /* UIButton+Extension.swift */; };
 		C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */; };
 		C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */; };
 		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
@@ -51,7 +54,7 @@
 		C616DF1020D8D95800258ACE /* ExchangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeViewController.swift; sourceTree = "<group>"; };
 		C616DF1420D8DCF800258ACE /* SoloWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoloWalletViewController.swift; sourceTree = "<group>"; };
 		C616DF1620D8E09400258ACE /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
-		C616DF1820D8E34300258ACE /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		C616DF1820D8E34300258ACE /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerMenuViewController.swift; sourceTree = "<group>"; };
 		C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTextSize.swift; sourceTree = "<group>"; };
 		C616DF1E20D8E7F100258ACE /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -59,6 +62,9 @@
 		C616DF4320D8FAED00258ACE /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C616DF4D20D90B6000258ACE /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		C616DF5020D916A800258ACE /* AbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
+		C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
+		C63A844020DB56650073EB08 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		C63A844220DB57840073EB08 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo-bold.ttf"; sourceTree = "<group>"; };
 		C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo.ttf"; sourceTree = "<group>"; };
 		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
@@ -141,11 +147,14 @@
 			isa = PBXGroup;
 			children = (
 				C616DF1620D8E09400258ACE /* ThemeManager.swift */,
-				C616DF1820D8E34300258ACE /* UIColor+Extensions.swift */,
+				C616DF1820D8E34300258ACE /* UIColor+Extension.swift */,
 				C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */,
 				C616DF1E20D8E7F100258ACE /* Configuration.swift */,
 				C616DF4D20D90B6000258ACE /* Constant.swift */,
 				C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */,
+				C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */,
+				C63A844020DB56650073EB08 /* Utils.swift */,
+				C63A844220DB57840073EB08 /* UIButton+Extension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -364,6 +373,7 @@
 				C616DF1520D8DCF800258ACE /* SoloWalletViewController.swift in Sources */,
 				C616DF4E20D90B6000258ACE /* Constant.swift in Sources */,
 				C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */,
+				C63A844320DB57840073EB08 /* UIButton+Extension.swift in Sources */,
 				C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */,
 				C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */,
 				C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */,
@@ -373,12 +383,14 @@
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
+				C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */,
 				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
 				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
+				C63A844120DB56650073EB08 /* Utils.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
-				C616DF1920D8E34300258ACE /* UIColor+Extensions.swift in Sources */,
+				C616DF1920D8E34300258ACE /* UIColor+Extension.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

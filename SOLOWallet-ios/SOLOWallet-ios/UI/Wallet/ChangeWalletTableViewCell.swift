@@ -14,6 +14,7 @@ public class ChangeWalletTableViewCell: UITableViewCell {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var copyButton: UIButton!
     @IBOutlet weak var changeAddressButton: UIButton!
+    @IBOutlet weak var changeAddressIcon: UIButton!
     
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,6 +24,8 @@ public class ChangeWalletTableViewCell: UITableViewCell {
         self.copyButton.tintColor = ThemeManager.shared.disable
         self.copyButton.setImage(UIImage.init(named: "ic_copy_content"), for: .normal)
         self.changeAddressButton.tintColor = ThemeManager.shared.main
+        self.changeAddressIcon.tintColor = ThemeManager.shared.disable
+        self.changeAddressIcon.setImage(UIImage.init(named: "ic_sort_down"), for: .normal)
     }
     
     public func bindData(_ coin: CoinDTO){
