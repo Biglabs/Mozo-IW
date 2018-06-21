@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TouchableHighlight, View} from 'react-native';
+import {AsyncStorage, Image, TouchableHighlight, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, Text} from "../components/SoloComponent";
@@ -20,44 +20,43 @@ const inputExistingPIN = "Enter PIN";
 export default class ImportWalletScreen extends Component<Props> {
     constructor(props) {
         super(props);
-        this.pinCode = [null, 2, null, null];
-        this.state = {pinIndex: -1};
-        this.state.title = inputExistingPIN;
-        if(this.props.isNewPIN){
+        this.pinCode = [null, null, null, null];
+        this.state = {pinIndex: -1, isShowingLoading: false, title: inputExistingPIN};
+        if (this.props.isNewPIN) {
             this.state.title = inputNewPIN;
         }
     }
 
-    continuePress(){
-        //TODO: Should show spinning view here
-        let manager = DataManager.getInstance();
-        if(this.props.isNewPIN){
-            //If this is the first launch, AsyncStorage will store isDbExisting true
-            // Save PIN
-            manager.updatePin(this.pinCode);
-            
-            // Register wallet and save uid
-            manager.registerWallet();
-            // Store isDbExisting true
-            AsyncStorage.setItem('@DbExisting:key', true);
-            this.props.isNewPIN = false;
-        } else {
-            // Set isDbExisting true
-            AsyncStorage.setItem('@DbExisting:key', true);
-            //Compare PIN
-            let isEqual = manager.checkPin(this.pinCode);
-            if(isEqual){
-                // Open Home Screen
-                Actions.main_stack();
+    continuePress() {
+        this.setState({isShowingLoading: true}, () => {
+            let manager = DataManager.getInstance();
+            if (this.props.isNewPIN) {
+                //If this is the first launch, AsyncStorage will store isDbExisting true
+                // Save PIN
+                // manager.updatePin(this.pinCode);
+
+                // Register wallet and save uid
+                // manager.registerWallet();
+                // Store isDbExisting true
+                AsyncStorage.setItem('@DbExisting:key', true);
+                this.props.isNewPIN = false;
             } else {
-                this.clearPin();
+                // Set isDbExisting true
+                AsyncStorage.setItem('@DbExisting:key', true);
+                //Compare PIN
+                let isEqual = manager.checkPin(this.pinCode);
+                if (isEqual) {
+                    // Open Home Screen
+                    Actions.main_stack();
+                } else {
+                    this.clearPin();
+                }
             }
-            
-        }
+        });
     }
 
     clearPin() {
-        this.setState({pinIndex: -1}, () => {
+        this.setState({pinIndex: -1, isShowingLoading: false}, () => {
             this.pinCode = [null, null, null, null];
         });
     }
@@ -83,61 +82,84 @@ export default class ImportWalletScreen extends Component<Props> {
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-
-                <Text style={[StyleSheet.value('$screen_title_text'), styles.title]}>Security Pin</Text>
-
-                <Text style={styles.sub_title}>{this.state.title}</Text>
-
-                <View style={styles.radio_container}>
-                    <View style={styles.radios}>{
-                        this.state.pinIndex >= 0 && <View style={styles.radios_checked}/>
-                    }</View>
-                    <View style={styles.radios}>{
-                        this.state.pinIndex >= 1 && <View style={styles.radios_checked}/>
-                    }</View>
-                    <View style={styles.radios}>{
-                        this.state.pinIndex >= 2 && <View style={styles.radios_checked}/>
-                    }</View>
-                    <View style={styles.radios}>{
-                        this.state.pinIndex >= 3 && <View style={styles.radios_checked}/>
-                    }</View>
+        if (this.state.isShowingLoading)
+            return (
+                <View style={styles.loading_container}>
+                    <Image
+                        style={{width: 50, height: 50}}
+                        source={require('../res/icons/ic_loading_indicator.gif')}
+                    />
+                    <Text style={styles.loading_text}>Creating Interface</Text>
                 </View>
+            );
+        else
+            return (
+                <View style={styles.container}>
 
-                <View style={styles.number_pad}>
-                    {
-                        numberPad.map((row, key) => {
-                            return <View key={key} style={styles.numbers_row}>
-                                {
-                                    row.map(button => {
-                                        return <TouchableHighlight
-                                            key={button}
-                                            style={styles.numbers_touch}
-                                            onPress={() => this.keyPress(button)}
-                                            underlayColor={numbersPressedColor}>
+                    <Text style={[StyleSheet.value('$screen_title_text'), styles.title]}>Security Pin</Text>
 
-                                            <Text style={styles.numbers}>{button}</Text>
+                    <Text style={styles.sub_title}>{this.state.title}</Text>
 
-                                        </TouchableHighlight>
-                                    })
-                                }
-                            </View>
-                        })
-                    }
+                    <View style={styles.radio_container}>
+                        <View style={styles.radios}>{
+                            this.state.pinIndex >= 0 && <View style={styles.radios_checked}/>
+                        }</View>
+                        <View style={styles.radios}>{
+                            this.state.pinIndex >= 1 && <View style={styles.radios_checked}/>
+                        }</View>
+                        <View style={styles.radios}>{
+                            this.state.pinIndex >= 2 && <View style={styles.radios_checked}/>
+                        }</View>
+                        <View style={styles.radios}>{
+                            this.state.pinIndex >= 3 && <View style={styles.radios_checked}/>
+                        }</View>
+                    </View>
+
+                    <View style={styles.number_pad}>
+                        {
+                            numberPad.map((row, key) => {
+                                return <View key={key} style={styles.numbers_row}>
+                                    {
+                                        row.map(button => {
+                                            return <TouchableHighlight
+                                                key={button}
+                                                style={styles.numbers_touch}
+                                                onPress={() => this.keyPress(button)}
+                                                underlayColor={numbersPressedColor}>
+
+                                                <Text style={styles.numbers}>{button}</Text>
+
+                                            </TouchableHighlight>
+                                        })
+                                    }
+                                </View>
+                            })
+                        }
+                    </View>
+
+                    <FooterActions
+                        buttonsColor={{back: accentColor, continue: accentColor}}
+                        onBackPress={() => Actions.pop()}
+                        enabledContinue={this.state.pinIndex === 3}
+                        onContinuePress={() => this.continuePress()}/>
                 </View>
-
-                <FooterActions
-                    buttonsColor={{back: accentColor, continue: accentColor}}
-                    onBackPress={() => Actions.pop()}
-                    enabledContinue={this.state.pinIndex === 3}
-                    onContinuePress={() =>  this.continuePress()}/>
-            </View>
-        )
+            );
     }
 }
 
 const styles = StyleSheet.create({
+    loading_container: {
+        backgroundColor: '$primaryColor',
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    loading_text: {
+        fontSize: 14,
+        color: '#ffffff',
+        marginTop: 24
+    },
     container: {
         alignItems: 'flex-start',
         backgroundColor: '$primaryColor',
