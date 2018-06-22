@@ -15,30 +15,28 @@ const numberPad = [
     [7, 8, 9],
     ['CLR', 0, 'DEL']
 ];
-
+const PIN_LENGTH = 4;
 const inputNewPIN = "Create a new PIN";
 const inputExistingPIN = "Enter PIN";
 
 export default class ImportWalletScreen extends Component<Props> {
     constructor(props) {
         super(props);
-        this.pinCode = [null, null, null, null];
+        this.pinCode = Array.apply(null, Array(PIN_LENGTH));
         this.state = {pinIndex: -1, isShowingLoading: false, title: inputExistingPIN};
         if (this.props.isNewPIN) {
             this.state.title = inputNewPIN;
         }
     }
 
-    createNewWallet(){
+    createNewWallet() {
         let mnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
         let seed = bip39.mnemonicToSeedHex(mnemonic);
         let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
-        var bip32ExtendedKey = rootKey.derivePath("m/44'/60'/0'/0");
-        
-        return bip32ExtendedKey;
+        return rootKey.derivePath("m/44'/60'/0'/0");
     }
 
-    getAddressAtIndex(wallet, index){
+    getAddressAtIndex(wallet, index) {
         try {
             let userWallet = wallet.derive(index);
             var keyPair = userWallet.keyPair;
@@ -49,16 +47,16 @@ export default class ImportWalletScreen extends Component<Props> {
             var hexAddress = addressBuffer.toString('hex');
             var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
             var address = ethUtil.addHexPrefix(checksumAddress);
-            console.log("Ethereum address: [" + address + "]")
+            console.log("Ethereum address: [" + address + "]");
             privkey = ethUtil.addHexPrefix(privkey);
-            return {address : address, privkey : privkey};
+            return {address: address, privkey: privkey};
         } catch (error) {
             console.error(error);
         }
         return null;
     }
 
-    saveAddressToLocal(manager, walletData, hashPin){
+    saveAddressToLocal(manager, walletData, hashPin) {
         // Because this is the first time when app is launched, data must be save to local
         // Save address and private key
         // Encrypt private key before saving to DB, password: hashPin
@@ -71,7 +69,7 @@ export default class ImportWalletScreen extends Component<Props> {
         Actions.main_stack();
     }
 
-    registerWalletAndSyncAddress(publicKey, address){
+    registerWalletAndSyncAddress(publicKey, address) {
         console.log("Check wallet");
         manager.getExistingWalletFromServer(publicKey).then(userInfo => {
             console.log('Wallet is registered.');
@@ -79,7 +77,7 @@ export default class ImportWalletScreen extends Component<Props> {
             manager.saveUserInfo(userInfo);
             AsyncStorage.removeItem('@publicKey:key');
         }).catch((error) => {
-            if(error.isWalletExisting !== 'undefined' && error.notExisting){
+            if (error.isWalletExisting !== 'undefined' && error.notExisting) {
                 console.log('Register wallet');
                 // Register wallet and save uid
                 manager.registerWallet(publicKey).then((userInfo) => {
@@ -88,7 +86,7 @@ export default class ImportWalletScreen extends Component<Props> {
                     manager.saveUserInfo(userInfo);
                     AsyncStorage.removeItem('@publicKey:key');
                     // Synchronize address to server
-                    manager.syncAddress(address, userInfo.walletId, "ETH", "ETH_TEST");                    
+                    manager.syncAddress(address, userInfo.walletId, "ETH", "ETH_TEST");
                 }).catch((error) => {
                     console.log('Register fail', error);
                     this.clearPin();
@@ -102,10 +100,10 @@ export default class ImportWalletScreen extends Component<Props> {
         });
     }
 
-    continuePress(){
+    continuePress() {
         this.setState({isShowingLoading: true}, () => {
             let manager = DataManager.getInstance();
-            if(this.props.isNewPIN){
+            if (this.props.isNewPIN) {
                 //If this is the first launch, AsyncStorage will store isDbExisting true
                 // Save PIN
                 let hashPin = manager.updatePin(this.pinCode);
@@ -120,13 +118,13 @@ export default class ImportWalletScreen extends Component<Props> {
             } else {
                 //Compare PIN
                 let isEqual = manager.checkPin(this.pinCode);
-                if(isEqual){
+                if (isEqual) {
                     // Check wallet is registered on server or not
                     AsyncStorage.getItem('@publicKey:key', (error, result) => {
-                        if(!error && result){
+                        if (!error && result) {
                             let publicKey = result;
                             let addresses = manager.getAllAddresses();
-                            if(addresses && addresses.length > 0){
+                            if (addresses && addresses.length > 0) {
                                 let address = addresses[0];
                                 this.registerWalletAndSyncAddress(publicKey, address);
                             }
@@ -146,24 +144,24 @@ export default class ImportWalletScreen extends Component<Props> {
 
     clearPin() {
         this.setState({pinIndex: -1, isShowingLoading: false}, () => {
-            this.pinCode = [null, null, null, null];
+            this.pinCode = Array.apply(null, Array(PIN_LENGTH));
         });
     }
 
     keyPress(key) {
-        if (key === 'CLR') {
+        if (key === 'DEL') {
             if (this.state.pinIndex === -1) return;
 
             this.pinCode[this.state.pinIndex] = null;
             this.setState({pinIndex: --this.state.pinIndex});
             return;
 
-        } else if (key === 'DEL') {
+        } else if (key === 'CLR') {
             this.clearPin();
             return;
         }
 
-        if (this.state.pinIndex >= 3) return;
+        if (this.state.pinIndex >= (this.pinCode.length - 1)) return;
 
         this.setState({pinIndex: ++this.state.pinIndex}, () => {
             this.pinCode[this.state.pinIndex] = key;
@@ -190,18 +188,15 @@ export default class ImportWalletScreen extends Component<Props> {
                     <Text style={styles.sub_title}>{this.state.title}</Text>
 
                     <View style={styles.radio_container}>
-                        <View style={styles.radios}>{
-                            this.state.pinIndex >= 0 && <View style={styles.radios_checked}/>
-                        }</View>
-                        <View style={styles.radios}>{
-                            this.state.pinIndex >= 1 && <View style={styles.radios_checked}/>
-                        }</View>
-                        <View style={styles.radios}>{
-                            this.state.pinIndex >= 2 && <View style={styles.radios_checked}/>
-                        }</View>
-                        <View style={styles.radios}>{
-                            this.state.pinIndex >= 3 && <View style={styles.radios_checked}/>
-                        }</View>
+                        {
+                            this.pinCode.map((value, index) => {
+                                return <View key={index} style={styles.radios}>
+                                    {
+                                        this.state.pinIndex >= index && <View style={styles.radios_checked}/>
+                                    }
+                                </View>
+                            })
+                        }
                     </View>
 
                     <View style={styles.number_pad}>
@@ -228,8 +223,8 @@ export default class ImportWalletScreen extends Component<Props> {
 
                     <FooterActions
                         buttonsColor={{back: accentColor, continue: accentColor}}
-                        onBackPress={() => Actions.pop()}
-                        enabledContinue={this.state.pinIndex === 3}
+                        onBackPress={this.props.isNewPIN ? () => Actions.pop() : null}
+                        enabledContinue={this.state.pinIndex === (this.pinCode.length - 1)}
                         onContinuePress={() => this.continuePress()}/>
                 </View>
             );
