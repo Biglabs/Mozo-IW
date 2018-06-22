@@ -30,7 +30,7 @@ public class ChangeWalletTableViewCell: UITableViewCell {
     
     public func bindData(_ coin: CoinDTO){
         if let address = coin.addesses?.first {
-            if let name = address.name {
+            if let name = address.network {
                 self.nameLabel.text = name
             }
             if let address = address.id {

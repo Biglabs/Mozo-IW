@@ -97,5 +97,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    // implemented in your application delegate
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("RegisterForRemoteNotifications. Got token data! \(deviceToken.deviceToken)")
+        KeychainService.instance.setString(KeychainKeys.DEVICE_TOKEN, value: deviceToken.deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("RegisterForRemoteNotifications. Couldn't register: \(error)")
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        //let aps = userInfo["aps"] as! [String: AnyObject]
+        //The app was running and in the foreground, the push notification called this method
+        
+        print("didReceiveRemoteNotification, userInfo: \(userInfo)")
+        
+        switch application.applicationState {
+        case .active:
+            //app is currently active, can update badges count here
+            break
+            
+        case .inactive:
+            //app is transitioning from background to foreground (user taps notification), do what you need when user taps here
+            break
+            
+        case .background:
+            //app is in background, if content-available key of your notification is set to 1, poll to your backend to retrieve data and update your interface here
+            break
+        }
+    }
 }
 

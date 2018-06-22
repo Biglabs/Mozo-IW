@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 public class WalletViewController: AbstractViewController {
     private var tableView: UITableView!
+    private let refreshControl = UIRefreshControl()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +35,41 @@ public class WalletViewController: AbstractViewController {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.view.addSubview(self.tableView)
+        
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        } else {
+            tableView.addSubview(refreshControl)
+        }
+        self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+    }
+    
+    @objc override public func refresh(_ sender: Any? = nil) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        RESTService.shared.getAddresses() { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                self.refreshControl.endRefreshing()
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            var items = [AddressDTO]()
+            if let arr = json.array {
+                items = arr.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
+            }
+            DispatchQueue.main.async {
+                if items.count > 0 {
+                    self.coin.addesses?.insert(items.first!, at: 0)
+                }
+                self.refreshControl.endRefreshing()
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -72,7 +109,6 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
         return view
     }
 
-    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "ChangeWalletTableViewCell", for: indexPath) as! ChangeWalletTableViewCell

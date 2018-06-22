@@ -7,8 +7,12 @@
 //
 
 import Foundation
+import JDStatusBarNotification
+
+let notificationDismissAfter: TimeInterval = 5
 
 public class Utils {
+    
     public static func convertInt64ToStringWithFormat(_ dateInt64: Int64, format: String) -> String{
         let date = Date(timeIntervalSince1970:Double(dateInt64) / 1000.0)
         return Utils.convertDateToStringWithFormat(date, format: format)
@@ -20,6 +24,15 @@ public class Utils {
         dateFormatter.timeZone = TimeZone.current
         let dateString:String = dateFormatter.string(from: date)
         return dateString
+    }
+    
+    public static func showError(_ backendError: Error) {
+        switch backendError {
+        case BackendError.noInternetConnection:
+            JDStatusBarNotification.show(withStatus: "No Internet Connection", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleDark")
+        default:
+            JDStatusBarNotification.show(withStatus: "Network Error.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleError")
+        }
     }
 }
 
