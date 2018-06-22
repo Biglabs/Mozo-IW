@@ -2,7 +2,7 @@ import { BaseEntity } from './../../shared';
 
 export const enum CoinType {
     'BTC',
-    'ETC',
+    'ETH',
     'MOZO',
     'SOLO'
 }

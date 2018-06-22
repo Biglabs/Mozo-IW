@@ -42,7 +42,7 @@ import com.biglabs.solo.domain.enumeration.Network;
 public class AddressResourceIntTest {
 
     private static final CoinType DEFAULT_COIN = CoinType.BTC;
-    private static final CoinType UPDATED_COIN = CoinType.ETC;
+    private static final CoinType UPDATED_COIN = CoinType.ETH;
 
     private static final Network DEFAULT_NETWORK = Network.BTC_MAIN;
     private static final Network UPDATED_NETWORK = Network.BTC_TEST;

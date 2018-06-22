@@ -3,7 +3,7 @@
         "CoinType" : {
             "null": "",
             "BTC": "BTC",
-            "ETC": "ETC",
+            "ETH": "ETH",
             "MOZO": "MOZO",
             "SOLO": "SOLO"
         }
