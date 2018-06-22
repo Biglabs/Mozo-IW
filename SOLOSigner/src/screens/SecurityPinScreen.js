@@ -19,7 +19,7 @@ const PIN_LENGTH = 4;
 const inputNewPIN = "Create a new PIN";
 const inputExistingPIN = "Enter PIN";
 
-export default class ImportWalletScreen extends Component<Props> {
+export default class SecurityPinScreen extends Component {
     constructor(props) {
         super(props);
         this.pinCode = Array.apply(null, Array(PIN_LENGTH));
@@ -30,7 +30,7 @@ export default class ImportWalletScreen extends Component<Props> {
     }
 
     createNewWallet() {
-        let mnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
+        let mnemonic = this.props.importedPhrase || "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
         let seed = bip39.mnemonicToSeedHex(mnemonic);
         let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
         return rootKey.derivePath("m/44'/60'/0'/0");

@@ -1,5 +1,5 @@
-import { Alert, Linking } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import {Alert, Linking} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import DataManager from '../utils/DataManager';
 
 const ACTION_NONE = "NONE";
@@ -16,7 +16,7 @@ function handleOpenURL(url) {
             console.log(`Scheme data: ${stringData}`);
             let manager = DataManager.getInstance();
             let data = manager.getUserInfo();
-            if(!data){
+            if (!data) {
                 //INCASE: Wallet is not registered.
             } else {
                 //Wallet is registered.

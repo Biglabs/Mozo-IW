@@ -99,9 +99,11 @@ export default class ImportWalletScreen extends Component {
                         onPress={() => this.setState({
                             isScanningQRCode: !this.state.isScanningQRCode
                         })}>
-                        <Text style={styles.scan_text_button}>{
-                            this.state.isScanningQRCode ? 'Cancel' : 'Scan QR Code'
-                        }</Text>
+                        <Text style={styles.scan_text_button}>
+                            {
+                                this.state.isScanningQRCode ? 'Cancel' : 'Scan QR Code'
+                            }
+                        </Text>
                     </TouchableOpacity>
                 </ScrollView>
 
@@ -109,7 +111,10 @@ export default class ImportWalletScreen extends Component {
                     onBackPress={() => Actions.pop()}
                     enabledContinue={this.state.isPhraseValid}
                     onContinuePress={() => {
-                        Actions.security_pin()
+                        Actions.security_pin({
+                            isNewPIN: true,
+                            importedPhrase: this.state.backupPhrase
+                        })
                     }}/>
             </View>
         )

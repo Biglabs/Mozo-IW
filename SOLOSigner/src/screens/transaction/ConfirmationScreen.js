@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Alert, Linking, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {Button, Text} from "../../components/SoloComponent";
+import {Button, NavigationBar, Text} from "../../components/SoloComponent";
 
 import bip39 from 'bip39';
 import Transaction from 'ethereumjs-tx';
@@ -117,6 +117,9 @@ export default class ConfirmationScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
+
+                <NavigationBar title='Send Confirmation'/>
+
 
                 <Text style={StyleSheet.value('$screen_title_text')}>SEND CONFIRMATION</Text>
                 <Text>From: {this.props.txData.params.from}</Text>

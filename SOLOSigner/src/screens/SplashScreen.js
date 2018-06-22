@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { Dimensions, View, YellowBox, Linking, AsyncStorage } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import React, {Component} from 'react';
+import {AsyncStorage, Dimensions, Linking, View, YellowBox} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
-import { FadeInView } from "../components/SoloComponent";
-import {SchemeHandler} from "../utils/LinkingManager";
+import {FadeInView} from "../components/SoloComponent";
 
 export default class SplashScreen extends Component {
 
@@ -20,40 +19,31 @@ export default class SplashScreen extends Component {
 
     handleFlow() {
         TimerMixin.clearTimeout(this.timer);
-        Linking.getInitialURL().then(this.checkScheme).catch(this.checkScheme);
-    }
-
-    checkScheme(url) {
-        if (url && String(url).startsWith('solosigner')) {
-            SchemeHandler(url);
-        } else {
-            //If DB is existing, open PIN screen for user to enter their PIN
-            AsyncStorage.getItem('@DbExisting:key', (error, result) => {
-                var dbExisting = false;
-                if(error) {
-                    console.error(error);
-                } else {
-                    dbExisting = result;
-                }
-                if(dbExisting){
-                    Actions.security_pin({ isNewPin : false });
-                } else {
-                    //Else open welcome screen
-                    Actions.reset('welcome');
-                }
-            });
-            
-        }
+        //If DB is existing, open PIN screen for user to enter their PIN
+        AsyncStorage.getItem('@DbExisting:key', (error, result) => {
+            var dbExisting = false;
+            if (error) {
+                console.error(error);
+            } else {
+                dbExisting = result;
+            }
+            if (dbExisting) {
+                Actions.security_pin({isNewPin: false});
+            } else {
+                //Else open welcome screen
+                Actions.reset('welcome');
+            }
+        });
     }
 
     render() {
-        let { width } = Dimensions.get('window');
+        let {width} = Dimensions.get('window');
         let logoWidth = 64 * width / 100;
         let logoHeight = 37.8 * logoWidth / 100;
         return (
             <View style={styles.container}>
                 <FadeInView duration={500}>
-                    <SvgUri width={logoWidth} height={logoHeight} source={require('../res/icons/logo.svg')} />
+                    <SvgUri width={logoWidth} height={logoHeight} source={require('../res/icons/logo.svg')}/>
                 </FadeInView>
             </View>
         );

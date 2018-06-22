@@ -1,11 +1,23 @@
 import React, {Component} from "react";
-import {TouchableOpacity, View} from 'react-native';
+import {Linking, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {Button, Text} from "../components/SoloComponent";
+import {SchemeHandler} from "../utils/LinkingManager";
 
-export default class HomeScreen extends Component<Props> {
+export default class HomeScreen extends Component {
+
+    componentDidMount() {
+        Linking.getInitialURL().then(this.checkScheme).catch(this.checkScheme);
+    }
+
+    checkScheme(url) {
+        if (url && String(url).startsWith('solosigner')) {
+            SchemeHandler(url);
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -118,7 +130,6 @@ const styles = StyleSheet.create({
     buttons: {
         width: '100%',
         height: 60,
-        fontSize: 14,
         flexDirection: 'row',
         paddingLeft: '$screen_padding_horizontal',
         paddingRight: '$screen_padding_horizontal',
