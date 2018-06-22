@@ -49,7 +49,7 @@ export default class ImportWalletScreen extends Component<Props> {
             var address = ethUtil.addHexPrefix(checksumAddress);
             console.log("Ethereum address: [" + address + "]");
             privkey = ethUtil.addHexPrefix(privkey);
-            return {address: address, privkey: privkey};
+            return {address: address, derivedIndex : index, privkey: privkey};
         } catch (error) {
             console.error(error);
         }
@@ -62,14 +62,14 @@ export default class ImportWalletScreen extends Component<Props> {
         // Encrypt private key before saving to DB, password: hashPin
         let encryption = require('../components/encryption/encryption');
         let encryptedPrivateKey = encryption.encrypt(walletData.privkey, hashPin);
-        manager.addAddress(walletData.address, encryptedPrivateKey);
+        manager.addAddress(walletData.address, walletData.derivedIndex, encryptedPrivateKey);
         // TODO: Load all addresses of this wallet from server and save to local
         this.props.isNewPIN = false;
         // Open Home Screen
         Actions.main_stack();
     }
 
-    registerWalletAndSyncAddress(publicKey, address) {
+    registerWalletAndSyncAddress(manager, publicKey, address, derivedIndex) {
         console.log("Check wallet");
         manager.getExistingWalletFromServer(publicKey).then(userInfo => {
             console.log('Wallet is registered.');
@@ -77,7 +77,7 @@ export default class ImportWalletScreen extends Component<Props> {
             manager.saveUserInfo(userInfo);
             AsyncStorage.removeItem('@publicKey:key');
         }).catch((error) => {
-            if (error.isWalletExisting !== 'undefined' && error.notExisting) {
+            if (error.existing !== 'undefined' && !error.existing) {
                 console.log('Register wallet');
                 // Register wallet and save uid
                 manager.registerWallet(publicKey).then((userInfo) => {
@@ -86,7 +86,7 @@ export default class ImportWalletScreen extends Component<Props> {
                     manager.saveUserInfo(userInfo);
                     AsyncStorage.removeItem('@publicKey:key');
                     // Synchronize address to server
-                    manager.syncAddress(address, userInfo.walletId, "ETH", "ETH_TEST");
+                    manager.syncAddress(address, userInfo.walletId, derivedIndex,"ETH", "ETH_TEST");
                 }).catch((error) => {
                     console.log('Register fail', error);
                     this.clearPin();
@@ -103,6 +103,8 @@ export default class ImportWalletScreen extends Component<Props> {
     continuePress() {
         this.setState({isShowingLoading: true}, () => {
             let manager = DataManager.getInstance();
+            // Store isDbExisting true
+            AsyncStorage.setItem('@DbExisting:key', 'true');
             if (this.props.isNewPIN) {
                 //If this is the first launch, AsyncStorage will store isDbExisting true
                 // Save PIN
@@ -114,7 +116,7 @@ export default class ImportWalletScreen extends Component<Props> {
                 this.saveAddressToLocal(manager, walletData, hashPin);
 
                 // Check wallet is registered on server or not
-                this.registerWalletAndSyncAddress(publicKey, walletData.address);
+                this.registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex);
             } else {
                 //Compare PIN
                 let isEqual = manager.checkPin(this.pinCode);
@@ -126,7 +128,7 @@ export default class ImportWalletScreen extends Component<Props> {
                             let addresses = manager.getAllAddresses();
                             if (addresses && addresses.length > 0) {
                                 let address = addresses[0];
-                                this.registerWalletAndSyncAddress(publicKey, address);
+                                this.registerWalletAndSyncAddress(manager, publicKey, address.address, address.derivedIndex);
                             }
                         }
                     });
@@ -137,8 +139,6 @@ export default class ImportWalletScreen extends Component<Props> {
                     this.clearPin();
                 }
             }
-            // Store isDbExisting true
-            AsyncStorage.setItem('@DbExisting:key', 'true');
         });
     }
 

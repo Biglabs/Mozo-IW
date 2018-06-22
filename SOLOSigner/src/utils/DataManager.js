@@ -24,6 +24,7 @@ const AddressSchema = {
     primaryKey: 'address',
     properties: {
         address: 'string',
+        derivedIndex: 'int',
         prvKey: 'string'
     },
 };
@@ -176,7 +177,7 @@ class DataManager {
         return new Promise((resolve, reject) => {
             try {
                 let hash = this.convertToHash(publicKey);
-                this.sendRequest(`http://192.168.1.91:8080/api/wallets/${publicKey}`, {
+                this.sendRequest(`http://192.168.1.91:9000/api/wallets/${publicKey}`, {
                     walletKey: hash,
                 }, false)
                 .then((userInfo) => {
@@ -185,13 +186,13 @@ class DataManager {
                 })
                 .catch((error) => {
                     console.log(error);
-                    let notExisting = false;
+                    let existing = false;
                     if(error.status !== 'undefined') { 
                         if(error.status == 404){
-                            notExisting = true;
+                            existing = true;
                         }
                     }
-                    reject({ error: error, notExisting : notExisting } );
+                    reject({ error: error, existing : existing } );
                 }); 
             } catch (error) {
                 console.error(error);
@@ -204,7 +205,7 @@ class DataManager {
         return new Promise((resolve, reject) => {
             try {
                 let hash = this.convertToHash(publicKey);
-                this.sendRequest('http://192.168.1.91:8080/api/wallets', {
+                this.sendRequest('http://192.168.1.91:9000/api/wallets', {
                     walletKey: hash,
                 }, true)
                 .then((userInfo) => {
@@ -222,11 +223,12 @@ class DataManager {
         });
     }
 
-    syncAddress(address, walletId, coinType, network) {
+    syncAddress(address, walletId, derivedIndex, coinType, network) {
         try {
-            this.sendRequest('http://192.168.1.91:8080/api/wallet-addresses', {
+            this.sendRequest('http://192.168.1.91:9000/api/wallet-addresses', {
                 address : { 
                     address: address,
+                    derivedIndex : derivedIndex,
                     coin: coinType,
                     network: network
                 },
@@ -258,9 +260,9 @@ class DataManager {
         return addresses;
     }
 
-    addAddress(address, prvKey) {
+    addAddress(address, derivedIndex, prvKey) {
         DataManager.realm.write(() => {
-            DataManager.realm.create('Address', { address : address, prvKey : prvKey });
+            DataManager.realm.create('Address', { address : address, derivedIndex : derivedIndex, prvKey : prvKey });
         });
     }
 
