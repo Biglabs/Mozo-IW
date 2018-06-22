@@ -20,6 +20,7 @@
             <th><span jhiTranslate="solomonApp.address.coin">Coin</span></th>
             <th><span jhiTranslate="solomonApp.address.network">Network</span></th>
             <th><span jhiTranslate="solomonApp.address.address">Address</span></th>
+            <th><span jhiTranslate="solomonApp.address.derivedKey">Derived Key</span></th>
             <th></th>
             </tr>
             </thead>
@@ -29,6 +30,7 @@
                 <td jhiTranslate="{{'solomonApp.CoinType.' + address.coin}}">{{address.coin}}</td>
                 <td jhiTranslate="{{'solomonApp.Network.' + address.network}}">{{address.network}}</td>
                 <td>{{address.address}}</td>
+                <td>{{address.derivedKey}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -41,6 +41,10 @@ public class Address implements Serializable {
     @Column(name = "address", nullable = false)
     private String address;
 
+    @NotNull
+    @Column(name = "derived_key", nullable = false)
+    private Integer derivedKey;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -88,6 +92,19 @@ public class Address implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public Integer getDerivedKey() {
+        return derivedKey;
+    }
+
+    public Address derivedKey(Integer derivedKey) {
+        this.derivedKey = derivedKey;
+        return this;
+    }
+
+    public void setDerivedKey(Integer derivedKey) {
+        this.derivedKey = derivedKey;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -117,6 +134,7 @@ public class Address implements Serializable {
             ", coin='" + getCoin() + "'" +
             ", network='" + getNetwork() + "'" +
             ", address='" + getAddress() + "'" +
+            ", derivedKey='" + getDerivedKey() + "'" +
             "}";
     }
 }

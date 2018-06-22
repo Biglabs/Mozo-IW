@@ -79,4 +79,10 @@ public class WalletServiceImpl implements WalletService{
         log.debug("Find one by wallet id {}", walletId);
         return walletRepository.findOneByWalletId(walletId);
     }
+
+    @Override
+    public Optional<Wallet> findOneByWalletKey(String walletKey) {
+        log.debug("Find one by wallet key {}", walletKey);
+        return walletRepository.findOneByWalletKey(walletKey);
+    }
 }

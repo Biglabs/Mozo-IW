@@ -50,6 +50,9 @@ public class AddressResourceIntTest {
     private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_DERIVED_KEY = 1;
+    private static final Integer UPDATED_DERIVED_KEY = 2;
+
     @Autowired
     private AddressRepository addressRepository;
 
@@ -93,7 +96,8 @@ public class AddressResourceIntTest {
         Address address = new Address()
             .coin(DEFAULT_COIN)
             .network(DEFAULT_NETWORK)
-            .address(DEFAULT_ADDRESS);
+            .address(DEFAULT_ADDRESS)
+            .derivedKey(DEFAULT_DERIVED_KEY);
         return address;
     }
 
@@ -120,6 +124,7 @@ public class AddressResourceIntTest {
         assertThat(testAddress.getCoin()).isEqualTo(DEFAULT_COIN);
         assertThat(testAddress.getNetwork()).isEqualTo(DEFAULT_NETWORK);
         assertThat(testAddress.getAddress()).isEqualTo(DEFAULT_ADDRESS);
+        assertThat(testAddress.getDerivedKey()).isEqualTo(DEFAULT_DERIVED_KEY);
     }
 
     @Test
@@ -197,6 +202,24 @@ public class AddressResourceIntTest {
 
     @Test
     @Transactional
+    public void checkDerivedKeyIsRequired() throws Exception {
+        int databaseSizeBeforeTest = addressRepository.findAll().size();
+        // set the field null
+        address.setDerivedKey(null);
+
+        // Create the Address, which fails.
+
+        restAddressMockMvc.perform(post("/api/addresses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(address)))
+            .andExpect(status().isBadRequest());
+
+        List<Address> addressList = addressRepository.findAll();
+        assertThat(addressList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllAddresses() throws Exception {
         // Initialize the database
         addressRepository.saveAndFlush(address);
@@ -208,7 +231,8 @@ public class AddressResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId().intValue())))
             .andExpect(jsonPath("$.[*].coin").value(hasItem(DEFAULT_COIN.toString())))
             .andExpect(jsonPath("$.[*].network").value(hasItem(DEFAULT_NETWORK.toString())))
-            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())));
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
+            .andExpect(jsonPath("$.[*].derivedKey").value(hasItem(DEFAULT_DERIVED_KEY)));
     }
 
     @Test
@@ -224,7 +248,8 @@ public class AddressResourceIntTest {
             .andExpect(jsonPath("$.id").value(address.getId().intValue()))
             .andExpect(jsonPath("$.coin").value(DEFAULT_COIN.toString()))
             .andExpect(jsonPath("$.network").value(DEFAULT_NETWORK.toString()))
-            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()));
+            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
+            .andExpect(jsonPath("$.derivedKey").value(DEFAULT_DERIVED_KEY));
     }
 
     @Test
@@ -248,7 +273,8 @@ public class AddressResourceIntTest {
         updatedAddress
             .coin(UPDATED_COIN)
             .network(UPDATED_NETWORK)
-            .address(UPDATED_ADDRESS);
+            .address(UPDATED_ADDRESS)
+            .derivedKey(UPDATED_DERIVED_KEY);
 
         restAddressMockMvc.perform(put("/api/addresses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -262,6 +288,7 @@ public class AddressResourceIntTest {
         assertThat(testAddress.getCoin()).isEqualTo(UPDATED_COIN);
         assertThat(testAddress.getNetwork()).isEqualTo(UPDATED_NETWORK);
         assertThat(testAddress.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(testAddress.getDerivedKey()).isEqualTo(UPDATED_DERIVED_KEY);
     }
 
     @Test

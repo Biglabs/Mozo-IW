@@ -103,25 +103,25 @@ public class WalletResource {
      * @param id the id of the wallet to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the wallet, or with status 404 (Not Found)
      */
-    @GetMapping("/wallets/{id}")
-    @Timed
-    public ResponseEntity<Wallet> getWallet(@PathVariable Long id) {
-        log.debug("REST request to get Wallet : {}", id);
-        Wallet wallet = walletService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wallet));
-    }
+//    @GetMapping("/wallets/{id}")
+//    @Timed
+//    public ResponseEntity<Wallet> getWallet(@PathVariable Long id) {
+//        log.debug("REST request to get Wallet : {}", id);
+//        Wallet wallet = walletService.findOne(id);
+//        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wallet));
+//    }
 
     /**
-     * GET  /wallets/:walletId : get the "walletId" wallet.
+     * GET  /wallets/:walletKey : get the "walletKey" wallet.
      *
-     * @param walletId the id of the wallet to retrieve
+     * @param walletKey the walletKey of the wallet to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the wallet, or with status 404 (Not Found)
      */
-    @GetMapping("/wallets/{walletId}")
+    @GetMapping("/wallets/{walletKey}")
     @Timed
-    public ResponseEntity<Wallet> getWalletByWalletId(@PathVariable String walletId) {
-        log.debug("REST request to get Wallet : {}", walletId);
-        Optional<Wallet> wallet = walletService.findOneByWalletId(walletId);
+    public ResponseEntity<Wallet> getWalletByWalletKey(@PathVariable String walletKey) {
+        log.debug("REST request to get Wallet : {}", walletKey);
+        Optional<Wallet> wallet = walletService.findOneByWalletKey(walletKey);
         return ResponseUtil.wrapOrNotFound(wallet);
     }
 

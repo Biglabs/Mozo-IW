@@ -40,4 +40,5 @@ public interface WalletService {
     void delete(Long id);
 
     Optional<Wallet> findOneByWalletId(String walletId);
+    Optional<Wallet> findOneByWalletKey(String walletKey);
 }

@@ -17,7 +17,8 @@
             },
             "coin": "Coin",
             "network": "Network",
-            "address": "Address"
+            "address": "Address",
+            "derivedKey": "Derived Key"
         }
     }
 }

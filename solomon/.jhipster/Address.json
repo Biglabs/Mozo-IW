@@ -5,7 +5,7 @@
         {
             "fieldName": "coin",
             "fieldType": "CoinType",
-            "fieldValues": "BTC,ETC,MOZO,SOLO",
+            "fieldValues": "BTC,ETH,MOZO,SOLO",
             "fieldValidateRules": [
                 "required"
             ]
@@ -21,6 +21,13 @@
         {
             "fieldName": "address",
             "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "derivedKey",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]

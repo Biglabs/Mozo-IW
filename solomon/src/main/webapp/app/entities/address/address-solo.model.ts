@@ -20,6 +20,7 @@ export class AddressSolo implements BaseEntity {
         public coin?: CoinType,
         public network?: Network,
         public address?: string,
+        public derivedKey?: number,
     ) {
     }
 }

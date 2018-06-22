@@ -46,5 +46,17 @@
 
     </changeSet>
 
+
+
+    <changeSet author="liquibase-docs" id="addColumn-address-derive-index">
+        <addColumn tableName="address">
+            <column name="derived_index" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
