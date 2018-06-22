@@ -1,7 +1,9 @@
 package com.biglabs.solo.web.rest;
 
 import com.biglabs.solo.domain.Address;
+import com.biglabs.solo.domain.Wallet;
 import com.biglabs.solo.service.AddressService;
+import com.biglabs.solo.service.WalletService;
 import com.biglabs.solo.web.rest.vm.WalletAddressVM;
 import com.codahale.metrics.annotation.Timed;
 import com.biglabs.solo.domain.WalletAddress;
@@ -35,10 +37,12 @@ public class WalletAddressResource {
 
     private final WalletAddressRepository walletAddressRepository;
     private final AddressService addressService;
+    private final WalletService walletService;
 
-    public WalletAddressResource(WalletAddressRepository walletAddressRepository, AddressService addressService) {
+    public WalletAddressResource(WalletAddressRepository walletAddressRepository, AddressService addressService, WalletService walletService) {
         this.walletAddressRepository = walletAddressRepository;
         this.addressService = addressService;
+        this.walletService = walletService;
     }
 
     /**
@@ -60,6 +64,8 @@ public class WalletAddressResource {
         WalletAddress walletAddress = new WalletAddress();
         walletAddress.setAddress(address);
 //        walletAddress.setWallet();
+        Optional<Wallet> w = walletService.findOneByWalletId(walletAddressVM.getWalletId());
+        walletAddress.setWallet(w.get());
         walletAddress.setInUse(true);
         WalletAddress result = walletAddressRepository.save(walletAddress);
         return ResponseEntity.created(new URI("/api/wallet-addresses/" + result.getId()))

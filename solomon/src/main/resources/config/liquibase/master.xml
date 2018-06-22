@@ -10,5 +10,6 @@
     <include file="config/liquibase/changelog/20180621103733_added_entity_WalletAddress.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180621103733_added_entity_constraints_WalletAddress.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180622113733_added_constrains.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

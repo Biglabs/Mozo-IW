@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.Optional;
+
 
 /**
  * Spring Data JPA repository for the Wallet entity.
@@ -12,5 +14,5 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
-
+    Optional<Wallet> findOneByWalletId(String walletId);
 }

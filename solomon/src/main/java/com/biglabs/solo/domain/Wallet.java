@@ -27,10 +27,10 @@ public class Wallet implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "wallet_key", nullable = false)
+    @Column(name = "wallet_key", nullable = false, unique = true)
     private String walletKey;
 
-    @Column(name = "wallet_id")
+    @Column(name = "wallet_id", unique = true, nullable = false)
     private String walletId;
 
     @Column(name = "name")

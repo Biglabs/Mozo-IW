@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Wallet.
@@ -71,5 +72,11 @@ public class WalletServiceImpl implements WalletService{
     public void delete(Long id) {
         log.debug("Request to delete Wallet : {}", id);
         walletRepository.delete(id);
+    }
+
+    @Override
+    public Optional<Wallet> findOneByWalletId(String walletId) {
+        log.debug("Find one by wallet id {}", walletId);
+        return walletRepository.findOneByWalletId(walletId);
     }
 }

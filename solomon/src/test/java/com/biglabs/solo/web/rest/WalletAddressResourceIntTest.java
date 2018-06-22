@@ -68,7 +68,7 @@ public class WalletAddressResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final WalletAddressResource walletAddressResource = new WalletAddressResource(walletAddressRepository, addressService);
+        final WalletAddressResource walletAddressResource = new WalletAddressResource(walletAddressRepository, addressService, null);
         this.restWalletAddressMockMvc = MockMvcBuilders.standaloneSetup(walletAddressResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

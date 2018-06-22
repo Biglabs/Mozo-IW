@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+
+
+    <changeSet author="antt" id="addUniqueConstraint-wallet-walletKey">
+        <addUniqueConstraint columnNames="wallet_key"
+                             constraintName="UC_WALLETKEY_COL"
+                             tableName="wallet" />
+        <addUniqueConstraint columnNames="wallet_id"
+                             constraintName="UC_WALLETID_COL"
+                             tableName="wallet" />
+        <addNotNullConstraint columnDataType="varchar(255)"
+                              columnName="wallet_id"
+                              tableName="wallet"/>
+    </changeSet>
+
+    <changeSet id="fk-cascade-delete-wallet-address" author="antt">
+
+        <addForeignKeyConstraint baseColumnNames="address_id"
+                                 baseTableName="wallet_address"
+                                 constraintName="fk_wallet_address_address_id_cascade_del"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="wallet_id"
+                                 baseTableName="wallet_address"
+                                 constraintName="fk_wallet_address_wallet_id_cascade_del"
+                                 referencedColumnNames="id"
+                                 referencedTableName="wallet"
+                                 onDelete="CASCADE"/>
+
+
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

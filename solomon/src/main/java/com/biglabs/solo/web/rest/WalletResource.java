@@ -112,6 +112,20 @@ public class WalletResource {
     }
 
     /**
+     * GET  /wallets/:walletId : get the "walletId" wallet.
+     *
+     * @param walletId the id of the wallet to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wallet, or with status 404 (Not Found)
+     */
+    @GetMapping("/wallets/{walletId}")
+    @Timed
+    public ResponseEntity<Wallet> getWalletByWalletId(@PathVariable String walletId) {
+        log.debug("REST request to get Wallet : {}", walletId);
+        Optional<Wallet> wallet = walletService.findOneByWalletId(walletId);
+        return ResponseUtil.wrapOrNotFound(wallet);
+    }
+
+    /**
      * DELETE  /wallets/:id : delete the "id" wallet.
      *
      * @param id the id of the wallet to delete
