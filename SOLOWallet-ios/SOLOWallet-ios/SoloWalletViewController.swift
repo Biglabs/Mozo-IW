@@ -36,7 +36,8 @@ public class SoloWalletViewController: UITabBarController, UITabBarControllerDel
         tabBars.append(exchangeVC)
         
         //Tab 4: Send
-        let sendVC = SendViewController()
+        let storyboard = UIStoryboard(name: "SendViewController", bundle: nil)
+        let sendVC = storyboard.instantiateViewController(withIdentifier: "SendVC") as! SendViewController
         sendVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Send.value, image: UIImage.init(named: SOLOTAB.Send.icon), tag: 3)
         tabBars.append(sendVC)
         

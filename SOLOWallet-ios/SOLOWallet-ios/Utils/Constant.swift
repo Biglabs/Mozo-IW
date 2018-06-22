@@ -8,6 +8,24 @@
 
 import Foundation
 
+public enum MediaType: String {
+    case APPLICATION_JSON = "application/json"
+    case APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded"
+}
+
+public enum BackendError: Error {
+    case network(error: Error) // Capture any underlying Error from the URLSession API
+    case noInternetConnection
+    case authenticationRequired
+    case resourceNotFound
+    case invalidStatusCode(String)
+    case dataReturnedNil
+    case customError(String)
+    case confirmCodeRequired(error: Error)
+    case invalidToken(String)
+    case networkPlanLimit(error: Error)
+}
+
 public enum COINTYPE {
     case BTC
     case ETH

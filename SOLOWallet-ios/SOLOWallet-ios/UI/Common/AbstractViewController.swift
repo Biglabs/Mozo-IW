@@ -33,8 +33,8 @@ public class AbstractViewController: UIViewController {
         self.view.backgroundColor = ThemeManager.shared.background
         
         //dummy data
-        let address = AddressDTO.init(id: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", name: "Wallet BTC No.1", time: 1415637900, balance: 7.020020030, transactions: transactions as? [TransactionDTO])
-        coin = CoinDTO.init(id: 0, key: "BTC", name: "BTC", icon: "ic_bitcoin", addesses: [address!])
+        let address = AddressDTO.init(id: "123", address: "017A16QmavnUfCW11DAApiJxp7ARnxN5pGX", coin: "ETH", balance: 7.020020030, network: "ETH_MAIN", transactions: transactions as? [TransactionDTO])
+        coin = CoinDTO.init(id: 0, key: "ETH", name: "ETH", icon: "ic_ethereum", addesses: [address!])
         
         heightStatusBarFrame = UIApplication.shared.statusBarFrame.height
         let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: heightStatusBarFrame, width: self.view.frame.width, height: heightNavigationBar))

@@ -34,12 +34,19 @@
 		C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */; };
 		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
 		C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */; };
-		C69AF7BF20DA180300C61FA4 /* Enum+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */; };
 		C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */; };
 		C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */; };
 		C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7CC20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift */; };
 		C69AF7CF20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */; };
 		C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7D020DA602400C61FA4 /* WalletViewController.swift */; };
+		C6CD7F4620DC90FB009112FC /* RESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F4520DC90FB009112FC /* RESTService.swift */; };
+		C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F4D20DCA642009112FC /* KeychainService.swift */; };
+		C6CD7F5220DCAFC4009112FC /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5120DCAFC4009112FC /* AppService.swift */; };
+		C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5520DCB1BA009112FC /* Extensions.swift */; };
+		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
+		C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5B20DCB548009112FC /* Callbacks.swift */; };
+		C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */; };
+		C6CD7F6020DCDA5E009112FC /* NotificationBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5F20DCDA5E009112FC /* NotificationBarManager.swift */; };
 		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,12 +84,19 @@
 		C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo.ttf"; sourceTree = "<group>"; };
 		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
 		C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDTO.swift; sourceTree = "<group>"; };
-		C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Enum+Protocol.swift"; sourceTree = "<group>"; };
 		C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoWalletTableViewCell.xib; sourceTree = "<group>"; };
 		C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoWalletTableViewCell.swift; sourceTree = "<group>"; };
 		C69AF7CC20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeWalletTableViewCell.swift; sourceTree = "<group>"; };
 		C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeWalletTableViewCell.xib; sourceTree = "<group>"; };
 		C69AF7D020DA602400C61FA4 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
+		C6CD7F4520DC90FB009112FC /* RESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTService.swift; sourceTree = "<group>"; };
+		C6CD7F4D20DCA642009112FC /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		C6CD7F5120DCAFC4009112FC /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
+		C6CD7F5520DCB1BA009112FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		C6CD7F5920DCB532009112FC /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		C6CD7F5B20DCB548009112FC /* Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callbacks.swift; sourceTree = "<group>"; };
+		C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRESTService.swift; sourceTree = "<group>"; };
+		C6CD7F5F20DCDA5E009112FC /* NotificationBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBarManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +149,8 @@
 		C616DEED20D8BFA400258ACE /* SOLOWallet-ios */ = {
 			isa = PBXGroup;
 			children = (
+				C6CD7F4C20DCA639009112FC /* Service */,
+				C6CD7F4420DC90E4009112FC /* RestAPI */,
 				C616DF2020D8EE4C00258ACE /* Resources */,
 				C616DF0420D8C4EE00258ACE /* UI */,
 				C69AF7B720DA0F6D00C61FA4 /* Data */,
@@ -154,14 +170,17 @@
 		C616DF0320D8C4EE00258ACE /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				C616DF1620D8E09400258ACE /* ThemeManager.swift */,
-				C616DF1820D8E34300258ACE /* UIColor+Extension.swift */,
-				C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */,
+				C63A844020DB56650073EB08 /* Utils.swift */,
 				C616DF1E20D8E7F100258ACE /* Configuration.swift */,
 				C616DF4D20D90B6000258ACE /* Constant.swift */,
-				C69AF7BE20DA180300C61FA4 /* Enum+Protocol.swift */,
+				C616DF1620D8E09400258ACE /* ThemeManager.swift */,
+				C6CD7F5F20DCDA5E009112FC /* NotificationBarManager.swift */,
+				C6CD7F5B20DCB548009112FC /* Callbacks.swift */,
+				C6CD7F5920DCB532009112FC /* Protocols.swift */,
+				C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */,
+				C6CD7F5520DCB1BA009112FC /* Extensions.swift */,
+				C616DF1820D8E34300258ACE /* UIColor+Extension.swift */,
 				C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */,
-				C63A844020DB56650073EB08 /* Utils.swift */,
 				C63A844C20DB8EAB0073EB08 /* UIView+Extension.swift */,
 			);
 			path = Utils;
@@ -260,6 +279,24 @@
 				C63A844620DB7D600073EB08 /* TransactionDTO.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		C6CD7F4420DC90E4009112FC /* RestAPI */ = {
+			isa = PBXGroup;
+			children = (
+				C6CD7F4520DC90FB009112FC /* RESTService.swift */,
+				C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */,
+			);
+			path = RestAPI;
+			sourceTree = "<group>";
+		};
+		C6CD7F4C20DCA639009112FC /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				C6CD7F4D20DCA642009112FC /* KeychainService.swift */,
+				C6CD7F5120DCAFC4009112FC /* AppService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,12 +399,18 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/JDStatusBarNotification/JDStatusBarNotification.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JDStatusBarNotification.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -391,13 +434,18 @@
 				C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */,
 				C63A844720DB7D600073EB08 /* TransactionDTO.swift in Sources */,
 				C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */,
+				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
+				C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */,
+				C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
+				C6CD7F5220DCAFC4009112FC /* AppService.swift in Sources */,
 				C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */,
-				C69AF7BF20DA180300C61FA4 /* Enum+Protocol.swift in Sources */,
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
+				C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
+				C6CD7F4620DC90FB009112FC /* RESTService.swift in Sources */,
 				C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */,
 				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
 				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
@@ -406,7 +454,9 @@
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C63A844120DB56650073EB08 /* Utils.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
+				C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */,
 				C616DF1920D8E34300258ACE /* UIColor+Extension.swift in Sources */,
+				C6CD7F6020DCDA5E009112FC /* NotificationBarManager.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
