@@ -167,19 +167,6 @@ public class RESTService {
             && ((error as NSError).code == NSURLErrorNotConnectedToInternet
                 || (error as NSError).code == NSURLErrorTimedOut) {
             backendError = BackendError.noInternetConnection
-        } else if let headers = response?.allHeaderFields,
-            let require = headers["REQUIRE_CONFIRM_CODE"] as? String,
-            let errorCode = headers["errorCode"] as? String,
-            let redirectUrl = headers["redirectUrl"] as? String {
-            if require == "true" && errorCode == "903" {
-                AppService.shared.tokenValid = false
-                var userInfo = [AnyHashable: Any]()
-                userInfo["REQUIRE_CONFIRM_CODE"] = require
-                userInfo["confirmToken"] = redirectUrl.replace
-                let error = NSError(domain: Configuration.getDomain() ?? "", code: 903, userInfo: userInfo as? [String : Any])
-                backendError = BackendError.confirmCodeRequired(error: error)
-            }
-            
         } else if response?.statusCode == 404 {
             backendError = BackendError.resourceNotFound
         } else if response?.statusCode == 401 {
