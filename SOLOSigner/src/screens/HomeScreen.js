@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     buttons: {
         width: '100%',
         height: 60,
-        color: '$textTitleColor',
         fontSize: 14,
         flexDirection: 'row',
         paddingLeft: '$screen_padding_horizontal',
