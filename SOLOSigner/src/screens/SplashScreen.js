@@ -23,31 +23,26 @@ export default class SplashScreen extends Component {
         Linking.getInitialURL().then(this.checkScheme).catch(this.checkScheme);
     }
 
-    isDbExisting = async function(){
-        try {
-            const value = await AsyncStorage.getItem('@DbExisting:key');
-            if (value !== null){
-              console.log(value);
-              return value;
-            }
-        } catch (error) {
-            console.error(error);
-        }
-        return false;
-    }
-    
     checkScheme(url) {
         if (url && String(url).startsWith('solosigner')) {
             SchemeHandler(url);
         } else {
             //If DB is existing, open PIN screen for user to enter their PIN
-            var dbExisting = this.isDbExisting;
-            if(dbExisting){
-                Actions.security_pin({ isNewPin : false });
-            } else {
-                //Else open welcome screen
-                Actions.reset('welcome');
-            }
+            AsyncStorage.getItem('@DbExisting:key', (error, result) => {
+                var dbExisting = false;
+                if(error) {
+                    console.error(error);
+                } else {
+                    dbExisting = result;
+                }
+                if(dbExisting){
+                    Actions.security_pin({ isNewPin : false });
+                } else {
+                    //Else open welcome screen
+                    Actions.reset('welcome');
+                }
+            });
+            
         }
     }
 

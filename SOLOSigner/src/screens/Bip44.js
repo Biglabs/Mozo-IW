@@ -91,7 +91,7 @@ export default class Bip44 extends Component<Props> {
                     
                     this.setState({
                         rootKey: "Bip32 Private extended key: " + bip32ExtendedKey.toBase58(),
-                        xpub: "Bip32 Public extended key: " + publicKey
+                        xpub: "Bip32 Public extended key: " + bip32ExtendedKey.neutered().toBase58()
                     });
                     bip32ExtendedKey = bip32ExtendedKey.derive(0);
                     var keyPair = bip32ExtendedKey.keyPair;
@@ -109,13 +109,6 @@ export default class Bip44 extends Component<Props> {
                         adrBip44Test: address,
                         privkey: privkey
                     });
-                    //let manager = DataManager.getInstance();
-                    //let userInfo = { uuid: "1094049101", name : "aaa"};
-                    //manager.saveUserInfo(userInfo);
-                    // let data = manager.getUserInfo();
-                    // this.setState({
-                    //     privkey: data.uuid
-                    // });
                 }} />
                 <Button title='View balance' onPress={() => {
                     this.loadBalances();

@@ -8,6 +8,7 @@ import bip39 from 'bip39';
 import Transaction from 'ethereumjs-tx';
 import Web3 from 'web3';
 import Bitcoin from "react-native-bitcoinjs-lib";
+import DataManager from '../../utils/DataManager';
 
 export default class ConfirmationScreen extends Component {
 
@@ -41,6 +42,7 @@ export default class ConfirmationScreen extends Component {
         );
     }
 
+    //ONLY: For testing purpose
     generatePrivateKey() {
         let mnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
         let seed = bip39.mnemonicToSeedHex(mnemonic);
@@ -50,6 +52,24 @@ export default class ConfirmationScreen extends Component {
     }
 
     onConfirmTransaction() {
+        let manager = DataManager.getInstance();
+        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(this.props.txData.params.from);
+        if(!encryptedPrivateKey){
+            alert('Not support this address');
+            return;
+        }
+        let app = manager.getAppInfo();
+        if(!app || !app.pin){
+            alert('System error');
+            return;
+        }
+        let hashPin = app.pin;
+        // Encrypt private key before saving to DB, password: hashPin
+        let encryption = require('../../components/encryption/encryption');
+        let privateKey = encryption.decrypt(encryptedPrivateKey, hashPin);
+        //TODO: Convert privateKey in string format to buffer
+        var ethUtil = require('ethereumjs-util');
+        this.privateKeyInBuffer = ethUtil.toBuffer(privateKey);
         if (!this.privateKeyInBuffer) {
             this.generatePrivateKey();
         }

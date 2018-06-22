@@ -46,17 +46,6 @@ class DataManager {
         return DataManager.myInstance;
     }
 
-    /*
-    
-    splash -> check path
-        -> co -> pin screen -> check pin (thu open DB)
-            -> dung -> open DB 
-            -> sai -> nhap lai pin
-
-        -> ko -> welcome ... -> pin -> open Db moi
-
-    */
-
     convertToHash(inputPIN){
         let pinString = null;
         if(typeof(responseData) === 'string'){
@@ -74,7 +63,7 @@ class DataManager {
         if(appInfo && appInfo.pin) {
             let actualHashPin = appInfo.pin;
             let expectedHashPin = this.convertToHash(expectedPin);
-            if(expectedHashPin.equalTo(actualHashPin)){
+            if(expectedHashPin == actualHashPin){
                 return true;
             } else {
                 return false;
@@ -104,28 +93,50 @@ class DataManager {
         });
     }
 
-    sendRequest(url, params){
+    sendRequest(url, params, isPost){
+        const FETCH_TIMEOUT = 60000;
         return new Promise((resolve, reject) => {
             try {
+                let body = JSON.stringify(params);
+                console.log(body);
+                let didTimeOut = false;
+                const timeout = setTimeout(function() {
+                    didTimeOut = true;
+                    reject(new Error('Request timed out'));
+                }, FETCH_TIMEOUT);
+                
+                let method = isPost ? 'POST' : 'GET';
+                
                 fetch(url, {
-                    method: 'POST',
+                    method: method,
+                    body: isPost ? body : null,
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(params),
+                    }
                 })
                 .then((response) => { 
-                    console.log(response);
+                    // Clear the timeout as cleanup
+                    clearTimeout(timeout);
+                    if(!didTimeOut) {
+                        console.log('fetch good! ', response);
+                    }
                     if(!response.ok){
+                        console.log(response);
                         reject(response);
+                    } else {
+                        response.json().then(json => {
+                            console.log(json);
+                            if(json){
+                                resolve(json);
+                            } else {
+                                reject(new Error("No data"));
+                            }
+                        });
                     }
                 })
                 .then((responseJson) => {
                     console.log(responseJson);
-                    if(responseJson){
-                        resolve(responseJson);
-                    }
                 })
                 .catch((error) => {
                     console.error(error);
@@ -133,6 +144,58 @@ class DataManager {
                 });
             } catch (error) {
                 console.error(error);
+                // Rejection already happened with setTimeout
+                if(didTimeOut) return;
+                reject(error);
+            }
+        });
+    }
+
+    getAllAddressesFromServer(walletId){
+        return new Promise((resolve, reject) => {
+            try {
+                this.sendRequest('http://192.168.1.91:8080/api/', {
+                    walletId: walletId,
+                }, false)
+                .then((data) => {
+                    console.log(data);
+                    resolve(data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    reject(error);
+                }); 
+            } catch (error) {
+                console.error(error);
+                reject(error);
+            }
+        });
+    }
+
+    getExistingWalletFromServer(publicKey){
+        return new Promise((resolve, reject) => {
+            try {
+                let hash = this.convertToHash(publicKey);
+                this.sendRequest(`http://192.168.1.91:8080/api/wallets/${publicKey}`, {
+                    walletKey: hash,
+                }, false)
+                .then((userInfo) => {
+                    console.log(userInfo);
+                    resolve(userInfo);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    let notExisting = false;
+                    if(error.status !== 'undefined') { 
+                        if(error.status == 404){
+                            notExisting = true;
+                        }
+                    }
+                    reject({ error: error, notExisting : notExisting } );
+                }); 
+            } catch (error) {
+                console.error(error);
+                reject(error);
             }
         });
     }
@@ -141,9 +204,9 @@ class DataManager {
         return new Promise((resolve, reject) => {
             try {
                 let hash = this.convertToHash(publicKey);
-                this.sendRequest('http://192.168.1.91:8080/api/solo-wallets', {
+                this.sendRequest('http://192.168.1.91:8080/api/wallets', {
                     walletKey: hash,
-                })
+                }, true)
                 .then((userInfo) => {
                     console.log(userInfo);
                     resolve(userInfo);
@@ -159,12 +222,18 @@ class DataManager {
         });
     }
 
-    syncAddress(address, walletId) {
+    syncAddress(address, walletId, coinType, network) {
         try {
             this.sendRequest('http://192.168.1.91:8080/api/wallet-addresses', {
-                addressId: address,
-                soloWalletId: walletId
-            });
+                address : { 
+                    address: address,
+                    coin: coinType,
+                    network: network
+                },
+                wallet : {
+                    walletId : walletId
+                }
+            }, true);
         } catch (error) {
             console.error(error);
         }

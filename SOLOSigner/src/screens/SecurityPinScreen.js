@@ -42,10 +42,10 @@ export default class ImportWalletScreen extends Component<Props> {
         try {
             let userWallet = wallet.derive(index);
             var keyPair = userWallet.keyPair;
-            this.state.privKeyBuffer = keyPair.d.toBuffer(32);
-            var privkey = this.state.privKeyBuffer.toString('hex');
+            var privKeyBuffer = keyPair.d.toBuffer(32);
+            var privkey = privKeyBuffer.toString('hex');
             var ethUtil = require('ethereumjs-util');
-            var addressBuffer = ethUtil.privateToAddress(this.state.privKeyBuffer);
+            var addressBuffer = ethUtil.privateToAddress(privKeyBuffer);
             var hexAddress = addressBuffer.toString('hex');
             var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
             var address = ethUtil.addHexPrefix(checksumAddress);
@@ -58,6 +58,19 @@ export default class ImportWalletScreen extends Component<Props> {
         return null;
     }
 
+    saveAddressToLocal(manager, walletData, hashPin){
+        // Because this is the first time when app is launched, data must be save to local
+        // Save address and private key
+        // Encrypt private key before saving to DB, password: hashPin
+        let encryption = require('../components/encryption/encryption');
+        let encryptedPrivateKey = encryption.encrypt(walletData.privkey, hashPin);
+        manager.addAddress(walletData.address, encryptedPrivateKey);
+        // TODO: Load all addresses of this wallet from server and save to local
+        this.props.isNewPIN = false;
+        // Open Home Screen
+        Actions.main_stack();
+    }
+
     continuePress(){
         this.setState({isShowingLoading: true}, () => {
             let manager = DataManager.getInstance();
@@ -65,38 +78,50 @@ export default class ImportWalletScreen extends Component<Props> {
                 //If this is the first launch, AsyncStorage will store isDbExisting true
                 // Save PIN
                 let hashPin = manager.updatePin(this.pinCode);
+                // TODO: Set timer here for the next time user have to re-enter PIN
                 let ethWallet = this.createNewWallet();
                 let publicKey = ethWallet.neutered().toBase58();
-                // Register wallet and save uid
-                manager.registerWallet(publicKey).then((userInfo) => {
-                    alert('Register success');
-                    // Save User Info
+                let walletData = this.getAddressAtIndex(ethWallet, 0);
+                this.saveAddressToLocal(manager, walletData, hashPin);
+
+                // Check wallet is registered on server or not
+                console.log("Check wallet");
+                manager.getExistingWalletFromServer(publicKey).then(userInfo => {
+                    console.log('Wallet is registered.');
+                    // Save User Info - WalletId
                     manager.saveUserInfo(userInfo);
-                    let walletData = this.getAddressAtIndex(ethWallet, 0);
-                    // Save address and private key
-                    //TODO: Use bip38 to encrypt private key before saving to DB, password: hashPin
-                    manager.addAddress(walletData.address, walletData.privkey);
-                    // Synchronize address to server
-                    manager.syncAddress(walletData.address, userInfo.soloWalletId);
                 }).catch((error) => {
-                    alert('Register fail', error);
-                    this.clearPin();
-                });
-                // Store isDbExisting true
-                AsyncStorage.setItem('@DbExisting:key', 'true');
-                this.props.isNewPIN = false;
+                    if(error.isWalletExisting !== 'undefined' && error.notExisting){
+                        console.log('Register wallet');
+                        // Register wallet and save uid
+                        manager.registerWallet(publicKey).then((userInfo) => {
+                            console.log('Wallet is registered.');
+                            // Save User Info - WalletId
+                            manager.saveUserInfo(userInfo);
+                            // Synchronize address to server
+                            manager.syncAddress(walletData.address, userInfo.walletId, "ETH", "ETH_TEST");                    
+                        }).catch((error) => {
+                            console.log('Register fail', error);
+                            this.clearPin();
+                        });
+                    } else {
+                        console.log('Check fail', error);
+                        // Can not check wallet
+                    }
+                });                
             } else {
-                // Set isDbExisting true
-                AsyncStorage.setItem('@DbExisting:key', 'true');
                 //Compare PIN
                 let isEqual = manager.checkPin(this.pinCode);
                 if(isEqual){
+                    this.props.isNewPIN = false;
                     // Open Home Screen
                     Actions.main_stack();
                 } else {
                     this.clearPin();
                 }
             }
+            // Store isDbExisting true
+            AsyncStorage.setItem('@DbExisting:key', 'true');
         });
     }
 
