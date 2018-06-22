@@ -51,7 +51,7 @@ public class WalletViewController: AbstractViewController {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {
-                    NotificationBarManager.showError(backendError)
+                    Utils.showError(backendError)
                 }
                 self.refreshControl.endRefreshing()
                 return

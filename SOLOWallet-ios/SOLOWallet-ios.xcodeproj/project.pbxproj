@@ -46,7 +46,6 @@
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5B20DCB548009112FC /* Callbacks.swift */; };
 		C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */; };
-		C6CD7F6020DCDA5E009112FC /* NotificationBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5F20DCDA5E009112FC /* NotificationBarManager.swift */; };
 		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,7 +95,7 @@
 		C6CD7F5920DCB532009112FC /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		C6CD7F5B20DCB548009112FC /* Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callbacks.swift; sourceTree = "<group>"; };
 		C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRESTService.swift; sourceTree = "<group>"; };
-		C6CD7F5F20DCDA5E009112FC /* NotificationBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBarManager.swift; sourceTree = "<group>"; };
+		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +148,7 @@
 		C616DEED20D8BFA400258ACE /* SOLOWallet-ios */ = {
 			isa = PBXGroup;
 			children = (
+				C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */,
 				C6CD7F4C20DCA639009112FC /* Service */,
 				C6CD7F4420DC90E4009112FC /* RestAPI */,
 				C616DF2020D8EE4C00258ACE /* Resources */,
@@ -174,7 +174,6 @@
 				C616DF1E20D8E7F100258ACE /* Configuration.swift */,
 				C616DF4D20D90B6000258ACE /* Constant.swift */,
 				C616DF1620D8E09400258ACE /* ThemeManager.swift */,
-				C6CD7F5F20DCDA5E009112FC /* NotificationBarManager.swift */,
 				C6CD7F5B20DCB548009112FC /* Callbacks.swift */,
 				C6CD7F5920DCB532009112FC /* Protocols.swift */,
 				C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */,
@@ -333,6 +332,11 @@
 				TargetAttributes = {
 					C616DEEA20D8BFA400258ACE = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -456,7 +460,6 @@
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
 				C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */,
 				C616DF1920D8E34300258ACE /* UIColor+Extension.swift in Sources */,
-				C6CD7F6020DCDA5E009112FC /* NotificationBarManager.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
