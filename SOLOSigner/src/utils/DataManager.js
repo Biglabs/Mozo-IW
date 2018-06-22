@@ -253,6 +253,11 @@ class DataManager {
         return null;
     }
 
+    getAllAddresses(){
+        let addresses = DataManager.realm.objects('Address');
+        return addresses;
+    }
+
     addAddress(address, prvKey) {
         DataManager.realm.write(() => {
             DataManager.realm.create('Address', { address : address, prvKey : prvKey });

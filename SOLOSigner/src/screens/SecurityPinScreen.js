@@ -71,6 +71,37 @@ export default class ImportWalletScreen extends Component<Props> {
         Actions.main_stack();
     }
 
+    registerWalletAndSyncAddress(publicKey, address){
+        console.log("Check wallet");
+        manager.getExistingWalletFromServer(publicKey).then(userInfo => {
+            console.log('Wallet is registered.');
+            // Save User Info - WalletId
+            manager.saveUserInfo(userInfo);
+            AsyncStorage.removeItem('@publicKey:key');
+        }).catch((error) => {
+            if(error.isWalletExisting !== 'undefined' && error.notExisting){
+                console.log('Register wallet');
+                // Register wallet and save uid
+                manager.registerWallet(publicKey).then((userInfo) => {
+                    console.log('Wallet is registered.');
+                    // Save User Info - WalletId
+                    manager.saveUserInfo(userInfo);
+                    AsyncStorage.removeItem('@publicKey:key');
+                    // Synchronize address to server
+                    manager.syncAddress(address, userInfo.walletId, "ETH", "ETH_TEST");                    
+                }).catch((error) => {
+                    console.log('Register fail', error);
+                    this.clearPin();
+                });
+            } else {
+                console.log('Check fail', error);
+                // Offline mode: Can not check wallet
+                // Store public key for the next registration
+                AsyncStorage.setItem('@publicKey:key', publicKey);
+            }
+        });
+    }
+
     continuePress(){
         this.setState({isShowingLoading: true}, () => {
             let manager = DataManager.getInstance();
@@ -85,34 +116,22 @@ export default class ImportWalletScreen extends Component<Props> {
                 this.saveAddressToLocal(manager, walletData, hashPin);
 
                 // Check wallet is registered on server or not
-                console.log("Check wallet");
-                manager.getExistingWalletFromServer(publicKey).then(userInfo => {
-                    console.log('Wallet is registered.');
-                    // Save User Info - WalletId
-                    manager.saveUserInfo(userInfo);
-                }).catch((error) => {
-                    if(error.isWalletExisting !== 'undefined' && error.notExisting){
-                        console.log('Register wallet');
-                        // Register wallet and save uid
-                        manager.registerWallet(publicKey).then((userInfo) => {
-                            console.log('Wallet is registered.');
-                            // Save User Info - WalletId
-                            manager.saveUserInfo(userInfo);
-                            // Synchronize address to server
-                            manager.syncAddress(walletData.address, userInfo.walletId, "ETH", "ETH_TEST");                    
-                        }).catch((error) => {
-                            console.log('Register fail', error);
-                            this.clearPin();
-                        });
-                    } else {
-                        console.log('Check fail', error);
-                        // Can not check wallet
-                    }
-                });                
+                this.registerWalletAndSyncAddress(publicKey, walletData.address);
             } else {
                 //Compare PIN
                 let isEqual = manager.checkPin(this.pinCode);
                 if(isEqual){
+                    // Check wallet is registered on server or not
+                    AsyncStorage.getItem('@publicKey:key', (error, result) => {
+                        if(!error && result){
+                            let publicKey = result;
+                            let addresses = manager.getAllAddresses();
+                            if(addresses && addresses.length > 0){
+                                let address = addresses[0];
+                                this.registerWalletAndSyncAddress(publicKey, address);
+                            }
+                        }
+                    });
                     this.props.isNewPIN = false;
                     // Open Home Screen
                     Actions.main_stack();
