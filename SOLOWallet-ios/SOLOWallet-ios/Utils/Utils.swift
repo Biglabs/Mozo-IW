@@ -29,7 +29,9 @@ public class Utils {
     public static func showError(_ backendError: Error) {
         switch backendError {
         case BackendError.noInternetConnection:
-            JDStatusBarNotification.show(withStatus: "No Internet Connection", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleDark")
+            JDStatusBarNotification.show(withStatus: "No Internet Connection.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleDark")
+        case BackendError.requestTimedOut:
+            JDStatusBarNotification.show(withStatus: "The request timed out.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleDark")
         default:
             JDStatusBarNotification.show(withStatus: "Network Error.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleError")
         }

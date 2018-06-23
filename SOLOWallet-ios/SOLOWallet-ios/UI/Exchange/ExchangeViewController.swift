@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ExchangeViewController: AbstractViewController {
+class ExchangeViewController: AbstractViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.red

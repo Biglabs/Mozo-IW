@@ -20,7 +20,6 @@
 		C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */; };
 		C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */; };
 		C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1E20D8E7F100258ACE /* Configuration.swift */; };
-		C616DF4420D8FAEE00258ACE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C616DF4320D8FAED00258ACE /* Main.storyboard */; };
 		C616DF4E20D90B6000258ACE /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF4D20D90B6000258ACE /* Constant.swift */; };
 		C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF5020D916A800258ACE /* AbstractViewController.swift */; };
 		C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */; };
@@ -69,7 +68,6 @@
 		C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTextSize.swift; sourceTree = "<group>"; };
 		C616DF1E20D8E7F100258ACE /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C616DF4220D8F58F00258ACE /* SoloWalletHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloWalletHeader.h; sourceTree = "<group>"; };
-		C616DF4320D8FAED00258ACE /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C616DF4D20D90B6000258ACE /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		C616DF5020D916A800258ACE /* AbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
 		C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 				C616DEFD20D8BFA700258ACE /* Info.plist */,
 				C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */,
 				C616DF4220D8F58F00258ACE /* SoloWalletHeader.h */,
-				C616DF4320D8FAED00258ACE /* Main.storyboard */,
 			);
 			path = "SOLOWallet-ios";
 			sourceTree = "<group>";
@@ -368,7 +365,6 @@
 				C616DEFC20D8BFA700258ACE /* LaunchScreen.storyboard in Resources */,
 				C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */,
 				C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */,
-				C616DF4420D8FAEE00258ACE /* Main.storyboard in Resources */,
 				C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */,
 				C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */,
 				C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */,

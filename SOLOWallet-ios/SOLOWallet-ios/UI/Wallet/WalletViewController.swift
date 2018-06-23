@@ -9,18 +9,17 @@
 import UIKit
 import SwiftyJSON
 
-public class WalletViewController: AbstractViewController {
+class WalletViewController: AbstractViewController {
     private var tableView: UITableView!
     private let refreshControl = UIRefreshControl()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let barHeight: CGFloat = self.heightNavigationBar + self.heightStatusBarFrame + 1
         let displayWidth: CGFloat = self.view.frame.width
         let displayHeight: CGFloat = self.view.frame.height
         
-        self.tableView = UITableView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: displayHeight - barHeight))
+        self.tableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         self.tableView.backgroundColor = .white
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
