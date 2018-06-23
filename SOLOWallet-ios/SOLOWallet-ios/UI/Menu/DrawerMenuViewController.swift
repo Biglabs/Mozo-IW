@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class DrawerMenuViewController: UIViewController {
+class DrawerMenuViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         

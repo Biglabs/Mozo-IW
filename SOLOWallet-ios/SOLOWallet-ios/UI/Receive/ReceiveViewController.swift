@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ReceiveViewController: AbstractViewController {
+class ReceiveViewController: AbstractViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.green

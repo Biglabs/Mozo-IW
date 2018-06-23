@@ -164,9 +164,11 @@ public class RESTService {
         var backendError: BackendError?
         
         if let error = error, (error as NSError).domain == NSURLErrorDomain
-            && ((error as NSError).code == NSURLErrorNotConnectedToInternet
-                || (error as NSError).code == NSURLErrorTimedOut) {
+            && ((error as NSError).code == NSURLErrorNotConnectedToInternet) {
             backendError = BackendError.noInternetConnection
+        } else if let error = error, (error as NSError).domain == NSURLErrorDomain
+            && (error as NSError).code == NSURLErrorTimedOut {
+            backendError = BackendError.requestTimedOut
         } else if response?.statusCode == 404 {
             backendError = BackendError.resourceNotFound
         } else if response?.statusCode == 401 {
@@ -176,10 +178,6 @@ public class RESTService {
             if AppService.shared.tokenValid == true { //restrict call login screen 2 times
                 // call login screen
             }
-        } else if response?.statusCode == 902 {
-            let userInfo = response?.allHeaderFields
-            let error = NSError(domain: Configuration.getDomain() ?? "", code: 902, userInfo: userInfo as? [String : Any])
-            backendError = BackendError.networkPlanLimit(error: error)
         } else if let error = error {
             backendError = BackendError.network(error: error)
         }

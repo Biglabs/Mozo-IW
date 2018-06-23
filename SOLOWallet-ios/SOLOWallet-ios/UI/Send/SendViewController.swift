@@ -8,14 +8,13 @@
 
 import UIKit
 
-public class SendViewController: AbstractViewController {
+class SendViewController: AbstractViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let barHeight: CGFloat = self.heightNavigationBar + self.heightStatusBarFrame + 1
         let displayWidth: CGFloat = self.view.frame.width
         let displayHeight: CGFloat = self.view.frame.height
         
-        self.view.frame = CGRect(x: 0, y: barHeight, width: displayWidth, height: displayHeight - barHeight)
+        self.view.frame = CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight)
     }
 }

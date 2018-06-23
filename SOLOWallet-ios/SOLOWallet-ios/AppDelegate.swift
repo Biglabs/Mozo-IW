@@ -24,11 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         rightSideNav.isNavigationBarHidden = true
         
         let centerNav = UINavigationController(rootViewController: centerViewController)
-        centerNav.isNavigationBarHidden = true
+        centerNav.restorationIdentifier = "SOLO_CenterViewController"
         
-        drawerController = MMDrawerController.init(center: centerNav, rightDrawerViewController: rightSideNav)
+        drawerController = MMDrawerController.init(center: centerNav, rightDrawerViewController: rightViewController)
         
-        self.drawerController?.openDrawerGestureModeMask = MMOpenDrawerGestureMode.all
+        self.drawerController?.openDrawerGestureModeMask = MMOpenDrawerGestureMode.panningNavigationBar
         self.drawerController?.closeDrawerGestureModeMask = MMCloseDrawerGestureMode.all
         self.drawerController?.restorationIdentifier = "MMDrawer"
         let width = UIScreen.main.bounds.width * 0.85
@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         ThemeManager.applyTheme()
         self.window!.rootViewController = self.drawerController
+        self.window!.makeKeyAndVisible()
         return true
     }
     

@@ -16,6 +16,7 @@ public enum MediaType: String {
 public enum BackendError: Error {
     case network(error: Error) // Capture any underlying Error from the URLSession API
     case noInternetConnection
+    case requestTimedOut
     case authenticationRequired
     case resourceNotFound
     case invalidStatusCode(String)
@@ -23,7 +24,6 @@ public enum BackendError: Error {
     case customError(String)
     case confirmCodeRequired(error: Error)
     case invalidToken(String)
-    case networkPlanLimit(error: Error)
 }
 
 public enum COINTYPE {
