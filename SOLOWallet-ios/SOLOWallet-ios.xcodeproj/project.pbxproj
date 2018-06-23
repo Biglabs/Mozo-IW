@@ -16,7 +16,6 @@
 		C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1020D8D95800258ACE /* ExchangeViewController.swift */; };
 		C616DF1520D8DCF800258ACE /* SoloWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1420D8DCF800258ACE /* SoloWalletViewController.swift */; };
 		C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1620D8E09400258ACE /* ThemeManager.swift */; };
-		C616DF1920D8E34300258ACE /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1820D8E34300258ACE /* UIColor+Extension.swift */; };
 		C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */; };
 		C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */; };
 		C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1E20D8E7F100258ACE /* Configuration.swift */; };
@@ -28,7 +27,6 @@
 		C63A844720DB7D600073EB08 /* TransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844620DB7D600073EB08 /* TransactionDTO.swift */; };
 		C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844820DB88580073EB08 /* TransactionWalletTableViewCell.swift */; };
 		C63A844B20DB88620073EB08 /* TransactionWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */; };
-		C63A844D20DB8EAB0073EB08 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844C20DB8EAB0073EB08 /* UIView+Extension.swift */; };
 		C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */; };
 		C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */; };
 		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
@@ -45,6 +43,7 @@
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5B20DCB548009112FC /* Callbacks.swift */; };
 		C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */; };
+		C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DC687520DE26E800000665 /* ScannerViewController.swift */; };
 		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +62,6 @@
 		C616DF1020D8D95800258ACE /* ExchangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeViewController.swift; sourceTree = "<group>"; };
 		C616DF1420D8DCF800258ACE /* SoloWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoloWalletViewController.swift; sourceTree = "<group>"; };
 		C616DF1620D8E09400258ACE /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
-		C616DF1820D8E34300258ACE /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerMenuViewController.swift; sourceTree = "<group>"; };
 		C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTextSize.swift; sourceTree = "<group>"; };
 		C616DF1E20D8E7F100258ACE /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -76,7 +74,6 @@
 		C63A844620DB7D600073EB08 /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
 		C63A844820DB88580073EB08 /* TransactionWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWalletTableViewCell.swift; sourceTree = "<group>"; };
 		C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionWalletTableViewCell.xib; sourceTree = "<group>"; };
-		C63A844C20DB8EAB0073EB08 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo-bold.ttf"; sourceTree = "<group>"; };
 		C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo.ttf"; sourceTree = "<group>"; };
 		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
@@ -94,6 +91,7 @@
 		C6CD7F5B20DCB548009112FC /* Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callbacks.swift; sourceTree = "<group>"; };
 		C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRESTService.swift; sourceTree = "<group>"; };
 		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
+		C6DC687520DE26E800000665 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,9 +173,7 @@
 				C6CD7F5920DCB532009112FC /* Protocols.swift */,
 				C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */,
 				C6CD7F5520DCB1BA009112FC /* Extensions.swift */,
-				C616DF1820D8E34300258ACE /* UIColor+Extension.swift */,
 				C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */,
-				C63A844C20DB8EAB0073EB08 /* UIView+Extension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -254,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				C616DF5020D916A800258ACE /* AbstractViewController.swift */,
+				C6DC687520DE26E800000665 /* ScannerViewController.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -442,6 +439,7 @@
 				C6CD7F5220DCAFC4009112FC /* AppService.swift in Sources */,
 				C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */,
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
+				C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */,
 				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
 				C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
@@ -450,12 +448,10 @@
 				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
 				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
-				C63A844D20DB8EAB0073EB08 /* UIView+Extension.swift in Sources */,
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C63A844120DB56650073EB08 /* Utils.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
 				C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */,
-				C616DF1920D8E34300258ACE /* UIColor+Extension.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

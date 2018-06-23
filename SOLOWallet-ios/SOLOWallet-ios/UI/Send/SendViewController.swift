@@ -9,12 +9,31 @@
 import UIKit
 
 class SendViewController: AbstractViewController {
+    
+    @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var scannerButton: UIButton!
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let displayWidth: CGFloat = self.view.frame.width
-        let displayHeight: CGFloat = self.view.frame.height
+        // Do any additional setup after loading the view.
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.tabBarController?.tabBar.isTranslucent = false
         
-        self.view.frame = CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight)
+        self.scannerButton.addTarget(self, action: #selector(self.scanQRCode), for: .touchUpInside)
+    }
+    
+    @objc func scanQRCode() {
+        let scannerVC = ScannerViewController()
+        scannerVC.delegate = self
+        let nav = UINavigationController(rootViewController: scannerVC)
+        self.present(nav, animated: true, completion: nil)
+    }
+}
+
+extension SendViewController: SoloWalletDelegate {
+    func updateValue(_ key: String, value: String) {
+        self.addressTextField.text = value
     }
 }

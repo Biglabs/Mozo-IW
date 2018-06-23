@@ -155,6 +155,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RjC-Ry-PNh"/>
                     </view>
+                    <connections>
+                        <outlet property="addressTextField" destination="BhH-vr-exW" id="BcZ-00-4Jw"/>
+                        <outlet property="scannerButton" destination="Fiz-Qp-QwA" id="i4T-WW-Ftt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cf0-oI-LgB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

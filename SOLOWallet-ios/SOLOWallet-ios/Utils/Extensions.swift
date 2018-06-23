@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public extension Bool {
     public var toString: String {
@@ -51,5 +52,49 @@ public extension String {
 public extension Data {
     public var deviceToken: String {
         return self.reduce("", {$0 + String(format: "%02X", $1)})
+    }
+}
+
+public extension UIViewController {
+    public func isModal() -> Bool {
+        if let navigationController = self.navigationController{
+            if navigationController.viewControllers.first != self{
+                return false
+            }
+        }
+        
+        if self.presentingViewController != nil {
+            return true
+        }
+        
+        if self.navigationController?.presentingViewController?.presentedViewController == self.navigationController  {
+            return true
+        }
+        
+        if self.tabBarController?.presentingViewController is UITabBarController {
+            return true
+        }
+        
+        return false
+    }
+}
+
+extension UIColor {
+    convenience init(hexString: String) {
+        let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int = UInt32()
+        Scanner(string: hex).scanHexInt32(&int)
+        let a, r, g, b: UInt32
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (255, 0, 0, 0)
+        }
+        self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
 }

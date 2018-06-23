@@ -12,3 +12,7 @@ import SwiftyJSON
 public protocol ResponseObjectSerializable: class {
     init?(json: JSON)
 }
+
+public protocol SoloWalletDelegate: class {
+    func updateValue(_ key: String, value: String)
+}
