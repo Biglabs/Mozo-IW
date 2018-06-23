@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {AsyncStorage, Image, TouchableHighlight, View} from 'react-native';
+import {AsyncStorage, TouchableHighlight, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {FooterActions, Text} from "../components/SoloComponent";
+import {FooterActions, RotationView, Text} from "../components/SoloComponent";
+import SvgUri from 'react-native-svg-uri';
 import DataManager from '../utils/DataManager';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
@@ -172,10 +173,10 @@ export default class SecurityPinScreen extends Component {
         if (this.state.isShowingLoading)
             return (
                 <View style={styles.loading_container}>
-                    <Image
-                        style={{width: 50, height: 50}}
-                        source={require('../res/icons/ic_loading_indicator.gif')}
-                    />
+                    <RotationView duration={1000}>
+                        <SvgUri width={50} height={50} source={require('../res/icons/ic_loading_indicator.svg')}/>
+                    </RotationView>
+
                     <Text style={styles.loading_text}>Creating Interface</Text>
                 </View>
             );
