@@ -30,6 +30,12 @@ export default class SecurityPinScreen extends Component {
         }
     }
 
+    componentDidUpdate(_, prevState) {
+        if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
+            this.handleFlowAsync();
+        }
+    }
+
     createNewWallet() {
         let mnemonic = this.props.importedPhrase || "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
         let seed = bip39.mnemonicToSeedHex(mnemonic);
@@ -50,7 +56,7 @@ export default class SecurityPinScreen extends Component {
             var address = ethUtil.addHexPrefix(checksumAddress);
             console.log("Ethereum address: [" + address + "]");
             privkey = ethUtil.addHexPrefix(privkey);
-            return {address: address, derivedIndex : index, privkey: privkey};
+            return {address: address, derivedIndex: index, privkey: privkey};
         } catch (error) {
             console.error(error);
         }
@@ -87,7 +93,7 @@ export default class SecurityPinScreen extends Component {
                     manager.saveUserInfo(userInfo);
                     AsyncStorage.removeItem('@publicKey:key');
                     // Synchronize address to server
-                    manager.syncAddress(address, userInfo.walletId, derivedIndex,"ETH", "ETH_TEST");
+                    manager.syncAddress(address, userInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
                 }).catch((error) => {
                     console.log('Register fail', error);
                     this.clearPin();
@@ -101,46 +107,44 @@ export default class SecurityPinScreen extends Component {
         });
     }
 
-    continuePress() {
-        this.setState({isShowingLoading: true}, () => {
-            let manager = DataManager.getInstance();
-            // Store isDbExisting true
-            AsyncStorage.setItem('@DbExisting:key', 'true');
-            if (this.props.isNewPIN) {
-                //If this is the first launch, AsyncStorage will store isDbExisting true
-                // Save PIN
-                let hashPin = manager.updatePin(this.pinCode);
-                // TODO: Set timer here for the next time user have to re-enter PIN
-                let ethWallet = this.createNewWallet();
-                let publicKey = ethWallet.neutered().toBase58();
-                let walletData = this.getAddressAtIndex(ethWallet, 0);
-                this.saveAddressToLocal(manager, walletData, hashPin);
+    handleFlowAsync() {
+        let manager = DataManager.getInstance();
+        // Store isDbExisting true
+        AsyncStorage.setItem('@DbExisting:key', 'true');
+        if (this.props.isNewPIN) {
+            //If this is the first launch, AsyncStorage will store isDbExisting true
+            // Save PIN
+            let hashPin = manager.updatePin(this.pinCode);
+            // TODO: Set timer here for the next time user have to re-enter PIN
+            let ethWallet = this.createNewWallet();
+            let publicKey = ethWallet.neutered().toBase58();
+            let walletData = this.getAddressAtIndex(ethWallet, 0);
+            this.saveAddressToLocal(manager, walletData, hashPin);
 
+            // Check wallet is registered on server or not
+            this.registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex);
+        } else {
+            //Compare PIN
+            let isEqual = manager.checkPin(this.pinCode);
+            if (isEqual) {
                 // Check wallet is registered on server or not
-                this.registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex);
-            } else {
-                //Compare PIN
-                let isEqual = manager.checkPin(this.pinCode);
-                if (isEqual) {
-                    // Check wallet is registered on server or not
-                    AsyncStorage.getItem('@publicKey:key', (error, result) => {
-                        if (!error && result) {
-                            let publicKey = result;
-                            let addresses = manager.getAllAddresses();
-                            if (addresses && addresses.length > 0) {
-                                let address = addresses[0];
-                                this.registerWalletAndSyncAddress(manager, publicKey, address.address, address.derivedIndex);
-                            }
+                AsyncStorage.getItem('@publicKey:key', (error, result) => {
+                    if (!error && result) {
+                        let publicKey = result;
+                        let addresses = manager.getAllAddresses();
+                        if (addresses && addresses.length > 0) {
+                            let address = addresses[0];
+                            this.registerWalletAndSyncAddress(manager, publicKey, address.address, address.derivedIndex);
                         }
-                    });
-                    this.props.isNewPIN = false;
-                    // Open Home Screen
-                    Actions.main_stack();
-                } else {
-                    this.clearPin();
-                }
+                    }
+                });
+                this.props.isNewPIN = false;
+                // Open Home Screen
+                Actions.main_stack();
+            } else {
+                this.clearPin();
             }
-        });
+        }
     }
 
     clearPin() {
@@ -226,7 +230,7 @@ export default class SecurityPinScreen extends Component {
                         buttonsColor={{back: accentColor, continue: accentColor}}
                         onBackPress={this.props.isNewPIN ? () => Actions.pop() : null}
                         enabledContinue={this.state.pinIndex === (this.pinCode.length - 1)}
-                        onContinuePress={() => this.continuePress()}/>
+                        onContinuePress={() => this.setState({isShowingLoading: true})}/>
                 </View>
             );
     }
