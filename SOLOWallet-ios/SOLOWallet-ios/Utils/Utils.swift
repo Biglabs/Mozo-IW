@@ -36,5 +36,11 @@ public class Utils {
             JDStatusBarNotification.show(withStatus: "Network Error.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleError")
         }
     }
+    
+    public static func getTopViewController() -> UIViewController! {
+        let appDelegate = UIApplication.shared.delegate
+        if let window = appDelegate!.window { return window?.visibleViewController }
+        return nil
+    }
 }
 

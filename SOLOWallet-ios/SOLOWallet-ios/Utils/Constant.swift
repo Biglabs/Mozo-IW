@@ -60,10 +60,10 @@ public enum SOLOTAB {
     
     public var key : String {
         switch self {
-        case .Wallet: return "Wallet"
-        case .Receive: return "Receive"
-        case .Exchange: return "Exchange"
-        case .Send: return "Send"
+        case .Wallet: return "wallet"
+        case .Receive: return "receive"
+        case .Exchange: return "exchange"
+        case .Send: return "send"
         }
     }
     
@@ -82,18 +82,6 @@ public enum SOLOTAB {
         case .Receive: return "ic_receive"
         case .Exchange: return "ic_exchange"
         case .Send: return "ic_send"
-        }
-    }
-}
-
-public enum URL_SCHEME {
-    case Sender
-    case Receiver
-    
-    public var scheme : String {
-        switch self {
-        case .Sender: return "solosigner"
-        case .Receiver: return Bundle.main.bundleIdentifier ?? "" + ".solowallet"
         }
     }
 }

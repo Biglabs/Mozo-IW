@@ -14,4 +14,54 @@ public class AppService {
     
     public var tokenValid = true
     
+    //action: view,create
+    //type: idea,space,...
+    public func launchSignerApp(_ action: String, transaction: TransactionDTO, type: String) {
+        let isAlwaysLaunchApp = KeychainService.instance.getBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP)
+        
+        func launchApp() {
+            if let bundleId = Bundle.main.bundleIdentifier {
+                var urlStr = Configuration.URL_SCHEME_SIGNER + "://"
+                let model = CommunicationDTO(action: action, receiver: "\(bundleId).\(Configuration.URL_SCHEME_WALLET)", params: transaction, type: type)
+                urlStr += (model?.rawString())!
+                print("URL: [\(urlStr)]")
+                
+                if let url = URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!), UIApplication.shared.canOpenURL(url as URL) {
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url, options: ["":""], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
+                } else {
+                    //https://itunes.apple.com/us/app/{biglabs}/{id}?ls=1&mt=8
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(URL(string: "itms-apps://itunes.apple.com/app/{id}")!, options: ["":""], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(URL(string: "itms-apps://itunes.apple.com/app/{id}")!)
+                    }
+                }
+            }
+        }
+        
+        if isAlwaysLaunchApp == true {
+            launchApp()
+        } else {
+            let alertController = UIAlertController(title: "Launch the Signer Apps", message: nil, preferredStyle: .alert)
+            let justOnceAction = UIAlertAction(title: "Just Once", style: .default) { _ in
+                KeychainService.instance.setBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP, value: false)
+                launchApp()
+            }
+            alertController.addAction(justOnceAction)
+            
+            let alwaysAction = UIAlertAction(title: "Always", style: .default) { _ in
+                KeychainService.instance.setBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP, value: true)
+                launchApp()
+            }
+            alertController.addAction(alwaysAction)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            Utils.getTopViewController().present(alertController, animated: true, completion: nil)
+        }
+    }
 }
