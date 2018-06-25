@@ -140,11 +140,11 @@ class DataManager {
                     console.log(responseJson);
                 })
                 .catch((error) => {
-                    console.error(error);
+                    console.log(error);
                     reject(error);
                 });
             } catch (error) {
-                console.error(error);
+                console.log(error);
                 // Rejection already happened with setTimeout
                 if(didTimeOut) return;
                 reject(error);
@@ -167,7 +167,7 @@ class DataManager {
                     reject(error);
                 }); 
             } catch (error) {
-                console.error(error);
+                console.log(error);
                 reject(error);
             }
         });
@@ -195,7 +195,7 @@ class DataManager {
                     reject({ error: error, existing : existing } );
                 }); 
             } catch (error) {
-                console.error(error);
+                console.log(error);
                 reject(error);
             }
         });
@@ -217,7 +217,7 @@ class DataManager {
                     reject(error);
                 }); 
             } catch (error) {
-                console.error(error);
+                console.log(error);
                 reject(error);
             }
         });
@@ -237,7 +237,7 @@ class DataManager {
                 }
             }, true);
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 
