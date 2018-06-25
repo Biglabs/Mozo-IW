@@ -4,6 +4,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, RotationView, Text} from "../components/SoloComponent";
 import SvgUri from 'react-native-svg-uri';
+import Constant from '../utils/Constants';
 import DataManager from '../utils/DataManager';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
@@ -88,11 +89,11 @@ export default class SecurityPinScreen extends Component {
             console.log('Wallet is registered.');
             // Save User Info - WalletId
             manager.saveUserInfo(userInfo);
-            AsyncStorage.removeItem('@publicKey:key');
+            AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
         }).catch((error) => {
             // Offline mode: Can not check wallet
             // Store public key for the next registration
-            AsyncStorage.setItem('@publicKey:key', publicKey);
+            AsyncStorage.setItem(Constant.FLAG_PUBLIC_KEY, publicKey);
             if (error.existing !== 'undefined' && !error.existing && error.error.isTimeOut == false) {
                 console.log('Register wallet');
                 // Register wallet and save uid
@@ -100,10 +101,10 @@ export default class SecurityPinScreen extends Component {
                     console.log('Wallet is registered.');
                     // Save User Info - WalletId
                     manager.saveUserInfo(userInfo);
-                    AsyncStorage.removeItem('@publicKey:key');
+                    AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
                     // Synchronize address to server
                     manager.syncAddress(address, userInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
-                    AsyncStorage.removeItem('@publicKey:key');
+                    AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
                 }).catch((error) => {
                     console.log('Register fail', error);
                 });
@@ -116,7 +117,7 @@ export default class SecurityPinScreen extends Component {
     async manageWallet() {
         let manager = DataManager.getInstance();
         // Store isDbExisting true
-        AsyncStorage.setItem('@DbExisting:key', 'true');
+        AsyncStorage.setItem(Constant.FLAG_DB_EXISTING, 'true');
         if (this.props.isNewPIN) {
             //If this is the first launch, AsyncStorage will store isDbExisting true
             // Save PIN
@@ -134,7 +135,7 @@ export default class SecurityPinScreen extends Component {
             let isEqual = manager.checkPin(this.pinCode);
             if (isEqual) {
                 // Check wallet is registered on server or not
-                AsyncStorage.getItem('@publicKey:key', (error, result) => {
+                AsyncStorage.getItem(Constant.FLAG_PUBLIC_KEY, (error, result) => {
                     if (!error && result) {
                         let publicKey = result;
                         let addresses = manager.getAllAddresses();

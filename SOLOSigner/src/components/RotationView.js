@@ -18,13 +18,20 @@ export default class RotationView extends Component {
 
     componentDidMount() {
         let durationTime = this.props.duration ? this.props.duration : 3000;
-        Animated.loop(
+        this.loadingAnim = Animated.loop(
             Animated.timing(this.state.rotateAnimate, {
                 toValue: 1,
                 duration: durationTime,
                 easing: Easing.linear,
             })
-        ).start();
+        );
+        this.loadingAnim.start();
+    }
+
+    componentWillUnmount() {
+        if (this.loadingAnim) {
+            this.loadingAnim.stop();
+        }
     }
 
     render() {

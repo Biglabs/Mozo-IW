@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {AsyncStorage, Dimensions, Linking, View, YellowBox} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import {Dimensions, View, YellowBox} from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {FadeInView} from "../components/SoloComponent";
+import {CheckHasWallet} from '../utils/Globals';
 
 export default class SplashScreen extends Component {
 
@@ -20,20 +20,7 @@ export default class SplashScreen extends Component {
     handleFlow() {
         TimerMixin.clearTimeout(this.timer);
         //If DB is existing, open PIN screen for user to enter their PIN
-        AsyncStorage.getItem('@DbExisting:key', (error, result) => {
-            var dbExisting = false;
-            if (error) {
-                console.error(error);
-            } else {
-                dbExisting = result;
-            }
-            if (dbExisting) {
-                Actions.security_pin({isNewPin: false});
-            } else {
-                //Else open welcome screen
-                Actions.reset('welcome');
-            }
-        });
+        CheckHasWallet();
     }
 
     render() {

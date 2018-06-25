@@ -31,7 +31,7 @@ export default () => {
         <Router>
             <Modal key="root" hideNavBar>
 
-                <Scene key="splash" component={SplashScreen} hideNavBar initial/>
+                <Scene key="splash" component={SplashScreen} hideNavBar initial type="reset"/>
                 <Scene key="welcome" component={WelcomeScreen} hideNavBar type="reset"/>
                 <Scene key="security_pin" component={SecurityPinScreen} hideNavBar/>
 
