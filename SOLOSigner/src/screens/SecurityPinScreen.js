@@ -7,6 +7,7 @@ import SvgUri from 'react-native-svg-uri';
 import DataManager from '../utils/DataManager';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
+import TimerMixin from 'react-timer-mixin';
 
 const accentColor = '#00fffc';
 const numbersPressedColor = '#003c8d';
@@ -32,7 +33,15 @@ export default class SecurityPinScreen extends Component {
 
     componentDidUpdate(_, prevState) {
         if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
-            this.handleFlow();
+            this.manageWallet().then(result => {
+                if(result) {
+                    this.props.isNewPIN = false;
+                    // Open Home Screen
+                    Actions.main_stack();
+                } else {
+                    this.clearPin();
+                }
+            });
         }
     }
 
@@ -71,9 +80,6 @@ export default class SecurityPinScreen extends Component {
         let encryptedPrivateKey = encryption.encrypt(walletData.privkey, hashPin);
         manager.addAddress(walletData.address, walletData.derivedIndex, encryptedPrivateKey);
         // TODO: Load all addresses of this wallet from server and save to local
-        this.props.isNewPIN = false;
-        // Open Home Screen
-        Actions.main_stack();
     }
 
     registerWalletAndSyncAddress(manager, publicKey, address, derivedIndex) {
@@ -84,7 +90,10 @@ export default class SecurityPinScreen extends Component {
             manager.saveUserInfo(userInfo);
             AsyncStorage.removeItem('@publicKey:key');
         }).catch((error) => {
-            if (error.existing !== 'undefined' && !error.existing) {
+            // Offline mode: Can not check wallet
+            // Store public key for the next registration
+            AsyncStorage.setItem('@publicKey:key', publicKey);
+            if (error.existing !== 'undefined' && !error.existing && error.error.isTimeOut == false) {
                 console.log('Register wallet');
                 // Register wallet and save uid
                 manager.registerWallet(publicKey).then((userInfo) => {
@@ -94,20 +103,17 @@ export default class SecurityPinScreen extends Component {
                     AsyncStorage.removeItem('@publicKey:key');
                     // Synchronize address to server
                     manager.syncAddress(address, userInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
+                    AsyncStorage.removeItem('@publicKey:key');
                 }).catch((error) => {
                     console.log('Register fail', error);
-                    this.clearPin();
                 });
             } else {
                 console.log('Check fail', error);
-                // Offline mode: Can not check wallet
-                // Store public key for the next registration
-                AsyncStorage.setItem('@publicKey:key', publicKey);
             }
         });
     }
 
-    handleFlow() {
+    async manageWallet() {
         let manager = DataManager.getInstance();
         // Store isDbExisting true
         AsyncStorage.setItem('@DbExisting:key', 'true');
@@ -138,13 +144,11 @@ export default class SecurityPinScreen extends Component {
                         }
                     }
                 });
-                this.props.isNewPIN = false;
-                // Open Home Screen
-                Actions.main_stack();
             } else {
-                this.clearPin();
+                return false;
             }
         }
+        return true;
     }
 
     clearPin() {

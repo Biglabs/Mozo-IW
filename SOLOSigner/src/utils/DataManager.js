@@ -95,7 +95,7 @@ class DataManager {
     }
 
     sendRequest(url, params, isPost){
-        const FETCH_TIMEOUT = 60000;
+        const FETCH_TIMEOUT = 30000;
         return new Promise((resolve, reject) => {
             try {
                 let body = JSON.stringify(params);
@@ -103,7 +103,7 @@ class DataManager {
                 let didTimeOut = false;
                 const timeout = setTimeout(function() {
                     didTimeOut = true;
-                    reject(new Error('Request timed out'));
+                    reject({isTimeOut : true});
                 }, FETCH_TIMEOUT);
                 
                 let method = isPost ? 'POST' : 'GET';
