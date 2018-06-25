@@ -2,7 +2,7 @@ import {AsyncStorage} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {FLAG_DB_EXISTING} from './Constants';
 
-function checkHasWallet() {
+function checkWalletExisting() {
     AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
         if (result === 'true') {
             /* has wallet */
@@ -15,5 +15,5 @@ function checkHasWallet() {
 }
 
 module.exports = {
-    CheckHasWallet: checkHasWallet,
+    checkWalletExisting: checkWalletExisting,
 };

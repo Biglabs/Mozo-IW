@@ -1,22 +1,38 @@
 import React, {Component} from "react";
-import {Linking, TouchableOpacity, View} from 'react-native';
+import {Linking, TouchableOpacity, View, AsyncStorage} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {Button, Text} from "../components/SoloComponent";
-import {SchemeHandler} from "../utils/LinkingManager";
+import LinkingManager from "../utils/LinkingManager";
+import Constant from '../utils/Constants';
 
 export default class HomeScreen extends Component {
 
     componentDidMount() {
-        Linking.getInitialURL().then(this.checkScheme).catch(this.checkScheme);
+        this.manageScheme();
+    }
+
+    manageScheme(){
+        AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
+            if(!error && result) {
+                LinkingManager.manageScheme(result);
+                AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA);
+            } else {
+                Linking.getInitialURL().then((url) => {
+                    this.checkScheme(url);
+                    AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA);
+                });
+            }
+        });  
     }
 
     checkScheme(url) {
-        if (url && String(url).startsWith('solosigner')) {
-            SchemeHandler(url);
+        if (url) {
+            let jsonData = LinkingManager.handleOpenURL(url);
+            LinkingManager.manageScheme(jsonData);
         }
-    }
+    }    
 
     render() {
         return (

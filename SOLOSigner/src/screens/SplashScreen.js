@@ -4,7 +4,7 @@ import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {FadeInView} from "../components/SoloComponent";
-import {CheckHasWallet} from '../utils/Globals';
+import {checkWalletExisting} from '../utils/Globals';
 
 export default class SplashScreen extends Component {
 
@@ -20,7 +20,7 @@ export default class SplashScreen extends Component {
     handleFlow() {
         TimerMixin.clearTimeout(this.timer);
         //If DB is existing, open PIN screen for user to enter their PIN
-        CheckHasWallet();
+        checkWalletExisting();
     }
 
     render() {
