@@ -7,9 +7,11 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.biglabs.solo.signer.library.Signer
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,15 +82,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-        val scheme = "${BuildConfig.APPLICATION_ID}.solowallet://"
+        val scheme = "${BuildConfig.APPLICATION_ID}.solowallet"
         if (TextUtils.equals(intent.scheme, scheme) && intent.data != null) {
-            textBalance.text = intent.dataString.replaceFirst(scheme, "")
+            try{
+                val data = intent.dataString.split("://")[1]
+                textBalance.text = data
+                val jsonData = JSONObject(data)
+                val action = jsonData.getString("action")
+                val result = jsonData.getString("result")
+                when(action){
+                    Signer.ACTION_SIGN -> {
+                        buttonSubmit.visibility = View.VISIBLE
+                    }
+                }
+            }catch (ex: Exception){
+            }
         }
     }
 
     fun updateUI() {
-        val from = radios.checkedRadioButtonId
-        val to = accounts.size - from + 1
-        buttonSend.text = "send $value ETH\nfrom Account $from to Account $to"
+        buttonSubmit.visibility = View.GONE
     }
 }

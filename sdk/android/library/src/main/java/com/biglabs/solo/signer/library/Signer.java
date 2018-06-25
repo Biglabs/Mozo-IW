@@ -16,9 +16,9 @@ public class Signer {
 
     private static final String API_BASE_URL = "http://192.168.1.91:8080/";
 
-    private static final String ACTION_NONE = "NONE";
-    private static final String ACTION_GET_USER = "GET_USER";
-    private static final String ACTION_SIGN = "SIGN";
+    public static final String ACTION_NONE = "NONE";
+    public static final String ACTION_GET_USER = "GET_USER";
+    public static final String ACTION_SIGN = "SIGN";
 
     private static Signer instance = null;
     private final Context mContext;
@@ -49,13 +49,16 @@ public class Signer {
         this.mSignerService = retrofit.create(SignerService.class);
     }
 
-    private String prepareSignerDeepLink(String action, JSONObject params) {
+    private String prepareSignerDeepLink(String action, String coinType, JSONObject params) {
         String receiver = String.format(Locale.ENGLISH, "%s.solowallet", appId);
 
         JSONObject data = new JSONObject();
         try {
             data.put("action", action);
             data.put("receiver", receiver);
+            if (coinType != null) {
+                data.put("coinType", coinType);
+            }
             if (params != null) {
                 data.put("params", params);
             }
@@ -64,8 +67,12 @@ public class Signer {
         return String.format(Locale.US, "solosigner://%s", data.toString());
     }
 
-    private void openDeepLink(String action, JSONObject params) {
-        String signerLink = prepareSignerDeepLink(action, params);
+    private void openDeepLink(String action) {
+        openDeepLink(action, null, null);
+    }
+
+    private void openDeepLink(String action, String coinType, JSONObject params) {
+        String signerLink = prepareSignerDeepLink(action, coinType, params);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(signerLink));
         if (intent.resolveActivity(mContext.getPackageManager()) != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
@@ -76,10 +83,10 @@ public class Signer {
     }
 
     public void getUserInfo() {
-        openDeepLink(ACTION_GET_USER, null);
+        openDeepLink(ACTION_GET_USER);
     }
 
-    public void getWallets(){
+    public void getWallets() {
         this.mSignerService.listWallet();
     }
 
@@ -88,11 +95,10 @@ public class Signer {
             JSONObject params = new JSONObject()
                     .put("from", fromAddress)
                     .put("to", toAddress)
-                    .put("coinType", coinType)
                     .put("value", value)
                     .put("txData", msg);
 
-            openDeepLink(ACTION_SIGN, params);
+            openDeepLink(ACTION_SIGN, coinType, params);
         } catch (Exception ignored) {
         }
     }

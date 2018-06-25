@@ -10,26 +10,36 @@ import {Actions} from 'react-native-router-flux';
 export default class NavigationBarView extends Component {
     constructor(props) {
         super(props);
+
+        const primaryColor = StyleSheet.value('$primaryColor');
+        this.backgroundColor = props.backgroundColor || StyleSheet.value('$screenBackground');
+        this.backIconColor = props.accentColor || primaryColor;
+        this.backTextColor = props.accentColor || StyleSheet.value('$textTitleColor');
+        this.titleColor = props.accentColor || primaryColor;
     }
 
     render() {
         return (
-            <View {...this.props} style={[styles.toolbar, this.props.style]}>
+            <View {...this.props} style={[styles.toolbar, {backgroundColor: this.backgroundColor}, this.props.style]}>
 
-                <TouchableOpacity style={styles.button} onPress={()=> Actions.pop()}>
+                <TouchableOpacity style={styles.button} onPress={() => Actions.pop()}>
                     <SvgUri
                         width={8}
                         height={13}
-                        fill={StyleSheet.value('$primaryColor')}
+                        fill={this.backIconColor}
                         source={require('../res/icons/ic_arrow_back.svg')}
                         style={{
                             marginLeft: 16,
                             marginRight: 6,
                         }}/>
-                    <Text style={styles.button_text}>Back</Text>
+                    <Text style={[styles.button_text, {color: this.backTextColor}]}>Back</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.title}>{(this.props.title || 'screen title').toUpperCase()}</Text>
+                <Text style={[styles.title, {color: this.titleColor}]}>
+                    {
+                        (this.props.title || 'screen title').toUpperCase()
+                    }
+                </Text>
             </View>
         );
     }

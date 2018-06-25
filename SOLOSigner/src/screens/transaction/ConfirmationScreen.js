@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Alert, Linking, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
+import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 import {Button, NavigationBar, Text} from "../../components/SoloComponent";
 
@@ -14,23 +15,13 @@ export default class ConfirmationScreen extends Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            pressedConfirm: false
+        };
         this.ethProvider = new Web3(
             new Web3.providers.HttpProvider('https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir')
         ).eth;
     }
-
-    componentDidMount() {
-        //For the first time component render
-        // Alert.alert(
-        //     "Alert",
-        //     this.props.txData,
-        //     [
-        //       {text: 'OK', onPress: () => console.log('OK Pressed')},
-        //     ],
-        //   );
-    }
-
 
     showAlert(message) {
         Alert.alert(
@@ -54,12 +45,12 @@ export default class ConfirmationScreen extends Component {
     onConfirmTransaction() {
         let manager = DataManager.getInstance();
         let encryptedPrivateKey = manager.getPrivateKeyFromAddress(this.props.txData.params.from);
-        if(!encryptedPrivateKey){
+        if (!encryptedPrivateKey) {
             alert('Not support this address');
             return;
         }
         let app = manager.getAppInfo();
-        if(!app || !app.pin){
+        if (!app || !app.pin) {
             alert('System error');
             return;
         }
@@ -88,28 +79,23 @@ export default class ConfirmationScreen extends Component {
             };
             const tx = new Transaction(txParams);
             tx.sign(this.privateKeyInBuffer);
-            const serializedTx = tx.serialize();
-            //Verify connection is successful
-            let data = `0x${serializedTx.toString('hex')}`;
-            this.ethProvider.sendSignedTransaction(data)
-                .on('receipt', receipt => {
-                    console.log("receipt: " + receipt.toString());
-                    this.responseToReceiver(receipt);
-                })
-                .on('error', (e) => {
-                    this.showAlert("Sending Error: " + e);
-                });
+            let signedTransaction = `0x${tx.serialize().toString('hex')}`;
+            this.responseToReceiver(signedTransaction);
         });
     }
 
-    responseToReceiver(receipt) {
-        const url = `${this.props.txData.receiver}://${JSON.stringify(receipt)}`;
-        Linking.canOpenURL(url).then(supported => {
+    responseToReceiver(signedTransaction) {
+        let responseData = {
+            action: this.props.txData.action,
+            result: signedTransaction,
+        };
+        const responseUrl = `${this.props.txData.receiver}://${JSON.stringify(responseData)}`;
+        Linking.canOpenURL(responseUrl).then(supported => {
             if (!supported) {
-                this.showAlert('Can\'t handle url: ' + url);
+                this.showAlert('Can\'t handle url: ' + responseUrl);
             } else {
                 Actions.main_stack();
-                return Linking.openURL(url);
+                return Linking.openURL(responseUrl);
             }
         }).catch(err => this.showAlert('An error occurred ' + err));
     }
@@ -117,25 +103,60 @@ export default class ConfirmationScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <NavigationBar
+                    title='Send Confirmation'
+                    backgroundColor={StyleSheet.value('$primaryColor')}
+                    accentColor='#ffffff'/>
 
-                <NavigationBar title='Send Confirmation'/>
+                <View style={styles.content}>
+                    <Text style={styles.text_send}>Send</Text>
+                    <Text style={styles.text_value}>
+                        {this.props.txData.params.value} {(this.props.txData.coinType || '').toUpperCase()}
+                    </Text>
+                    <Text style={styles.text_usd}>... USD</Text>
 
+                    <View style={styles.dash}/>
 
-                <Text style={StyleSheet.value('$screen_title_text')}>SEND CONFIRMATION</Text>
-                <Text>From: {this.props.txData.params.from}</Text>
-                <Text>To: {this.props.txData.params.to}</Text>
-                <Text>value: {this.props.txData.params.value}</Text>
-                <Text>message: {this.props.txData.params.txData}</Text>
-                <Text>receiver: {this.props.txData.receiver}</Text>
+                    <Text>
+                        <Text style={styles.text_section}>Mining Fee: </Text>
+                        <Text style={[styles.text_section, styles.text_mining_fee_value]}>... BTC</Text>
+                    </Text>
 
-                <Button title='Confirm Transaction'
-                        onPress={() => this.onConfirmTransaction()}/>
+                    <View style={styles.dash}/>
 
-                <Button title='Back'
-                        style={StyleSheet.value('$back_button')}
-                        fontSize={16}
-                        icon={require('../../res/icons/ic_arrow_left.svg')}
-                        onPress={() => Actions.pop()}/>
+                    <Text style={styles.text_section}>To:</Text>
+                    <Text style={styles.text_address} numberOfLines={1}
+                          ellipsizeMode='middle'>{this.props.txData.params.to}</Text>
+
+                    <View style={styles.dash}/>
+
+                    <Text style={styles.text_section}>From:</Text>
+                    <Text style={styles.text_address} numberOfLines={1}
+                          ellipsizeMode='middle'>{this.props.txData.params.from}</Text>
+
+                    <View style={styles.dash}/>
+
+                    {
+                        this.state.pressedConfirm &&
+                        <View style={styles.confirmation_container}>
+
+                            <Text style={styles.confirmation_text}>Hold 5s to confirm send transaction</Text>
+                        </View>
+                    }
+                    <TouchableOpacity style={styles.button_confirm}
+                                      onPressIn={() => this.setState({pressedConfirm: true})}
+                                      onPressOut={() => {
+                                          this.setState({pressedConfirm: false});
+                                          this.onConfirmTransaction();
+                                      }}>
+                        <SvgUri
+                            fill={StyleSheet.value('$primaryColor')}
+                            width={33}
+                            height={33}
+                            source={require('../../res/icons/ic_check.svg')}/>
+                        <Text style={styles.text_confirm}>Confirm</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -148,7 +169,66 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: 30,
-        paddingRight: 30
     },
+    content: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        padding: '$screen_padding_horizontal'
+    },
+    dash: {
+        height: 1,
+        backgroundColor: '$disableColor',
+        marginTop: 20,
+        marginBottom: 15
+    },
+    text_send: {
+        color: '$textContentColor',
+        fontSize: 16
+    },
+    text_value: {
+        color: '$primaryColor',
+        fontSize: 25
+    },
+    text_usd: {
+        color: '#c1c1c1',
+        fontSize: 14
+    },
+    text_section: {
+        color: '$textTitleColor',
+        fontSize: 14,
+        fontFamily: '$primaryFontBold'
+    },
+    text_mining_fee_value: {
+        fontFamily: '$primaryFont'
+    },
+    text_address: {
+        color: '#969696',
+        fontSize: 12
+    },
+    text_confirm: {
+        color: '$textTitleColor',
+        fontSize: 16,
+        fontFamily: '$primaryFontBold',
+        marginLeft: 6,
+    },
+    button_confirm: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        left: '36%',
+        right: '36%',
+        marginBottom: 20,
+    },
+    confirmation_container: {
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    confirmation_text: {
+        color: '#5a9cf5',
+        fontSize: 12
+    }
 });
