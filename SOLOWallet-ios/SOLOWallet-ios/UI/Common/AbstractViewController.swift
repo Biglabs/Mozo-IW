@@ -30,7 +30,7 @@ public class AbstractViewController: UIViewController {
         self.view.backgroundColor = ThemeManager.shared.background
         
         //dummy data
-        let address = AddressDTO.init(id: "123", address: "017A16QmavnUfCW11DAApiJxp7ARnxN5pGX", coin: "ETH", balance: 7.020020030, network: "ETH_MAIN", transactions: transactions as? [TransactionDTO])
+        let address = AddressDTO.init(id: "123", address: "0x011df24265841dCdbf2e60984BB94007b0C1d76A", coin: "ETH", balance: 7.020020030, network: "ETH_MAIN", transactions: transactions as? [TransactionDTO])
         coin = CoinDTO.init(id: 0, key: "ETH", name: "ETH", icon: "ic_ethereum", addesses: [address!])
         
         let titleLabel = UILabel.init()

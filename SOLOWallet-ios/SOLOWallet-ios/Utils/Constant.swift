@@ -85,3 +85,29 @@ public enum SOLOTAB {
         }
     }
 }
+
+public enum URL_SCHEME {
+    case Sender
+    case Receiver
+    
+    public var scheme : String {
+        switch self {
+        case .Sender: return "solosigner"
+        case .Receiver: return Bundle.main.bundleIdentifier ?? "" + ".solowallet"
+        }
+    }
+}
+
+public enum ACTIONTYPE {
+    case SIGN
+    case GET_USER
+    case ADD_ADDRESS
+    
+    public var value : String {
+        switch self {
+        case .SIGN: return "SIGN"
+        case .GET_USER: return "GET_USER"
+        case .ADD_ADDRESS: return "ADD_ADDRESS"
+        }
+    }
+}

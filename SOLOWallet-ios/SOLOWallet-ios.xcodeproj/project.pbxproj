@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */; };
 		C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DEEE20D8BFA400258ACE /* AppDelegate.swift */; };
 		C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */; };
 		C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C616DEF820D8BFA700258ACE /* Assets.xcassets */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.release.xcconfig"; sourceTree = "<group>"; };
+		20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationDTO.swift; sourceTree = "<group>"; };
 		79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SOLOWallet_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		832B69B3E43B23B9D77FAD04 /* Pods-SOLOWallet-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOWallet-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,6 +275,7 @@
 				C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */,
 				C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */,
 				C63A844620DB7D600073EB08 /* TransactionDTO.swift */,
+				20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
 				C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */,
 				C6D4F69F20E0C20400A6EFE3 /* EdgeInsetLabel.swift in Sources */,
+				20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */,
 				C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
