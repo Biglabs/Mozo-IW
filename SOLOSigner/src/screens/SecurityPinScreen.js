@@ -32,7 +32,7 @@ export default class SecurityPinScreen extends Component {
 
     componentDidUpdate(_, prevState) {
         if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
-            this.handleFlowAsync();
+            this.handleFlow();
         }
     }
 
@@ -107,7 +107,7 @@ export default class SecurityPinScreen extends Component {
         });
     }
 
-    handleFlowAsync() {
+    handleFlow() {
         let manager = DataManager.getInstance();
         // Store isDbExisting true
         AsyncStorage.setItem('@DbExisting:key', 'true');
