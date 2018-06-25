@@ -120,3 +120,9 @@ extension UITextField {
         self.rightViewMode = .always
     }
 }
+
+extension Decimal {
+    var toDouble:Double {
+        return NSDecimalNumber(decimal:self).doubleValue
+    }
+}

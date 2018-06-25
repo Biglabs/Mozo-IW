@@ -96,6 +96,7 @@ class SendViewController: AbstractViewController {
         self.inputCoinNameLabel.text = self.coin.name ?? ""
         self.inputUSDLabel.text = "US$7,500.52"
         self.spendableValueLabel.text = "\(self.coin.addesses?.first?.balance ?? 0.0) \(self.coin.name ?? "")"
+        self.gasTextField.text = "250.000"
         self.addressTextField.text = "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
     }
     

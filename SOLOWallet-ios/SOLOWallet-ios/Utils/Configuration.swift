@@ -20,6 +20,7 @@ public class Configuration {
     
     //development
     public static var BASE_URL = "http://192.168.1.91:8080"
+    public static var ROPSTEN_INFURA_URL = "https://ropsten.infura.io/V2vOGBNVvlHlDJQ17sIL"
     
     public static func getDomain() -> String?{
         let URL = NSURL(string: self.BASE_URL)
