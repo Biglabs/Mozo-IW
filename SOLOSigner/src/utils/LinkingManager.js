@@ -1,4 +1,4 @@
-import {Linking} from 'react-native';
+import {Linking, AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Constant from './Constants';
 import {checkWalletExisting} from '../utils/Globals';
@@ -9,12 +9,11 @@ function handleOpenURL(url) {
         //TOO: Check receiver
         if (urls.length > 1 && urls[1]) {
             try {
-                const jsonData = JSON.parse(decodeURI(urls[1]));
                 // Save data to AsyncStorage
-                AsyncStorage.setItem(Constant.FLAG_SCHEME_DATA, jsonData);
-                return jsonData;
+                AsyncStorage.setItem(Constant.FLAG_SCHEME_DATA, urls[1]);
+                return urls[1];
             }
-            catch (err) {
+            catch (error) {
                 console.log(error);
             }
         }
@@ -22,7 +21,8 @@ function handleOpenURL(url) {
     return null;
 }
 
-function manageScheme(jsonData){
+function manageScheme(data){
+    const jsonData = JSON.parse(decodeURI(data));
     switch (jsonData.action) {
         case Constant.ACTION_SCHEME.SIGN: {
             Actions.jump('trans_confirm', {txData: jsonData});
