@@ -115,7 +115,7 @@ class SendViewController: AbstractViewController {
         transaction.to = self.addressTextField.text ?? "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
         transaction.value = 0.05
         
-        AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, transaction: transaction, type: COINTYPE.ETH.key)
+        AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, type: COINTYPE.ETH.key, transaction: transaction)
     }
 }
 

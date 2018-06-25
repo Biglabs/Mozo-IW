@@ -16,7 +16,7 @@ public class AppService {
     
     //action: view,create
     //type: idea,space,...
-    public func launchSignerApp(_ action: String, transaction: TransactionDTO, type: String) {
+    public func launchSignerApp(_ action: String, type: String, transaction: TransactionDTO) {
         let isAlwaysLaunchApp = KeychainService.instance.getBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP)
         
         func launchApp() {
