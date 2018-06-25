@@ -33,13 +33,13 @@
                                             <constraint firstAttribute="height" constant="25" id="YQd-p8-xfw"/>
                                             <constraint firstAttribute="width" constant="25" id="rH7-gB-inV"/>
                                         </constraints>
-                                        <inset key="contentEdgeInsets" minX="2" minY="5" maxX="0.0" maxY="0.0"/>
+                                        <inset key="contentEdgeInsets" minX="2" minY="8" maxX="2" maxY="0.0"/>
                                         <state key="normal" title="Button"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8HL-7P-rcW">
-                                        <rect key="frame" x="300" y="27" width="25" height="15"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8HL-7P-rcW">
+                                        <rect key="frame" x="300" y="34" width="25" height="10"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="15" id="CQG-wl-ElM"/>
+                                            <constraint firstAttribute="height" constant="10" id="CQG-wl-ElM"/>
                                             <constraint firstAttribute="width" constant="25" id="ghy-hO-1ED"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
@@ -54,7 +54,7 @@
                                     <constraint firstItem="Fiz-Qp-QwA" firstAttribute="top" secondItem="TOB-wX-Bi0" secondAttribute="top" id="aiN-0i-Ak0"/>
                                     <constraint firstItem="BhH-vr-exW" firstAttribute="top" secondItem="TOB-wX-Bi0" secondAttribute="top" id="fJ0-uG-nFE"/>
                                     <constraint firstAttribute="height" constant="44" id="hiB-ZL-4RA"/>
-                                    <constraint firstAttribute="bottom" secondItem="8HL-7P-rcW" secondAttribute="bottom" constant="2" id="m7N-Cq-gEq"/>
+                                    <constraint firstAttribute="bottom" secondItem="8HL-7P-rcW" secondAttribute="bottom" id="m7N-Cq-gEq"/>
                                     <constraint firstAttribute="trailing" secondItem="Fiz-Qp-QwA" secondAttribute="trailing" constant="10" id="qfu-pX-p2G"/>
                                     <constraint firstAttribute="bottom" secondItem="BhH-vr-exW" secondAttribute="bottom" id="rhR-H0-LjA"/>
                                 </constraints>
@@ -62,46 +62,56 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zJQ-uC-7nw">
                                 <rect key="frame" x="20" y="84" width="335" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HID-Ca-0Fg" customClass="EdgeInsetLabel" customModule="SOLOWallet_ios" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="85.5" height="44"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="leftTextInset">
-                                                <real key="value" value="20"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="rightTextInset">
-                                                <real key="value" value="30"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BwH-3Q-Q5I">
-                                        <rect key="frame" x="95.5" y="0.0" width="184" height="44"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaa-2V-g0C">
-                                        <rect key="frame" x="289.5" y="0.0" width="35.5" height="44"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qc8-rk-t9W">
+                                        <rect key="frame" x="0.0" y="0.0" width="325" height="44"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLp-ae-m2T" customClass="EdgeInsetLabel" customModule="SOLOWallet_ios" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="60.5" height="44"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="leftTextInset">
+                                                        <real key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="rightTextInset">
+                                                        <real key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVG-zG-Vxz" customClass="EdgeInsetLabel" customModule="SOLOWallet_ios" customModuleProvider="target">
+                                                <rect key="frame" x="60.5" y="0.0" width="45.5" height="44"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="rightTextInset">
+                                                        <real key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BwH-3Q-Q5I">
+                                                <rect key="frame" x="106" y="0.0" width="191" height="44"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="US$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaa-2V-g0C">
+                                                <rect key="frame" x="297" y="0.0" width="28" height="44"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="HID-Ca-0Fg" firstAttribute="top" secondItem="zJQ-uC-7nw" secondAttribute="top" id="6Je-7X-AkV"/>
-                                    <constraint firstItem="BwH-3Q-Q5I" firstAttribute="leading" secondItem="HID-Ca-0Fg" secondAttribute="trailing" constant="10" id="Gma-yo-78q"/>
-                                    <constraint firstItem="zaa-2V-g0C" firstAttribute="top" secondItem="zJQ-uC-7nw" secondAttribute="top" id="Hvn-A1-9A1"/>
-                                    <constraint firstItem="BwH-3Q-Q5I" firstAttribute="top" secondItem="zJQ-uC-7nw" secondAttribute="top" id="NAB-Kd-JLq"/>
+                                    <constraint firstAttribute="trailing" secondItem="Qc8-rk-t9W" secondAttribute="trailing" constant="10" id="7pc-rb-Lse"/>
                                     <constraint firstAttribute="height" constant="44" id="Q7j-Ct-NvI"/>
-                                    <constraint firstItem="zaa-2V-g0C" firstAttribute="leading" secondItem="BwH-3Q-Q5I" secondAttribute="trailing" constant="10" id="TPS-8h-1cM"/>
-                                    <constraint firstAttribute="bottom" secondItem="BwH-3Q-Q5I" secondAttribute="bottom" id="W2P-yi-IIo"/>
-                                    <constraint firstItem="HID-Ca-0Fg" firstAttribute="leading" secondItem="zJQ-uC-7nw" secondAttribute="leading" id="ipz-MX-dlh"/>
-                                    <constraint firstAttribute="bottom" secondItem="HID-Ca-0Fg" secondAttribute="bottom" id="rNz-sS-J4N"/>
-                                    <constraint firstAttribute="trailing" secondItem="zaa-2V-g0C" secondAttribute="trailing" constant="10" id="vJ8-YO-jwn"/>
-                                    <constraint firstAttribute="bottom" secondItem="zaa-2V-g0C" secondAttribute="bottom" id="zZJ-mi-iZV"/>
+                                    <constraint firstAttribute="bottom" secondItem="Qc8-rk-t9W" secondAttribute="bottom" id="cJJ-3n-Ofx"/>
+                                    <constraint firstItem="Qc8-rk-t9W" firstAttribute="top" secondItem="zJQ-uC-7nw" secondAttribute="top" id="htu-ud-pIO"/>
+                                    <constraint firstItem="Qc8-rk-t9W" firstAttribute="leading" secondItem="zJQ-uC-7nw" secondAttribute="leading" id="lCg-Wg-bdy"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="Qsf-Pj-Smh"/>
                             </view>
@@ -115,7 +125,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4C-0S-O8K">
-                                <rect key="frame" x="98.5" y="133" width="256.5" height="20"/>
+                                <rect key="frame" x="93.5" y="133" width="261.5" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="wYw-Tr-cHo"/>
                                 </constraints>
@@ -187,7 +197,7 @@
                             <constraint firstItem="Y4C-0S-O8K" firstAttribute="top" secondItem="zJQ-uC-7nw" secondAttribute="bottom" constant="5" id="j2R-pK-jtE"/>
                             <constraint firstItem="VlI-Ir-UK9" firstAttribute="leading" secondItem="jte-wc-Gco" secondAttribute="leading" constant="20" id="kCa-gv-zgU"/>
                             <constraint firstItem="zJQ-uC-7nw" firstAttribute="leading" secondItem="jte-wc-Gco" secondAttribute="leading" constant="20" id="lF9-GK-SHe"/>
-                            <constraint firstItem="Y4C-0S-O8K" firstAttribute="leading" secondItem="fMF-kQ-gKc" secondAttribute="trailing" constant="10" id="nwO-JF-asD"/>
+                            <constraint firstItem="Y4C-0S-O8K" firstAttribute="leading" secondItem="fMF-kQ-gKc" secondAttribute="trailing" constant="5" id="nwO-JF-asD"/>
                             <constraint firstItem="dtL-x7-ml3" firstAttribute="leading" secondItem="jte-wc-Gco" secondAttribute="leading" constant="20" id="pLD-aA-usr"/>
                             <constraint firstItem="8I5-ex-E0c" firstAttribute="top" secondItem="fMF-kQ-gKc" secondAttribute="bottom" constant="20" id="rDA-bE-DH7"/>
                             <constraint firstAttribute="trailing" secondItem="zJQ-uC-7nw" secondAttribute="trailing" constant="20" id="uiy-D3-i0E"/>
@@ -201,7 +211,8 @@
                         <outlet property="gasLabel" destination="Q7t-3b-IrU" id="Mvb-Z6-p5T"/>
                         <outlet property="gasTextField" destination="PDJ-SG-YaE" id="6YZ-Kn-7zv"/>
                         <outlet property="gasView" destination="8I5-ex-E0c" id="9Vd-4j-Ywr"/>
-                        <outlet property="inputCoinLabel" destination="HID-Ca-0Fg" id="QPs-Gg-PcE"/>
+                        <outlet property="inputCoinIconLabel" destination="hLp-ae-m2T" id="Jw9-zK-BxU"/>
+                        <outlet property="inputCoinNameLabel" destination="LVG-zG-Vxz" id="DS4-9e-hTy"/>
                         <outlet property="inputCoinTextField" destination="BwH-3Q-Q5I" id="Aim-d5-NBS"/>
                         <outlet property="inputCoinView" destination="zJQ-uC-7nw" id="bVV-UI-7C2"/>
                         <outlet property="inputUSDLabel" destination="zaa-2V-g0C" id="LLE-Ls-ck7"/>

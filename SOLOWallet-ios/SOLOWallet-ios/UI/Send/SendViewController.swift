@@ -18,7 +18,8 @@ class SendViewController: AbstractViewController {
     
     //value coin
     @IBOutlet weak var inputCoinView: UIView!
-    @IBOutlet weak var inputCoinLabel: EdgeInsetLabel!
+    @IBOutlet weak var inputCoinIconLabel: EdgeInsetLabel!
+    @IBOutlet weak var inputCoinNameLabel: EdgeInsetLabel!
     @IBOutlet weak var inputCoinTextField: UITextField!
     @IBOutlet weak var inputUSDLabel: UILabel!
     
@@ -58,10 +59,13 @@ class SendViewController: AbstractViewController {
         self.inputCoinView.layer.cornerRadius = 5
         self.inputCoinView.layer.borderColor = ThemeManager.shared.border.cgColor
         self.inputCoinView.layer.borderWidth = 0.5
-        self.inputCoinLabel.backgroundColor = ThemeManager.shared.title
-        self.inputCoinLabel.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
-        self.inputCoinLabel.textColor = UIColor.white
-        self.inputCoinLabel.addTextWithImage(text: " \(self.coin.name ?? "")", image: UIImage.init(named: "ic_sort_ascending")!, imageBehindText: false, keepPreviousText: false)
+        self.inputCoinIconLabel.backgroundColor = ThemeManager.shared.title
+        self.inputCoinIconLabel.textColor = UIColor.white
+        self.inputCoinIconLabel.addTextWithImage(text: "", image: UIImage.init(named: "ic_sort_ascending")!, imageBehindText: true, keepPreviousText: false)
+        self.inputCoinIconLabel.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
+        self.inputCoinNameLabel.backgroundColor = ThemeManager.shared.title
+        self.inputCoinNameLabel.textColor = UIColor.white
+        self.inputCoinTextField.textColor = ThemeManager.shared.font
         self.inputUSDLabel.textColor = ThemeManager.shared.placeholder
         
         self.spendableTitleLabel.textColor = ThemeManager.shared.title
@@ -84,6 +88,13 @@ class SendViewController: AbstractViewController {
         self.sendButton.backgroundColor = ThemeManager.shared.main
         self.sendButton.tintColor = UIColor.white
         
+        self.bindData()
+    }
+    
+    func bindData() {
+        self.inputCoinNameLabel.text = self.coin.name ?? ""
+        self.inputUSDLabel.text = "US$7,500.52"
+        self.spendableValueLabel.text = "\(self.coin.addesses?.first?.balance ?? 0.0) \(self.coin.name ?? "")"
     }
     
     @objc func scanQRCode() {
