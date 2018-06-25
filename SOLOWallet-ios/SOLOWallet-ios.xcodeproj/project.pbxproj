@@ -43,6 +43,7 @@
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5B20DCB548009112FC /* Callbacks.swift */; };
 		C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */; };
+		C6D4F69F20E0C20400A6EFE3 /* EdgeInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */; };
 		C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DC687520DE26E800000665 /* ScannerViewController.swift */; };
 		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
 /* End PBXBuildFile section */
@@ -91,6 +92,7 @@
 		C6CD7F5B20DCB548009112FC /* Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callbacks.swift; sourceTree = "<group>"; };
 		C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRESTService.swift; sourceTree = "<group>"; };
 		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
+		C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetLabel.swift; sourceTree = "<group>"; };
 		C6DC687520DE26E800000665 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -181,6 +183,7 @@
 		C616DF0420D8C4EE00258ACE /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				C6D4F69D20E0C1F000A6EFE3 /* Extended */,
 				C616DF4F20D9167200258ACE /* Common */,
 				C616DF0720D8D86C00258ACE /* Exchange */,
 				C616DF0820D8D86C00258ACE /* Menu */,
@@ -290,6 +293,14 @@
 				C6CD7F5120DCAFC4009112FC /* AppService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		C6D4F69D20E0C1F000A6EFE3 /* Extended */ = {
+			isa = PBXGroup;
+			children = (
+				C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */,
+			);
+			path = Extended;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,6 +444,7 @@
 				C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */,
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
 				C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */,
+				C6D4F69F20E0C20400A6EFE3 /* EdgeInsetLabel.swift in Sources */,
 				C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
