@@ -1,7 +1,7 @@
 import {Linking, AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import Constant from './Constants';
-import {checkWalletExisting} from '../utils/Globals';
+import Constant from '../common/Constants';
+import {checkWalletExisting} from '../common/Globals';
 
 function handleOpenURL(url) {
     if (url && String(url).startsWith('solosigner')) {

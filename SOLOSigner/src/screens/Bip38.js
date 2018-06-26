@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, Platform, StyleSheet, Text, View, TextInput, Keyboard, TouchableWithoutFeedback, Alert} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-let encryption = require('../components/encryption/encryption');
+let encryption = require('../common/encryption');
 var bip38 = require('bip38')
 var wif = require('wif')
 
