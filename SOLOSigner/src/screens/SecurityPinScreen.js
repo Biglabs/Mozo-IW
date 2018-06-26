@@ -106,6 +106,7 @@ export default class SecurityPinScreen extends Component {
                     AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
                     // Synchronize address to server
                     manager.syncAddress(address, userInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
+                    //TODO: Should retry incase network error
                     AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
                 }).catch((error) => {
                     console.log('Register fail', error);

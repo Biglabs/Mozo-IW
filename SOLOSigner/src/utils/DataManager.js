@@ -224,9 +224,7 @@ class DataManager {
                     coin: coinType,
                     network: network
                 },
-                wallet : {
-                    walletId : walletId
-                }
+                walletId : walletId
             }, true);
         } catch (error) {
             console.log(error);

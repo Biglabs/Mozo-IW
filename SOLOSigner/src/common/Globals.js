@@ -1,4 +1,4 @@
-import {AsyncStorage} from "react-native";
+import {AsyncStorage, Linking} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {FLAG_DB_EXISTING} from './Constants';
 
@@ -19,7 +19,7 @@ function responseToReceiver(result, jsonData) {
         action: jsonData.action,
         result: result,
     };
-    const responseUrl = `${this.props.txData.receiver}://${JSON.stringify(responseData)}`;
+    const responseUrl = `${jsonData.receiver}://${JSON.stringify(responseData)}`;
     Linking.openURL(responseUrl).then().catch(error => 
         console.log(error)
     );

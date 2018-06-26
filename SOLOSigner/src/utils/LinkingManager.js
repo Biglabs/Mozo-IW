@@ -23,10 +23,12 @@ function handleOpenURL(url) {
 }
 
 function manageScheme(data){
-    console.log("Manage scheme: " + data)
+    console.log("Manage scheme: " + data);
     const jsonData = JSON.parse(decodeURI(data));
+    console.log(jsonData);
     switch (jsonData.action) {
         case Constant.ACTION_SCHEME.SIGN: {
+            console.log("Processing confirm transaction.");
             Actions.jump('trans_confirm', {txData: jsonData});
             break;
         }
