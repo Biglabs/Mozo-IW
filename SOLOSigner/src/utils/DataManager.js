@@ -155,7 +155,7 @@ class DataManager {
     getAllAddressesFromServer(walletId){
         return new Promise((resolve, reject) => {
             try {
-                this.sendRequest('http://192.168.1.91:8080/api/', {
+                this.sendRequest('http://192.168.1.98:8080/api/', {
                     walletId: walletId,
                 }, false)
                 .then((data) => {
@@ -177,7 +177,7 @@ class DataManager {
         return new Promise((resolve, reject) => {
             try {
                 let hash = this.convertToHash(publicKey);
-                this.sendRequest(`http://192.168.1.91:9000/api/wallets/${publicKey}`, {
+                this.sendRequest(`http://192.168.1.98:9000/api/wallets/${publicKey}`, {
                     walletKey: hash,
                 }, false)
                 .then((userInfo) => {
@@ -225,7 +225,7 @@ class DataManager {
 
     syncAddress(address, walletId, derivedIndex, coinType, network) {
         try {
-            this.sendRequest('http://192.168.1.91:9000/api/wallet-addresses', {
+            this.sendRequest('http://192.168.1.98:9000/api/wallet-addresses', {
                 address : { 
                     address: address,
                     derivedIndex : derivedIndex,
