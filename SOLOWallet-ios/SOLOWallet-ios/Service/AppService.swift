@@ -30,6 +30,9 @@ public class AppService {
             case ACTIONTYPE.ADD_ADDRESS.value:
                 break
             case ACTIONTYPE.SIGN.value:
+                let value = TransactionDTO(json: (com?.result)!)
+                print(value)
+                sendTx(signedTx: (value?.signedTransaction)!)
                 break
             default:
                 break
@@ -37,6 +40,25 @@ public class AppService {
         }
     }
 
+    private func sendTx(signedTx: String){
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
+        RESTService.shared.infuraPOST(params) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            print(json["result"])
+            if let result = json["result"].string {
+                print(result)
+            }
+            
+        }
+    }
     
     //action: view,create
     //type: idea,space,...

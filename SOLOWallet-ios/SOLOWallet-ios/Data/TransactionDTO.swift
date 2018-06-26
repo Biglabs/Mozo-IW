@@ -18,6 +18,7 @@ public class TransactionDTO: ResponseObjectSerializable {
     public var to: String?
     public var value: Double?
     public var fee: Double?
+    public var signedTransaction: String?
     
     public required init?(id: String?, time: Int64?, from: String?, to: String?, value: Double?, fee: Double?) {
         self.id = id
@@ -36,6 +37,7 @@ public class TransactionDTO: ResponseObjectSerializable {
         self.to = json["to"].string
         self.value = json["value"].double
         self.fee = json["fee"].double
+        self.signedTransaction = json["signedTransaction"].string
     }
     
     public required init?(){}
