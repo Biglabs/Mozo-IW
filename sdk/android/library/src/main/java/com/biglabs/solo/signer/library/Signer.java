@@ -3,18 +3,33 @@ package com.biglabs.solo.signer.library;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.biglabs.solo.signer.library.models.Result;
+import com.biglabs.solo.signer.library.models.Transaction;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Locale;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Signer {
 
     private static final String API_BASE_URL = "http://192.168.1.91:8080/";
+    private static final String API_INFURA_TESTNET = "https://api.infura.io/v1/jsonrpc/";
 
     public static final String ACTION_NONE = "NONE";
     public static final String ACTION_GET_USER = "GET_USER";
@@ -24,6 +39,7 @@ public class Signer {
     private final Context mContext;
     private final String appId;
     private final SignerService mSignerService;
+    private SignerListener mListener;
 
     public static synchronized void initialize(Context context, String applicationId) {
         if (instance == null) {
@@ -42,9 +58,20 @@ public class Signer {
         this.mContext = context;
         this.appId = appId;
 
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                return chain.proceed(chain.request().newBuilder()
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Accept", "application/json")
+                        .build());
+            }
+        });
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
+                .baseUrl(API_INFURA_TESTNET)
                 .addConverterFactory(GsonConverterFactory.create())
+
                 .build();
         this.mSignerService = retrofit.create(SignerService.class);
     }
@@ -90,7 +117,33 @@ public class Signer {
         this.mSignerService.listWallet();
     }
 
-    public void sendTransaction(String fromAddress, String toAddress, String coinType, String value, String msg) {
+    public void getBalance(String address, SignerListener listener) {
+        this.mListener = listener;
+
+        JSONArray params = new JSONArray()
+                .put(address)
+                .put("latest");
+        this.mSignerService.getBalance(params.toString()).enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
+                if (Signer.this.mListener != null && response.body() != null) {
+                    String balance = response.body().getResult();
+                    BigDecimal bigInteger = new BigDecimal(new BigInteger(balance.replace("0x", ""), 16));
+                    BigDecimal balanceInEther = bigInteger.divide(new BigDecimal("1000000000000000000"));
+                    Signer.this.mListener.onReceivedBalance(balanceInEther.toString());
+                    Signer.this.mListener = null;
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                Signer.this.mListener.onReceivedBalance(t.getMessage());
+                Signer.this.mListener = null;
+            }
+        });
+    }
+
+    public void confirmTransaction(String fromAddress, String toAddress, String coinType, String value, String msg) {
         try {
             JSONObject params = new JSONObject()
                     .put("from", fromAddress)
@@ -101,5 +154,31 @@ public class Signer {
             openDeepLink(ACTION_SIGN, coinType, params);
         } catch (Exception ignored) {
         }
+    }
+
+    public void sendTransaction(String transactionData, SignerListener listener) {
+        this.mListener = listener;
+        Transaction transaction = new Transaction(transactionData);
+        Log.e("vu", "sendTransaction: " + transaction.toString());
+        this.mSignerService.sendTransaction(transaction.toString()).enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
+                Log.e("vu", "sendTransaction onResponse: " + response.toString());
+                if (Signer.this.mListener != null) {
+                    String txHash = response.body() != null ? response.body().getResult() : null;
+                    Signer.this.mListener.onTransactionSent(response.isSuccessful(), txHash);
+                    Signer.this.mListener = null;
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                Log.e("vu", "sendTransaction: " + t.toString());
+                if (Signer.this.mListener != null) {
+                    Signer.this.mListener.onTransactionSent(false, null);
+                    Signer.this.mListener = null;
+                }
+            }
+        });
     }
 }

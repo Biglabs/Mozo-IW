@@ -2,6 +2,7 @@ package com.biglabs.solo.wallet
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextUtils
@@ -10,7 +11,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.biglabs.solo.signer.library.Signer
+import com.biglabs.solo.signer.library.SignerListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_tab_send.*
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
@@ -18,10 +21,21 @@ class MainActivity : AppCompatActivity() {
     val accounts = arrayOf("0x011df24265841dCdbf2e60984BB94007b0C1d76A", "0x213DE50319F5954D821F704d46e4fd50Fb09B459")
     var value = "0.5"
 
+    private var transactionData: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Signer.initialize(this, BuildConfig.APPLICATION_ID)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+
+        button_menu.setOnClickListener {
+            if (!drawer_layout.isDrawerOpen(GravityCompat.END)) {
+                drawer_layout.openDrawer(GravityCompat.END)
+            }
+        }
 
         radios.setOnCheckedChangeListener { _, checkedId ->
             run {
@@ -47,11 +61,11 @@ class MainActivity : AppCompatActivity() {
 
         buttonGetBalance.setOnClickListener {
             if (radios.checkedRadioButtonId > 0 && radios.checkedRadioButtonId <= accounts.size) {
-//                Signer.getInstance().getBalance(this, accounts[radios.checkedRadioButtonId - 1], object : SignerListener() {
-//                    override fun onReceivedBalance(balance: String?) {
-//                        textBalance.text = balance
-//                    }
-//                })
+                Signer.getInstance().getBalance(accounts[radios.checkedRadioButtonId - 1], object : SignerListener() {
+                    override fun onReceivedBalance(p0: String?) {
+                        textBalance.text = p0
+                    }
+                })
             } else {
                 Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
             }
@@ -66,10 +80,22 @@ class MainActivity : AppCompatActivity() {
 
                     val from = radios.checkedRadioButtonId - 1
                     val to = accounts.size - from - 1
-                    Signer.getInstance().sendTransaction(accounts[from], accounts[to], "ETH", value, message_input.text.toString())
+                    Signer.getInstance().confirmTransaction(accounts[from], accounts[to], "ETH", value, message_input.text.toString())
                 }
             } else {
                 Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        buttonSubmit.setOnClickListener {
+            if (transactionData != null) {
+                Signer.getInstance().sendTransaction(transactionData, object : SignerListener() {
+                    override fun onTransactionSent(isSuccess: Boolean, txHash: String?) {
+                        textBalance.text = "send transaction: ${if(isSuccess) "successfully" else "failed"} \n txHash: $txHash"
+                    }
+                })
+                transactionData = null
+                buttonSubmit.visibility = View.GONE
             }
         }
 
@@ -84,18 +110,19 @@ class MainActivity : AppCompatActivity() {
     private fun handleIntent(intent: Intent) {
         val scheme = "${BuildConfig.APPLICATION_ID}.solowallet"
         if (TextUtils.equals(intent.scheme, scheme) && intent.data != null) {
-            try{
+            try {
                 val data = intent.dataString.split("://")[1]
                 textBalance.text = data
                 val jsonData = JSONObject(data)
                 val action = jsonData.getString("action")
-                val result = jsonData.getString("result")
-                when(action){
+                this.transactionData = jsonData.getString("result")
+                Log.e("vu", "result: $transactionData")
+                when (action) {
                     Signer.ACTION_SIGN -> {
                         buttonSubmit.visibility = View.VISIBLE
                     }
                 }
-            }catch (ex: Exception){
+            } catch (ex: Exception) {
             }
         }
     }

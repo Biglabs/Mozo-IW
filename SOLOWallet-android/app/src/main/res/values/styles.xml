@@ -1,11 +1,49 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorControlHighLight</item>
+
+        <item name="android:actionBarSize">83dp</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+
+        <item name="android:editTextStyle">@style/SoloStyle.EditText</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textViewStyle">@style/SoloStyle..TextView</item>
+        <item name="android:buttonStyle">@style/SoloStyle.Button</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="SoloStyle.EditText" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/utm_avo</item>
+    </style>
+
+    <style name="SoloStyle..TextView" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/utm_avo</item>
+    </style>
+
+    <style name="SoloStyle.Button" parent="Widget.AppCompat.Button">
+        <item name="android:fontFamily">@font/utm_avo</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="SoloStyle.Button.Primary">
+        <item name="android:background">@drawable/bg_primary_button</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:fontFamily">@font/utm_avo_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
 </resources>
