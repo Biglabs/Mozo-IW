@@ -42,7 +42,25 @@ public class InfoWalletTableViewCell: UITableViewCell {
             if let balance = address.balance {
                 self.balanceLabel.text = String(balance)
             }
+            if let code = address.address {
+                self.qrcodeImageView.image = self.generateQRCode(from: code)
+            }
         }
+    }
+    
+    func generateQRCode(from string: String) -> UIImage? {
+        let data = string.data(using: String.Encoding.ascii)
+        
+        if let filter = CIFilter(name: "CIQRCodeGenerator") {
+            filter.setValue(data, forKey: "inputMessage")
+            let transform = CGAffineTransform(scaleX: 3, y: 3)
+            
+            if let output = filter.outputImage?.transformed(by: transform) {
+                return UIImage(ciImage: output)
+            }
+        }
+        
+        return UIImage.init(named: "ic_qr_code")
     }
     
     public override func setSelected(_ selected: Bool, animated: Bool) {
