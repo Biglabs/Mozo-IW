@@ -14,6 +14,18 @@ function checkWalletExisting() {
     });
 }
 
+function responseToReceiver(result, jsonData) {
+    let responseData = {
+        action: jsonData.action,
+        result: result,
+    };
+    const responseUrl = `${this.props.txData.receiver}://${JSON.stringify(responseData)}`;
+    Linking.openURL(responseUrl).then().catch(error => 
+        console.log(error)
+    );
+}
+
 module.exports = {
     checkWalletExisting: checkWalletExisting,
+    responseToReceiver: responseToReceiver
 };

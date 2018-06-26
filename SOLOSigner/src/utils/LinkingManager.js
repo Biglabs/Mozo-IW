@@ -2,6 +2,8 @@ import {Linking, AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Constant from '../common/Constants';
 import {checkWalletExisting} from '../common/Globals';
+import DataManager from './DataManager';
+import Globals from '../../common/Globals';
 
 function handleOpenURL(url) {
     if (url && String(url).startsWith('solosigner')) {
@@ -26,6 +28,17 @@ function manageScheme(data){
     switch (jsonData.action) {
         case Constant.ACTION_SCHEME.SIGN: {
             Actions.jump('trans_confirm', {txData: jsonData});
+            break;
+        }
+        case Constant.ACTION_SCHEME.GET_USER: {
+            let manager = DataManager.getInstance();
+            let userInfo = manager.getUserInfo();
+            if(userInfo){
+                userInfo = {walletId : userInfo.walletId};
+                Globals.responseToReceiver(userInfo, jsonData);
+            } else {
+                alert("This wallet is not registered. Try again.");
+            }
             break;
         }
         default: {
