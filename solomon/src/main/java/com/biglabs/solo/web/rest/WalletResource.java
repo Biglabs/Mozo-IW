@@ -1,5 +1,7 @@
 package com.biglabs.solo.web.rest;
 
+import com.biglabs.solo.domain.Address;
+import com.biglabs.solo.repository.WalletAddressRepository;
 import com.codahale.metrics.annotation.Timed;
 import com.biglabs.solo.domain.Wallet;
 import com.biglabs.solo.service.WalletService;
@@ -8,6 +10,7 @@ import com.biglabs.solo.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +38,9 @@ public class WalletResource {
     private static final String ENTITY_NAME = "wallet";
 
     private final WalletService walletService;
+
+    @Autowired
+    private WalletAddressRepository walletAddressRepository;
 
     public WalletResource(WalletService walletService) {
         this.walletService = walletService;
@@ -123,6 +129,20 @@ public class WalletResource {
         log.debug("REST request to get Wallet : {}", walletKey);
         Optional<Wallet> wallet = walletService.findOneByWalletKey(walletKey);
         return ResponseUtil.wrapOrNotFound(wallet);
+    }
+
+    /**
+     * GET  /wallets/:walletId/addresses : get addresses of wallet.
+     *
+     * @param walletId the walletId of the wallet to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wallet, or with status 404 (Not Found)
+     */
+    @GetMapping("/wallets/{walletId}/addresses")
+    @Timed
+    public List<Address> getAddresses(@PathVariable String walletId) {
+        log.debug("REST request to get Wallet : {}", walletId);
+        List<Address> addresses = walletAddressRepository.findAddressesByWalletId(walletId);
+        return addresses;
     }
 
     /**

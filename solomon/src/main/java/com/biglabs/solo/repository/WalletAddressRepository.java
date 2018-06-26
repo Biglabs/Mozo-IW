@@ -1,9 +1,12 @@
 package com.biglabs.solo.repository;
 
+import com.biglabs.solo.domain.Address;
 import com.biglabs.solo.domain.WalletAddress;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -13,4 +16,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface WalletAddressRepository extends JpaRepository<WalletAddress, Long> {
 
+
+    @Query("select wa.address from WalletAddress wa where wa.wallet.walletId = ?1")
+    List<Address> findAddressesByWalletId(String walletId);
 }

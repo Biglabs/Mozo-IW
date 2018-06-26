@@ -1,6 +1,9 @@
 package com.biglabs.solo.service;
 
+import com.biglabs.solo.domain.Address;
 import com.biglabs.solo.domain.Wallet;
+import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -41,4 +44,6 @@ public interface WalletService {
 
     Optional<Wallet> findOneByWalletId(String walletId);
     Optional<Wallet> findOneByWalletKey(String walletKey);
+
+
 }
