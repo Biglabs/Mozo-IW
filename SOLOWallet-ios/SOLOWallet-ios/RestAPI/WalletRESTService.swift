@@ -12,8 +12,8 @@ import SwiftyJSON
 
 extension RESTService {
     
-    public func getAddresses(completionHandler: completion = nil) {
-        let url = Configuration.BASE_URL + "/api/addresses"
+    public func getAddresses(_ id: String, completionHandler: completion = nil) {
+        let url = Configuration.BASE_URL + "/api/wallet-addresses/\(id)"
         return self.execute(.get, url: url, completionHandler: completionHandler)
     }
 }

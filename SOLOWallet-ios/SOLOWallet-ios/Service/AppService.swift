@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 public class AppService {
     public static let shared = AppService()
@@ -14,16 +15,26 @@ public class AppService {
     
     public var tokenValid = true
     
-    public func handleReceivedUrlFromWalletApp(){
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-            let URL = appDelegate.url else {return}
-        print("scheme: \(String(describing: URL.scheme))" )
-        
-        // do something
-        
-        //destroy call signer after handle
-        appDelegate.url = nil
-        appDelegate.sourceApplication = nil
+    public func handleReceivedUrlFromWalletApp(jsonData: String){
+        let jsonStr = jsonData.removingPercentEncoding
+        let data = SwiftyJSON.JSON.init(parseJSON: jsonStr!)
+        let com = CommunicationDTO(json: data)
+        print(data)
+        if let action = com?.action {
+            switch action {
+            case ACTIONTYPE.GET_WALLET.value:
+                let wallet = WalletDTO(json: (com?.result)!)
+                //Save walletId
+                KeychainService.shared.setString(KeychainKeys.WALLLET_ID, value: wallet?.walletId)
+                break
+            case ACTIONTYPE.ADD_ADDRESS.value:
+                break
+            case ACTIONTYPE.SIGN.value:
+                break
+            default:
+                break
+            }
+        }
     }
 
     

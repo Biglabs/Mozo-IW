@@ -22,6 +22,9 @@ public struct KeychainKeys {
     //Launch Apps
     public static let ALWAYS_LAUNCH_SOLO_SIGNER_APP = "ALWAYS_LAUNCH_SOLO_SIGNER_APP"
     public static let ALWAYS_LAUNCH_SOLO_WALLET_APP = "ALWAYS_LAUNCH_SOLO_WALLET_APP"
+    
+    //Wallet
+    public static let WALLLET_ID = "WalletId"
 }
 
 public class KeychainService {

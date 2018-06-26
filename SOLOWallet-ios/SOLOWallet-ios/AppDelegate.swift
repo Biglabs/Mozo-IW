@@ -44,23 +44,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        if let user = KeychainService.shared.getDictionary("UserInfo") {
-            //print("User info is existing: [" + user + "]")
+        if let wallet = KeychainService.shared.getString(KeychainKeys.WALLLET_ID) {
+            //print("Wallet info is existing: [" + wallet + "]")
         } else {
-            //solosigner://{"action":"GET_USER","receiver":"com.hdwallet.solowallet"}
-            AppService.shared.launchSignerApp(ACTIONTYPE.GET_USER.value, type: COINTYPE.ETH.key, transaction: nil)
+            //solosigner://{"action":"GET_WALLET","receiver":"com.hdwallet.solowallet"}
+            AppService.shared.launchSignerApp(ACTIONTYPE.GET_WALLET.value, type: COINTYPE.ETH.key, transaction: nil)
         }
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        //com.hdwallet.solowallet://{"action":"GET_USER","result":{"uuid":"1141234","email":"user1@gmail.com"}}
+        //com.hdwallet.solowallet://{"action":"GET_WALLET","result":{"uuid":"1141234","email":"user1@gmail.com"}}
         print(url)
         let urls = url.absoluteString.components(separatedBy: "://")
         if urls.count > 0 {
             let jsonData = urls[1];
             print(jsonData);
-            
+            AppService.shared.handleReceivedUrlFromWalletApp(jsonData: jsonData)
         }
         return true
     }

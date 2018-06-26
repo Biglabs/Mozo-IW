@@ -88,13 +88,13 @@ public enum SOLOTAB {
 
 public enum ACTIONTYPE {
     case SIGN
-    case GET_USER
+    case GET_WALLET
     case ADD_ADDRESS
     
     public var value : String {
         switch self {
         case .SIGN: return "SIGN"
-        case .GET_USER: return "GET_USER"
+        case .GET_WALLET: return "GET_WALLET"
         case .ADD_ADDRESS: return "ADD_ADDRESS"
         }
     }

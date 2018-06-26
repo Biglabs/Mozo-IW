@@ -46,7 +46,8 @@ class WalletViewController: AbstractViewController {
     
     @objc override public func refresh(_ sender: Any? = nil) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        RESTService.shared.getAddresses() { value, error in
+        let walletId = KeychainService.shared.getString(KeychainKeys.WALLLET_ID)
+        RESTService.shared.getAddresses(walletId!) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {
