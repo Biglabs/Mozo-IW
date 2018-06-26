@@ -66,12 +66,15 @@ yarn.lock
 
 # Android
 *.iml
-**/.gradle
-**/.idea/libraries
-**/.idea/caches
-**/.idea/workspace.xml
-build/
+.gradle
 local.properties
+**/.idea/caches
+**/.idea/libraries
+**/.idea/modules.xml
+**/.idea/workspace.xml
+build
+captures
+.externalNativeBuild
 *.jks
 
 # IOS
