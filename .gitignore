@@ -66,13 +66,10 @@ yarn.lock
 
 # Android
 *.iml
-.gradle
-.idea/libraries
-.idea/caches
-.idea/workspace.xml
-SOLOSigner/android/.idea/libraries
-SOLOSigner/android/.idea/caches
-SOLOSigner/android/.idea/workspace.xml
+**/.gradle
+**/.idea/libraries
+**/.idea/caches
+**/.idea/workspace.xml
 build/
 local.properties
 *.jks
