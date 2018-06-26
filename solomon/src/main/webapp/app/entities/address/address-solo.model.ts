@@ -21,6 +21,13 @@ export class AddressSolo implements BaseEntity {
         public network?: Network,
         public address?: string,
         public derivedIndex?: number,
+        public balance?: number,
+        public unconfirmedBalance?: number,
+        public finalBalance?: number,
+        public nConfirmedTx?: number,
+        public nUnconfirmedTx?: number,
+        public totalReceived?: number,
+        public totalSent?: number,
     ) {
     }
 }

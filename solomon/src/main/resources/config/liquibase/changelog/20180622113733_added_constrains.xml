@@ -57,6 +57,53 @@
     <!--</changeSet>-->
 
 
+    <changeSet author="liquibase-docs" id="addColumn-from-bcypher">
+        <addColumn tableName="address">
+            <column name="balance" type="decimal(10,2)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+
+        <addColumn tableName="address">
+            <column name="unconfirmed_balance" type="decimal(10,2)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="address">
+            <column name="final_balance" type="decimal(10,2)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="address">
+            <column name="n_confirmed_tx" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="address">
+            <column name="n_unconfirmed_tx" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="address">
+            <column name="total_received" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="address">
+            <column name="total_sent" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+
+
+
+
+
+
+
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

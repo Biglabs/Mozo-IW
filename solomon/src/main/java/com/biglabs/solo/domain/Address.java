@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import com.biglabs.solo.domain.enumeration.CoinType;
@@ -44,6 +45,27 @@ public class Address implements Serializable {
     @NotNull
     @Column(name = "derived_index", nullable = false)
     private Integer derivedIndex;
+
+    @Column(name = "balance", precision=10, scale=2)
+    private BigDecimal balance;
+
+    @Column(name = "unconfirmed_balance", precision=10, scale=2)
+    private BigDecimal unconfirmedBalance;
+
+    @Column(name = "final_balance", precision=10, scale=2)
+    private BigDecimal finalBalance;
+
+    @Column(name = "n_confirmed_tx")
+    private Long nConfirmedTx;
+
+    @Column(name = "n_unconfirmed_tx")
+    private Long nUnconfirmedTx;
+
+    @Column(name = "total_received")
+    private Long totalReceived;
+
+    @Column(name = "total_sent")
+    private Long totalSent;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -105,6 +127,97 @@ public class Address implements Serializable {
     public void setDerivedIndex(Integer derivedIndex) {
         this.derivedIndex = derivedIndex;
     }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public Address balance(BigDecimal balance) {
+        this.balance = balance;
+        return this;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public BigDecimal getUnconfirmedBalance() {
+        return unconfirmedBalance;
+    }
+
+    public Address unconfirmedBalance(BigDecimal unconfirmedBalance) {
+        this.unconfirmedBalance = unconfirmedBalance;
+        return this;
+    }
+
+    public void setUnconfirmedBalance(BigDecimal unconfirmedBalance) {
+        this.unconfirmedBalance = unconfirmedBalance;
+    }
+
+    public BigDecimal getFinalBalance() {
+        return finalBalance;
+    }
+
+    public Address finalBalance(BigDecimal finalBalance) {
+        this.finalBalance = finalBalance;
+        return this;
+    }
+
+    public void setFinalBalance(BigDecimal finalBalance) {
+        this.finalBalance = finalBalance;
+    }
+
+    public Long getnConfirmedTx() {
+        return nConfirmedTx;
+    }
+
+    public Address nConfirmedTx(Long nConfirmedTx) {
+        this.nConfirmedTx = nConfirmedTx;
+        return this;
+    }
+
+    public void setnConfirmedTx(Long nConfirmedTx) {
+        this.nConfirmedTx = nConfirmedTx;
+    }
+
+    public Long getnUnconfirmedTx() {
+        return nUnconfirmedTx;
+    }
+
+    public Address nUnconfirmedTx(Long nUnconfirmedTx) {
+        this.nUnconfirmedTx = nUnconfirmedTx;
+        return this;
+    }
+
+    public void setnUnconfirmedTx(Long nUnconfirmedTx) {
+        this.nUnconfirmedTx = nUnconfirmedTx;
+    }
+
+    public Long getTotalReceived() {
+        return totalReceived;
+    }
+
+    public Address totalReceived(Long totalReceived) {
+        this.totalReceived = totalReceived;
+        return this;
+    }
+
+    public void setTotalReceived(Long totalReceived) {
+        this.totalReceived = totalReceived;
+    }
+
+    public Long getTotalSent() {
+        return totalSent;
+    }
+
+    public Address totalSent(Long totalSent) {
+        this.totalSent = totalSent;
+        return this;
+    }
+
+    public void setTotalSent(Long totalSent) {
+        this.totalSent = totalSent;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -135,6 +248,13 @@ public class Address implements Serializable {
             ", network='" + getNetwork() + "'" +
             ", address='" + getAddress() + "'" +
             ", derivedIndex='" + getDerivedIndex() + "'" +
+            ", balance='" + getBalance() + "'" +
+            ", unconfirmedBalance='" + getUnconfirmedBalance() + "'" +
+            ", finalBalance='" + getFinalBalance() + "'" +
+            ", nConfirmedTx='" + getnConfirmedTx() + "'" +
+            ", nUnconfirmedTx='" + getnUnconfirmedTx() + "'" +
+            ", totalReceived='" + getTotalReceived() + "'" +
+            ", totalSent='" + getTotalSent() + "'" +
             "}";
     }
 }

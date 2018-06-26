@@ -56,17 +56,42 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="solomonApp.address.derivedIndex" for="field_derivedIndex">Derived Index</label>
             <input type="number" class="form-control" name="derivedIndex" id="field_derivedIndex"
-                [(ngModel)]="address.derivedIndex" required />
-            <div [hidden]="!(editForm.controls.derivedIndex?.dirty && editForm.controls.derivedIndex?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.derivedIndex?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.derivedIndex?.errors?.number" jhiTranslate="entity.validation.number">
-                    This field should be a number.
-                </small>
-            </div>
+                [(ngModel)]="address.derivedIndex"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.balance" for="field_balance">Balance</label>
+            <input type="number" class="form-control" name="balance" id="field_balance"
+                [(ngModel)]="address.balance"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.unconfirmedBalance" for="field_unconfirmedBalance">Unconfirmed Balance</label>
+            <input type="number" class="form-control" name="unconfirmedBalance" id="field_unconfirmedBalance"
+                [(ngModel)]="address.unconfirmedBalance"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.finalBalance" for="field_finalBalance">Final Balance</label>
+            <input type="number" class="form-control" name="finalBalance" id="field_finalBalance"
+                [(ngModel)]="address.finalBalance"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.nConfirmedTx" for="field_nConfirmedTx">N Confirmed Tx</label>
+            <input type="number" class="form-control" name="nConfirmedTx" id="field_nConfirmedTx"
+                [(ngModel)]="address.nConfirmedTx"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.nUnconfirmedTx" for="field_nUnconfirmedTx">N Unconfirmed Tx</label>
+            <input type="number" class="form-control" name="nUnconfirmedTx" id="field_nUnconfirmedTx"
+                [(ngModel)]="address.nUnconfirmedTx"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.totalReceived" for="field_totalReceived">Total Received</label>
+            <input type="number" class="form-control" name="totalReceived" id="field_totalReceived"
+                [(ngModel)]="address.totalReceived"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.totalSent" for="field_totalSent">Total Sent</label>
+            <input type="number" class="form-control" name="totalSent" id="field_totalSent"
+                [(ngModel)]="address.totalSent"  />
         </div>
 
     </div>

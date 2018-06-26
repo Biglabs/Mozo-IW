@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.biglabs.solo.web.rest.TestUtil.createFormattingConversionService;
@@ -52,6 +53,27 @@ public class AddressResourceIntTest {
 
     private static final Integer DEFAULT_DERIVED_INDEX = 1;
     private static final Integer UPDATED_DERIVED_INDEX = 2;
+
+    private static final BigDecimal DEFAULT_BALANCE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_BALANCE = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_UNCONFIRMED_BALANCE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_UNCONFIRMED_BALANCE = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_FINAL_BALANCE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_FINAL_BALANCE = new BigDecimal(2);
+
+    private static final Long DEFAULT_N_CONFIRMED_TX = 1L;
+    private static final Long UPDATED_N_CONFIRMED_TX = 2L;
+
+    private static final Long DEFAULT_N_UNCONFIRMED_TX = 1L;
+    private static final Long UPDATED_N_UNCONFIRMED_TX = 2L;
+
+    private static final Long DEFAULT_TOTAL_RECEIVED = 1L;
+    private static final Long UPDATED_TOTAL_RECEIVED = 2L;
+
+    private static final Long DEFAULT_TOTAL_SENT = 1L;
+    private static final Long UPDATED_TOTAL_SENT = 2L;
 
     @Autowired
     private AddressRepository addressRepository;
@@ -97,7 +119,14 @@ public class AddressResourceIntTest {
             .coin(DEFAULT_COIN)
             .network(DEFAULT_NETWORK)
             .address(DEFAULT_ADDRESS)
-            .derivedIndex(DEFAULT_DERIVED_INDEX);
+            .derivedIndex(DEFAULT_DERIVED_INDEX)
+            .balance(DEFAULT_BALANCE)
+            .unconfirmedBalance(DEFAULT_UNCONFIRMED_BALANCE)
+            .finalBalance(DEFAULT_FINAL_BALANCE)
+            .nConfirmedTx(DEFAULT_N_CONFIRMED_TX)
+            .nUnconfirmedTx(DEFAULT_N_UNCONFIRMED_TX)
+            .totalReceived(DEFAULT_TOTAL_RECEIVED)
+            .totalSent(DEFAULT_TOTAL_SENT);
         return address;
     }
 
@@ -125,6 +154,13 @@ public class AddressResourceIntTest {
         assertThat(testAddress.getNetwork()).isEqualTo(DEFAULT_NETWORK);
         assertThat(testAddress.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testAddress.getDerivedIndex()).isEqualTo(DEFAULT_DERIVED_INDEX);
+        assertThat(testAddress.getBalance()).isEqualTo(DEFAULT_BALANCE);
+        assertThat(testAddress.getUnconfirmedBalance()).isEqualTo(DEFAULT_UNCONFIRMED_BALANCE);
+        assertThat(testAddress.getFinalBalance()).isEqualTo(DEFAULT_FINAL_BALANCE);
+        assertThat(testAddress.getnConfirmedTx()).isEqualTo(DEFAULT_N_CONFIRMED_TX);
+        assertThat(testAddress.getnUnconfirmedTx()).isEqualTo(DEFAULT_N_UNCONFIRMED_TX);
+        assertThat(testAddress.getTotalReceived()).isEqualTo(DEFAULT_TOTAL_RECEIVED);
+        assertThat(testAddress.getTotalSent()).isEqualTo(DEFAULT_TOTAL_SENT);
     }
 
     @Test
@@ -202,24 +238,6 @@ public class AddressResourceIntTest {
 
     @Test
     @Transactional
-    public void checkDerivedIndexIsRequired() throws Exception {
-        int databaseSizeBeforeTest = addressRepository.findAll().size();
-        // set the field null
-        address.setDerivedIndex(null);
-
-        // Create the Address, which fails.
-
-        restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(address)))
-            .andExpect(status().isBadRequest());
-
-        List<Address> addressList = addressRepository.findAll();
-        assertThat(addressList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllAddresses() throws Exception {
         // Initialize the database
         addressRepository.saveAndFlush(address);
@@ -232,7 +250,14 @@ public class AddressResourceIntTest {
             .andExpect(jsonPath("$.[*].coin").value(hasItem(DEFAULT_COIN.toString())))
             .andExpect(jsonPath("$.[*].network").value(hasItem(DEFAULT_NETWORK.toString())))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
-            .andExpect(jsonPath("$.[*].derivedIndex").value(hasItem(DEFAULT_DERIVED_INDEX)));
+            .andExpect(jsonPath("$.[*].derivedIndex").value(hasItem(DEFAULT_DERIVED_INDEX)))
+            .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.intValue())))
+            .andExpect(jsonPath("$.[*].unconfirmedBalance").value(hasItem(DEFAULT_UNCONFIRMED_BALANCE.intValue())))
+            .andExpect(jsonPath("$.[*].finalBalance").value(hasItem(DEFAULT_FINAL_BALANCE.intValue())))
+            .andExpect(jsonPath("$.[*].nConfirmedTx").value(hasItem(DEFAULT_N_CONFIRMED_TX.intValue())))
+            .andExpect(jsonPath("$.[*].nUnconfirmedTx").value(hasItem(DEFAULT_N_UNCONFIRMED_TX.intValue())))
+            .andExpect(jsonPath("$.[*].totalReceived").value(hasItem(DEFAULT_TOTAL_RECEIVED.intValue())))
+            .andExpect(jsonPath("$.[*].totalSent").value(hasItem(DEFAULT_TOTAL_SENT.intValue())));
     }
 
     @Test
@@ -249,7 +274,14 @@ public class AddressResourceIntTest {
             .andExpect(jsonPath("$.coin").value(DEFAULT_COIN.toString()))
             .andExpect(jsonPath("$.network").value(DEFAULT_NETWORK.toString()))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
-            .andExpect(jsonPath("$.derivedIndex").value(DEFAULT_DERIVED_INDEX));
+            .andExpect(jsonPath("$.derivedIndex").value(DEFAULT_DERIVED_INDEX))
+            .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.intValue()))
+            .andExpect(jsonPath("$.unconfirmedBalance").value(DEFAULT_UNCONFIRMED_BALANCE.intValue()))
+            .andExpect(jsonPath("$.finalBalance").value(DEFAULT_FINAL_BALANCE.intValue()))
+            .andExpect(jsonPath("$.nConfirmedTx").value(DEFAULT_N_CONFIRMED_TX.intValue()))
+            .andExpect(jsonPath("$.nUnconfirmedTx").value(DEFAULT_N_UNCONFIRMED_TX.intValue()))
+            .andExpect(jsonPath("$.totalReceived").value(DEFAULT_TOTAL_RECEIVED.intValue()))
+            .andExpect(jsonPath("$.totalSent").value(DEFAULT_TOTAL_SENT.intValue()));
     }
 
     @Test
@@ -274,7 +306,14 @@ public class AddressResourceIntTest {
             .coin(UPDATED_COIN)
             .network(UPDATED_NETWORK)
             .address(UPDATED_ADDRESS)
-            .derivedIndex(UPDATED_DERIVED_INDEX);
+            .derivedIndex(UPDATED_DERIVED_INDEX)
+            .balance(UPDATED_BALANCE)
+            .unconfirmedBalance(UPDATED_UNCONFIRMED_BALANCE)
+            .finalBalance(UPDATED_FINAL_BALANCE)
+            .nConfirmedTx(UPDATED_N_CONFIRMED_TX)
+            .nUnconfirmedTx(UPDATED_N_UNCONFIRMED_TX)
+            .totalReceived(UPDATED_TOTAL_RECEIVED)
+            .totalSent(UPDATED_TOTAL_SENT);
 
         restAddressMockMvc.perform(put("/api/addresses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -289,6 +328,13 @@ public class AddressResourceIntTest {
         assertThat(testAddress.getNetwork()).isEqualTo(UPDATED_NETWORK);
         assertThat(testAddress.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testAddress.getDerivedIndex()).isEqualTo(UPDATED_DERIVED_INDEX);
+        assertThat(testAddress.getBalance()).isEqualTo(UPDATED_BALANCE);
+        assertThat(testAddress.getUnconfirmedBalance()).isEqualTo(UPDATED_UNCONFIRMED_BALANCE);
+        assertThat(testAddress.getFinalBalance()).isEqualTo(UPDATED_FINAL_BALANCE);
+        assertThat(testAddress.getnConfirmedTx()).isEqualTo(UPDATED_N_CONFIRMED_TX);
+        assertThat(testAddress.getnUnconfirmedTx()).isEqualTo(UPDATED_N_UNCONFIRMED_TX);
+        assertThat(testAddress.getTotalReceived()).isEqualTo(UPDATED_TOTAL_RECEIVED);
+        assertThat(testAddress.getTotalSent()).isEqualTo(UPDATED_TOTAL_SENT);
     }
 
     @Test

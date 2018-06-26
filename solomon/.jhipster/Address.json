@@ -31,6 +31,34 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "balance",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "unconfirmedBalance",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "finalBalance",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "nConfirmedTx",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "nUnconfirmedTx",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "totalReceived",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "totalSent",
+            "fieldType": "Long"
         }
     ],
     "changelogDate": "20180621103732",
