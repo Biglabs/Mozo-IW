@@ -10,6 +10,7 @@ import Transaction from 'ethereumjs-tx';
 import Web3 from 'web3';
 import Bitcoin from "react-native-bitcoinjs-lib";
 import DataManager from '../../utils/DataManager';
+import Globals from '../../common/Globals';
 
 export default class ConfirmationScreen extends Component {
 
@@ -81,20 +82,9 @@ export default class ConfirmationScreen extends Component {
             const tx = new Transaction(txParams);
             tx.sign(this.privateKeyInBuffer);
             let signedTransaction = `0x${tx.serialize().toString('hex')}`;
-            this.responseToReceiver(signedTransaction);
+            Actions.main_stack();
+            Globals.responseToReceiver(signedTransaction, txData);
         });
-    }
-
-    responseToReceiver(signedTransaction) {
-        let responseData = {
-            action: this.props.txData.action,
-            result: signedTransaction,
-        };
-        const responseUrl = `${this.props.txData.receiver}://${JSON.stringify(responseData)}`;
-        Actions.main_stack();
-        Linking.openURL(responseUrl).then().catch(error =>
-            alert(error)
-        );
     }
 
     render() {

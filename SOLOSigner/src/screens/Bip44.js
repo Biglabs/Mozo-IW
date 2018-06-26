@@ -133,8 +133,6 @@ export default class Bip44 extends Component<Props> {
                     );
                     web3.eth.getTransactionCount(this.state.adrBip44Test).then(_nonce => {
                         const etherAmount = '0.01';
-                        let gasPrice = web3.utils.toHex(web3.utils.toWei('21', 'gwei'));
-                        let value = web3.utils.toHex(web3.utils.toWei(etherAmount, 'ether'));
                         const txParams = {
                             nonce: _nonce,
                             gasLimit: 3000000,

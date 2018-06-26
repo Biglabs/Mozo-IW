@@ -177,22 +177,14 @@ class DataManager {
         return new Promise((resolve, reject) => {
             try {
                 let hash = this.convertToHash(publicKey);
-                this.sendRequest(`http://192.168.1.98:9000/api/wallets/${publicKey}`, {
-                    walletKey: hash,
-                }, false)
+                this.sendRequest(`http://192.168.1.98:9000/api/wallets/${hash}`, false)
                 .then((userInfo) => {
                     console.log(userInfo);
                     resolve(userInfo);
                 })
                 .catch((error) => {
                     console.log(error);
-                    let existing = false;
-                    if(error.status !== 'undefined') { 
-                        if(error.status == 404){
-                            existing = true;
-                        }
-                    }
-                    reject({ error: error, existing : existing } );
+                    reject(error);
                 }); 
             } catch (error) {
                 console.log(error);

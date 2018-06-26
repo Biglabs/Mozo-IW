@@ -1,9 +1,8 @@
 import {Linking, AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Constant from '../common/Constants';
-import {checkWalletExisting} from '../common/Globals';
 import DataManager from './DataManager';
-import Globals from '../../common/Globals';
+import Globals from '../common/Globals';
 
 function handleOpenURL(url) {
     if (url && String(url).startsWith('solosigner')) {
@@ -24,6 +23,7 @@ function handleOpenURL(url) {
 }
 
 function manageScheme(data){
+    console.log("Manage scheme: " + data)
     const jsonData = JSON.parse(decodeURI(data));
     switch (jsonData.action) {
         case Constant.ACTION_SCHEME.SIGN: {
@@ -52,7 +52,7 @@ function manageScheme(data){
 let linkingListener = event => {
     //Linking.removeEventListener('url', linkingListener);
     handleOpenURL(event.url);
-    checkWalletExisting();
+    Globals.checkWalletExisting();
 };
 
 //For CASE: Launch app in the first time.

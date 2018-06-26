@@ -94,7 +94,9 @@ export default class SecurityPinScreen extends Component {
             // Offline mode: Can not check wallet
             // Store public key for the next registration
             AsyncStorage.setItem(Constant.FLAG_PUBLIC_KEY, publicKey);
-            if (error.existing !== 'undefined' && !error.existing && error.error.isTimeOut == false) {
+            if (error.isTimeOut !== 'undefined' && error.isTimeOut) {
+                console.log('Check fail, timeout', error);
+            } else {
                 console.log('Register wallet');
                 // Register wallet and save uid
                 manager.registerWallet(publicKey).then((userInfo) => {
@@ -108,8 +110,6 @@ export default class SecurityPinScreen extends Component {
                 }).catch((error) => {
                     console.log('Register fail', error);
                 });
-            } else {
-                console.log('Check fail', error);
             }
         });
     }
