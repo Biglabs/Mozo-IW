@@ -60,7 +60,7 @@ public class WalletAddressResource {
             throw new BadRequestAlertException("No wallet provided", ENTITY_NAME, "nowallet");
         }
 
-        Address address = addressService.save(walletAddressVM);
+        Address address = addressService.save(walletAddressVM.getAddress());
         WalletAddress walletAddress = new WalletAddress();
         walletAddress.setAddress(address);
 //        walletAddress.setWallet();
