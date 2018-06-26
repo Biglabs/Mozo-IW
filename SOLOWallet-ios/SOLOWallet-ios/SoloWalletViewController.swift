@@ -86,12 +86,10 @@ class SoloWalletViewController: UIViewController {
     }
     
     @objc open func doubleTap(_ sender: Any? = nil) {
-        print(self.mm_drawerController)
         self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
     }
     
     @objc open func twoFingerDoubleTap(_ sender: Any? = nil) {
-        print(self.mm_drawerController)
         self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
     }
 }

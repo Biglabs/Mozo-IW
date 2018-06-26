@@ -17,6 +17,7 @@ public class AppService {
     
     public func handleReceivedUrlFromWalletApp(jsonData: String){
         guard let jsonStr = jsonData.removingPercentEncoding else {
+            print("handleReceivedUrlFromWalletApp: jsonData is nil")
             return
         }
         let data = SwiftyJSON.JSON.init(parseJSON: jsonStr)
@@ -60,16 +61,13 @@ public class AppService {
             }
             
             let json = SwiftyJSON.JSON(value)
-            print(json["result"])
             if let result = json["result"].string {
-                print(result)
+                print("TxId: \(result)")
             }
             
         }
     }
     
-    //action: view,create
-    //type: idea,space,...
     public func launchSignerApp(_ action: String, type: String, transaction: TransactionDTO?) {
         let isAlwaysLaunchApp = KeychainService.instance.getBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP)
         

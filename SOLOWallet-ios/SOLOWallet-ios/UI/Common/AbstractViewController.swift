@@ -40,12 +40,13 @@ public class AbstractViewController: UIViewController {
 //        titleLabel.addTextWithImage(text: " \(coin.name!)", image: UIImage.init(named: coin.icon!)!, imageBehindText: false, keepPreviousText: false)
 //        self.navigationController?.navigationBar.topItem?.titleView = titleLabel
 
-        
-        self.getBalance()
+        if let address = self.coin.addresses?.first?.address {
+            self.getBalance(address)
+        }
     }
     
-    func getBalance() {
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": ["0x011df24265841dCdbf2e60984BB94007b0C1d76A","latest"]] as [String : Any]
+    func getBalance(_ address: String) {
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
         RESTService.shared.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
@@ -56,12 +57,10 @@ public class AbstractViewController: UIViewController {
             }
             
             let json = SwiftyJSON.JSON(value)
-            print(json["result"])
             if let result = json["result"].string {
                 var amount = Double(result)
                 //ETH
                 amount = amount!/1E+18
-                print(amount ?? 0)
                 self.coin.addresses?.first?.balance = amount ?? 0
                 self.refresh()
             }
@@ -69,10 +68,5 @@ public class AbstractViewController: UIViewController {
         }
     }
  
-    @objc open func rightDrawerButtonPress(_ sender: Any? = nil) {
-        print(self.mm_drawerController)
-        self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
-    }
-    
     open func refresh(_ sender: Any? = nil) {}
 }
