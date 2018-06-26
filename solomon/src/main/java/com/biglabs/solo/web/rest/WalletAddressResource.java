@@ -48,11 +48,11 @@ public class WalletAddressResource {
     /**
      * POST  /wallet-addresses : Create a new walletAddress.
      *
-     * @param walletAddressVM the walletAddress to create
+     * @param walletAddressVM the walletAddressVM to create
      * @return the ResponseEntity with status 201 (Created) and with body the new walletAddress, or with status 400 (Bad Request) if the walletAddress has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/wallet-addresses/link")
+    @PostMapping("/wallet-addresses")
     @Timed
     public ResponseEntity<WalletAddress> linkWalletAddress(@Valid @RequestBody WalletAddressVM walletAddressVM) throws URISyntaxException {
         log.debug("REST request to save WalletAddress : {}", walletAddressVM);
@@ -80,7 +80,7 @@ public class WalletAddressResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new walletAddress, or with status 400 (Bad Request) if the walletAddress has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/wallet-addresses")
+//    @PostMapping("/wallet-addresses")
     @Timed
     public ResponseEntity<WalletAddress> createWalletAddress(@Valid @RequestBody WalletAddress walletAddress) throws URISyntaxException {
         log.debug("REST request to save WalletAddress : {}", walletAddress);
@@ -89,6 +89,9 @@ public class WalletAddressResource {
         }
         Address newAddress = addressService.save(walletAddress.getAddress());
         walletAddress.setAddress(newAddress);
+        Optional<Wallet> w = walletService.findOneByWalletId(walletAddress.getWallet().getWalletId());
+        walletAddress.setWallet(w.get());
+        walletAddress.setInUse(true);
         WalletAddress result = walletAddressRepository.save(walletAddress);
         return ResponseEntity.created(new URI("/api/wallet-addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
