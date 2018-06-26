@@ -45,30 +45,33 @@ class WalletViewController: AbstractViewController {
     }
     
     @objc override public func refresh(_ sender: Any? = nil) {
+        guard let walletId = KeychainService.shared.getString(KeychainKeys.WALLLET_ID) else {
+            self.refreshControl.endRefreshing()
+            return
+        }
+        
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        if let walletId = KeychainService.shared.getString(KeychainKeys.WALLLET_ID) {
-            RESTService.shared.getAddresses(walletId) { value, error in
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                guard let value = value, error == nil else {
-                    if let backendError = error {
-                        Utils.showError(backendError)
-                    }
-                    self.refreshControl.endRefreshing()
-                    return
+        RESTService.shared.getAddresses(walletId) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
                 }
-                
-                let json = SwiftyJSON.JSON(value)
-                var items = [AddressDTO]()
-                if let arr = json.array {
-                    items = arr.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
+                self.refreshControl.endRefreshing()
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            var items = [AddressDTO]()
+            if let arr = json.array {
+                items = arr.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
+            }
+            DispatchQueue.main.async {
+                if items.count > 0 {
+                    self.coin.addresses?.insert(items.first!, at: 0)
                 }
-                DispatchQueue.main.async {
-                    if items.count > 0 {
-                        self.coin.addresses?.insert(items.first!, at: 0)
-                    }
-                    self.refreshControl.endRefreshing()
-                    self.tableView.reloadData()
-                }
+                self.refreshControl.endRefreshing()
+                self.tableView.reloadData()
             }
         }
     }
