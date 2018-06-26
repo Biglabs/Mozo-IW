@@ -177,6 +177,9 @@
                                     <constraint firstAttribute="height" constant="44" id="jxJ-e4-q2a"/>
                                 </constraints>
                                 <state key="normal" title="Send"/>
+                                <connections>
+                                    <action selector="touchedBtnSend:" destination="hMz-TI-RH8" eventType="touchUpInside" id="W9z-4U-Hiq"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

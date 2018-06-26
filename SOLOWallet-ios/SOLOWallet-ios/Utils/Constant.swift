@@ -93,7 +93,7 @@ public enum URL_SCHEME {
     public var scheme : String {
         switch self {
         case .Sender: return "solosigner"
-        case .Receiver: return Bundle.main.bundleIdentifier ?? "" + ".solowallet"
+        case .Receiver: return (Bundle.main.bundleIdentifier ?? "") + ".solowallet"
         }
     }
 }

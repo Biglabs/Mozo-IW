@@ -64,16 +64,17 @@ export default class ConfirmationScreen extends Component {
         if (!this.privateKeyInBuffer) {
             this.generatePrivateKey();
         }
+        let txData = this.props.txData;
         this.ethProvider.getTransactionCount(this.props.txData.params.from).then(_nonce => {
-            const etherAmount = this.props.txData.params.value;
+            const etherAmount = txData.params.value !== 'string' ? txData.params.value.toString() : txData.params.value;
             const txParams = {
                 nonce: _nonce,
                 gasLimit: 3000000,
                 gasPrice: Web3.utils.toHex(Web3.utils.toWei('21', 'gwei')),
-                from: this.props.txData.params.from,
-                to: this.props.txData.params.to,
+                from: txData.params.from,
+                to: txData.params.to,
                 value: Web3.utils.toHex(Web3.utils.toWei(etherAmount, 'ether')),
-                data: Web3.utils.fromUtf8('send ' + etherAmount + 'ETH from account 1 to account 2\nmessage: ' + this.props.txData.params.txData + "\nfrom: " + this.props.txData.receiver),
+                data: Web3.utils.fromUtf8('send ' + etherAmount + 'ETH from account 1 to account 2\nmessage: ' + txData.params.txData + "\nfrom: " + txData.receiver),
                 // EIP 155 chainId - mainnet: 1, ropsten: 3
                 chainId: 3
             };
@@ -90,14 +91,10 @@ export default class ConfirmationScreen extends Component {
             result: signedTransaction,
         };
         const responseUrl = `${this.props.txData.receiver}://${JSON.stringify(responseData)}`;
-        Linking.canOpenURL(responseUrl).then(supported => {
-            if (!supported) {
-                this.showAlert('Can\'t handle url: ' + responseUrl);
-            } else {
-                Actions.main_stack();
-                return Linking.openURL(responseUrl);
-            }
-        }).catch(err => this.showAlert('An error occurred ' + err));
+        Actions.main_stack();
+        Linking.openURL(responseUrl).then().catch(error => 
+            alert(error)
+        );
     }
 
     render() {

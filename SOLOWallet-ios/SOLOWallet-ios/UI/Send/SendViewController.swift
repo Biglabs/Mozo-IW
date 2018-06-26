@@ -119,13 +119,13 @@ class SendViewController: AbstractViewController {
         urlStr += (model?.rawString())!
         print("URL: [\(urlStr)]")
         let url = URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
-        if (UIApplication.shared.canOpenURL(url as URL)) {
+//        if (UIApplication.shared.canOpenURL(url as URL)) {
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(url, options: ["":""], completionHandler: nil)
             } else {
                 UIApplication.shared.openURL(url)
             }
-        }
+//        }
     }
 }
 
