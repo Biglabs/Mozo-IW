@@ -16,7 +16,7 @@ public class AppService {
     
     //action: view,create
     //type: idea,space,...
-    public func launchSignerApp(_ action: String, type: String, transaction: TransactionDTO) {
+    public func launchSignerApp(_ action: String, type: String, transaction: TransactionDTO?) {
         let isAlwaysLaunchApp = KeychainService.instance.getBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP)
         
         func launchApp() {
@@ -26,7 +26,9 @@ public class AppService {
                 urlStr += (model?.rawString())!
                 print("URL: [\(urlStr)]")
                 
-                if let url = URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!), UIApplication.shared.canOpenURL(url as URL) {
+                if let url = URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)
+                    //,UIApplication.shared.canOpenURL(url as URL)
+                {
                     if #available(iOS 10.0, *) {
                         UIApplication.shared.open(url, options: ["":""], completionHandler: nil)
                     } else {
