@@ -38,7 +38,7 @@ public class InfoWalletTableViewCell: UITableViewCell {
             self.nameLabel.text = name
         }
         
-        if let address = coin.addesses?.first {
+        if let address = coin.addresses?.first {
             if let balance = address.balance {
                 self.balanceLabel.text = String(balance)
             }

@@ -21,7 +21,7 @@ public class Configuration {
     public static var URL_SCHEME_WALLET = "solowallet"
     
     //development
-    public static var BASE_URL = "http://192.168.1.91:8080"
+    public static var BASE_URL = "http://192.168.1.98:9000"
     public static var ROPSTEN_INFURA_URL = "https://ropsten.infura.io/V2vOGBNVvlHlDJQ17sIL"
     
     public static func getDomain() -> String?{

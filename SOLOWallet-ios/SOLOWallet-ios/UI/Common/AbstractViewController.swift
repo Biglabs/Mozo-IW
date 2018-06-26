@@ -44,7 +44,7 @@ public class AbstractViewController: UIViewController {
     }
     
     func getBalance() {
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": ["0x771521717F518a32248E435882c625aE94a5434c","latest"]] as [String : Any]
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": ["0x011df24265841dCdbf2e60984BB94007b0C1d76A","latest"]] as [String : Any]
         RESTService.shared.getBalance(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
@@ -56,6 +56,15 @@ public class AbstractViewController: UIViewController {
             
             let json = SwiftyJSON.JSON(value)
             print(json["result"])
+            //Wei
+            var amount = Double(json["result"].string ?? "")
+            //ETH
+            amount = amount!/1E+18
+            print(amount)
+            DispatchQueue.main.async {
+                self.coin.addresses?.first?.balance = amount
+            }
+            self.refresh()
         }
     }
  

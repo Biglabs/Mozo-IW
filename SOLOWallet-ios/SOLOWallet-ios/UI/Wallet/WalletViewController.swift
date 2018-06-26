@@ -63,7 +63,7 @@ class WalletViewController: AbstractViewController {
             }
             DispatchQueue.main.async {
                 if items.count > 0 {
-                    self.coin.addesses?.insert(items.first!, at: 0)
+                    self.coin.addresses?.insert(items.first!, at: 0)
                 }
                 self.refreshControl.endRefreshing()
                 self.tableView.reloadData()
@@ -80,7 +80,7 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 2 {
-            return self.coin.addesses?.first?.transactions?.count ?? 0
+            return self.coin.addresses?.first?.transactions?.count ?? 0
         }
         return 1
     }
@@ -121,7 +121,7 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "TransactionWalletTableViewCell", for: indexPath) as! TransactionWalletTableViewCell
-            if let trans = self.coin.addesses?.first?.transactions?[indexPath.row], let name = self.coin.name, let address = self.coin.addesses?.first?.id {
+            if let trans = self.coin.addresses?.first?.transactions?[indexPath.row], let name = self.coin.name, let address = self.coin.addresses?.first?.id {
                 cell.bindData(trans, coinName: name, address: address)
             }
             //            cell.delegate = self

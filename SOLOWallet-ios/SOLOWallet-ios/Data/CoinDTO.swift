@@ -15,14 +15,14 @@ public class CoinDTO: ResponseObjectSerializable {
     public var key: String?
     public var name: String?
     public var icon: String?
-    public var addesses: [AddressDTO]?
+    public var addresses: [AddressDTO]?
     
     public required init?(id: Int?, key: String?, name: String?, icon: String?, addesses: [AddressDTO]?) {
         self.id = id
         self.key = key
         self.name = name
         self.icon = icon
-        self.addesses = addesses
+        self.addresses = addesses
     }
     
     public required init?(json: SwiftyJSON.JSON) {
@@ -30,7 +30,7 @@ public class CoinDTO: ResponseObjectSerializable {
         self.key = json["key"].string
         self.name = json["name"].string
         self.icon = json["icon"].string
-        self.addesses = json["addesses"].array?.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
+        self.addresses = json["addesses"].array?.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
     }
     
     public required init?(){}
@@ -49,7 +49,7 @@ public class CoinDTO: ResponseObjectSerializable {
         if let icon = self.icon {
             json["icon"] = icon
         }
-        if let addesses = self.addesses {
+        if let addesses = self.addresses {
             json["addesses"] = addesses.map({$0.toJSON()})
         }
         return json

@@ -95,7 +95,7 @@ class SendViewController: AbstractViewController {
     func bindData() {
         self.inputCoinNameLabel.text = self.coin.name ?? ""
         self.inputUSDLabel.text = "US$7,500.52"
-        self.spendableValueLabel.text = "\(self.coin.addesses?.first?.balance ?? 0.0) \(self.coin.name ?? "")"
+        self.spendableValueLabel.text = "\(self.coin.addresses?.first?.balance ?? 0.0) \(self.coin.name ?? "")"
         self.gasTextField.text = "250.000"
         self.addressTextField.text = "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
     }
@@ -110,7 +110,7 @@ class SendViewController: AbstractViewController {
     @IBAction func touchedBtnSend(_ sender: Any) {
         //solosigner://{"action":"SIGN","receiver":"com.biglabs.solo.wallet.solowallet","params":{"from":"0x011df24265841dCdbf2e60984BB94007b0C1d76A","to":"0x213DE50319F5954D821F704d46e4fd50Fb09B459","coinType":"ETH","value":"0.5","txData":"vbh"}}
         let transaction = TransactionDTO()!
-        transaction.from = self.coin.addesses?.first?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
+        transaction.from = self.coin.addresses?.first?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
         transaction.to = self.addressTextField.text ?? "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
         transaction.value = 0.05
         
