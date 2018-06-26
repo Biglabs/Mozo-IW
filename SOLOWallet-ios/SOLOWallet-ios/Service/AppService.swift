@@ -14,6 +14,19 @@ public class AppService {
     
     public var tokenValid = true
     
+    public func handleReceivedUrlFromWalletApp(){
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+            let URL = appDelegate.url else {return}
+        print("scheme: \(String(describing: URL.scheme))" )
+        
+        // do something
+        
+        //destroy call signer after handle
+        appDelegate.url = nil
+        appDelegate.sourceApplication = nil
+    }
+
+    
     //action: view,create
     //type: idea,space,...
     public func launchSignerApp(_ action: String, type: String, transaction: TransactionDTO?) {

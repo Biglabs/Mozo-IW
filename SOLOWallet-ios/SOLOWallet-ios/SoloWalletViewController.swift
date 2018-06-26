@@ -95,3 +95,13 @@ class SoloWalletViewController: UIViewController {
         self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
     }
 }
+
+extension MMDrawerController {
+    var soloWalletVC: SoloWalletViewController! {
+        return (self.centerViewController as? UINavigationController)?.rootViewController as? SoloWalletViewController
+    }
+    
+    var drawerVC: DrawerMenuViewController! {
+        return (self.leftDrawerViewController as? UINavigationController)?.rootViewController as? DrawerMenuViewController
+    }
+}
