@@ -56,7 +56,7 @@ export default class ConfirmationScreen extends Component {
         }
         let hashPin = app.pin;
         // Encrypt private key before saving to DB, password: hashPin
-        let encryption = require('../../components/encryption/encryption');
+        let encryption = require('../../common/encryption');
         let privateKey = encryption.decrypt(encryptedPrivateKey, hashPin);
         //TODO: Convert privateKey in string format to buffer
         var ethUtil = require('ethereumjs-util');
@@ -92,7 +92,7 @@ export default class ConfirmationScreen extends Component {
         };
         const responseUrl = `${this.props.txData.receiver}://${JSON.stringify(responseData)}`;
         Actions.main_stack();
-        Linking.openURL(responseUrl).then().catch(error => 
+        Linking.openURL(responseUrl).then().catch(error =>
             alert(error)
         );
     }
@@ -106,7 +106,14 @@ export default class ConfirmationScreen extends Component {
                     accentColor='#ffffff'/>
 
                 <View style={styles.content}>
-                    <Text style={styles.text_send}>Send</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                        <SvgUri
+                            fill={StyleSheet.value('$primaryColor')}
+                            width={15}
+                            height={15}
+                            source={require('../../res/icons/ic_send.svg')}/>
+                        <Text style={styles.text_send}>Send</Text>
+                    </View>
                     <Text style={styles.text_value}>
                         {this.props.txData.params.value} {(this.props.txData.coinType || '').toUpperCase()}
                     </Text>
@@ -181,7 +188,8 @@ const styles = StyleSheet.create({
     },
     text_send: {
         color: '$textContentColor',
-        fontSize: 16
+        fontSize: 16,
+        marginLeft: 12
     },
     text_value: {
         color: '$primaryColor',

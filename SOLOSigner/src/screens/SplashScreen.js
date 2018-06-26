@@ -4,7 +4,7 @@ import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {FadeInView} from "../components/SoloComponent";
-import {checkWalletExisting} from '../utils/Globals';
+import {checkWalletExisting} from '../common/Globals';
 
 export default class SplashScreen extends Component {
 

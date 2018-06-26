@@ -4,7 +4,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, RotationView, Text} from "../components/SoloComponent";
 import SvgUri from 'react-native-svg-uri';
-import Constant from '../utils/Constants';
+import Constant from '../common/Constants';
 import DataManager from '../utils/DataManager';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
@@ -77,7 +77,7 @@ export default class SecurityPinScreen extends Component {
         // Because this is the first time when app is launched, data must be save to local
         // Save address and private key
         // Encrypt private key before saving to DB, password: hashPin
-        let encryption = require('../components/encryption/encryption');
+        let encryption = require('../common/encryption');
         let encryptedPrivateKey = encryption.encrypt(walletData.privkey, hashPin);
         manager.addAddress(walletData.address, walletData.derivedIndex, encryptedPrivateKey);
         // TODO: Load all addresses of this wallet from server and save to local

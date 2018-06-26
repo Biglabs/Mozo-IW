@@ -5,7 +5,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {Button, Text} from "../components/SoloComponent";
 import LinkingManager from "../utils/LinkingManager";
-import Constant from '../utils/Constants';
+import Constant from '../common/Constants';
 
 export default class HomeScreen extends Component {
 
