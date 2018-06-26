@@ -12,9 +12,8 @@ import SwiftyJSON
 
 extension RESTService {
     
-    public func getBalance(_ completionHandler: completion = nil) {
+    public func getBalance(_ params: [String: Any], completionHandler: completion = nil) {
         let url = Configuration.ROPSTEN_INFURA_URL
-        let params: [String: Any] = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": ["0x771521717F518a32248E435882c625aE94a5434c","latest"]]
         return self.execute(.post, url: url, parameters: params, completionHandler: completionHandler)
     }
 }
