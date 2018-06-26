@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import JDStatusBarNotification
 
 class SendViewController: AbstractViewController {
     
@@ -108,18 +109,23 @@ class SendViewController: AbstractViewController {
     }
     
     @IBAction func touchedBtnSend(_ sender: Any) {
-        //solosigner://{"action":"SIGN","receiver":"com.biglabs.solo.wallet.solowallet","params":{"from":"0x011df24265841dCdbf2e60984BB94007b0C1d76A","to":"0x213DE50319F5954D821F704d46e4fd50Fb09B459","coinType":"ETH","value":"0.5","txData":"vbh"}}
+        guard let toAddress = self.addressTextField.text else {
+            JDStatusBarNotification.show(withStatus: "Please input receive address.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleError")
+            return
+        }
+        
+        guard let value = self.inputCoinTextField.text else {
+            JDStatusBarNotification.show(withStatus: "Please input value.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleError")
+            return
+        }
+        
         let transaction = TransactionDTO()!
         transaction.from = self.coin.addresses?.first?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
-        transaction.to = self.addressTextField.text ?? "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
-        transaction.value = 0.05
+        transaction.to = toAddress
+        transaction.value = Double(value)
         
         AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, type: COINTYPE.ETH.key, transaction: transaction)
     }
-}
-
-class Transaction {
-    
 }
 
 extension SendViewController: SoloWalletDelegate {

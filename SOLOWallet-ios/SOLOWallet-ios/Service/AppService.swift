@@ -16,23 +16,31 @@ public class AppService {
     public var tokenValid = true
     
     public func handleReceivedUrlFromWalletApp(jsonData: String){
-        let jsonStr = jsonData.removingPercentEncoding
-        let data = SwiftyJSON.JSON.init(parseJSON: jsonStr!)
+        guard let jsonStr = jsonData.removingPercentEncoding else {
+            return
+        }
+        let data = SwiftyJSON.JSON.init(parseJSON: jsonStr)
         let com = CommunicationDTO(json: data)
-        print(data)
         if let action = com?.action {
             switch action {
             case ACTIONTYPE.GET_WALLET.value:
-                let wallet = WalletDTO(json: (com?.result)!)
-                //Save walletId
-                KeychainService.shared.setString(KeychainKeys.WALLLET_ID, value: wallet?.walletId)
+                if let result = com?.result {
+                    let wallet = WalletDTO(json: result)
+                    //Save walletId
+                    if let walletId = wallet?.walletId {
+                        KeychainService.shared.setString(KeychainKeys.WALLLET_ID, value: walletId)
+                    }
+                }
                 break
             case ACTIONTYPE.ADD_ADDRESS.value:
                 break
             case ACTIONTYPE.SIGN.value:
-                let value = TransactionDTO(json: (com?.result)!)
-                print(value)
-                sendTx(signedTx: (value?.signedTransaction)!)
+                if let result = com?.result {
+                    let value = TransactionDTO(json: result)
+                    if let signedTransaction = value?.signedTransaction {
+                        self.sendTx(signedTx: signedTransaction)
+                    }
+                }
                 break
             default:
                 break
