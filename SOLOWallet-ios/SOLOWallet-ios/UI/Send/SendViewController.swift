@@ -109,23 +109,12 @@ class SendViewController: AbstractViewController {
     
     @IBAction func touchedBtnSend(_ sender: Any) {
         //solosigner://{"action":"SIGN","receiver":"com.biglabs.solo.wallet.solowallet","params":{"from":"0x011df24265841dCdbf2e60984BB94007b0C1d76A","to":"0x213DE50319F5954D821F704d46e4fd50Fb09B459","coinType":"ETH","value":"0.5","txData":"vbh"}}
-        var urlStr = URL_SCHEME.Sender.scheme + "://"
+        let transaction = TransactionDTO()!
+        transaction.from = self.coin.addesses?.first?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
+        transaction.to = self.addressTextField.text ?? "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
+        transaction.value = 0.05
         
-        let transaction = TransactionDTO()
-        transaction?.from = self.coin.addesses?.first?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
-        transaction?.to = self.addressTextField.text ?? "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
-        transaction?.value = 0.05
-        let model = CommunicationDTO(action: ACTIONTYPE.SIGN, receiver: URL_SCHEME.Receiver.scheme, params: transaction, coinType: COINTYPE.ETH)
-        urlStr += (model?.rawString())!
-        print("URL: [\(urlStr)]")
-        let url = URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
-//        if (UIApplication.shared.canOpenURL(url as URL)) {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url, options: ["":""], completionHandler: nil)
-            } else {
-                UIApplication.shared.openURL(url)
-            }
-//        }
+        AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, type: COINTYPE.ETH.key, transaction: transaction)
     }
 }
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import MMDrawerController
+import SwiftyJSON
 
 //dummy data
 let transactions = [TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0),
@@ -39,14 +40,29 @@ public class AbstractViewController: UIViewController {
         titleLabel.addTextWithImage(text: " \(coin.name!)", image: UIImage.init(named: coin.icon!)!, imageBehindText: false, keepPreviousText: false)
         self.navigationController?.parent?.navigationController?.navigationItem.titleView = titleLabel
         
+        self.getBalance()
+    }
+    
+    func getBalance() {
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": ["0x771521717F518a32248E435882c625aE94a5434c","latest"]] as [String : Any]
+        RESTService.shared.getBalance(params) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            print(json["result"])
+        }
     }
  
     @objc open func rightDrawerButtonPress(_ sender: Any? = nil) {
         print(self.mm_drawerController)
         self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
     }
-    
-    
     
     open func refresh(_ sender: Any? = nil) {}
 }
