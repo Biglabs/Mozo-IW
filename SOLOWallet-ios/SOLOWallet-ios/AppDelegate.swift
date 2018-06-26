@@ -128,5 +128,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             break
         }
     }
+    
+    //want open app from link - call bundleid.solowallet://
+    var url: URL? = nil
+    var sourceApplication: String? = nil
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any)-> Bool {
+        self.url = url
+        self.sourceApplication = sourceApplication
+        
+//        guard let mmDrawer = self.window?.rootViewController as? MMDrawerController,
+//            let tabBar = mmDrawer.soloWalletVC, tabBar.tabBarCtr.viewControllers?.count == 4
+//            else {
+//                return true
+//        }
+        
+        AppService.shared.launchWalletApp()
+        return true
+    }
 }
 

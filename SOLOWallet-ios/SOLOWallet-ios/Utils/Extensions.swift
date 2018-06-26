@@ -146,3 +146,9 @@ public extension UIWindow {
         }
     }
 }
+
+extension UINavigationController {
+    public var rootViewController : UIViewController? {
+        return self.viewControllers.first
+    }
+}

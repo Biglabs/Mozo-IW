@@ -14,8 +14,18 @@ public class AppService {
     
     public var tokenValid = true
     
-    //action: view,create
-    //type: idea,space,...
+    public func launchWalletApp(){
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+            let URL = appDelegate.url else {return}
+        print("scheme: \(String(describing: URL.scheme))" )
+        
+        // do something
+        
+        //destroy call signer after handle
+        appDelegate.url = nil
+        appDelegate.sourceApplication = nil
+    }
+    
     public func launchSignerApp(_ action: String, type: String, transaction: TransactionDTO) {
         let isAlwaysLaunchApp = KeychainService.instance.getBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP)
         
