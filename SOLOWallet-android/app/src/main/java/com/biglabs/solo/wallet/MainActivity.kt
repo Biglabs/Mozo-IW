@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.SignerListener
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_tab_send.*
 import org.json.JSONObject
@@ -96,33 +97,6 @@ class MainActivity : AppCompatActivity() {
                 })
                 transactionData = null
                 buttonSubmit.visibility = View.GONE
-            }
-        }
-
-        handleIntent(intent!!)
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        handleIntent(intent!!)
-    }
-
-    private fun handleIntent(intent: Intent) {
-        val scheme = "${BuildConfig.APPLICATION_ID}.solowallet"
-        if (TextUtils.equals(intent.scheme, scheme) && intent.data != null) {
-            try {
-                val data = intent.dataString.split("://")[1]
-                textBalance.text = data
-                val jsonData = JSONObject(data)
-                val action = jsonData.getString("action")
-                this.transactionData = jsonData.getString("result")
-                Log.e("vu", "result: $transactionData")
-                when (action) {
-                    Signer.ACTION_SIGN -> {
-                        buttonSubmit.visibility = View.VISIBLE
-                    }
-                }
-            } catch (ex: Exception) {
             }
         }
     }
