@@ -37,7 +37,7 @@ class SoloWalletViewController: UIViewController {
         let titleLabel = UILabel.init()
         titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
         titleLabel.textColor = ThemeManager.shared.title
-        titleLabel.addTextWithImage(text: " BTC", image: UIImage.init(named: "ic_bitcoin")!, imageBehindText: false, keepPreviousText: false)
+        titleLabel.addTextWithImage(text: " ETH", image: UIImage.init(named: "ic_ethereum")!, imageBehindText: false, keepPreviousText: false)
         self.navigationItem.titleView = titleLabel
     }
     

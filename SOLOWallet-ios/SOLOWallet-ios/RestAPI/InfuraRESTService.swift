@@ -12,7 +12,7 @@ import SwiftyJSON
 
 extension RESTService {
     
-    public func getBalance(_ params: [String: Any], completionHandler: completion = nil) {
+    public func infuraPOST(_ params: [String: Any], completionHandler: completion = nil) {
         let url = Configuration.ROPSTEN_INFURA_URL
         return self.execute(.post, url: url, parameters: params, completionHandler: completionHandler)
     }

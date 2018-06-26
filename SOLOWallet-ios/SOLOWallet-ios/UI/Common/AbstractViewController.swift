@@ -34,18 +34,19 @@ public class AbstractViewController: UIViewController {
         let address = AddressDTO.init(id: "123", address: "0x011df24265841dCdbf2e60984BB94007b0C1d76A", coin: "ETH", balance: 7.020020030, network: "ETH_MAIN", transactions: transactions as? [TransactionDTO])
         coin = CoinDTO.init(id: 0, key: "ETH", name: "ETH", icon: "ic_ethereum", addesses: [address!])
         
-        let titleLabel = UILabel.init()
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        titleLabel.textColor = ThemeManager.shared.title
-        titleLabel.addTextWithImage(text: " \(coin.name!)", image: UIImage.init(named: coin.icon!)!, imageBehindText: false, keepPreviousText: false)
-        self.navigationController?.parent?.navigationController?.navigationItem.titleView = titleLabel
+//        let titleLabel = UILabel.init()
+//        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+//        titleLabel.textColor = ThemeManager.shared.title
+//        titleLabel.addTextWithImage(text: " \(coin.name!)", image: UIImage.init(named: coin.icon!)!, imageBehindText: false, keepPreviousText: false)
+//        self.navigationController?.navigationBar.topItem?.titleView = titleLabel
+
         
         self.getBalance()
     }
     
     func getBalance() {
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": ["0x011df24265841dCdbf2e60984BB94007b0C1d76A","latest"]] as [String : Any]
-        RESTService.shared.getBalance(params) { value, error in
+        RESTService.shared.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {
@@ -56,15 +57,15 @@ public class AbstractViewController: UIViewController {
             
             let json = SwiftyJSON.JSON(value)
             print(json["result"])
-            //Wei
-            var amount = Double(json["result"].string ?? "")
-            //ETH
-            amount = amount!/1E+18
-            print(amount)
-            DispatchQueue.main.async {
-                self.coin.addresses?.first?.balance = amount
+            if let result = json["result"].string {
+                var amount = Double(result)
+                //ETH
+                amount = amount!/1E+18
+                print(amount ?? 0)
+                self.coin.addresses?.first?.balance = amount ?? 0
+                self.refresh()
             }
-            self.refresh()
+            
         }
     }
  
