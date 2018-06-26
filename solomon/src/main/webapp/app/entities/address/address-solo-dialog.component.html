@@ -54,16 +54,16 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="solomonApp.address.derivedKey" for="field_derivedKey">Derived Key</label>
-            <input type="number" class="form-control" name="derivedKey" id="field_derivedKey"
-                [(ngModel)]="address.derivedKey" required />
-            <div [hidden]="!(editForm.controls.derivedKey?.dirty && editForm.controls.derivedKey?.invalid)">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.derivedIndex" for="field_derivedIndex">Derived Index</label>
+            <input type="number" class="form-control" name="derivedIndex" id="field_derivedIndex"
+                [(ngModel)]="address.derivedIndex" required />
+            <div [hidden]="!(editForm.controls.derivedIndex?.dirty && editForm.controls.derivedIndex?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.derivedKey?.errors?.required" jhiTranslate="entity.validation.required">
+                   [hidden]="!editForm.controls.derivedIndex?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
                 <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.derivedKey?.errors?.number" jhiTranslate="entity.validation.number">
+                    [hidden]="!editForm.controls.derivedIndex?.errors?.number" jhiTranslate="entity.validation.number">
                     This field should be a number.
                 </small>
             </div>

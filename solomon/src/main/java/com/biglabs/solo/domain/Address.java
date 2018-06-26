@@ -42,8 +42,8 @@ public class Address implements Serializable {
     private String address;
 
     @NotNull
-    @Column(name = "derived_key", nullable = false)
-    private Integer derivedKey;
+    @Column(name = "derived_index", nullable = false)
+    private Integer derivedIndex;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -93,17 +93,17 @@ public class Address implements Serializable {
         this.address = address;
     }
 
-    public Integer getDerivedKey() {
-        return derivedKey;
+    public Integer getDerivedIndex() {
+        return derivedIndex;
     }
 
-    public Address derivedKey(Integer derivedKey) {
-        this.derivedKey = derivedKey;
+    public Address derivedIndex(Integer derivedIndex) {
+        this.derivedIndex = derivedIndex;
         return this;
     }
 
-    public void setDerivedKey(Integer derivedKey) {
-        this.derivedKey = derivedKey;
+    public void setDerivedIndex(Integer derivedIndex) {
+        this.derivedIndex = derivedIndex;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -134,7 +134,7 @@ public class Address implements Serializable {
             ", coin='" + getCoin() + "'" +
             ", network='" + getNetwork() + "'" +
             ", address='" + getAddress() + "'" +
-            ", derivedKey='" + getDerivedKey() + "'" +
+            ", derivedIndex='" + getDerivedIndex() + "'" +
             "}";
     }
 }
