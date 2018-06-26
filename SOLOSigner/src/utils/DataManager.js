@@ -8,8 +8,8 @@ const AppSchema = {
     },
 }
 
-const UserSchema = {
-    name: 'User',
+const WalletSchema = {
+    name: 'Wallet',
     primaryKey: 'id',
     properties: {
         id: 'int',
@@ -28,7 +28,7 @@ const AddressSchema = {
         prvKey: 'string'
     },
 };
-const configuration = {schema: [UserSchema, AddressSchema, AppSchema], path : "solo.signer"};
+const configuration = {schema: [WalletSchema, AddressSchema, AppSchema], path : "solo.signer"};
 
 class DataManager {
     static myInstance = null;
@@ -178,9 +178,9 @@ class DataManager {
             try {
                 let hash = this.convertToHash(publicKey);
                 this.sendRequest(`http://192.168.1.98:9000/api/wallets/${hash}`, false)
-                .then((userInfo) => {
-                    console.log(userInfo);
-                    resolve(userInfo);
+                .then((walletInfo) => {
+                    console.log(walletInfo);
+                    resolve(walletInfo);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -200,9 +200,9 @@ class DataManager {
                 this.sendRequest('http://192.168.1.98:9000/api/wallets', {
                     walletKey: hash,
                 }, true)
-                .then((userInfo) => {
-                    console.log(userInfo);
-                    resolve(userInfo);
+                .then((walletInfo) => {
+                    console.log(walletInfo);
+                    resolve(walletInfo);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -231,16 +231,16 @@ class DataManager {
         }
     }
 
-    saveUserInfo(userInfo) {
+    saveWalletInfo(walletInfo) {
         DataManager.realm.write(() => {
-            DataManager.realm.create('User', userInfo);
+            DataManager.realm.create('Wallet', walletInfo);
         });
     }
 
-    getUserInfo() {
-        let users = DataManager.realm.objects('User');
-        if(users.length > 0) {
-            return users[0];
+    getWalletInfo() {
+        let wallets = DataManager.realm.objects('Wallet');
+        if(wallets.length > 0) {
+            return wallets[0];
         }
         return null;
     }

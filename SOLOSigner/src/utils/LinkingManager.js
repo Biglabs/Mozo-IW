@@ -32,12 +32,13 @@ function manageScheme(data){
             Actions.jump('trans_confirm', {txData: jsonData});
             break;
         }
-        case Constant.ACTION_SCHEME.GET_USER: {
+        case Constant.ACTION_SCHEME.GET_WALLET: {
+            console.log("Processing get wallet info.");
             let manager = DataManager.getInstance();
-            let userInfo = manager.getUserInfo();
-            if(userInfo){
-                userInfo = {walletId : userInfo.walletId};
-                Globals.responseToReceiver(userInfo, jsonData);
+            let walletInfo = manager.getWalletInfo();
+            if(walletInfo){
+                walletInfo = { walletId : walletInfo.walletId };
+                Globals.responseToReceiver(walletInfo, jsonData);
             } else {
                 alert("This wallet is not registered. Try again.");
             }

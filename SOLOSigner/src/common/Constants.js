@@ -1,7 +1,7 @@
 const Constants = {
     ACTION_SCHEME : {
         NONE: "NONE",
-        GET_USER: "GET_USER",
+        GET_WALLET: "GET_WALLET",
         SIGN: "SIGN",
         ADD_ADDRESS: "ADD_ADDRESS"
     },

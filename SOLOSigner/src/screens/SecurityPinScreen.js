@@ -85,10 +85,10 @@ export default class SecurityPinScreen extends Component {
 
     registerWalletAndSyncAddress(manager, publicKey, address, derivedIndex) {
         console.log("Check wallet");
-        manager.getExistingWalletFromServer(publicKey).then(userInfo => {
+        manager.getExistingWalletFromServer(publicKey).then(walletInfo => {
             console.log('Wallet is registered.');
-            // Save User Info - WalletId
-            manager.saveUserInfo(userInfo);
+            // Save Wallet Info - WalletId
+            manager.saveWalletInfo(walletInfo);
             AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
         }).catch((error) => {
             // Offline mode: Can not check wallet
@@ -99,13 +99,13 @@ export default class SecurityPinScreen extends Component {
             } else {
                 console.log('Register wallet');
                 // Register wallet and save uid
-                manager.registerWallet(publicKey).then((userInfo) => {
+                manager.registerWallet(publicKey).then((walletInfo) => {
                     console.log('Wallet is registered.');
-                    // Save User Info - WalletId
-                    manager.saveUserInfo(userInfo);
+                    // Save Wallet Info - WalletId
+                    manager.saveWalletInfo(walletInfo);
                     AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
                     // Synchronize address to server
-                    manager.syncAddress(address, userInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
+                    manager.syncAddress(address, walletInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
                     //TODO: Should retry incase network error
                     AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
                 }).catch((error) => {
