@@ -39,13 +39,45 @@ public class AbstractViewController: UIViewController {
 //        titleLabel.textColor = ThemeManager.shared.title
 //        titleLabel.addTextWithImage(text: " \(coin.name!)", image: UIImage.init(named: coin.icon!)!, imageBehindText: false, keepPreviousText: false)
 //        self.navigationController?.navigationBar.topItem?.titleView = titleLabel
-
-        if let address = self.coin.addresses?.first?.address {
-            self.getBalance(address)
+        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
+            return
+        }
+        self.getAddresses(walletId)
+    }
+    
+    func getAddresses(_ walletId: String, completionHandler completion: ((Bool) -> Swift.Void)? = nil){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        RESTService.shared.getAddresses(walletId) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                if let completionHandler = completion {
+                    completionHandler(false)
+                }
+                return
+            }
+            //Success
+            if let address = self.coin.addresses?.first?.address {
+                let json = SwiftyJSON.JSON(value)
+                var items = [AddressDTO]()
+                if let arr = json.array {
+                    items = arr.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
+                }
+                if items.count > 0 {
+                    self.coin.addresses?.insert(items.first!, at: 0)
+                }
+                self.getBalance(address, completionHandler: { (result) in
+                    if let completionHandler = completion {
+                        completionHandler(result)
+                    }
+                });
+            }
         }
     }
     
-    func getBalance(_ address: String) {
+    func getBalance(_ address: String, completionHandler completion: ((Bool) -> Swift.Void)? = nil) {
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
         RESTService.shared.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -53,6 +85,7 @@ public class AbstractViewController: UIViewController {
                 if let backendError = error {
                     Utils.showError(backendError)
                 }
+                completion!(false)
                 return
             }
             
@@ -63,10 +96,11 @@ public class AbstractViewController: UIViewController {
                 amount = amount!/1E+18
                 self.coin.addresses?.first?.balance = amount ?? 0
                 self.refresh()
+                completion!(true)
             }
             
         }
     }
- 
+    
     open func refresh(_ sender: Any? = nil) {}
 }

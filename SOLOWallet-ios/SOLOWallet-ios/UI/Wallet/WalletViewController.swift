@@ -41,39 +41,20 @@ class WalletViewController: AbstractViewController {
         } else {
             tableView.addSubview(refreshControl)
         }
-        self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        self.refreshControl.addTarget(self, action: #selector(self.refreshData(_:)), for: .valueChanged)
+    }
+    
+    @objc func refreshData(_ sender: Any? = nil){
+        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
+            return
+        }
+        self.getAddresses(walletId) { (result) in
+            self.refreshControl.endRefreshing()
+        }
     }
     
     @objc override public func refresh(_ sender: Any? = nil) {
-        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
-            self.refreshControl.endRefreshing()
-            return
-        }
-        
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        RESTService.shared.getAddresses(walletId) { value, error in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
-                }
-                self.refreshControl.endRefreshing()
-                return
-            }
-            
-            let json = SwiftyJSON.JSON(value)
-            var items = [AddressDTO]()
-            if let arr = json.array {
-                items = arr.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
-            }
-            DispatchQueue.main.async {
-                if items.count > 0 {
-                    self.coin.addresses?.insert(items.first!, at: 0)
-                }
-                self.refreshControl.endRefreshing()
-                self.tableView.reloadData()
-            }
-        }
+        self.tableView.reloadData()
     }
 }
 

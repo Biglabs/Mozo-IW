@@ -101,6 +101,10 @@ class SendViewController: AbstractViewController {
         self.addressTextField.text = "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
     }
     
+    @objc override public func refresh(_ sender: Any? = nil) {
+        self.bindData()
+    }
+    
     @objc func scanQRCode() {
         let scannerVC = ScannerViewController()
         scannerVC.delegate = self
