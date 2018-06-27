@@ -1,11 +1,9 @@
 package com.biglabs.solo.signer.library
 
-abstract class SignerListener {
-    fun onReceivedBalance(balance: String) {
+interface SignerListener {
+    fun onReceiveBalance(balance: String)
 
-    }
+    fun onReceiveSignedTransaction(signedTx: String)
 
-    fun onTransactionSent(isSuccess: Boolean, txHash: String) {
-
-    }
+    fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String)
 }

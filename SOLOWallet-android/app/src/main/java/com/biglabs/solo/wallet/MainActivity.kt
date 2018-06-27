@@ -1,26 +1,34 @@
 package com.biglabs.solo.wallet
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.SignerListener
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_tab_send.*
-import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SignerListener {
+    override fun onReceiveBalance(balance: String) {
+        textBalance.text = balance
+    }
 
-    val accounts = arrayOf("0x011df24265841dCdbf2e60984BB94007b0C1d76A", "0x213DE50319F5954D821F704d46e4fd50Fb09B459")
-    var value = "0.5"
+    override fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String) {
+        textBalance.text = "send transaction: ${if (isSuccess) "successfully" else "failed"} \n txHash: $txHash"
+    }
+
+    override fun onReceiveSignedTransaction(signedTx: String) {
+        transactionData = signedTx
+        textBalance.text = "signed transaction: $transactionData"
+        updateUI()
+    }
+
+    private val accounts = arrayOf("0x011df24265841dCdbf2e60984BB94007b0C1d76A", "0x213DE50319F5954D821F704d46e4fd50Fb09B459")
+    var value = "0.005"
 
     private var transactionData: String? = null
 
@@ -38,12 +46,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        radios.setOnCheckedChangeListener { _, checkedId ->
-            run {
-                Log.e("VU", "$checkedId")
-
-                updateUI()
-            }
+        radios.setOnCheckedChangeListener { _, _ ->
+            updateUI()
         }
 
         value_input.setText(value)
@@ -62,11 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonGetBalance.setOnClickListener {
             if (radios.checkedRadioButtonId > 0 && radios.checkedRadioButtonId <= accounts.size) {
-                Signer.getInstance().getBalance(accounts[radios.checkedRadioButtonId - 1], object : SignerListener() {
-                    override fun onReceivedBalance(p0: String?) {
-                        textBalance.text = p0
-                    }
-                })
+                Signer.getInstance().getBalance(accounts[radios.checkedRadioButtonId - 1])
             } else {
                 Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
             }
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
                     val from = radios.checkedRadioButtonId - 1
                     val to = accounts.size - from - 1
-                    Signer.getInstance().confirmTransaction(accounts[from], accounts[to], "ETH", value, message_input.text.toString())
+                    Signer.getInstance().confirmTransaction(this, accounts[from], accounts[to], "ETH", value, message_input.text.toString())
                 }
             } else {
                 Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
@@ -90,18 +90,14 @@ class MainActivity : AppCompatActivity() {
 
         buttonSubmit.setOnClickListener {
             if (transactionData != null) {
-                Signer.getInstance().sendTransaction(transactionData, object : SignerListener() {
-                    override fun onTransactionSent(isSuccess: Boolean, txHash: String?) {
-                        textBalance.text = "send transaction: ${if(isSuccess) "successfully" else "failed"} \n txHash: $txHash"
-                    }
-                })
+                Signer.getInstance().sendTransaction(transactionData!!)
                 transactionData = null
-                buttonSubmit.visibility = View.GONE
+                updateUI()
             }
         }
     }
 
     fun updateUI() {
-        buttonSubmit.visibility = View.GONE
+        buttonSubmit.visibility = if (transactionData == null) View.GONE else View.VISIBLE
     }
 }

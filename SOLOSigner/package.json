@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android",
+    "android-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android --variant=release",
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
     "test": "jest"
   },

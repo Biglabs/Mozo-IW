@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 class Wallet {
     @SerializedName("id")
-    val id: String? = null
+    var id: String? = null
 
     @SerializedName("walletKey")
-    val key: String? = null
+    var key: String? = null
 
     @SerializedName("walletId")
-    val address: String? = null
+    var address: String? = null
 }

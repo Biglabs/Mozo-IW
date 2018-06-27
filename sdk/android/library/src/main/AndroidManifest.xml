@@ -6,7 +6,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name=".SignerWrapperActivity">
+        <activity
+            android:name=".SignerWrapperActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
