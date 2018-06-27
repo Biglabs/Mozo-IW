@@ -18,40 +18,14 @@ export default class HomeScreen extends Component<Props> {
         this.manageScheme();
     }
 
-    componentWillReceiveProps(){
-        console.warn('componentWillReceiveProps');
-    }
-
-    componentDidUpdate(_, prevState){
-        console.warn('componentDidUpdate');
-    }
-
     manageScheme(){
-        console.warn('Manage scheme.');
         let storage = GlobalStorage.getInstance();
         let schemeData = storage.getSchemeData();
-        //console.warn('SchemeData: ' + schemeData);
         if(schemeData){
             LinkingManager.manageScheme(schemeData, this.props.pin);
             GlobalStorage.getInstance().setSchemeData(null);
         }        
         this.props.pin = null;
-
-        // AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
-        //     if(!error && result) {
-        //         AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA, (error) => {
-                    
-        //         });
-        //     } else {
-        //         console.warn('Error manage scheme. No data.');
-        //         if (Platform.OS === 'android') {
-        //             Linking.getInitialURL().then((url) => {
-        //                 let jsonData = LinkingManager.handleOpenURL(url);
-        //                 LinkingManager.manageScheme(jsonData, this.props.pin);
-        //             });
-        //         }
-        //     }
-        // });  
     }
 
     render() {

@@ -45,12 +45,7 @@ export default class SecurityPinScreen extends Component {
                 if(result) {
                     this.props.isNewPIN = false;
                     // Open Home Screen
-                    let pin = null;
-                    let schemeData = GlobalStorage.getInstance().getSchemeData();
-                    if(schemeData){
-                        pin = JSON.stringify(this.pinCode);
-                    }
-                    console.warn('Pin: ', pin);
+                    let pin = JSON.stringify(this.pinCode);
                     Actions.main_stack({pin: pin});
                 } else {
                     this.clearPin();
