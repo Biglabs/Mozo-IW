@@ -6,9 +6,7 @@ import GlobalStorage from './GlobalStorage';
 import Globals from '../common/Globals';
 
 let handleEventOpenUrl = (event) => {
-    // this.checkScheme(event.url);
     let url = event.url;
-    console.warn('Handle event open URL');
     if (url) {
         let jsonData = handleOpenURL(url);
         GlobalStorage.getInstance().setSchemeData(jsonData);
