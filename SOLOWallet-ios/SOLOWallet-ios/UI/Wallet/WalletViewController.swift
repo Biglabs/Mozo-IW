@@ -41,20 +41,65 @@ class WalletViewController: AbstractViewController {
         } else {
             tableView.addSubview(refreshControl)
         }
-        self.refreshControl.addTarget(self, action: #selector(self.refreshData(_:)), for: .valueChanged)
+        self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
     }
     
-    @objc func refreshData(_ sender: Any? = nil){
-        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
+    @objc override func refresh(_ sender: Any? = nil) {
+        super.refresh()
+        self.feed.refresh(){ content, error in
+            self.completion(error: error)
+        }
+        if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
+    }
+    
+    func fetchAddresses(){
+        self.feed.fetchContent() { content, error in
+            self.completion(error: error)
+        }
+    }
+    
+    private func completion(error: Error?){
+        guard error == nil else {
+            self.tableView.reloadData()
             return
         }
-        self.getAddresses(walletId) { (result) in
-            self.refreshControl.endRefreshing()
+        
+        if let addressess = self.feed.addressess {
+            for item in addressess {
+                if item.coin == COINTYPE.ETH.key {
+                    self.currentCoin = item
+                    if let addr = item.address {
+                        self.getBalance(addr)
+                    }
+                }
+            }
         }
+        self.tableView.reloadData()
     }
     
-    @objc override public func refresh(_ sender: Any? = nil) {
-        self.tableView.reloadData()
+    // call infura for demo only
+    func getBalance(_ address: String) {
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
+        RESTService.shared.infuraPOST(params) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            if let result = json["result"].string {
+                var amount = Double(result)
+                //ETH
+                amount = amount!/1E+18
+                self.currentCoin?.balance = amount ?? 0
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -66,7 +111,7 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 2 {
-            return self.coin.addresses?.first?.transactions?.count ?? 0
+            return self.currentCoin?.transactions?.count ?? 0
         }
         return 1
     }
@@ -82,7 +127,7 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = ThemeManager.shared.title
         
-        let name = self.coin.name ?? ""
+        let name = self.currentCoin?.coin ?? ""
         if section == 0 {
             label.text = name + " address"
         } else if section == 1 {
@@ -97,17 +142,21 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "ChangeWalletTableViewCell", for: indexPath) as! ChangeWalletTableViewCell
-            cell.bindData(self.coin)
+            if let coin = self.currentCoin {
+                cell.bindData(coin)
+            }
 //            cell.delegate = self
             return cell
         } else if indexPath.section == 1 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "InfoWalletTableViewCell", for: indexPath) as! InfoWalletTableViewCell
-            cell.bindData(self.coin)
+            if let coin = self.currentCoin {
+                cell.bindData(coin)
+            }
             //            cell.delegate = self
             return cell
         } else {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "TransactionWalletTableViewCell", for: indexPath) as! TransactionWalletTableViewCell
-            if let trans = self.coin.addresses?.first?.transactions?[indexPath.row], let name = self.coin.name, let address = self.coin.addresses?.first?.id {
+            if let trans = self.currentCoin?.transactions?[indexPath.row], let name = self.currentCoin?.coin, let address = self.currentCoin?.address {
                 cell.bindData(trans, coinName: name, address: address)
             }
             //            cell.delegate = self

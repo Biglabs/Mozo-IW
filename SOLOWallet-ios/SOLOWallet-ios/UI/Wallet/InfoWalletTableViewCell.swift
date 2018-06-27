@@ -33,18 +33,16 @@ public class InfoWalletTableViewCell: UITableViewCell {
         self.infoView.layer.borderColor = ThemeManager.shared.border.cgColor
     }
     
-    public func bindData(_ coin: CoinDTO){
-        if let name = coin.name {
+    public func bindData(_ coin: AddressDTO){
+        if let name = coin.coin {
             self.nameLabel.text = name
         }
         
-        if let address = coin.addresses?.first {
-            if let balance = address.balance {
-                self.balanceLabel.text = String(balance)
-            }
-            if let code = address.address {
-                self.qrcodeImageView.image = self.generateQRCode(from: code)
-            }
+        if let balance = coin.balance {
+            self.balanceLabel.text = String(balance)
+        }
+        if let code = coin.address {
+            self.qrcodeImageView.image = self.generateQRCode(from: code)
         }
     }
     

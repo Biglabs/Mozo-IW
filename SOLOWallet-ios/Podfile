@@ -10,5 +10,6 @@ target 'SOLOWallet-ios' do
   pod 'Alamofire', '~> 4.5.1'
   pod 'KeychainAccess', '~> 3.1.0'
   pod 'JDStatusBarNotification', '~> 1.5.6'
+  pod 'Texture', '~> 2.6'
   
 end

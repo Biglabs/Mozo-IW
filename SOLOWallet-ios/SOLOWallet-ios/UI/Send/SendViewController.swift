@@ -94,15 +94,25 @@ class SendViewController: AbstractViewController {
     }
     
     func bindData() {
-        self.inputCoinNameLabel.text = self.coin.name ?? ""
+        self.inputCoinNameLabel.text = self.currentCoin?.coin ?? "ETH"
         self.inputUSDLabel.text = "US$7,500.52"
-        self.spendableValueLabel.text = "\(self.coin.addresses?.first?.balance ?? 0.0) \(self.coin.name ?? "")"
+        self.spendableValueLabel.text = "\(self.currentCoin?.balance ?? 0.0) \(self.currentCoin?.coin ?? "")"
         self.gasTextField.text = "250.000"
         self.addressTextField.text = "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
     }
     
-    @objc override public func refresh(_ sender: Any? = nil) {
+    @objc override func refresh(_ sender: Any? = nil) {
         self.bindData()
+        if let addressess = self.feed.addressess {
+            for item in addressess {
+                if item.coin == COINTYPE.ETH.key {
+                    self.currentCoin = item
+                    if let addr = item.address {
+                        self.getBalance(addr)
+                    }
+                }
+            }
+        }
     }
     
     @objc func scanQRCode() {
@@ -113,22 +123,45 @@ class SendViewController: AbstractViewController {
     }
     
     @IBAction func touchedBtnSend(_ sender: Any) {
-        guard let toAddress = self.addressTextField.text else {
-            JDStatusBarNotification.show(withStatus: "Please input receive address.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleError")
+        guard let toAddress = self.addressTextField.text, toAddress != "" else {
+            JDStatusBarNotification.show(withStatus: "Please input receive address.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
         
-        guard let value = self.inputCoinTextField.text else {
-            JDStatusBarNotification.show(withStatus: "Please input value.", dismissAfter: notificationDismissAfter, styleName: "JDStatusBarStyleError")
+        guard let value = self.inputCoinTextField.text, value != "" else {
+            JDStatusBarNotification.show(withStatus: "Please input value.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
         
         let transaction = TransactionDTO()!
-        transaction.from = self.coin.addresses?.first?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
+        transaction.from = self.currentCoin?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
         transaction.to = toAddress
         transaction.value = Double(value)
         
         AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, type: COINTYPE.ETH.key, transaction: transaction)
+    }
+    
+    // call infura for demo only
+    func getBalance(_ address: String) {
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
+        RESTService.shared.infuraPOST(params) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            if let result = json["result"].string {
+                var amount = Double(result)
+                //ETH
+                amount = amount!/1E+18
+                self.currentCoin?.balance = amount ?? 0
+                self.bindData()
+            }
+        }
     }
 }
 
