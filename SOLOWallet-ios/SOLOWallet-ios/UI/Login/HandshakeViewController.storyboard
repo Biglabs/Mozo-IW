@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Handshake View Controller-->
+        <scene sceneID="s0J-jw-CHW">
+            <objects>
+                <viewController storyboardIdentifier="HandshakeVC" id="H9i-bn-3d8" customClass="HandshakeViewController" customModule="SOLOWallet_ios" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2v1-cn-hvA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Call signer to get wallet id" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0M-2O-CpM">
+                                <rect key="frame" x="10" y="283" width="355" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1R-bh-Clg">
+                                <rect key="frame" x="148.5" y="324" width="77" height="38"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" title="Request"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="e1R-bh-Clg" firstAttribute="centerX" secondItem="2v1-cn-hvA" secondAttribute="centerX" id="OrM-tE-ZB9"/>
+                            <constraint firstAttribute="trailing" secondItem="v0M-2O-CpM" secondAttribute="trailing" constant="10" id="cd4-LB-Dkt"/>
+                            <constraint firstItem="v0M-2O-CpM" firstAttribute="centerY" secondItem="2v1-cn-hvA" secondAttribute="centerY" constant="-40" id="eNL-AD-RlV"/>
+                            <constraint firstItem="v0M-2O-CpM" firstAttribute="bottom" secondItem="e1R-bh-Clg" secondAttribute="top" constant="-20" id="jTz-0O-i8f"/>
+                            <constraint firstItem="v0M-2O-CpM" firstAttribute="leading" secondItem="2v1-cn-hvA" secondAttribute="leading" constant="10" id="q3m-Uq-LbA"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="F6I-T1-rw2"/>
+                    </view>
+                    <connections>
+                        <outlet property="requestButton" destination="e1R-bh-Clg" id="ZEm-rg-7e2"/>
+                        <outlet property="walletIdLabel" destination="v0M-2O-CpM" id="QLA-eY-WiA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c7C-j2-bP9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="42" y="252"/>
+        </scene>
+    </scenes>
+</document>

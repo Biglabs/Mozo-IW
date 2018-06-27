@@ -15,7 +15,7 @@ class SoloWalletViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         self.createTitleView()
         self.createLogoBarButton()
         self.createMenuBarButton()

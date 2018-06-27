@@ -28,14 +28,10 @@ public class ChangeWalletTableViewCell: UITableViewCell {
         self.changeAddressIcon.setImage(UIImage.init(named: "ic_sort_down"), for: .normal)
     }
     
-    public func bindData(_ coin: CoinDTO){
-        if let address = coin.addresses?.first {
-            if let name = address.network {
-                self.nameLabel.text = name
-            }
-            if let address = address.address {
-                self.addressLabel.text = String(address)
-            }
+    public func bindData(_ coin: AddressDTO){
+        self.nameLabel.text = "Coin name"
+        if let address = coin.address {
+            self.addressLabel.text = String(address)
         }
     }
     

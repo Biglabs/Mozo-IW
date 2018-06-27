@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import MMDrawerController
 
 public class AppService {
     public static let shared = AppService()
@@ -31,6 +32,7 @@ public class AppService {
                     if let walletId = wallet?.walletId {
 //                        KeychainService.shared.setString(KeychainKeys.WALLLET_ID, value: walletId)
                         UserDefaults.standard.set(walletId, forKey: KeychainKeys.WALLLET_ID)
+                        Utils.getTopViewController().present(self.buildDrawerController(), animated: true, completion: nil)
                     }
                 }
                 break
@@ -48,6 +50,28 @@ public class AppService {
                 break
             }
         }
+    }
+    
+    func buildDrawerController() -> MMDrawerController {
+        let centerViewController = SoloWalletViewController()
+        let rightViewController = DrawerMenuViewController()
+        
+        let rightSideNav = UINavigationController(rootViewController: rightViewController)
+        rightSideNav.isNavigationBarHidden = true
+        
+        let centerNav = UINavigationController(rootViewController: centerViewController)
+        centerNav.restorationIdentifier = "SOLO_CenterViewController"
+        
+        let drawerController = MMDrawerController.init(center: centerNav, rightDrawerViewController: rightViewController)!
+        
+        drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureMode.panningNavigationBar
+        drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureMode.all
+        drawerController.restorationIdentifier = "MMDrawer"
+        let width = UIScreen.main.bounds.width * 0.85
+        drawerController.maximumRightDrawerWidth = width
+        drawerController.maximumLeftDrawerWidth = width
+        
+        return drawerController
     }
 
     private func sendTx(signedTx: String){

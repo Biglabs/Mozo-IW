@@ -17,38 +17,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var drawerController: MMDrawerController?
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
-        let centerViewController = SoloWalletViewController()
-        let rightViewController = DrawerMenuViewController()
-        
-        let rightSideNav = UINavigationController(rootViewController: rightViewController)
-        rightSideNav.isNavigationBarHidden = true
-        
-        let centerNav = UINavigationController(rootViewController: centerViewController)
-        centerNav.restorationIdentifier = "SOLO_CenterViewController"
-        
-        drawerController = MMDrawerController.init(center: centerNav, rightDrawerViewController: rightViewController)
-        
-        self.drawerController?.openDrawerGestureModeMask = MMOpenDrawerGestureMode.panningNavigationBar
-        self.drawerController?.closeDrawerGestureModeMask = MMCloseDrawerGestureMode.all
-        self.drawerController?.restorationIdentifier = "MMDrawer"
-        let width = UIScreen.main.bounds.width * 0.85
-        self.drawerController?.maximumRightDrawerWidth = width
-        self.drawerController?.maximumLeftDrawerWidth = width
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
+        
+        // Override point for customization after application launch.
+        if UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) == nil {
+            let storyboard = UIStoryboard(name: "HandshakeViewController", bundle: nil)
+            let handshakeVC = storyboard.instantiateViewController(withIdentifier: "HandshakeVC") as! HandshakeViewController
+            self.window!.rootViewController = handshakeVC
+        } else {
+            self.window!.rootViewController = AppService.shared.buildDrawerController()
+        }
+        
         ThemeManager.applyTheme()
-        self.window!.rootViewController = self.drawerController
         self.window!.makeKeyAndVisible()
+        
         return true
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        // Override point for customization after application launch.
-        if UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) == nil {
-            //solosigner://{"action":"GET_WALLET","receiver":"com.hdwallet.solowallet"}
-            AppService.shared.launchSignerApp(ACTIONTYPE.GET_WALLET.value, type: COINTYPE.ETH.key, transaction: nil)
-        }
         return true
     }
     
