@@ -47,7 +47,8 @@
                     android:contentDescription="@string/app_name"
                     android:focusable="true"
                     android:paddingEnd="20dp"
-                    android:paddingStart="20dp" />
+                    android:paddingStart="20dp"
+                    android:src="@drawable/ic_menu" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 

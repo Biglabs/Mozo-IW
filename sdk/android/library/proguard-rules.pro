@@ -20,16 +20,25 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keepattributes *Annotation*, InnerClasses
+-keep class kotlin.** { *; }
+-keep class org.jetbrains.** { *; }
+-dontnote kotlinx.serialization.SerializationKt
+-keep,includedescriptorclasses class com.biglabs.solo.signer.library.**$$serializer { *; }
+
 -keep class com.biglabs.solo.signer.library.models.* { *; }
 -keep class com.biglabs.solo.signer.library.Signer { public *; }
+-keep class com.biglabs.solo.signer.library.SignerWrapperActivity { public *; }
 -keep public interface com.biglabs.solo.signer.library.* { *; }
 -keep public abstract class com.biglabs.solo.signer.library.* { public *; }
 
-# Platform calls Class.forName on types which do not exist on Android to determine platform.
+# Retrofit2
 -dontnote retrofit2.Platform
-# Platform used when running on Java 8 VMs. Will not be used at runtime.
 -dontwarn retrofit2.Platform$Java8
-# Retain generic type information for use by reflection by converters and adapters.
 -keepattributes Signature
-# Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
+-dontwarn okio.**
+
+# Gson
+-keep class com.google.gson.** { *; }
+-keepattributes Signature
