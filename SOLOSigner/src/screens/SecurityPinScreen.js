@@ -38,7 +38,8 @@ export default class SecurityPinScreen extends Component {
                 if(result) {
                     this.props.isNewPIN = false;
                     // Open Home Screen
-                    Actions.main_stack();
+                    let pin = JSON.stringify(this.pinCode);
+                    Actions.main_stack({pin: pin});
                 } else {
                     this.clearPin();
                 }
@@ -73,12 +74,12 @@ export default class SecurityPinScreen extends Component {
         return null;
     }
 
-    saveAddressToLocal(manager, walletData, hashPin) {
+    saveAddressToLocal(manager, walletData, pin) {
         // Because this is the first time when app is launched, data must be save to local
         // Save address and private key
-        // Encrypt private key before saving to DB, password: hashPin
+        // Encrypt private key before saving to DB, password: pin
         let encryption = require('../common/encryption');
-        let encryptedPrivateKey = encryption.encrypt(walletData.privkey, hashPin);
+        let encryptedPrivateKey = encryption.encrypt(walletData.privkey, pin);
         manager.addAddress(walletData.address, walletData.derivedIndex, encryptedPrivateKey);
         // TODO: Load all addresses of this wallet from server and save to local
     }
@@ -122,12 +123,13 @@ export default class SecurityPinScreen extends Component {
         if (this.props.isNewPIN) {
             //If this is the first launch, AsyncStorage will store isDbExisting true
             // Save PIN
-            let hashPin = manager.updatePin(this.pinCode);
+            manager.updatePin(this.pinCode);
             // TODO: Set timer here for the next time user have to re-enter PIN
             let ethWallet = this.createNewWallet();
             let publicKey = ethWallet.neutered().toBase58();
             let walletData = this.getAddressAtIndex(ethWallet, 0);
-            this.saveAddressToLocal(manager, walletData, hashPin);
+            let pin = JSON.stringify(this.pinCode);
+            this.saveAddressToLocal(manager, walletData, pin);
 
             // Check wallet is registered on server or not
             this.registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex);

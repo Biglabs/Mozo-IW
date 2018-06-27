@@ -29,7 +29,8 @@ public class AppService {
                     let wallet = WalletDTO(json: result)
                     //Save walletId
                     if let walletId = wallet?.walletId {
-                        KeychainService.shared.setString(KeychainKeys.WALLLET_ID, value: walletId)
+//                        KeychainService.shared.setString(KeychainKeys.WALLLET_ID, value: walletId)
+                        UserDefaults.standard.set(walletId, forKey: KeychainKeys.WALLLET_ID)
                     }
                 }
                 break

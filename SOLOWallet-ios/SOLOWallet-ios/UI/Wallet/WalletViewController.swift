@@ -45,7 +45,7 @@ class WalletViewController: AbstractViewController {
     }
     
     @objc override public func refresh(_ sender: Any? = nil) {
-        guard let walletId = KeychainService.shared.getString(KeychainKeys.WALLLET_ID) else {
+        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
             self.refreshControl.endRefreshing()
             return
         }

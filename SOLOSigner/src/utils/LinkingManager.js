@@ -22,26 +22,31 @@ function handleOpenURL(url) {
     return null;
 }
 
-function manageScheme(data){
+function manageScheme(data, pin){
     console.log("Manage scheme: " + data);
     const jsonData = JSON.parse(decodeURI(data));
     console.log(jsonData);
     switch (jsonData.action) {
         case Constant.ACTION_SCHEME.SIGN: {
             console.log("Processing confirm transaction.");
-            Actions.jump('trans_confirm', {txData: jsonData});
+            Actions.jump('trans_confirm', {txData: jsonData, pin: pin});
             break;
         }
         case Constant.ACTION_SCHEME.GET_WALLET: {
             console.log("Processing get wallet info.");
-            let manager = DataManager.getInstance();
-            let walletInfo = manager.getWalletInfo();
-            if(walletInfo){
-                walletInfo = { walletId : walletInfo.walletId };
-                Globals.responseToReceiver(walletInfo, jsonData);
-            } else {
-                alert("This wallet is not registered. Try again.");
-            }
+            setTimeout(
+                () => {
+                    let manager = DataManager.getInstance();
+                    let walletInfo = manager.getWalletInfo();
+                    if(walletInfo){
+                        walletInfo = { walletId : walletInfo.walletId };
+                        Globals.responseToReceiver(walletInfo, jsonData);
+                    } else {
+                        alert("This wallet is not registered. Try again.");
+                    }
+                },
+                500
+            );
             break;
         }
         default: {

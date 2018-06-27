@@ -50,15 +50,14 @@ export default class ConfirmationScreen extends Component {
             alert('Not support this address');
             return;
         }
-        let app = manager.getAppInfo();
-        if (!app || !app.pin) {
-            alert('System error');
+        if (!this.props.pin) {
+            alert("System error.");
             return;
         }
-        let hashPin = app.pin;
-        // Encrypt private key before saving to DB, password: hashPin
+        // Encrypt private key before saving to DB, password: pin
         let encryption = require('../../common/encryption');
-        let privateKey = encryption.decrypt(encryptedPrivateKey, hashPin);
+        let privateKey = encryption.decrypt(encryptedPrivateKey, this.props.pin);
+        this.props.pin = null;
         //TODO: Convert privateKey in string format to buffer
         var ethUtil = require('ethereumjs-util');
         this.privateKeyInBuffer = ethUtil.toBuffer(privateKey);
