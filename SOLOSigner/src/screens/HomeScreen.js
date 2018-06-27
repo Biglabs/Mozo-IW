@@ -16,12 +16,12 @@ export default class HomeScreen extends Component {
     manageScheme(){
         AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
             if(!error && result) {
-                LinkingManager.manageScheme(result, this.props.pin);
                 AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA);
+                LinkingManager.manageScheme(result, this.props.pin);
             } else {
                 Linking.getInitialURL().then((url) => {
-                    this.checkScheme(url);
                     AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA);
+                    this.checkScheme(url);
                 });
             }
         });  

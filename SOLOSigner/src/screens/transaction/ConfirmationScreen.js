@@ -81,7 +81,7 @@ export default class ConfirmationScreen extends Component {
             const tx = new Transaction(txParams);
             tx.sign(this.privateKeyInBuffer);
             let signedTransaction = `0x${tx.serialize().toString('hex')}`;
-            Actions.main_stack();
+            Actions.pop();
             Globals.responseToReceiver({signedTransaction : signedTransaction}, txData);
         });
     }
