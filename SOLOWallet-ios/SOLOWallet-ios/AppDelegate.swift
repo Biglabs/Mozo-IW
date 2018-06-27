@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // Override point for customization after application launch.
-        if KeychainService.shared.getString(KeychainKeys.WALLLET_ID) == nil {
+        if UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) == nil {
             //solosigner://{"action":"GET_WALLET","receiver":"com.hdwallet.solowallet"}
             AppService.shared.launchSignerApp(ACTIONTYPE.GET_WALLET.value, type: COINTYPE.ETH.key, transaction: nil)
         }

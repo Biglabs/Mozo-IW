@@ -16,7 +16,7 @@ export default class HomeScreen extends Component {
     manageScheme(){
         AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
             if(!error && result) {
-                LinkingManager.manageScheme(result);
+                LinkingManager.manageScheme(result, this.props.pin);
                 AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA);
             } else {
                 Linking.getInitialURL().then((url) => {
@@ -30,7 +30,7 @@ export default class HomeScreen extends Component {
     checkScheme(url) {
         if (url) {
             let jsonData = LinkingManager.handleOpenURL(url);
-            LinkingManager.manageScheme(jsonData);
+            LinkingManager.manageScheme(jsonData, this.props.pin);
         }
     }    
 

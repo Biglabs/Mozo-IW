@@ -33,7 +33,7 @@ public class ChangeWalletTableViewCell: UITableViewCell {
             if let name = address.network {
                 self.nameLabel.text = name
             }
-            if let address = address.id {
+            if let address = address.address {
                 self.addressLabel.text = String(address)
             }
         }
