@@ -85,7 +85,9 @@ public class AbstractViewController: UIViewController {
                 if let backendError = error {
                     Utils.showError(backendError)
                 }
-                completion!(false)
+                if let completionHandler = completion {
+                    completionHandler(false)
+                }
                 return
             }
             
@@ -96,7 +98,9 @@ public class AbstractViewController: UIViewController {
                 amount = amount!/1E+18
                 self.coin.addresses?.first?.balance = amount ?? 0
                 self.refresh()
-                completion!(true)
+                if let completionHandler = completion {
+                    completionHandler(true)
+                }
             }
             
         }
