@@ -9,6 +9,7 @@ import DataManager from '../utils/DataManager';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import TimerMixin from 'react-timer-mixin';
+import GlobalStorage from '../utils/GlobalStorage';
 
 const accentColor = '#00fffc';
 const numbersPressedColor = '#003c8d';
@@ -32,13 +33,24 @@ export default class SecurityPinScreen extends Component {
         }
     }
 
+    componentDidMount(){
+        AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
+            console.log(result);
+        });
+    }
+
     componentDidUpdate(_, prevState) {
         if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
             this.manageWallet().then(result => {
                 if(result) {
                     this.props.isNewPIN = false;
                     // Open Home Screen
-                    let pin = JSON.stringify(this.pinCode);
+                    let pin = null;
+                    let schemeData = GlobalStorage.getInstance().getSchemeData();
+                    if(schemeData){
+                        pin = JSON.stringify(this.pinCode);
+                    }
+                    console.warn('Pin: ', pin);
                     Actions.main_stack({pin: pin});
                 } else {
                     this.clearPin();

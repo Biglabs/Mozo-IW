@@ -2,16 +2,42 @@ import {Linking, AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Constant from '../common/Constants';
 import DataManager from './DataManager';
+import GlobalStorage from './GlobalStorage';
 import Globals from '../common/Globals';
 
+let handleEventOpenUrl = (event) => {
+    // this.checkScheme(event.url);
+    let url = event.url;
+    console.warn('Handle event open URL');
+    if (url) {
+        let jsonData = handleOpenURL(url);
+        // Save data to AsyncStorage
+        // AsyncStorage.setItem(Constant.FLAG_SCHEME_DATA, jsonData);
+        // LinkingManager.manageScheme(jsonData, this.props.pin);
+        GlobalStorage.getInstance().setSchemeData(jsonData);
+        Globals.checkWalletExisting(); // Open right screen
+    }
+}
+
+function checkScheme(url) {
+    if (url) {
+        let jsonData = handleOpenURL(url);
+        // Save data to AsyncStorage
+        // AsyncStorage.setItem(Constant.FLAG_SCHEME_DATA, jsonData);
+        // LinkingManager.manageScheme(jsonData, this.props.pin);
+        GlobalStorage.getInstance().setSchemeData(jsonData);
+    }
+}
+
 function handleOpenURL(url) {
+    console.warn('Handle open URL');
     if (url && String(url).startsWith('solosigner')) {
         let urls = url.split("://");
         //TOO: Check receiver
         if (urls.length > 1 && urls[1]) {
             try {
                 // Save data to AsyncStorage
-                AsyncStorage.setItem(Constant.FLAG_SCHEME_DATA, urls[1]);
+                // AsyncStorage.setItem(Constant.FLAG_SCHEME_DATA, urls[1]);
                 return urls[1];
             }
             catch (error) {
@@ -57,19 +83,9 @@ function manageScheme(data, pin){
 
 }
 
-let linkingListener = event => {
-    //Linking.removeEventListener('url', linkingListener);
-    handleOpenURL(event.url);
-    Globals.checkWalletExisting();
-};
-
-//For CASE: Launch app in the first time.
-/* waiting for SplashScreen done. */
-
-//For CASE: APP IN BACKGROUND
-Linking.addEventListener('url', linkingListener);
-
 module.exports = {
+    handleEventOpenUrl: handleEventOpenUrl,
     handleOpenURL: handleOpenURL,
     manageScheme: manageScheme,
+    checkScheme: checkScheme
 };

@@ -1,38 +1,58 @@
 import React, {Component} from "react";
-import {Linking, TouchableOpacity, View, AsyncStorage} from 'react-native';
+import {Linking, TouchableOpacity, View, AsyncStorage, Platform} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {Button, Text} from "../components/SoloComponent";
 import LinkingManager from "../utils/LinkingManager";
 import Constant from '../common/Constants';
+import GlobalStorage from '../utils/GlobalStorage';
 
-export default class HomeScreen extends Component {
+export default class HomeScreen extends Component<Props> {
+
+    constructor(props) {
+        super(props);
+    }
 
     componentDidMount() {
         this.manageScheme();
     }
 
-    manageScheme(){
-        AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
-            if(!error && result) {
-                AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA);
-                LinkingManager.manageScheme(result, this.props.pin);
-            } else {
-                Linking.getInitialURL().then((url) => {
-                    AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA);
-                    this.checkScheme(url);
-                });
-            }
-        });  
+    componentWillReceiveProps(){
+        console.warn('componentWillReceiveProps');
     }
 
-    checkScheme(url) {
-        if (url) {
-            let jsonData = LinkingManager.handleOpenURL(url);
-            LinkingManager.manageScheme(jsonData, this.props.pin);
-        }
-    }    
+    componentDidUpdate(_, prevState){
+        console.warn('componentDidUpdate');
+    }
+
+    manageScheme(){
+        console.warn('Manage scheme.');
+        let storage = GlobalStorage.getInstance();
+        let schemeData = storage.getSchemeData();
+        //console.warn('SchemeData: ' + schemeData);
+        if(schemeData){
+            LinkingManager.manageScheme(schemeData, this.props.pin);
+            GlobalStorage.getInstance().setSchemeData(null);
+        }        
+        this.props.pin = null;
+
+        // AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
+        //     if(!error && result) {
+        //         AsyncStorage.removeItem(Constant.FLAG_SCHEME_DATA, (error) => {
+                    
+        //         });
+        //     } else {
+        //         console.warn('Error manage scheme. No data.');
+        //         if (Platform.OS === 'android') {
+        //             Linking.getInitialURL().then((url) => {
+        //                 let jsonData = LinkingManager.handleOpenURL(url);
+        //                 LinkingManager.manageScheme(jsonData, this.props.pin);
+        //             });
+        //         }
+        //     }
+        // });  
+    }
 
     render() {
         return (

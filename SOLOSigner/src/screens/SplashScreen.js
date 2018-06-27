@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {Dimensions, View, YellowBox} from 'react-native';
+import {Dimensions, View, YellowBox, Platform, Linking, AsyncStorage} from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {FadeInView} from "../components/SoloComponent";
-import {checkWalletExisting} from '../common/Globals';
+import Globals from '../common/Globals';
+import Constant from '../common/Constants';
+import LinkingManager from '../utils/LinkingManager';
 
 export default class SplashScreen extends Component {
 
@@ -19,8 +21,7 @@ export default class SplashScreen extends Component {
 
     handleFlow() {
         TimerMixin.clearTimeout(this.timer);
-        //If DB is existing, open PIN screen for user to enter their PIN
-        checkWalletExisting();
+        Globals.checkWalletExisting(); // Open right screen
     }
 
     render() {

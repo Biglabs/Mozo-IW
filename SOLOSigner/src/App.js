@@ -2,8 +2,6 @@ import React from 'react';
 import {Router, Modal, Scene, Stack, Lightbox} from 'react-native-router-flux';
 /* initial common styles */
 import './res/common.styles.js';
-/* handle open URL scheme when app resume from background */
-import './utils/LinkingManager';
 
 import SplashScreen from './screens/SplashScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -25,6 +23,13 @@ import ScanQRCode from './components/lightbox/ScanQRCode';
 import Bip39 from './screens/Bip39';
 import Bip44 from './screens/Bip44';
 import Bip38 from './screens/Bip38';
+import LinkingManager from "./utils/LinkingManager";
+import {Linking} from 'react-native';
+
+Linking.getInitialURL().then((url) => {
+    LinkingManager.checkScheme(url);
+});
+Linking.addEventListener('url', LinkingManager.handleEventOpenUrl);
 
 export default () => {
     return (
