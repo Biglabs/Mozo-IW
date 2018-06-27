@@ -63,6 +63,9 @@ public class AppService {
             let json = SwiftyJSON.JSON(value)
             if let result = json["result"].string {
                 print("TxId: \(result)")
+                //Open browser to view transaction info
+                let url = URL(string: "http://ropsten.etherscan.io/tx/\(result)")
+                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
             }
             
         }
