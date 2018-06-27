@@ -98,7 +98,7 @@ class SendViewController: AbstractViewController {
         self.inputUSDLabel.text = "US$7,500.52"
         self.spendableValueLabel.text = "\(self.coin.addresses?.first?.balance ?? 0.0) \(self.coin.name ?? "")"
         self.gasTextField.text = "250.000"
-        self.addressTextField.text = "0x213DE50319F5954D821F704d46e4fd50Fb09B459"
+        self.addressTextField.text = "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
     }
     
     @objc func scanQRCode() {

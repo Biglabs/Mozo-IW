@@ -109,19 +109,6 @@ export default class Bip44 extends Component<Props> {
                         adrBip44Test: address,
                         privkey: privkey
                     });
-                    let responseUrl = 'com.biglabs.solowallet.ios.solowallet://{"action":"SIGN","result":"0x12a35898asddf98234ddd82d3475ad8d92d893"}';
-                    Linking.openURL(responseUrl);
-                    // Linking.canOpenURL(responseUrl).then(supported => {
-                    //     console.log(responseUrl);
-                    //     if (!supported) {
-                    //         console.log("Fail")
-                    //         alert('Can\'t handle url: ' + responseUrl);
-                    //     } else {
-                    //         Linking.openURL(responseUrl);
-                    //     }
-                    // }).catch(err => 
-                    //     alert('An error occurred ' + err)
-                    // );
                 }} />
                 <Button title='View balance' onPress={() => {
                     this.loadBalances();
