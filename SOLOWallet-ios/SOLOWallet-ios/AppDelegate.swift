@@ -15,20 +15,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var drawerController: MMDrawerController?
-
+    
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
+        let centerViewController = PortfolioViewController()
+        let rightViewController = DrawerMenuViewController()
         
-        // Override point for customization after application launch.
-        if UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) == nil {
-            let storyboard = UIStoryboard(name: "HandshakeViewController", bundle: nil)
-            let handshakeVC = storyboard.instantiateViewController(withIdentifier: "HandshakeVC") as! HandshakeViewController
-            self.window!.rootViewController = handshakeVC
-        } else {
-            self.window!.rootViewController = AppService.shared.buildDrawerController()
-        }
+        let rightSideNav = UINavigationController(rootViewController: rightViewController)
+        rightSideNav.isNavigationBarHidden = true
         
+        let centerNav = UINavigationController(rootViewController: centerViewController)
+        centerNav.restorationIdentifier = "SOLO_CenterViewController"
+        
+        drawerController = MMDrawerController.init(center: centerNav, rightDrawerViewController: rightViewController)!
+        
+        drawerController?.openDrawerGestureModeMask = MMOpenDrawerGestureMode.panningNavigationBar
+        drawerController?.closeDrawerGestureModeMask = MMCloseDrawerGestureMode.all
+        drawerController?.restorationIdentifier = "MMDrawer"
+        let width = UIScreen.main.bounds.width * 0.85
+        drawerController?.maximumRightDrawerWidth = width
+        drawerController?.maximumLeftDrawerWidth = width
+        window?.rootViewController = drawerController
         ThemeManager.applyTheme()
         self.window!.makeKeyAndVisible()
         

@@ -42,7 +42,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vs8-G6-SF7">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vs8-G6-SF7">
                                         <rect key="frame" x="10" y="60" width="232" height="20"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                         <nil key="textColor"/>
@@ -117,11 +117,11 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="balanceLabel" destination="Vs8-G6-SF7" id="vfD-MZ-4zw"/>
-                <outlet property="curvedLabel" destination="jOJ-kH-94P" id="W85-RX-K5T"/>
                 <outlet property="infoView" destination="8uc-uP-ovo" id="BMO-NE-gXq"/>
                 <outlet property="nameLabel" destination="Fik-9T-p1R" id="Kgk-mb-hS8"/>
                 <outlet property="qrcodeImageView" destination="0o3-ED-zKL" id="Bp7-QM-uRT"/>
                 <outlet property="qrcodeLabel" destination="bgV-qN-mrc" id="2YB-zk-acl"/>
+                <outlet property="refreshButton" destination="jOJ-kH-94P" id="TP4-V8-FPS"/>
                 <outlet property="usdLabel" destination="817-GX-NiI" id="sJh-IT-6mX"/>
             </connections>
             <point key="canvasLocation" x="7.5" y="-115"/>

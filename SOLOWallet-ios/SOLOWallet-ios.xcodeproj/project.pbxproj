@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */; };
+		C6134A2920E3F31800A5FE50 /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A2820E3F31800A5FE50 /* PortfolioViewController.swift */; };
+		C6134A2B20E3F4CA00A5FE50 /* CoinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A2A20E3F4CA00A5FE50 /* CoinTableViewCell.swift */; };
+		C6134A2D20E3F4D300A5FE50 /* CoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6134A2C20E3F4D300A5FE50 /* CoinTableViewCell.xib */; };
+		C6134A4020E4843C00A5FE50 /* HandshakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A3F20E4843C00A5FE50 /* HandshakeView.swift */; };
+		C6134A4220E4844400A5FE50 /* HandshakeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6134A4120E4844400A5FE50 /* HandshakeView.xib */; };
+		C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4320E49BA500A5FE50 /* AddressFeed.swift */; };
+		C6134A4620E4C37E00A5FE50 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */; };
+		C6134A4820E4C38800A5FE50 /* LoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */; };
+		C6134A4A20E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4920E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift */; };
 		C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DEEE20D8BFA400258ACE /* AppDelegate.swift */; };
 		C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */; };
 		C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C616DEF820D8BFA700258ACE /* Assets.xcassets */; };
@@ -38,10 +47,7 @@
 		C69AF7CF20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */; };
 		C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7D020DA602400C61FA4 /* WalletViewController.swift */; };
 		C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */; };
-		C6AF8A5320E3807E00B61FAC /* AddressFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A5220E3807E00B61FAC /* AddressFeed.swift */; };
 		C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */; };
-		C6AF8A5820E3949100B61FAC /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A5720E3949100B61FAC /* HandshakeViewController.swift */; };
-		C6AF8A5A20E394D300B61FAC /* HandshakeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6AF8A5920E394D300B61FAC /* HandshakeViewController.storyboard */; };
 		C6CD7F4620DC90FB009112FC /* RESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F4520DC90FB009112FC /* RESTService.swift */; };
 		C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F4D20DCA642009112FC /* KeychainService.swift */; };
 		C6CD7F5220DCAFC4009112FC /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5120DCAFC4009112FC /* AppService.swift */; };
@@ -49,7 +55,6 @@
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5B20DCB548009112FC /* Callbacks.swift */; };
 		C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */; };
-		C6D4F69F20E0C20400A6EFE3 /* EdgeInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */; };
 		C6D4F6A320E1011400A6EFE3 /* InfuraRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4F6A220E1011400A6EFE3 /* InfuraRESTService.swift */; };
 		C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DC687520DE26E800000665 /* ScannerViewController.swift */; };
 		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
@@ -60,6 +65,15 @@
 		20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationDTO.swift; sourceTree = "<group>"; };
 		79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SOLOWallet_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		832B69B3E43B23B9D77FAD04 /* Pods-SOLOWallet-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		C6134A2820E3F31800A5FE50 /* PortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
+		C6134A2A20E3F4CA00A5FE50 /* CoinTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinTableViewCell.swift; sourceTree = "<group>"; };
+		C6134A2C20E3F4D300A5FE50 /* CoinTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinTableViewCell.xib; sourceTree = "<group>"; };
+		C6134A3F20E4843C00A5FE50 /* HandshakeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeView.swift; sourceTree = "<group>"; };
+		C6134A4120E4844400A5FE50 /* HandshakeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HandshakeView.xib; sourceTree = "<group>"; };
+		C6134A4320E49BA500A5FE50 /* AddressFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressFeed.swift; sourceTree = "<group>"; };
+		C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginViewController.storyboard; sourceTree = "<group>"; };
+		C6134A4920E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerMenuLogOutCellNode.swift; sourceTree = "<group>"; };
 		C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOWallet-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C616DEEE20D8BFA400258ACE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C616DEF620D8BFA400258ACE /* SOLOWallet_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SOLOWallet_ios.xcdatamodel; sourceTree = "<group>"; };
@@ -93,10 +107,7 @@
 		C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeWalletTableViewCell.xib; sourceTree = "<group>"; };
 		C69AF7D020DA602400C61FA4 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
 		C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFeed.swift; sourceTree = "<group>"; };
-		C6AF8A5220E3807E00B61FAC /* AddressFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFeed.swift; sourceTree = "<group>"; };
 		C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedProtocol.swift; sourceTree = "<group>"; };
-		C6AF8A5720E3949100B61FAC /* HandshakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
-		C6AF8A5920E394D300B61FAC /* HandshakeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HandshakeViewController.storyboard; sourceTree = "<group>"; };
 		C6CD7F4520DC90FB009112FC /* RESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTService.swift; sourceTree = "<group>"; };
 		C6CD7F4D20DCA642009112FC /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		C6CD7F5120DCAFC4009112FC /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
@@ -105,7 +116,6 @@
 		C6CD7F5B20DCB548009112FC /* Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callbacks.swift; sourceTree = "<group>"; };
 		C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRESTService.swift; sourceTree = "<group>"; };
 		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
-		C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetLabel.swift; sourceTree = "<group>"; };
 		C6D4F6A220E1011400A6EFE3 /* InfuraRESTService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfuraRESTService.swift; sourceTree = "<group>"; };
 		C6DC687520DE26E800000665 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +147,19 @@
 				0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		C6134A2720E3F1EE00A5FE50 /* Portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				C6134A4320E49BA500A5FE50 /* AddressFeed.swift */,
+				C6134A2820E3F31800A5FE50 /* PortfolioViewController.swift */,
+				C6134A2A20E3F4CA00A5FE50 /* CoinTableViewCell.swift */,
+				C6134A2C20E3F4D300A5FE50 /* CoinTableViewCell.xib */,
+				C6134A3F20E4843C00A5FE50 /* HandshakeView.swift */,
+				C6134A4120E4844400A5FE50 /* HandshakeView.xib */,
+			);
+			path = Portfolio;
 			sourceTree = "<group>";
 		};
 		C616DEE220D8BFA400258ACE = {
@@ -198,13 +221,14 @@
 			isa = PBXGroup;
 			children = (
 				C6AF8A5620E3943300B61FAC /* Login */,
-				C6D4F69D20E0C1F000A6EFE3 /* Extended */,
-				C616DF4F20D9167200258ACE /* Common */,
-				C616DF0720D8D86C00258ACE /* Exchange */,
-				C616DF0820D8D86C00258ACE /* Menu */,
-				C616DF0520D8D86C00258ACE /* Receive */,
-				C616DF0620D8D86C00258ACE /* Send */,
+				C6134A2720E3F1EE00A5FE50 /* Portfolio */,
 				C616DF0920D8D86C00258ACE /* Wallet */,
+				C616DF0520D8D86C00258ACE /* Receive */,
+				C616DF0720D8D86C00258ACE /* Exchange */,
+				C616DF0620D8D86C00258ACE /* Send */,
+				C616DF0820D8D86C00258ACE /* Menu */,
+				C616DF4F20D9167200258ACE /* Common */,
+				C6D4F69D20E0C1F000A6EFE3 /* Extended */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -238,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */,
+				C6134A4920E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -269,7 +294,6 @@
 			children = (
 				C616DF5020D916A800258ACE /* AbstractViewController.swift */,
 				C6DC687520DE26E800000665 /* ScannerViewController.swift */,
-				C6AF8A5220E3807E00B61FAC /* AddressFeed.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -297,8 +321,8 @@
 		C6AF8A5620E3943300B61FAC /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				C6AF8A5720E3949100B61FAC /* HandshakeViewController.swift */,
-				C6AF8A5920E394D300B61FAC /* HandshakeViewController.storyboard */,
+				C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */,
+				C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -325,7 +349,6 @@
 		C6D4F69D20E0C1F000A6EFE3 /* Extended */ = {
 			isa = PBXGroup;
 			children = (
-				C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */,
 				C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */,
 				C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */,
 			);
@@ -399,11 +422,13 @@
 			files = (
 				C69AF7CF20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib in Resources */,
 				C63A844B20DB88620073EB08 /* TransactionWalletTableViewCell.xib in Resources */,
+				C6134A2D20E3F4D300A5FE50 /* CoinTableViewCell.xib in Resources */,
 				C616DEFC20D8BFA700258ACE /* LaunchScreen.storyboard in Resources */,
-				C6AF8A5A20E394D300B61FAC /* HandshakeViewController.storyboard in Resources */,
 				C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */,
 				C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */,
 				C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */,
+				C6134A4820E4C38800A5FE50 /* LoginViewController.storyboard in Resources */,
+				C6134A4220E4844400A5FE50 /* HandshakeView.xib in Resources */,
 				C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */,
 				C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */,
 			);
@@ -478,24 +503,26 @@
 				C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */,
 				C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */,
 				C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */,
-				C6AF8A5320E3807E00B61FAC /* AddressFeed.swift in Sources */,
 				C63A844720DB7D600073EB08 /* TransactionDTO.swift in Sources */,
 				C6D4F6A320E1011400A6EFE3 /* InfuraRESTService.swift in Sources */,
 				C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */,
+				C6134A2920E3F31800A5FE50 /* PortfolioViewController.swift in Sources */,
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
 				C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */,
 				C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */,
-				C6D4F69F20E0C20400A6EFE3 /* EdgeInsetLabel.swift in Sources */,
 				20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */,
 				C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
+				C6134A2B20E3F4CA00A5FE50 /* CoinTableViewCell.swift in Sources */,
 				C6CD7F5220DCAFC4009112FC /* AppService.swift in Sources */,
 				C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */,
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */,
 				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
 				C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */,
+				C6134A4620E4C37E00A5FE50 /* LoginViewController.swift in Sources */,
+				C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
 				C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */,
 				C6CD7F4620DC90FB009112FC /* RESTService.swift in Sources */,
@@ -505,9 +532,10 @@
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C63A844120DB56650073EB08 /* Utils.swift in Sources */,
+				C6134A4A20E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
 				C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */,
-				C6AF8A5820E3949100B61FAC /* HandshakeViewController.swift in Sources */,
+				C6134A4020E4843C00A5FE50 /* HandshakeView.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,16 +1,15 @@
 package com.biglabs.solo.signer.library
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
-import com.biglabs.solo.signer.library.models.Result
-import com.biglabs.solo.signer.library.models.SignerResponse
-import com.biglabs.solo.signer.library.models.Transaction
+import com.biglabs.solo.signer.library.models.*
 import com.google.gson.Gson
-import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,8 +20,11 @@ import java.util.*
 
 @Suppress("unused")
 class Signer private constructor(private val walletScheme: String) {
-    private val mSoloService: SoloService = SoloService.create()
+    private val mRopstenService: SoloService = SoloService.create()
+    private val mSoloService: SoloService = SoloService.createSolo()
     private var mSignerListener: SignerListener? = null
+    private var mPreferences: SharedPreferences? = null
+    private var walletID: String? = null
 
     private fun prepareSignerDeepLink(action: String, coinType: String?, params: JSONObject?): String {
         val data = JSONObject()
@@ -52,19 +54,47 @@ class Signer private constructor(private val walletScheme: String) {
         }
     }
 
-    fun getWallet(context: Context) {
-        openDeepLink(context, ACTION_GET_WALLET)
+    private fun handShakeWithSignerApp(context: Context) {
+        this.walletID = mPreferences!!.getString(KEY_WALLET_ID, null)
+        if (this.walletID == null) {
+            AlertDialog.Builder(context)
+                    .setCancelable(false)
+                    .setTitle("Notice!")
+                    .setMessage("At the first launch, we need to initialize data from Signer application")
+                    .setPositiveButton("Open Signer App") { _, _ ->
+                        openDeepLink(context, ACTION_GET_WALLET)
+                    }
+                    .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                        dialog.dismiss()
+                        instance = null
+                        (context as? Activity)?.finish()
+                    }
+                    .create()
+                    .show()
+        } else {
+            this.mSignerListener?.onReceiveHandshake(this.walletID!!)
+        }
     }
 
-    fun getWallets() {
-        this.mSoloService.listWallet()
+    fun getWallets(context: Context) {
+        if (walletID != null) {
+            this.mSoloService.getWalletAddress(walletID!!).enqueue(object : Callback<List<Wallet>> {
+                override fun onResponse(call: Call<List<Wallet>>, response: Response<List<Wallet>>) {
+                    this@Signer.mSignerListener?.onReceiveWallets(response.body())
+                }
+
+                override fun onFailure(call: Call<List<Wallet>>?, t: Throwable?) {
+                    this@Signer.mSignerListener?.onReceiveWallets(null)
+                }
+            })
+        } else {
+            handShakeWithSignerApp(context)
+        }
     }
 
     fun getBalance(address: String) {
-        val params = JSONArray()
-                .put(address)
-                .put("latest")
-        this.mSoloService.getBalance(params.toString()).enqueue(object : Callback<Result> {
+        val params = GetBalanceRequest(address)
+        this.mRopstenService.getBalance(params).enqueue(object : Callback<Result> {
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
                 if (this@Signer.mSignerListener != null && response.body() != null) {
                     val balance = response.body()!!.result
@@ -94,32 +124,29 @@ class Signer private constructor(private val walletScheme: String) {
     }
 
     fun sendTransaction(transactionData: String) {
-        val transaction = Transaction(transactionData)
-        Log.e("vu", "sendTransaction: " + transaction.toString())
-        this.mSoloService.sendTransaction(transaction.toString()).enqueue(object : Callback<Result> {
+        val transaction = SendTransactionRequest(transactionData)
+        this.mRopstenService.sendTransaction(transaction).enqueue(object : Callback<Result> {
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
-                Log.e("vu", "sendTransaction onResponse: " + response.toString())
-
-                val result = if(response.body() != null) response.body()?.result!! else ""
+                val result = if (response.body() != null) response.body()?.result!! else ""
                 this@Signer.mSignerListener?.onReceiveSentTransaction(response.isSuccessful, result)
             }
 
             override fun onFailure(call: Call<Result>, t: Throwable) {
-                Log.e("vu", "sendTransaction: " + t.toString())
                 this@Signer.mSignerListener?.onReceiveSentTransaction(false, null!!)
             }
         })
     }
 
     fun handleScheme(intent: Intent) {
-        Log.e("vu", "handleScheme: " + intent.toString())
         if (TextUtils.equals(intent.scheme, walletScheme)) {
             try {
                 val data = intent.dataString.split("://")[1]
                 val response = Gson().fromJson(data, SignerResponse::class.java)
                 when (response.action) {
                     ACTION_GET_WALLET -> {
-
+                        this.walletID = response.result?.walletId!!
+                        mPreferences?.edit()?.putString(KEY_WALLET_ID, this.walletID)?.apply()
+                        this.mSignerListener?.onReceiveHandshake(this.walletID!!)
                     }
                     ACTION_SIGN -> {
                         this.mSignerListener?.onReceiveSignedTransaction(response.result?.transactionData!!)
@@ -132,27 +159,32 @@ class Signer private constructor(private val walletScheme: String) {
 
     companion object {
         private const val ACTION_NONE = "NONE"
-        private const val ACTION_GET_WALLET = "GET_USER"
+        private const val ACTION_GET_WALLET = "GET_WALLET"
         private const val ACTION_SIGN = "SIGN"
+
+        private const val KEY_WALLET_ID = "KEY_WALLET_ID"
 
         @Volatile
         private var instance: Signer? = null
 
-        public fun initialize(context: Context, applicationId: String) {
+        fun initialize(context: Context, applicationId: String) {
             if (instance == null) {
                 synchronized(this) {
                     if (instance == null) {
-                        instance = Signer("$applicationId.solowallet")
+                        val walletScheme = "$applicationId.solowallet"
+                        instance = Signer(walletScheme)
                         if (context is SignerListener) {
                             instance!!.mSignerListener = context
                         }
+                        instance!!.mPreferences = context.getSharedPreferences(walletScheme, Context.MODE_PRIVATE)
+                        instance!!.handShakeWithSignerApp(context)
                     }
                 }
             }
         }
 
         @Synchronized
-        public fun getInstance(): Signer {
+        fun getInstance(): Signer {
             if (instance == null) {
                 throw RuntimeException("Must call Signer.initialize(Context, String) first!")
             }

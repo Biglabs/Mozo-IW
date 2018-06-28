@@ -10,37 +10,41 @@ import UIKit
 import MMDrawerController
 import SwiftyJSON
 
-//dummy data
-let transactions = [TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0),
-                    TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0),
-                    TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0),
-                    TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0),
-                    TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0),
-                    TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0),
-                    TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62d9dadfdf728fa0a4a02a887d8aac8", time: 1415637900, from: "17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", to: "1Hd8td3NnWbsqZVdEBvtd8ko4WcJf7jwCE", value: 0.0088, fee: 0)
-]
-
 public class AbstractViewController: UIViewController {
-    internal var feed: AddressFeed!
-    internal var currentCoin: AddressDTO?
+    public var currentCoin = AddressDTO() {
+        didSet {
+            self.updateAddress()
+        }
+    }
+    var delegate: SoloWalletDelegate?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = ThemeManager.shared.background
         
-//        let titleLabel = UILabel.init()
-//        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-//        titleLabel.textColor = ThemeManager.shared.title
-//        titleLabel.addTextWithImage(text: " \(coin.name!)", image: UIImage.init(named: coin.icon!)!, imageBehindText: false, keepPreviousText: false)
-//        self.navigationController?.navigationBar.topItem?.titleView = titleLabel
-        
-        self.currentCoin = AddressDTO.init()
-        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
-            return
-        }
-        self.feed = AddressFeed.init(walletId)
-        self.refresh()
+        self.createTitleView()
+        self.createBackBarButton()
     }
     
-    open func refresh(_ sender: Any? = nil) {}
+    func createTitleView() {
+        if let name = self.currentCoin?.coin {
+            let titleLabel = UILabel.init()
+            titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+            titleLabel.textColor = ThemeManager.shared.title
+            titleLabel.addTextWithImage(text: " \(name)", image: UIImage.init(named: "ic_\(name)")!, imageBehindText: false, keepPreviousText: false)
+            self.navigationController?.navigationBar.topItem?.titleView = titleLabel
+        }
+    }
+    
+    func createBackBarButton() {
+        let backBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_left_arrow"), style: .plain, target: self, action: #selector(self.back))
+        backBarButton.tintColor = ThemeManager.shared.main
+        self.navigationItem.leftBarButtonItem = backBarButton
+    }
+    
+    @objc func back() {
+        self.delegate?.request(SOLOACTION.Dismiss.value)
+    }
+    
+    open func updateAddress(_ sender: Any? = nil) {}
 }

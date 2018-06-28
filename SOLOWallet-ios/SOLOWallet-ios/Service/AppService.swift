@@ -28,11 +28,13 @@ public class AppService {
             case ACTIONTYPE.GET_WALLET.value:
                 if let result = com?.result {
                     let wallet = WalletDTO(json: result)
-                    //Save walletId
                     if let walletId = wallet?.walletId {
-//                        KeychainService.shared.setString(KeychainKeys.WALLLET_ID, value: walletId)
+                        //Save walletId
                         UserDefaults.standard.set(walletId, forKey: KeychainKeys.WALLLET_ID)
-                        Utils.getTopViewController().present(self.buildDrawerController(), animated: true, completion: nil)
+                        //refresh
+                        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+                            let drawerController = appDelegate.drawerController else {return}
+                        drawerController.portfolioVC.createTableView()
                     }
                 }
                 break
@@ -42,57 +44,15 @@ public class AppService {
                 if let result = com?.result {
                     let value = TransactionDTO(json: result)
                     if let signedTransaction = value?.signedTransaction {
-                        self.sendTx(signedTx: signedTransaction)
+                        let signedDataDict:[String: String] = ["signedTx": signedTransaction]
+                        // post a notification
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "signedNotification"), object: nil, userInfo: signedDataDict)
                     }
                 }
                 break
             default:
                 break
             }
-        }
-    }
-    
-    func buildDrawerController() -> MMDrawerController {
-        let centerViewController = SoloWalletViewController()
-        let rightViewController = DrawerMenuViewController()
-        
-        let rightSideNav = UINavigationController(rootViewController: rightViewController)
-        rightSideNav.isNavigationBarHidden = true
-        
-        let centerNav = UINavigationController(rootViewController: centerViewController)
-        centerNav.restorationIdentifier = "SOLO_CenterViewController"
-        
-        let drawerController = MMDrawerController.init(center: centerNav, rightDrawerViewController: rightViewController)!
-        
-        drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureMode.panningNavigationBar
-        drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureMode.all
-        drawerController.restorationIdentifier = "MMDrawer"
-        let width = UIScreen.main.bounds.width * 0.85
-        drawerController.maximumRightDrawerWidth = width
-        drawerController.maximumLeftDrawerWidth = width
-        
-        return drawerController
-    }
-
-    private func sendTx(signedTx: String){
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
-        RESTService.shared.infuraPOST(params) { value, error in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
-                }
-                return
-            }
-            
-            let json = SwiftyJSON.JSON(value)
-            if let result = json["result"].string {
-                print("TxId: \(result)")
-                //Open browser to view transaction info
-                let url = URL(string: "http://ropsten.etherscan.io/tx/\(result)")
-                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
-            }
-            
         }
     }
     
@@ -146,4 +106,5 @@ public class AppService {
             Utils.getTopViewController().present(alertController, animated: true, completion: nil)
         }
     }
+    
 }
