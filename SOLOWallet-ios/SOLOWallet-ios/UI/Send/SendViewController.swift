@@ -36,7 +36,7 @@ class SendViewController: AbstractViewController {
     
     @IBOutlet weak var dataTextField: UITextField!
     
-    @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var signButton: UIButton!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +71,7 @@ class SendViewController: AbstractViewController {
         self.inputCoinNameLabel?.backgroundColor = ThemeManager.shared.title
         self.inputCoinNameLabel?.textColor = UIColor.white
         self.inputCoinTextField.textColor = ThemeManager.shared.font
+        self.inputCoinTextField.keyboardType = UIKeyboardType.decimalPad
         self.inputUSDLabel?.textColor = ThemeManager.shared.placeholder
         
         self.spendableTitleLabel.textColor = ThemeManager.shared.title
@@ -89,11 +90,16 @@ class SendViewController: AbstractViewController {
         self.dataTextField.textColor = ThemeManager.shared.font
         self.dataTextField.setLeftPaddingPoints(10)
         
-        self.sendButton.layer.cornerRadius = 5
-        self.sendButton.backgroundColor = ThemeManager.shared.main
-        self.sendButton.tintColor = UIColor.white
+        self.signButton.layer.cornerRadius = 5
+        self.signButton.backgroundColor = ThemeManager.shared.main
+        self.signButton.tintColor = UIColor.white
+        self.signButton.addTarget(self, action: #selector(self.signButtonTapped(_:)), for: .touchUpInside)
         
         self.bindData()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.signedTransaction(_:)), name: .signedNotification, object: nil)
+        //dummy data for test only
+        self.addressTextField.text = "0x771521717F518a32248E435882c625aE94a5434c"
     }
     
     func bindData() {
@@ -107,6 +113,17 @@ class SendViewController: AbstractViewController {
         self.bindData()
     }
     
+    func resetValue() {
+        self.inputCoinTextField.text = ""
+        self.addressTextField.text = ""
+    }
+    
+    @objc func signedTransaction(_ notification: NSNotification) {
+        if let signedTx = notification.userInfo?["signedTx"] as? String {
+            self.sendAlertController(signedTx)
+        }
+    }
+    
     @objc func scanQRCode() {
         let scannerVC = ScannerViewController()
         scannerVC.delegate = self
@@ -114,7 +131,7 @@ class SendViewController: AbstractViewController {
         self.present(nav, animated: true, completion: nil)
     }
     
-    @IBAction func touchedBtnSend(_ sender: Any) {
+    @IBAction func signButtonTapped(_ sender: Any) {
         guard let toAddress = self.addressTextField.text, toAddress != "" else {
             JDStatusBarNotification.show(withStatus: "Please input receive address.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
@@ -125,12 +142,88 @@ class SendViewController: AbstractViewController {
             return
         }
         
+        guard let gasLimit = self.gasTextField?.text, gasLimit != "" else {
+            JDStatusBarNotification.show(withStatus: "Please input gas limit.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return
+        }
+        
+        guard let from = self.currentCoin?.address, from != "" else {
+            JDStatusBarNotification.show(withStatus: "Please handshake to signer.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return
+        }
+        
+        guard let balance = self.currentCoin?.balance, balance > 0 else {
+            JDStatusBarNotification.show(withStatus: "Your spendable is zero.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return
+        }
+        
+        if value == "0" {
+            JDStatusBarNotification.show(withStatus: "Input value must more than zero.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return
+        }
+        
+        if Double(value)! > (Double(gasLimit)! + balance) {
+            JDStatusBarNotification.show(withStatus: "Spendable is is not enough.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return
+        }
+        
         let transaction = TransactionDTO()!
-        transaction.from = self.currentCoin?.address ?? "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
+        transaction.from = from
         transaction.to = toAddress
         transaction.value = Double(value)
         
-        AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, coinType: COINTYPE.ETH.key, transaction: transaction)
+        // sign eth
+        if self.currentCoin?.coin == COINTYPE.ETH.key {
+            AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, coinType: COINTYPE.ETH.key, transaction: transaction)
+        }
+    }
+    
+    private func sendFund(_ signedTx: String) {
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
+        self.resetValue()
+        RESTService.shared.infuraPOST(params) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            if let result = json["result"].string {
+                self.viewTransactionOnBrowser(result)
+            }
+        }
+    }
+    
+    private func sendAlertController(_ signedTx: String) {
+        let alertController = UIAlertController(title: "Transaction signed.", message: "Are you sure you want to send this fund?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            self.resetValue()
+        }
+        alertController.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "Ok", style: .default) { (action) in
+            self.sendFund(signedTx)
+        }
+        alertController.addAction(OKAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func viewTransactionOnBrowser(_ txId: String) {
+        let alertController = UIAlertController(title: "Sent.", message: "Are you want to view this transaction info on browser?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler:  nil)
+        alertController.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "Ok", style: .default) { (action) in
+            let url = URL(string: "\(Configuration.ROPSTEN_ETHERSCAN_URL)/\(txId)")
+            UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+        }
+        alertController.addAction(OKAction)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 

@@ -159,3 +159,7 @@ public extension Array {
         return (0 <= index && index < self.count ? self[index] : nil)
     }
 }
+
+extension Notification.Name {
+    static let signedNotification = Notification.Name("signedNotification")
+}

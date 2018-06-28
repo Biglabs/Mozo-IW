@@ -44,35 +44,15 @@ public class AppService {
                 if let result = com?.result {
                     let value = TransactionDTO(json: result)
                     if let signedTransaction = value?.signedTransaction {
-                        self.sendTx(signedTx: signedTransaction)
+                        let signedDataDict:[String: String] = ["signedTx": signedTransaction]
+                        // post a notification
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "signedNotification"), object: nil, userInfo: signedDataDict)
                     }
                 }
                 break
             default:
                 break
             }
-        }
-    }
-    
-    private func sendTx(signedTx: String){
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
-        RESTService.shared.infuraPOST(params) { value, error in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
-                }
-                return
-            }
-            
-            let json = SwiftyJSON.JSON(value)
-            if let result = json["result"].string {
-                print("TxId: \(result)")
-                //Open browser to view transaction info
-                let url = URL(string: "http://ropsten.etherscan.io/tx/\(result)")
-                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
-            }
-            
         }
     }
     
