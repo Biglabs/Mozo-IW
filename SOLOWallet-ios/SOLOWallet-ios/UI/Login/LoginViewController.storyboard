@@ -95,6 +95,7 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Opk-cR-Scn" firstAttribute="width" secondItem="GGw-83-Wre" secondAttribute="width" id="6BH-FR-YFH"/>
+                                    <constraint firstItem="f32-UM-gnh" firstAttribute="width" secondItem="Ia6-jf-wxZ" secondAttribute="width" id="DU5-2T-o4p"/>
                                 </constraints>
                             </stackView>
                         </subviews>

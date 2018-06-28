@@ -54,7 +54,6 @@
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5B20DCB548009112FC /* Callbacks.swift */; };
 		C6CD7F5E20DCCE44009112FC /* WalletRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */; };
-		C6D4F69F20E0C20400A6EFE3 /* EdgeInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */; };
 		C6D4F6A320E1011400A6EFE3 /* InfuraRESTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4F6A220E1011400A6EFE3 /* InfuraRESTService.swift */; };
 		C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DC687520DE26E800000665 /* ScannerViewController.swift */; };
 		F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */; };
@@ -115,7 +114,6 @@
 		C6CD7F5B20DCB548009112FC /* Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Callbacks.swift; sourceTree = "<group>"; };
 		C6CD7F5D20DCCE44009112FC /* WalletRESTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRESTService.swift; sourceTree = "<group>"; };
 		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
-		C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetLabel.swift; sourceTree = "<group>"; };
 		C6D4F6A220E1011400A6EFE3 /* InfuraRESTService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfuraRESTService.swift; sourceTree = "<group>"; };
 		C6DC687520DE26E800000665 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -348,7 +346,6 @@
 		C6D4F69D20E0C1F000A6EFE3 /* Extended */ = {
 			isa = PBXGroup;
 			children = (
-				C6D4F69E20E0C20400A6EFE3 /* EdgeInsetLabel.swift */,
 				C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */,
 				C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */,
 			);
@@ -510,7 +507,6 @@
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
 				C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */,
 				C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */,
-				C6D4F69F20E0C20400A6EFE3 /* EdgeInsetLabel.swift in Sources */,
 				20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */,
 				C6CD7F5C20DCB548009112FC /* Callbacks.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,

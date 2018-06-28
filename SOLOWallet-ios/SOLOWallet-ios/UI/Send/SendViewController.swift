@@ -20,7 +20,8 @@ class SendViewController: AbstractViewController {
     
     //value coin
     @IBOutlet weak var inputCoinView: UIView!
-    @IBOutlet weak var inputCoinIconLabel: EdgeInsetLabel!
+    @IBOutlet weak var coinBackgroundView: UIView!
+    @IBOutlet weak var inputCoinIconLabel: UILabel!
     @IBOutlet weak var inputCoinNameLabel: UILabel?
     @IBOutlet weak var inputCoinTextField: UITextField!
     @IBOutlet weak var inputUSDLabel: UILabel?
@@ -61,6 +62,8 @@ class SendViewController: AbstractViewController {
         self.inputCoinView.layer.cornerRadius = 5
         self.inputCoinView.layer.borderColor = ThemeManager.shared.border.cgColor
         self.inputCoinView.layer.borderWidth = 0.5
+        self.coinBackgroundView.backgroundColor = ThemeManager.shared.title
+        self.coinBackgroundView.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
         self.inputCoinIconLabel.backgroundColor = ThemeManager.shared.title
         self.inputCoinIconLabel.textColor = UIColor.white
         self.inputCoinIconLabel.addTextWithImage(text: "", image: UIImage.init(named: "ic_sort_ascending")!, imageBehindText: true, keepPreviousText: false)
