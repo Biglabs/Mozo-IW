@@ -7,49 +7,36 @@
 //
 
 import UIKit
-import MMDrawerController
+import SwiftyJSON
 
 class SoloWalletViewController: UIViewController {
     
     let tabBarCtr = UITabBarController()
+    var currentCoin: AddressDTO!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         self.createTitleView()
-        self.createLogoBarButton()
-        self.createMenuBarButton()
+        self.createBackBarButton()
         
-        //effect relax
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(self.doubleTap))
-        doubleTap.numberOfTapsRequired = 2
-        self.view.addGestureRecognizer(doubleTap)
-        
-        let twoFingerDoubleTap = UITapGestureRecognizer(target: self, action: #selector(self.twoFingerDoubleTap))
-        twoFingerDoubleTap.numberOfTapsRequired = 2
-        twoFingerDoubleTap.numberOfTouchesRequired = 2
-        self.view.addGestureRecognizer(twoFingerDoubleTap)
-        
-        self.createTabBarController()
+        self.getBalance()
     }
     
     func createTitleView() {
-        let titleLabel = UILabel.init()
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        titleLabel.textColor = ThemeManager.shared.title
-        titleLabel.addTextWithImage(text: " ETH", image: UIImage.init(named: "ic_ethereum")!, imageBehindText: false, keepPreviousText: false)
-        self.navigationItem.titleView = titleLabel
+        if let name = self.currentCoin.coin {
+            let titleLabel = UILabel.init()
+            titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+            titleLabel.textColor = ThemeManager.shared.title
+            titleLabel.addTextWithImage(text: " \(name)", image: UIImage.init(named: "ic_\(name)")!, imageBehindText: false, keepPreviousText: false)
+            self.navigationItem.titleView = titleLabel
+        }
     }
     
-    func createLogoBarButton() {
-        let logoBarButton = UIBarButtonItem.init(title: "Solo", style: .plain, target: self, action: nil)
+    func createBackBarButton() {
+        let logoBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_left_arrow"), style: .plain, target: self, action: #selector(self.back))
         logoBarButton.tintColor = ThemeManager.shared.main
         self.navigationItem.leftBarButtonItem = logoBarButton
-    }
-    
-    func createMenuBarButton() {
-        let menuBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_menu"), style: .plain, target: self, action: #selector(self.rightDrawerButtonPress))
-        self.navigationItem.rightBarButtonItem = menuBarButton
     }
     
     func createTabBarController() {
@@ -81,25 +68,59 @@ class SoloWalletViewController: UIViewController {
         self.view.addSubview(self.tabBarCtr.view)
     }
     
-    @objc open func rightDrawerButtonPress(_ sender: Any? = nil) {
-        self.mm_drawerController.toggle(MMDrawerSide.right, animated: true, completion: nil)
+    // call infura for demo only
+    func getBalance() {
+        guard let address = self.currentCoin.address else {
+            return
+        }
+        
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
+        RESTService.shared.infuraPOST(params) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            if let result = json["result"].string {
+                var amount = Double(result)
+                //ETH
+                amount = amount!/1E+18
+                self.currentCoin?.balance = amount ?? 0
+                
+                if let numViews = self.tabBarCtr.viewControllers?.count, numViews == 0 {
+                    self.createTabBarController()
+                } else {
+                    if let walletVC: WalletViewController = self.tabBarCtr.viewControllers?.getElement(0) as? WalletViewController {
+                        walletVC.currentCoin = self.currentCoin
+                        walletVC.tableView.reloadData()
+                    }
+                    
+                    if let sendVC: SendViewController = self.tabBarCtr.viewControllers?.getElement(3) as? SendViewController {
+                        sendVC.currentCoin = self.currentCoin
+                        sendVC.bindData()
+                    }
+                }
+            }
+        }
     }
     
-    @objc open func doubleTap(_ sender: Any? = nil) {
-        self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
-    }
-    
-    @objc open func twoFingerDoubleTap(_ sender: Any? = nil) {
-        self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
+    @objc func back() {
+        self.dismiss(animated: true)
     }
 }
 
-extension MMDrawerController {
-    var soloWalletVC: SoloWalletViewController! {
-        return (self.centerViewController as? UINavigationController)?.rootViewController as? SoloWalletViewController
+extension SoloWalletViewController: SoloWalletDelegate {
+    func request(_ action: String) {
+        if action == SOLOACTION.GetBalance.value {
+            self.getBalance()
+        }
     }
     
-    var drawerVC: DrawerMenuViewController! {
-        return (self.leftDrawerViewController as? UINavigationController)?.rootViewController as? DrawerMenuViewController
+    func updateValue(_ key: String, value: String) {
+        
     }
 }

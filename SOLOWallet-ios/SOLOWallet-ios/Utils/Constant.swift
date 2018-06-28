@@ -99,3 +99,13 @@ public enum ACTIONTYPE {
         }
     }
 }
+
+public enum SOLOACTION {
+    case GetBalance
+    
+    public var value : String {
+        switch self {
+        case .GetBalance: return "getBalance"
+        }
+    }
+}

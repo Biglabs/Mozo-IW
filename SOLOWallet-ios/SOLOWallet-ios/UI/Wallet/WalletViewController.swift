@@ -9,9 +9,12 @@
 import UIKit
 import SwiftyJSON
 
-class WalletViewController: AbstractViewController {
-    private var tableView: UITableView!
+class WalletViewController: UIViewController {
+    var tableView: UITableView!
     private let refreshControl = UIRefreshControl()
+    
+    var currentCoin: AddressDTO!
+    var delegate: SoloWalletDelegate?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,61 +47,10 @@ class WalletViewController: AbstractViewController {
         self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
     }
     
-    @objc override func refresh(_ sender: Any? = nil) {
-        super.refresh()
-        self.feed.refresh(){ content, error in
-            self.completion(error: error)
-        }
+    @objc func refresh(_ sender: Any? = nil) {
+        self.delegate?.request(SOLOACTION.GetBalance.value)
         if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
             refreshControl.endRefreshing()
-        }
-    }
-    
-    func fetchAddresses(){
-        self.feed.fetchContent() { content, error in
-            self.completion(error: error)
-        }
-    }
-    
-    private func completion(error: Error?){
-        guard error == nil else {
-            self.tableView.reloadData()
-            return
-        }
-        
-        if let addressess = self.feed.addressess {
-            for item in addressess {
-                if item.coin == COINTYPE.ETH.key {
-                    self.currentCoin = item
-                    if let addr = item.address {
-                        self.getBalance(addr)
-                    }
-                }
-            }
-        }
-        self.tableView.reloadData()
-    }
-    
-    // call infura for demo only
-    func getBalance(_ address: String) {
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
-        RESTService.shared.infuraPOST(params) { value, error in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
-                }
-                return
-            }
-            
-            let json = SwiftyJSON.JSON(value)
-            if let result = json["result"].string {
-                var amount = Double(result)
-                //ETH
-                amount = amount!/1E+18
-                self.currentCoin?.balance = amount ?? 0
-                self.tableView.reloadData()
-            }
         }
     }
 }

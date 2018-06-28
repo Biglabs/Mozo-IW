@@ -21,7 +21,6 @@ let transactions = [TransactionDTO.init(id: "119bb1f73f029248c22479a9e4fa57c5c62
 ]
 
 public class AbstractViewController: UIViewController {
-    internal var feed: AddressFeed!
     internal var currentCoin: AddressDTO?
     
     public override func viewDidLoad() {
@@ -35,10 +34,6 @@ public class AbstractViewController: UIViewController {
 //        self.navigationController?.navigationBar.topItem?.titleView = titleLabel
         
         self.currentCoin = AddressDTO.init()
-        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
-            return
-        }
-        self.feed = AddressFeed.init(walletId)
         self.refresh()
     }
     

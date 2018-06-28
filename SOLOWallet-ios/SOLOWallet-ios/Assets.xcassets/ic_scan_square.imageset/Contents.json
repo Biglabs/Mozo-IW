@@ -4,6 +4,14 @@
       "idiom" : "universal",
       "filename" : "ic_scan_square.png",
       "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

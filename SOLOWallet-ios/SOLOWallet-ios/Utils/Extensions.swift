@@ -152,3 +152,10 @@ extension UINavigationController {
         return self.viewControllers.first
     }
 }
+
+public extension Array {
+    //MARK: - using this method to avoid out of index
+    public func getElement(_ index: Int) -> Element? {
+        return (0 <= index && index < self.count ? self[index] : nil)
+    }
+}
