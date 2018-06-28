@@ -19,6 +19,7 @@ class PortfolioViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.login), name: NSNotification.Name(rawValue: SoloNotification.Login.rawValue), object: nil)
         if KeychainService.shared.getString(KeychainKeys.USER_NAME) == nil {
             self.login()
         } else {
@@ -44,11 +45,11 @@ class PortfolioViewController: UIViewController {
         self.validateHandshake()
     }
     
-    func login(){
+    @objc func login(){
         let storyboard = UIStoryboard(name: "LoginViewController", bundle: nil)
         if let loginVC: LoginViewController = storyboard.instantiateViewController(withIdentifier: "LoginVC") as? LoginViewController {
             loginVC.delegate = self
-            self.present(loginVC, animated: true)
+            self.present(loginVC, animated: false)
         }
     }
     
@@ -101,10 +102,8 @@ class PortfolioViewController: UIViewController {
     func createTableView() {
         self.view.subviews.forEach({ $0.removeFromSuperview() })
         
-        let displayWidth: CGFloat = self.view.frame.width
-        let displayHeight: CGFloat = self.view.frame.height
-        
-        self.tableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        self.tableView = UITableView()
+        self.tableView.frame = self.view.bounds
         self.tableView.backgroundColor = .white
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
@@ -177,7 +176,7 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension PortfolioViewController: SoloWalletDelegate {
     func request(_ action: String) {
-        if action == SOLOACTION.Success.value {
+        if action == SOLOACTION.Success.rawValue {
             self.buildPortfolioView()
         }
     }

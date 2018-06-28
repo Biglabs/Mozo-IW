@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MMDrawerController
 import SwiftyJSON
 
 public class AbstractViewController: UIViewController {
@@ -43,7 +42,7 @@ public class AbstractViewController: UIViewController {
     }
     
     @objc func back() {
-        self.delegate?.request(SOLOACTION.Dismiss.value)
+        self.delegate?.request(SOLOACTION.Dismiss.rawValue)
     }
     
     open func updateAddress(_ sender: Any? = nil) {}

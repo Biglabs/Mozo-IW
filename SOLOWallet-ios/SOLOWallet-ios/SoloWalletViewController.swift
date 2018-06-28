@@ -100,9 +100,9 @@ class SoloWalletViewController: UIViewController {
 
 extension SoloWalletViewController: SoloWalletDelegate {
     func request(_ action: String) {
-        if action == SOLOACTION.GetBalance.value {
+        if action == WALLETACTION.GET_BALANCE.rawValue {
             self.getBalance()
-        } else if action == SOLOACTION.Dismiss.value {
+        } else if action == SOLOACTION.Dismiss.rawValue {
             self.dismiss(animated: true)
         }
     }

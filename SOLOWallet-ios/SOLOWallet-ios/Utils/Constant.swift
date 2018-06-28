@@ -86,30 +86,26 @@ public enum SOLOTAB {
     }
 }
 
-public enum ACTIONTYPE {
-    case SIGN
-    case GET_WALLET
-    case ADD_ADDRESS
-    
-    public var value : String {
-        switch self {
-        case .SIGN: return "SIGN"
-        case .GET_WALLET: return "GET_WALLET"
-        case .ADD_ADDRESS: return "ADD_ADDRESS"
-        }
-    }
+public enum WALLETACTION: String {
+    case SIGN = "SIGN"
+    case GET_WALLET = "GET_WALLET"
+    case ADD_ADDRESS = "ADD_ADDRESS"
+    case GET_BALANCE = "GET_BALANCE"
 }
 
-public enum SOLOACTION {
-    case GetBalance
-    case Dismiss
-    case Success
-    
-    public var value : String {
-        switch self {
-            case .GetBalance: return "getBalance"
-            case .Dismiss: return "dismiss"
-            case .Success: return "success"
-        }
-    }
+public enum SOLOACTION: String {
+    case Dismiss = "dismiss"
+    case Success = "success"
+}
+
+public enum SoloNotification: String {
+    case Login   = "LOGIN"
+    case Signed = "SIGNED"
+}
+
+public enum LOGINTYPE: String {
+    case Login = "login"
+    case Logout = "logout"
+    case Success = "success"
+    case Fail = "fail"
 }

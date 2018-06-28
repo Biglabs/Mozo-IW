@@ -7,82 +7,56 @@
 //
 
 import UIKit
-import AsyncDisplayKit
+import MMDrawerController
 
-public class DrawerMenuViewController: UIViewController {
-    internal var collectionNode: ASCollectionNode!
+class DrawerMenuViewController: UIViewController {
     
-    public init() {
-        super.init(nibName: nil, bundle: nil)
-        self.setupViewController()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.setupViewController()
-    }
-    
-    func setupViewController() {
-        // setup flowlayout
-        // size of each cell width is going to be the size of the screen width
-        let flowlayout = UICollectionViewFlowLayout()
-        flowlayout.minimumInteritemSpacing  = 0
-        flowlayout.minimumLineSpacing       = 0
-        flowlayout.scrollDirection = .vertical
-        flowlayout.sectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 35, right: 0)
-        self.collectionNode = ASCollectionNode.init(collectionViewLayout:flowlayout)
-    }
-    
-    public override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        self.collectionNode.frame = self.view.bounds
-    }
-    
+    private var tableView: UITableView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.addSubnode(self.collectionNode)
+        self.title = "Menu"
+        self.navigationController?.navigationBar.frame = CGRect.init(x: 0, y: 0, width: self.view.bounds.width, height: 44)
+        self.view.backgroundColor = ThemeManager.shared.background
         
-        // setup flowlayout
-        self.collectionNode.allowsSelection = true
-        self.collectionNode.dataSource = self
-        self.collectionNode.delegate = self
-        self.collectionNode.backgroundColor = ThemeManager.shared.menu
-        self.forceReload()
-    }
-    
-    public func forceReload() {
-        self.collectionNode.reloadData()
+        print(self.navigationController?.navigationBar.frame.size.height ?? 0)
+        print(UIApplication.shared.statusBarFrame.height)
+        let height = self.navigationController?.navigationBar.frame.size.height ?? 0 + UIApplication.shared.statusBarFrame.height
+        self.tableView = UITableView()
+        self.tableView.frame = CGRect.init(x: 0, y: height, width: self.view.bounds.width, height: self.view.bounds.height - height)
+        self.tableView.backgroundColor = .white
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 44.0
+        self.tableView.separatorInset = UIEdgeInsets.zero
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.view.addSubview(self.tableView)
     }
 }
 
-extension DrawerMenuViewController: ASCollectionDataSource, ASCollectionDelegate {
-    public func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
+extension DrawerMenuViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    public func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    public func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
-        let nodeBlock: ASCellNodeBlock = { 
-            return DrawerMenuLogOutCellNode()
-        }
-        return nodeBlock
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "Cell")
+        cell.textLabel?.text = "Log out"
+        cell.textLabel?.textColor = .red
+        return cell
     }
     
-    public func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
-        self.collectionNode.deselectItem(at: indexPath, animated: true)
-        
-    }
-    
-    public func scrollToTop(){
-        let indexPath = IndexPath.init(row: 0, section: 0)
-        if let _ = collectionNode.nodeForItem(at: indexPath) {
-            self.collectionNode.scrollToItem(at: indexPath, at: .top, animated:true)
-        }
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        KeychainService.shared.setString(KeychainKeys.USER_NAME, value: nil)
+        self.mm_drawerController.toggle(MMDrawerSide.right, animated: true, completion: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: SoloNotification.Login.rawValue), object: nil, userInfo: nil)
     }
 }

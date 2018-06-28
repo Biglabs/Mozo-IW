@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rightViewController = DrawerMenuViewController()
         
         let rightSideNav = UINavigationController(rootViewController: rightViewController)
-        rightSideNav.isNavigationBarHidden = true
+        rightSideNav.restorationIdentifier = "SOLO_RightViewController"
         
         let centerNav = UINavigationController(rootViewController: centerViewController)
         centerNav.restorationIdentifier = "SOLO_CenterViewController"

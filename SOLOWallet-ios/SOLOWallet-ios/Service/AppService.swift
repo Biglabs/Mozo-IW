@@ -8,7 +8,6 @@
 
 import UIKit
 import SwiftyJSON
-import MMDrawerController
 
 public class AppService {
     public static let shared = AppService()
@@ -25,7 +24,7 @@ public class AppService {
         let com = CommunicationDTO(json: data)
         if let action = com?.action {
             switch action {
-            case ACTIONTYPE.GET_WALLET.value:
+            case WALLETACTION.GET_WALLET.rawValue:
                 if let result = com?.result {
                     let wallet = WalletDTO(json: result)
                     if let walletId = wallet?.walletId {
@@ -38,15 +37,15 @@ public class AppService {
                     }
                 }
                 break
-            case ACTIONTYPE.ADD_ADDRESS.value:
+            case WALLETACTION.ADD_ADDRESS.rawValue:
                 break
-            case ACTIONTYPE.SIGN.value:
+            case WALLETACTION.SIGN.rawValue:
                 if let result = com?.result {
                     let value = TransactionDTO(json: result)
                     if let signedTransaction = value?.signedTransaction {
                         let signedDataDict:[String: String] = ["signedTx": signedTransaction]
                         // post a notification
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "signedNotification"), object: nil, userInfo: signedDataDict)
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: SoloNotification.Signed.rawValue), object: nil, userInfo: signedDataDict)
                     }
                 }
                 break

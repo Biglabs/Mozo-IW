@@ -51,7 +51,7 @@ public class Utils {
         let alertController = UIAlertController(title: "Config", message: "Handshake with signer.", preferredStyle: .alert)
         
         let actionOk = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction) in
-            AppService.shared.launchSignerApp(ACTIONTYPE.GET_WALLET.value, coinType: COINTYPE.ETH.key, transaction: nil)
+            AppService.shared.launchSignerApp(WALLETACTION.GET_WALLET.rawValue, coinType: COINTYPE.ETH.key, transaction: nil)
         }
         
         let actionCancel = UIAlertAction(title: "Cancel", style: .cancel) { (action:UIAlertAction) in

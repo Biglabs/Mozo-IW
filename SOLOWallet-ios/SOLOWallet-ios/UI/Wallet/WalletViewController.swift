@@ -16,10 +16,8 @@ class WalletViewController: AbstractViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let displayWidth: CGFloat = self.view.frame.width
-        let displayHeight: CGFloat = self.view.frame.height
-        
-        self.tableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        self.tableView = UITableView()
+        self.tableView?.frame = self.view.bounds
         self.tableView?.backgroundColor = .white
         self.tableView?.rowHeight = UITableViewAutomaticDimension
         self.tableView?.estimatedRowHeight = 44.0
@@ -49,7 +47,7 @@ class WalletViewController: AbstractViewController {
     }
     
     @objc func refresh(_ sender: Any? = nil) {
-        self.delegate?.request(SOLOACTION.GetBalance.value)
+        self.delegate?.request(WALLETACTION.GET_BALANCE.rawValue)
         if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
             refreshControl.endRefreshing()
         }

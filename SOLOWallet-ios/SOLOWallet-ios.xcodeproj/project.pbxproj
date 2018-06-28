@@ -16,7 +16,6 @@
 		C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4320E49BA500A5FE50 /* AddressFeed.swift */; };
 		C6134A4620E4C37E00A5FE50 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */; };
 		C6134A4820E4C38800A5FE50 /* LoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */; };
-		C6134A4A20E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4920E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift */; };
 		C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DEEE20D8BFA400258ACE /* AppDelegate.swift */; };
 		C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */; };
 		C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C616DEF820D8BFA700258ACE /* Assets.xcassets */; };
@@ -73,7 +72,6 @@
 		C6134A4320E49BA500A5FE50 /* AddressFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressFeed.swift; sourceTree = "<group>"; };
 		C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginViewController.storyboard; sourceTree = "<group>"; };
-		C6134A4920E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerMenuLogOutCellNode.swift; sourceTree = "<group>"; };
 		C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOWallet-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C616DEEE20D8BFA400258ACE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C616DEF620D8BFA400258ACE /* SOLOWallet_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SOLOWallet_ios.xcdatamodel; sourceTree = "<group>"; };
@@ -262,7 +260,6 @@
 			isa = PBXGroup;
 			children = (
 				C616DF1A20D8E62A00258ACE /* DrawerMenuViewController.swift */,
-				C6134A4920E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -532,7 +529,6 @@
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C63A844120DB56650073EB08 /* Utils.swift in Sources */,
-				C6134A4A20E4EE5B00A5FE50 /* DrawerMenuLogOutCellNode.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
 				C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */,
 				C6134A4020E4843C00A5FE50 /* HandshakeView.swift in Sources */,

@@ -32,7 +32,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         KeychainService.shared.setString(KeychainKeys.USER_NAME, value: username)
-        self.delegate?.request(SOLOACTION.Success.value)
+        self.delegate?.request(SOLOACTION.Success.rawValue)
         self.dismiss(animated: true, completion: nil)
     }
 }
