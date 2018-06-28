@@ -19,7 +19,14 @@ class PortfolioViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .red
+        if KeychainService.shared.getString(KeychainKeys.USER_NAME) == nil {
+            self.login()
+        } else {
+            self.buildPortfolioView()
+        }
+    }
+    
+    func buildPortfolioView() {
         self.title = "Portfolio"
         self.createLogoBarButton()
         self.createMenuBarButton()
@@ -35,6 +42,14 @@ class PortfolioViewController: UIViewController {
         self.view.addGestureRecognizer(twoFingerDoubleTap)
         
         self.validateHandshake()
+    }
+    
+    func login(){
+        let storyboard = UIStoryboard(name: "LoginViewController", bundle: nil)
+        if let loginVC: LoginViewController = storyboard.instantiateViewController(withIdentifier: "LoginVC") as? LoginViewController {
+            loginVC.delegate = self
+            self.present(loginVC, animated: true)
+        }
     }
     
     @objc func refresh(_ sender: Any? = nil) {
@@ -158,6 +173,16 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
             Utils.getTopViewController().present(soloWalletVC, animated: true)
         }
     }
+}
+
+extension PortfolioViewController: SoloWalletDelegate {
+    func request(_ action: String) {
+        if action == SOLOACTION.Success.value {
+            self.buildPortfolioView()
+        }
+    }
+    
+    func updateValue(_ key: String, value: String) {}
 }
 
 extension MMDrawerController {
