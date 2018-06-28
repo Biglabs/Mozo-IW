@@ -81,15 +81,20 @@ class SoloWalletViewController: UIViewController {
                 amount = amount!/1E+18
                 self.currentCoin?.balance = amount ?? 0
                 
-                if let walletVC: WalletViewController = self.tabBarCtr.viewControllers?.getElement(0) as? WalletViewController {
-                    walletVC.currentCoin = self.currentCoin
-                    walletVC.tableView.reloadData()
+                if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
+                    if let walletVC = navWalletController.topViewController as? WalletViewController {
+                        walletVC.currentCoin = self.currentCoin
+                        walletVC.tableView.reloadData()
+                    }
                 }
                 
-                if let sendVC: SendViewController = self.tabBarCtr.viewControllers?.getElement(3) as? SendViewController {
-                    sendVC.currentCoin = self.currentCoin
-                    sendVC.bindData()
+                if let navSendController = self.tabBarCtr.viewControllers?.getElement(3) as? UINavigationController {
+                    if let sendVC = navSendController.topViewController as? SendViewController {
+//                        sendVC.currentCoin = self.currentCoin
+//                        sendVC.bindData()
+                    }
                 }
+                
             }
         }
     }

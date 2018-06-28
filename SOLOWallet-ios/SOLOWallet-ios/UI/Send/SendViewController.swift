@@ -130,29 +130,6 @@ class SendViewController: AbstractViewController {
         
         AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, coinType: COINTYPE.ETH.key, transaction: transaction)
     }
-    
-    // call infura for demo only
-    func getBalance(_ address: String) {
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
-        RESTService.shared.infuraPOST(params) { value, error in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
-                }
-                return
-            }
-            
-            let json = SwiftyJSON.JSON(value)
-            if let result = json["result"].string {
-                var amount = Double(result)
-                //ETH
-                amount = amount!/1E+18
-                self.currentCoin?.balance = amount ?? 0
-                self.bindData()
-            }
-        }
-    }
 }
 
 extension SendViewController: SoloWalletDelegate {

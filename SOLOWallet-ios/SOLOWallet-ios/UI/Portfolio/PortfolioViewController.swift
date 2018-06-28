@@ -34,7 +34,6 @@ class PortfolioViewController: UIViewController {
         twoFingerDoubleTap.numberOfTouchesRequired = 2
         self.view.addGestureRecognizer(twoFingerDoubleTap)
         
-        
         self.validateHandshake()
     }
     

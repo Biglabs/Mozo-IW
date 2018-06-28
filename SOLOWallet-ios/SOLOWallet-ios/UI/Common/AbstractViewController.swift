@@ -39,7 +39,7 @@ public class AbstractViewController: UIViewController {
     }
     
     @objc func back() {
-        self.delegate?.request("")
+        self.delegate?.request(SOLOACTION.Dismiss.value)
     }
     
     open func refresh(_ sender: Any? = nil) {}
