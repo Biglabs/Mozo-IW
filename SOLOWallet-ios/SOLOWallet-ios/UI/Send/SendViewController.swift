@@ -21,16 +21,16 @@ class SendViewController: AbstractViewController {
     //value coin
     @IBOutlet weak var inputCoinView: UIView!
     @IBOutlet weak var inputCoinIconLabel: EdgeInsetLabel!
-    @IBOutlet weak var inputCoinNameLabel: EdgeInsetLabel!
+    @IBOutlet weak var inputCoinNameLabel: UILabel?
     @IBOutlet weak var inputCoinTextField: UITextField!
-    @IBOutlet weak var inputUSDLabel: UILabel!
+    @IBOutlet weak var inputUSDLabel: UILabel?
     
     @IBOutlet weak var spendableTitleLabel: UILabel!
-    @IBOutlet weak var spendableValueLabel: UILabel!
+    @IBOutlet weak var spendableValueLabel: UILabel?
     
     //Gas limit
     @IBOutlet weak var gasView: UIView!
-    @IBOutlet weak var gasTextField: UITextField!
+    @IBOutlet weak var gasTextField: UITextField?
     @IBOutlet weak var gasLabel: UILabel!
     
     @IBOutlet weak var dataTextField: UITextField!
@@ -65,19 +65,19 @@ class SendViewController: AbstractViewController {
         self.inputCoinIconLabel.textColor = UIColor.white
         self.inputCoinIconLabel.addTextWithImage(text: "", image: UIImage.init(named: "ic_sort_ascending")!, imageBehindText: true, keepPreviousText: false)
         self.inputCoinIconLabel.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
-        self.inputCoinNameLabel.backgroundColor = ThemeManager.shared.title
-        self.inputCoinNameLabel.textColor = UIColor.white
+        self.inputCoinNameLabel?.backgroundColor = ThemeManager.shared.title
+        self.inputCoinNameLabel?.textColor = UIColor.white
         self.inputCoinTextField.textColor = ThemeManager.shared.font
-        self.inputUSDLabel.textColor = ThemeManager.shared.placeholder
+        self.inputUSDLabel?.textColor = ThemeManager.shared.placeholder
         
         self.spendableTitleLabel.textColor = ThemeManager.shared.title
-        self.spendableValueLabel.textColor = ThemeManager.shared.font
+        self.spendableValueLabel?.textColor = ThemeManager.shared.font
         
         //value coin
         self.gasView.layer.cornerRadius = 5
         self.gasView.layer.borderColor = ThemeManager.shared.border.cgColor
         self.gasView.layer.borderWidth = 0.5
-        self.gasTextField.textColor = ThemeManager.shared.font
+        self.gasTextField?.textColor = ThemeManager.shared.font
         self.gasLabel.textColor = ThemeManager.shared.disable
         
         self.dataTextField.layer.cornerRadius = 5
@@ -94,14 +94,13 @@ class SendViewController: AbstractViewController {
     }
     
     func bindData() {
-        self.inputCoinNameLabel.text = self.currentCoin?.coin ?? "ETH"
-        self.inputUSDLabel.text = "US$7,500.52"
-        self.spendableValueLabel.text = "\(self.currentCoin?.balance ?? 0.0) \(self.currentCoin?.coin ?? "")"
-        self.gasTextField.text = "250.000"
-        self.addressTextField.text = "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
+        self.inputCoinNameLabel?.text = "\(self.currentCoin?.coin ?? "")   "
+        self.inputUSDLabel?.text = "US$7,500.52"
+        self.spendableValueLabel?.text = "\(self.currentCoin?.balance ?? 0.0) \(self.currentCoin?.coin ?? "")"
+        self.gasTextField?.text = "250.000"
     }
     
-    @objc override func refresh(_ sender: Any? = nil) {
+    override func updateAddress(_ sender: Any? = nil) {
         self.bindData()
     }
     

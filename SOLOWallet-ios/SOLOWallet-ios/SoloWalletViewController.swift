@@ -84,14 +84,12 @@ class SoloWalletViewController: UIViewController {
                 if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
                     if let walletVC = navWalletController.topViewController as? WalletViewController {
                         walletVC.currentCoin = self.currentCoin
-                        walletVC.tableView.reloadData()
                     }
                 }
                 
                 if let navSendController = self.tabBarCtr.viewControllers?.getElement(3) as? UINavigationController {
                     if let sendVC = navSendController.topViewController as? SendViewController {
-//                        sendVC.currentCoin = self.currentCoin
-//                        sendVC.bindData()
+                        sendVC.currentCoin = self.currentCoin
                     }
                 }
                 

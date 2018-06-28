@@ -10,7 +10,7 @@ import UIKit
 
 public class InfoWalletTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var curvedLabel: UIButton!
+    @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var balanceLabel: UILabel!
     @IBOutlet weak var usdLabel: UILabel!
@@ -18,11 +18,14 @@ public class InfoWalletTableViewCell: UITableViewCell {
     @IBOutlet weak var qrcodeImageView: UIImageView!
     @IBOutlet weak var infoView: UIView!
     
+    var delegate: SoloWalletDelegate?
+    
     public override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.curvedLabel.tintColor = ThemeManager.shared.disable
-        self.curvedLabel.setImage(UIImage.init(named: "ic_curved_arrows"), for: .normal)
+        self.refreshButton.tintColor = ThemeManager.shared.disable
+        self.refreshButton.setImage(UIImage.init(named: "ic_curved_arrows"), for: .normal)
+        self.refreshButton.addTarget(self, action: #selector(self.refreshButtonTapped), for: .touchUpInside)
         self.nameLabel.textColor = ThemeManager.shared.highlight
         self.balanceLabel.textColor = ThemeManager.shared.main
         self.usdLabel.textColor = ThemeManager.shared.font
@@ -44,6 +47,10 @@ public class InfoWalletTableViewCell: UITableViewCell {
         if let code = coin.address {
             self.qrcodeImageView.image = self.generateQRCode(from: code)
         }
+    }
+    
+    @objc func refreshButtonTapped() {
+        self.delegate?.request(SOLOACTION.GetBalance.value)
     }
     
     func generateQRCode(from string: String) -> UIImage? {

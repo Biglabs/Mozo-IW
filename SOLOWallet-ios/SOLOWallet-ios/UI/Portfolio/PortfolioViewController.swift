@@ -151,6 +151,7 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
         if let coin = self.feed?.addressess?.getElement(indexPath.row) {
             let soloWalletVC = SoloWalletViewController()
             soloWalletVC.currentCoin = coin

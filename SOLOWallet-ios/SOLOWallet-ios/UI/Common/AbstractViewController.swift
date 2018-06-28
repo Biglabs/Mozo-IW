@@ -11,7 +11,11 @@ import MMDrawerController
 import SwiftyJSON
 
 public class AbstractViewController: UIViewController {
-    var currentCoin: AddressDTO!
+    public var currentCoin = AddressDTO() {
+        didSet {
+            self.updateAddress()
+        }
+    }
     var delegate: SoloWalletDelegate?
     
     public override func viewDidLoad() {
@@ -23,7 +27,7 @@ public class AbstractViewController: UIViewController {
     }
     
     func createTitleView() {
-        if let name = self.currentCoin.coin {
+        if let name = self.currentCoin?.coin {
             let titleLabel = UILabel.init()
             titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
             titleLabel.textColor = ThemeManager.shared.title
@@ -33,14 +37,14 @@ public class AbstractViewController: UIViewController {
     }
     
     func createBackBarButton() {
-        let logoBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_left_arrow"), style: .plain, target: self, action: #selector(self.back))
-        logoBarButton.tintColor = ThemeManager.shared.main
-        self.navigationItem.leftBarButtonItem = logoBarButton
+        let backBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_left_arrow"), style: .plain, target: self, action: #selector(self.back))
+        backBarButton.tintColor = ThemeManager.shared.main
+        self.navigationItem.leftBarButtonItem = backBarButton
     }
     
     @objc func back() {
         self.delegate?.request(SOLOACTION.Dismiss.value)
     }
     
-    open func refresh(_ sender: Any? = nil) {}
+    open func updateAddress(_ sender: Any? = nil) {}
 }
