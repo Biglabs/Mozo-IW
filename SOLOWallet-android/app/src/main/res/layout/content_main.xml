@@ -1,25 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <include layout="@layout/fragment_tab_send"/>
+    <include layout="@layout/fragment_tab_send" />
 
-    <!--<android.support.design.widget.BottomNavigationView-->
-        <!--android:id="@+id/navigation"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginEnd="0dp"-->
-        <!--android:layout_marginStart="0dp"-->
-        <!--android:background="?android:attr/windowBackground"-->
-        <!--app:itemTextColor="@color/textColorPrimary"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:menu="@menu/navigation" />-->
-</android.support.constraint.ConstraintLayout>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="@color/windowBackground"
+        android:checkedButton="@+id/action_nav_wallet"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:translationZ="12dp">
+
+        <RadioButton
+            android:id="@+id/action_nav_wallet"
+            style="@style/BottomNavigationItem"
+            android:drawableTop="@drawable/ic_nav_wallet"
+            android:text="@string/common_text_wallet" />
+
+        <RadioButton
+            android:id="@+id/action_nav_receive"
+            style="@style/BottomNavigationItem"
+            android:drawableTop="@drawable/ic_nav_receive"
+            android:text="@string/common_text_receive" />
+
+        <RadioButton
+            android:id="@+id/action_nav_exchange"
+            style="@style/BottomNavigationItem"
+            android:drawableTop="@drawable/ic_nav_exchange"
+            android:text="@string/common_text_exchange" />
+
+        <RadioButton
+            android:id="@+id/action_nav_send"
+            style="@style/BottomNavigationItem"
+            android:drawableTop="@drawable/ic_nav_send"
+            android:text="@string/common_text_send" />
+
+    </RadioGroup>
+</FrameLayout>

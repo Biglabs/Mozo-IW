@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SOLO Wallet</string>
+
+    <string name="common_text_wallet">Wallet</string>
+    <string name="common_text_receive">Receive</string>
+    <string name="common_text_exchange">Exchange</string>
+    <string name="common_text_send">Send</string>
 </resources>

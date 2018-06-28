@@ -33,12 +33,12 @@ export default class SecurityPinScreen extends Component {
         }
     }
 
-    handleContinuePress(){
+    handleContinuePress() {
         this.setState({isShowingLoading: true}, () => {
-            //Play Loading GIF
             setTimeout(() => {
+
                 this.manageWallet((error, result) => {
-                    if(result){
+                    if (result) {
                         this.props.isNewPIN = false;
                         // Open Home Screen
                         let pin = JSON.stringify(this.pinCode);
@@ -49,6 +49,12 @@ export default class SecurityPinScreen extends Component {
                 });
             }, 5);
         });
+    }
+
+    componentDidUpdate(_, prevState) {
+        if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
+            //console.warn('1.Component did upadte: ' + this.state.isShowingLoading + ", isShowingLoading: " + prevState.isShowingLoading);
+        }
     }
 
     createNewWallet() {
@@ -96,8 +102,8 @@ export default class SecurityPinScreen extends Component {
             // Save Wallet Info - WalletId
             manager.saveWalletInfo(walletInfo).then(result => {
                 AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
-                if (typeof callback === 'function') { 
-                    callback(null, result); 
+                if (typeof callback === 'function') {
+                    callback(null, result);
                 }
             });
         }).catch((error) => {
@@ -117,14 +123,14 @@ export default class SecurityPinScreen extends Component {
                         manager.syncAddress(address, walletInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
                         //TODO: Should retry incase network error
                         AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
-                        if (typeof callback === 'function') { 
-                            callback(null, result); 
+                        if (typeof callback === 'function') {
+                            callback(null, result);
                         }
                     });
                 }).catch((error) => {
                     console.log('Register fail', error);
-                    if (typeof callback === 'function') { 
-                        callback(error, null); 
+                    if (typeof callback === 'function') {
+                        callback(error, null);
                     }
                 });
             }
@@ -146,9 +152,9 @@ export default class SecurityPinScreen extends Component {
             this.saveAddressToLocal(manager, walletData, pin);
             // Check wallet is registered on server or not
             this.registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex, (error, result) => {
-                if (typeof callback === 'function') { 
+                if (typeof callback === 'function') {
                     if (result) {
-                        callback(null, result); 
+                        callback(null, result);
                     } else {
                         callback(error, null);
                     }
@@ -166,9 +172,9 @@ export default class SecurityPinScreen extends Component {
                         if (addresses && addresses.length > 0) {
                             let address = addresses[0];
                             this.registerWalletAndSyncAddress(manager, publicKey, address.address, address.derivedIndex, (error, result) => {
-                                if (typeof callback === 'function') { 
+                                if (typeof callback === 'function') {
                                     if (result) {
-                                        callback(null, result); 
+                                        callback(null, result);
                                     } else {
                                         callback(error, null);
                                     }
@@ -187,6 +193,7 @@ export default class SecurityPinScreen extends Component {
                 }
             }
         }
+        console.warn('Manage wallet, end: ' + (new Date()).getTime());
     }
 
     clearPin() {
@@ -219,7 +226,10 @@ export default class SecurityPinScreen extends Component {
         if (this.state.isShowingLoading)
             return (
                 <View style={styles.loading_container}>
-                    <Image source={require('../res/images/loading.gif')}/>
+                    {/*<RotationView duration={1000}>*/}
+                    {/*<SvgUri width={50} height={50} source={require('../res/icons/ic_loading_indicator.svg')}/>*/}
+                    {/*</RotationView>*/}
+                    <Image source={require('../res/images/loading_abc.gif')}/>
                     <Text style={styles.loading_text}>Creating Interface</Text>
                 </View>
             );

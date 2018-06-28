@@ -3,8 +3,8 @@ allprojects {
     ext.debug_key_pass = 'android'
     ext.debug_key_file = '../keystores/debug.keystore'
 
-    ext.release_key_alias = ''
-    ext.release_key_pass = ''
+    ext.release_key_alias = 'biglabs2018'
+    ext.release_key_pass = 'JhhFZ&V%f[KLt,y'
     ext.release_key_file = '../keystores/release.jks'
-    ext.release_store_pass = ''
+    ext.release_store_pass = 'Biglabs@signerapp2018'
 }

@@ -5,6 +5,7 @@
 
     <color name="colorControlHighLight">#80f4f9ff</color>
     <color name="textColorPrimary">#141a22</color>
+    <color name="textColorContent">#747474</color>
 
     <color name="windowBackground">#ffffff</color>
 </resources>

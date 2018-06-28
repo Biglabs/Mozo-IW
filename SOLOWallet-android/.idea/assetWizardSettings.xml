@@ -14,8 +14,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_menu" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../../resources/Menu Icon.svg" />
+                            <entry key="height" value="15" />
+                            <entry key="outputName" value="ic_nav_send" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\biglabs\Downloads\wallet\Icon-send.svg" />
+                            <entry key="width" value="15" />
                           </map>
                         </option>
                       </PersistentState>

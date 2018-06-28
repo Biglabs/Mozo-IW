@@ -13,6 +13,7 @@ import com.biglabs.solo.signer.library.SignerListener
 import com.biglabs.solo.signer.library.models.Wallet
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_tab_send.*
 
 class MainActivity : AppCompatActivity(), SignerListener {

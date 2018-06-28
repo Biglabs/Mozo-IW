@@ -26,7 +26,7 @@
         <item name="android:fontFamily">@font/utm_avo</item>
     </style>
 
-    <style name="SoloStyle..TextView" parent="TextAppearance.AppCompat">
+    <style name="SoloStyle..TextView" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/utm_avo</item>
     </style>
 
@@ -46,5 +46,24 @@
         <item name="android:paddingLeft">14dp</item>
         <item name="android:paddingRight">14dp</item>
         <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <style name="BottomNavigationItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:button">@null</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawablePadding">10sp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">@font/utm_avo</item>
+        <item name="android:gravity">center</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">10sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@drawable/selector_nav_item_text_color</item>
+        <item name="android:textSize">10sp</item>
     </style>
 </resources>
