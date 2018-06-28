@@ -6,9 +6,12 @@ class Wallet {
     @SerializedName("id")
     var id: String? = null
 
-    @SerializedName("walletKey")
-    var key: String? = null
+    @SerializedName("coin")
+    var coin: String? = null
 
-    @SerializedName("walletId")
+    @SerializedName("network")
+    var network: String? = null
+
+    @SerializedName("address")
     var address: String? = null
 }
