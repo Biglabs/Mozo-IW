@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {AsyncStorage, TouchableHighlight, View} from 'react-native';
+import {AsyncStorage, TouchableHighlight, View, Image} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, RotationView, Text} from "../components/SoloComponent";
@@ -187,7 +187,6 @@ export default class SecurityPinScreen extends Component {
                 }
             }
         }
-        console.warn('Manage wallet, end: ' + (new Date()).getTime());
     }
 
     clearPin() {
@@ -220,10 +219,7 @@ export default class SecurityPinScreen extends Component {
         if (this.state.isShowingLoading)
             return (
                 <View style={styles.loading_container}>
-                    <RotationView duration={1000}>
-                        <SvgUri width={50} height={50} source={require('../res/icons/ic_loading_indicator.svg')}/>
-                    </RotationView>
-                    {/* <Image source={require('../res/images/loading.gif')}/> */}
+                    <Image source={require('../res/images/loading.gif')}/>
                     <Text style={styles.loading_text}>Creating Interface</Text>
                 </View>
             );
