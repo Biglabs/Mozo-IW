@@ -9,12 +9,9 @@
 import UIKit
 import SwiftyJSON
 
-class WalletViewController: UIViewController {
+class WalletViewController: AbstractViewController {
     var tableView: UITableView!
     private let refreshControl = UIRefreshControl()
-    
-    var currentCoin: AddressDTO!
-    var delegate: SoloWalletDelegate?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +44,7 @@ class WalletViewController: UIViewController {
         self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
     }
     
-    @objc func refresh(_ sender: Any? = nil) {
+    @objc override func refresh(_ sender: Any? = nil) {
         self.delegate?.request(SOLOACTION.GetBalance.value)
         if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
             refreshControl.endRefreshing()

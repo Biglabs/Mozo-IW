@@ -102,10 +102,12 @@ public enum ACTIONTYPE {
 
 public enum SOLOACTION {
     case GetBalance
+    case Dismiss
     
     public var value : String {
         switch self {
-        case .GetBalance: return "getBalance"
+            case .GetBalance: return "getBalance"
+            case .Dismiss: return "dismiss"
         }
     }
 }

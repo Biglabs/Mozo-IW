@@ -96,7 +96,7 @@ class PortfolioViewController: UIViewController {
         self.tableView.estimatedRowHeight = 44.0
         self.tableView.separatorInset = UIEdgeInsets.zero
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
-        self.tableView.allowsSelection = false
+        
         self.tableView.register(UINib.init(nibName: "CoinTableViewCell", bundle: nil), forCellReuseIdentifier: "CoinTableViewCell")
         self.tableView.dataSource = self
         self.tableView.delegate = self

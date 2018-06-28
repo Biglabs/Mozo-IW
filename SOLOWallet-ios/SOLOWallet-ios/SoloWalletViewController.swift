@@ -17,26 +17,8 @@ class SoloWalletViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.createTitleView()
-        self.createBackBarButton()
-        
+        self.createTabBarController()
         self.getBalance()
-    }
-    
-    func createTitleView() {
-        if let name = self.currentCoin.coin {
-            let titleLabel = UILabel.init()
-            titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-            titleLabel.textColor = ThemeManager.shared.title
-            titleLabel.addTextWithImage(text: " \(name)", image: UIImage.init(named: "ic_\(name)")!, imageBehindText: false, keepPreviousText: false)
-            self.navigationItem.titleView = titleLabel
-        }
-    }
-    
-    func createBackBarButton() {
-        let logoBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_left_arrow"), style: .plain, target: self, action: #selector(self.back))
-        logoBarButton.tintColor = ThemeManager.shared.main
-        self.navigationItem.leftBarButtonItem = logoBarButton
     }
     
     func createTabBarController() {
@@ -44,23 +26,31 @@ class SoloWalletViewController: UIViewController {
         
         //Tab 1: Wallet
         let walletVC = WalletViewController()
+        walletVC.currentCoin = self.currentCoin
+        walletVC.delegate = self
         walletVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Wallet.value, image: UIImage.init(named: SOLOTAB.Wallet.icon), tag: 0)
         controllerArray.append(walletVC)
         
         //Tab 2: Receive
         let receiveVC = ReceiveViewController()
         receiveVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Receive.value, image: UIImage.init(named: SOLOTAB.Receive.icon), tag: 1)
+        receiveVC.currentCoin = self.currentCoin
+        receiveVC.delegate = self
         controllerArray.append(receiveVC)
         
         //Tab 3: Exchange
         let exchangeVC = ExchangeViewController()
         exchangeVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Exchange.value, image: UIImage.init(named: SOLOTAB.Exchange.icon), tag: 2)
+        exchangeVC.currentCoin = self.currentCoin
+        exchangeVC.delegate = self
         controllerArray.append(exchangeVC)
         
         //Tab 4: Send
         let storyboard = UIStoryboard(name: "SendViewController", bundle: nil)
         let sendVC = storyboard.instantiateViewController(withIdentifier: "SendVC") as! SendViewController
         sendVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Send.value, image: UIImage.init(named: SOLOTAB.Send.icon), tag: 3)
+        sendVC.currentCoin = self.currentCoin
+        sendVC.delegate = self
         controllerArray.append(sendVC)
         
         self.tabBarCtr.viewControllers = controllerArray.map{ UINavigationController.init(rootViewController: $0)}
@@ -91,25 +81,17 @@ class SoloWalletViewController: UIViewController {
                 amount = amount!/1E+18
                 self.currentCoin?.balance = amount ?? 0
                 
-                if let numViews = self.tabBarCtr.viewControllers?.count, numViews == 0 {
-                    self.createTabBarController()
-                } else {
-                    if let walletVC: WalletViewController = self.tabBarCtr.viewControllers?.getElement(0) as? WalletViewController {
-                        walletVC.currentCoin = self.currentCoin
-                        walletVC.tableView.reloadData()
-                    }
-                    
-                    if let sendVC: SendViewController = self.tabBarCtr.viewControllers?.getElement(3) as? SendViewController {
-                        sendVC.currentCoin = self.currentCoin
-                        sendVC.bindData()
-                    }
+                if let walletVC: WalletViewController = self.tabBarCtr.viewControllers?.getElement(0) as? WalletViewController {
+                    walletVC.currentCoin = self.currentCoin
+                    walletVC.tableView.reloadData()
+                }
+                
+                if let sendVC: SendViewController = self.tabBarCtr.viewControllers?.getElement(3) as? SendViewController {
+                    sendVC.currentCoin = self.currentCoin
+                    sendVC.bindData()
                 }
             }
         }
-    }
-    
-    @objc func back() {
-        self.dismiss(animated: true)
     }
 }
 
@@ -117,10 +99,10 @@ extension SoloWalletViewController: SoloWalletDelegate {
     func request(_ action: String) {
         if action == SOLOACTION.GetBalance.value {
             self.getBalance()
+        } else if action == SOLOACTION.Dismiss.value {
+            self.dismiss(animated: true)
         }
     }
     
-    func updateValue(_ key: String, value: String) {
-        
-    }
+    func updateValue(_ key: String, value: String) {}
 }

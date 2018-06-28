@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 import JDStatusBarNotification
 
-class SendViewController: UIViewController {
+class SendViewController: AbstractViewController {
     
     //address
     @IBOutlet weak var addressView: UIView!
@@ -36,9 +36,6 @@ class SendViewController: UIViewController {
     @IBOutlet weak var dataTextField: UITextField!
     
     @IBOutlet weak var sendButton: UIButton!
-    
-    var currentCoin: AddressDTO!
-    var delegate: SoloWalletDelegate?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +101,7 @@ class SendViewController: UIViewController {
         self.addressTextField.text = "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
     }
     
-    @objc func refresh(_ sender: Any? = nil) {
+    @objc override func refresh(_ sender: Any? = nil) {
         self.bindData()
     }
     
