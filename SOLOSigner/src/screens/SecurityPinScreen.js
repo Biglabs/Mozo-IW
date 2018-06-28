@@ -35,23 +35,20 @@ export default class SecurityPinScreen extends Component {
 
     handleContinuePress(){
         this.setState({isShowingLoading: true}, () => {
-            this.manageWallet((error, result) => {
-                if(result){
-                    this.props.isNewPIN = false;
-                    // Open Home Screen
-                    let pin = JSON.stringify(this.pinCode);
-                    Actions.main_stack({pin: pin});
-                } else {
-                    this.clearPin();
-                }
-            });
+            //Play Loading GIF
+            setTimeout(() => {
+                this.manageWallet((error, result) => {
+                    if(result){
+                        this.props.isNewPIN = false;
+                        // Open Home Screen
+                        let pin = JSON.stringify(this.pinCode);
+                        Actions.main_stack({pin: pin});
+                    } else {
+                        this.clearPin();
+                    }
+                });
+            }, 5);
         });
-    }
-
-    componentDidUpdate(_, prevState) {
-        if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
-            //console.warn('1.Component did upadte: ' + this.state.isShowingLoading + ", isShowingLoading: " + prevState.isShowingLoading);
-        }
     }
 
     createNewWallet() {
