@@ -232,8 +232,15 @@ class DataManager {
     }
 
     saveWalletInfo(walletInfo) {
-        DataManager.realm.write(() => {
-            DataManager.realm.create('Wallet', walletInfo);
+        return new Promise((resolve, reject) => {
+            try {
+                DataManager.realm.write(() => {
+                    DataManager.realm.create('Wallet', walletInfo);
+                    resolve(true);
+                });
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 

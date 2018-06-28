@@ -33,16 +33,10 @@ export default class SecurityPinScreen extends Component {
         }
     }
 
-    componentDidMount(){
-        AsyncStorage.getItem(Constant.FLAG_SCHEME_DATA, (error, result) => {
-            console.log(result);
-        });
-    }
-
-    componentDidUpdate(_, prevState) {
-        if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
-            this.manageWallet().then(result => {
-                if(result) {
+    handleContinuePress(){
+        this.setState({isShowingLoading: true}, () => {
+            this.manageWallet((error, result) => {
+                if(result){
                     this.props.isNewPIN = false;
                     // Open Home Screen
                     let pin = JSON.stringify(this.pinCode);
@@ -51,6 +45,12 @@ export default class SecurityPinScreen extends Component {
                     this.clearPin();
                 }
             });
+        });
+    }
+
+    componentDidUpdate(_, prevState) {
+        if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
+            //console.warn('1.Component did upadte: ' + this.state.isShowingLoading + ", isShowingLoading: " + prevState.isShowingLoading);
         }
     }
 
@@ -58,7 +58,8 @@ export default class SecurityPinScreen extends Component {
         let mnemonic = this.props.importedPhrase || "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
         let seed = bip39.mnemonicToSeedHex(mnemonic);
         let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
-        return rootKey.derivePath("m/44'/60'/0'/0");
+        let wallet = rootKey.derivePath("m/44'/60'/0'/0");
+        return wallet;
     }
 
     getAddressAtIndex(wallet, index) {
@@ -91,13 +92,17 @@ export default class SecurityPinScreen extends Component {
         // TODO: Load all addresses of this wallet from server and save to local
     }
 
-    registerWalletAndSyncAddress(manager, publicKey, address, derivedIndex) {
+    registerWalletAndSyncAddress(manager, publicKey, address, derivedIndex, callback) {
         console.log("Check wallet");
         manager.getExistingWalletFromServer(publicKey).then(walletInfo => {
             console.log('Wallet is registered.');
             // Save Wallet Info - WalletId
-            manager.saveWalletInfo(walletInfo);
-            AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
+            manager.saveWalletInfo(walletInfo).then(result => {
+                AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
+                if (typeof callback === 'function') { 
+                    callback(null, result); 
+                }
+            });
         }).catch((error) => {
             // Offline mode: Can not check wallet
             // Store public key for the next registration
@@ -110,36 +115,48 @@ export default class SecurityPinScreen extends Component {
                 manager.registerWallet(publicKey).then((walletInfo) => {
                     console.log('Wallet is registered.');
                     // Save Wallet Info - WalletId
-                    manager.saveWalletInfo(walletInfo);
-                    AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
-                    // Synchronize address to server
-                    manager.syncAddress(address, walletInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
-                    //TODO: Should retry incase network error
-                    AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
+                    manager.saveWalletInfo(walletInfo).then(result => {
+                        // Synchronize address to server
+                        manager.syncAddress(address, walletInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
+                        //TODO: Should retry incase network error
+                        AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
+                        if (typeof callback === 'function') { 
+                            callback(null, result); 
+                        }
+                    });
                 }).catch((error) => {
                     console.log('Register fail', error);
+                    if (typeof callback === 'function') { 
+                        callback(error, null); 
+                    }
                 });
             }
         });
     }
 
-    async manageWallet() {
+    manageWallet(callback) {
         let manager = DataManager.getInstance();
         // Store isDbExisting true
         AsyncStorage.setItem(Constant.FLAG_DB_EXISTING, 'true');
         if (this.props.isNewPIN) {
-            //If this is the first launch, AsyncStorage will store isDbExisting true
             // Save PIN
             manager.updatePin(this.pinCode);
-            // TODO: Set timer here for the next time user have to re-enter PIN
+            // TODO: Set timer here for the next time when user have to re-enter PIN
             let ethWallet = this.createNewWallet();
             let publicKey = ethWallet.neutered().toBase58();
             let walletData = this.getAddressAtIndex(ethWallet, 0);
             let pin = JSON.stringify(this.pinCode);
             this.saveAddressToLocal(manager, walletData, pin);
-
             // Check wallet is registered on server or not
-            this.registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex);
+            this.registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex, (error, result) => {
+                if (typeof callback === 'function') { 
+                    if (result) {
+                        callback(null, result); 
+                    } else {
+                        callback(error, null);
+                    }
+                }
+            });
         } else {
             //Compare PIN
             let isEqual = manager.checkPin(this.pinCode);
@@ -151,15 +168,29 @@ export default class SecurityPinScreen extends Component {
                         let addresses = manager.getAllAddresses();
                         if (addresses && addresses.length > 0) {
                             let address = addresses[0];
-                            this.registerWalletAndSyncAddress(manager, publicKey, address.address, address.derivedIndex);
+                            this.registerWalletAndSyncAddress(manager, publicKey, address.address, address.derivedIndex, (error, result) => {
+                                if (typeof callback === 'function') { 
+                                    if (result) {
+                                        callback(null, result); 
+                                    } else {
+                                        callback(error, null);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        if (typeof callback === 'function') {
+                            callback(null, true);
                         }
                     }
                 });
             } else {
-                return false;
+                if (typeof callback === 'function') {
+                    callback(new Error("Inputted PIN is not correct"), null);
+                }
             }
         }
-        return true;
+        console.warn('Manage wallet, end: ' + (new Date()).getTime());
     }
 
     clearPin() {
@@ -195,7 +226,7 @@ export default class SecurityPinScreen extends Component {
                     <RotationView duration={1000}>
                         <SvgUri width={50} height={50} source={require('../res/icons/ic_loading_indicator.svg')}/>
                     </RotationView>
-
+                    {/* <Image source={require('../res/images/loading.gif')}/> */}
                     <Text style={styles.loading_text}>Creating Interface</Text>
                 </View>
             );
@@ -245,7 +276,7 @@ export default class SecurityPinScreen extends Component {
                         buttonsColor={{back: accentColor, continue: accentColor}}
                         onBackPress={this.props.isNewPIN ? () => Actions.pop() : null}
                         enabledContinue={this.state.pinIndex === (this.pinCode.length - 1)}
-                        onContinuePress={() => this.setState({isShowingLoading: true})}/>
+                        onContinuePress={() => this.handleContinuePress()}/>
                 </View>
             );
     }
