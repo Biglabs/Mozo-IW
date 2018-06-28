@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rMr-gM-mmj">
-                        <rect key="frame" x="10" y="10" width="559" height="44.5"/>
+                        <rect key="frame" x="20" y="10" width="539" height="44.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pLo-vF-Qy3">
                                 <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -30,7 +30,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ipq-CD-eF5">
-                                <rect key="frame" x="44" y="0.0" width="515" height="44"/>
+                                <rect key="frame" x="44" y="0.0" width="495" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="aqv-Fi-R8p"/>
                                 </constraints>
@@ -39,7 +39,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFQ-ID-RaE">
-                                <rect key="frame" x="0.0" y="44" width="559" height="0.5"/>
+                                <rect key="frame" x="0.0" y="44" width="539" height="0.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="I7l-ir-9qh"/>
@@ -64,8 +64,8 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="rMr-gM-mmj" secondAttribute="bottom" id="aAk-wD-JPA"/>
-                    <constraint firstItem="rMr-gM-mmj" firstAttribute="leading" secondItem="njk-Th-4RZ" secondAttribute="leading" constant="10" id="dIM-Lm-BeE"/>
-                    <constraint firstAttribute="trailing" secondItem="rMr-gM-mmj" secondAttribute="trailing" constant="10" id="gTt-N7-tai"/>
+                    <constraint firstItem="rMr-gM-mmj" firstAttribute="leading" secondItem="njk-Th-4RZ" secondAttribute="leading" constant="20" id="dIM-Lm-BeE"/>
+                    <constraint firstAttribute="trailing" secondItem="rMr-gM-mmj" secondAttribute="trailing" constant="20" id="gTt-N7-tai"/>
                     <constraint firstItem="rMr-gM-mmj" firstAttribute="top" secondItem="njk-Th-4RZ" secondAttribute="top" constant="10" id="wkg-0M-hb6"/>
                 </constraints>
             </tableViewCellContentView>

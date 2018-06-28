@@ -82,6 +82,7 @@ class SendViewController: AbstractViewController {
         self.gasView.layer.borderColor = ThemeManager.shared.border.cgColor
         self.gasView.layer.borderWidth = 0.5
         self.gasTextField?.textColor = ThemeManager.shared.font
+        self.gasTextField?.keyboardType = UIKeyboardType.decimalPad
         self.gasLabel.textColor = ThemeManager.shared.disable
         
         self.dataTextField.layer.cornerRadius = 5
@@ -157,8 +158,8 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        if value == "0" {
-            JDStatusBarNotification.show(withStatus: "Input value must more than zero.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+        if value == "0" || (Double(value)! < 0.001) {
+            JDStatusBarNotification.show(withStatus: "Amount is below the minimum (0.001 ETH)", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
         
