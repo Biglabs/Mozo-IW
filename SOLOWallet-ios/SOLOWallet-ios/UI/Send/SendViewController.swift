@@ -138,7 +138,7 @@ class SendViewController: AbstractViewController {
         transaction.to = toAddress
         transaction.value = Double(value)
         
-        AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, type: COINTYPE.ETH.key, transaction: transaction)
+        AppService.shared.launchSignerApp(ACTIONTYPE.SIGN.value, coinType: COINTYPE.ETH.key, transaction: transaction)
     }
     
     // call infura for demo only

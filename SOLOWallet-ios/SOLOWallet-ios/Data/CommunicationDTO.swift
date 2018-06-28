@@ -13,22 +13,22 @@ public class CommunicationDTO: ResponseObjectSerializable {
     public var action: String?
     public var receiver: String?
     public var params: TransactionDTO?
-    public var type: String? // coin type
+    public var coinType: String?
     public var result: SwiftyJSON.JSON?
     
-    public required init?(action: String?, receiver: String?, params: TransactionDTO?, type: String?) {
+    public required init?(action: String?, receiver: String?, params: TransactionDTO?, coinType: String?) {
         self.action = action
         self.receiver = receiver
         self.params = params
-        self.type = type
+        self.coinType = coinType
     }
     
     public required init?(json: SwiftyJSON.JSON) {
         self.action = json["action"].string
         self.receiver = json["receiver"].string
         self.params = TransactionDTO(json: json["params"])
-        self.type = json["type"].string
-        self.result = SwiftyJSON.JSON(json["result"].dictionary)
+        self.coinType = json["coinType"].string
+        self.result = SwiftyJSON.JSON(json["result"].dictionary!)
     }
     
     public required init?(){}
@@ -44,8 +44,8 @@ public class CommunicationDTO: ResponseObjectSerializable {
         if let params = self.params {
             json["params"] = params.toJSON()
         }
-        if let type = self.type {
-            json["type"] = type
+        if let coinType = self.coinType {
+            json["coinType"] = coinType
         }
         return json
     }

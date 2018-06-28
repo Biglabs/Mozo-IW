@@ -96,13 +96,13 @@ public class AppService {
         }
     }
     
-    public func launchSignerApp(_ action: String, type: String, transaction: TransactionDTO?) {
+    public func launchSignerApp(_ action: String, coinType: String, transaction: TransactionDTO?) {
         let isAlwaysLaunchApp = KeychainService.instance.getBool(KeychainKeys.ALWAYS_LAUNCH_SOLO_SIGNER_APP)
         
         func launchApp() {
             if let bundleId = Bundle.main.bundleIdentifier {
                 var urlStr = Configuration.URL_SCHEME_SIGNER + "://"
-                let model = CommunicationDTO(action: action, receiver: "\(bundleId).\(Configuration.URL_SCHEME_WALLET)", params: transaction, type: type)
+                let model = CommunicationDTO(action: action, receiver: "\(bundleId).\(Configuration.URL_SCHEME_WALLET)", params: transaction, coinType: coinType)
                 urlStr += (model?.rawString())!
                 print("URL: [\(urlStr)]")
                 

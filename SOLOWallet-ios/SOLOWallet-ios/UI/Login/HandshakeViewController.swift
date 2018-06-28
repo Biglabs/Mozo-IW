@@ -24,6 +24,6 @@ class HandshakeViewController: UIViewController {
     
     @objc func requestButtonTapped() {
         //solosigner://{"action":"GET_WALLET","receiver":"com.hdwallet.solowallet"}
-        AppService.shared.launchSignerApp(ACTIONTYPE.GET_WALLET.value, type: COINTYPE.ETH.key, transaction: nil)
+        AppService.shared.launchSignerApp(ACTIONTYPE.GET_WALLET.value, coinType: COINTYPE.ETH.key, transaction: nil)
     }
 }
