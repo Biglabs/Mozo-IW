@@ -4,8 +4,26 @@ import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {NavigationBar, Text} from "../../components/SoloComponent";
+import DataManager from '../../utils/DataManager';
+import WalletManager from '../../utils/WalletManager';
+import encryption from '../../common/encryption';
 
-export default class BackupWalletScreen extends Component {
+export default class BackupWalletScreen extends Component<Props> {
+    constructor(props) {
+        super(props);
+    }
+
+    pressView(){
+        WalletManager.viewBackupPharse(this.props.pin, (error, result) => {
+            if (result) {
+                console.warn('Mnemonic: ' + result);
+                //Actions.view_backup_phrase();
+            } else {
+
+            }
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -36,7 +54,7 @@ export default class BackupWalletScreen extends Component {
                 <TouchableOpacity style={styles.buttons}>
                     <Text style={styles.buttons_text}>View Backup Phrase</Text>
 
-                    <TouchableOpacity style={styles.buttons_icon}>
+                    <TouchableOpacity style={styles.buttons_icon} onPress={() => this.pressView()}>
                         <SvgUri
                             width={20}
                             height={20}

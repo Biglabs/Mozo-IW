@@ -25,7 +25,6 @@ export default class HomeScreen extends Component<Props> {
             LinkingManager.manageScheme(schemeData, this.props.pin);
             GlobalStorage.getInstance().setSchemeData(null);
         }        
-        this.props.pin = null;
     }
 
     render() {
@@ -45,7 +44,7 @@ export default class HomeScreen extends Component<Props> {
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
-                    onPress={() => Actions.backup_wallet()}>
+                    onPress={() => Actions.backup_wallet({ pin : this.props.pin })}>
                     <SvgUri
                         width={24}
                         height={20}
