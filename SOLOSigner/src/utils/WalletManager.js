@@ -24,7 +24,7 @@ createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     return wallets;
 }
 
-getAddressAtIndex = function(wallet, index) {
+getAddressAtIndex = function(wallet, coinType, index) {
     try {
         let userWallet = wallet.derive(index);
         var keyPair = userWallet.keyPair;
@@ -34,7 +34,7 @@ getAddressAtIndex = function(wallet, index) {
         var addressBuffer = ethUtil.privateToAddress(privKeyBuffer);
         var hexAddress = addressBuffer.toString('hex');
         var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
-        var address = ethUtil.addHexPrefix(checksumAddress);
+        var address = (coinType == Constant.COIN_TYPE.ETH.value ? ethUtil.addHexPrefix(checksumAddress) : checksumAddress);
         console.log("Ethereum address: [" + address + "]");
         privkey = ethUtil.addHexPrefix(privkey);
         return {address: address, derivedIndex: index, privkey: privkey};
@@ -109,8 +109,9 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         let wallets = createNewWallet(manager, importedPhrase, pin, coinTypes);
         wallets.map((wallet, index) => {
             let publicKey = wallet.neutered().toBase58();
-            let walletData = getAddressAtIndex(wallet, 0);
-            saveAddressToLocal(manager, coinTypes[index], walletData, pin);
+            let coinType = coinTypes[index];
+            let walletData = getAddressAtIndex(wallet, coinType, 0);
+            saveAddressToLocal(manager, coinType, walletData, pin);
             // Check wallet is registered on server or not
             registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex, (error, result) => {
                 if (typeof callback === 'function') {
