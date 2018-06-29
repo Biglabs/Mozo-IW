@@ -7,18 +7,21 @@
 //
 
 import UIKit
+import SoloSDK
 import SwiftyJSON
 
 class SoloWalletViewController: UIViewController {
     
     let tabBarCtr = UITabBarController()
     var currentCoin: AddressDTO!
+    private var soloSDK: SoloSDK?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.createTabBarController()
         self.getBalance()
+        self.soloSDK = SoloSDK.init()
     }
     
     func createTabBarController() {
@@ -65,7 +68,7 @@ class SoloWalletViewController: UIViewController {
         }
         
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
-        RESTService.shared.infuraPOST(params) { value, error in
+        self.soloSDK?.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {
