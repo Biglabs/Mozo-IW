@@ -14,13 +14,14 @@ createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     manager.updateMnemonicWithPin(encryptedMnemonic, pin);
     let seed = bip39.mnemonicToSeedHex(mnemonic);
     let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
-    let isDefault = coinTypes ? false : true;
-    if (isDefault) {
-        coinTypes = [0, 60];
-    }
     let wallets = [];
-    let wallet = rootKey.derivePath("m/44'/60'/0'/0");
-    return wallet;
+    coinTypes.map(coinType => {
+        let _rootKey = rootKey;
+        let wallet = _rootKey.derivePath(`m/44'/${coinType}'/0'/0`);
+        wallets.push(wallet);
+    });
+    // let wallet = rootKey.derivePath("m/44'/60'/0'/0");
+    return wallets;
 }
 
 getAddressAtIndex = function(wallet, index) {
@@ -43,13 +44,13 @@ getAddressAtIndex = function(wallet, index) {
     return null;
 }
 
-saveAddressToLocal = function(manager, walletData, pin) {
+saveAddressToLocal = function(manager, coinType, walletData, pin) {
     // Because this is the first time when app is launched, data must be save to local
     // Save address and private key
     // Encrypt private key before saving to DB, password: pin
     let encryption = require('../common/encryption');
     let encryptedPrivateKey = encryption.encrypt(walletData.privkey, pin);
-    manager.addAddress(walletData.address, walletData.derivedIndex, encryptedPrivateKey);
+    manager.addAddress(coinType, walletData.address, walletData.derivedIndex, encryptedPrivateKey);
     // TODO: Load all addresses of this wallet from server and save to local
 }
 
@@ -101,19 +102,25 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
     AsyncStorage.setItem(Constant.FLAG_DB_EXISTING, 'true');
     if (isNewPin) {
         // TODO: Set timer here for the next time when user have to re-enter PIN
-        let ethWallet = createNewWallet(manager, importedPhrase, pin, coinTypes);
-        let publicKey = ethWallet.neutered().toBase58();
-        let walletData = getAddressAtIndex(ethWallet, 0);
-        saveAddressToLocal(manager, walletData, pin);
-        // Check wallet is registered on server or not
-        registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex, (error, result) => {
-            if (typeof callback === 'function') {
-                if (result) {
-                    callback(null, result);
-                } else {
-                    callback(error, null);
+        let isDefault = coinTypes ? false : true;
+        if (isDefault) {
+            coinTypes = [Constant.COIN_TYPE.BTC.value, Constant.COIN_TYPE.ETH.value];
+        }
+        let wallets = createNewWallet(manager, importedPhrase, pin, coinTypes);
+        wallets.map((wallet, index) => {
+            let publicKey = wallet.neutered().toBase58();
+            let walletData = getAddressAtIndex(wallet, 0);
+            saveAddressToLocal(manager, coinTypes[index], walletData, pin);
+            // Check wallet is registered on server or not
+            registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex, (error, result) => {
+                if (typeof callback === 'function') {
+                    if (result) {
+                        callback(null, result);
+                    } else {
+                        callback(error, null);
+                    }
                 }
-            }
+            });
         });
     } else {
         //Compare PIN
@@ -167,5 +174,5 @@ module.exports.viewBackupPharse = function(pin, callback) {
 }
 
 module.exports.backupWallet = function(pin, callback) {
-    
+
 }

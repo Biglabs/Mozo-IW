@@ -259,9 +259,9 @@ class DataManager {
         return addresses;
     }
 
-    addAddress(address, derivedIndex, prvKey) {
+    addAddress(coinType, address, derivedIndex, prvKey) {
         DataManager.realm.write(() => {
-            DataManager.realm.create('Address', { address : address, derivedIndex : derivedIndex, prvKey : prvKey });
+            DataManager.realm.create('Address', { coinType : coinType, address : address, derivedIndex : derivedIndex, prvKey : prvKey });
         });
     }
 
