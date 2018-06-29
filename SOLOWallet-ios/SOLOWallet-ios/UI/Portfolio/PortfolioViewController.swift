@@ -176,7 +176,7 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension PortfolioViewController: SoloWalletDelegate {
     func request(_ action: String) {
-        if action == SOLOACTION.Success.rawValue {
+        if action == EventType.Success.rawValue {
             self.buildPortfolioView()
         }
     }

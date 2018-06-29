@@ -47,6 +47,6 @@ public class HandshakeView: UIView {
     
     @objc func requestButtonTapped() {
         //solosigner://{"action":"GET_WALLET","receiver":"com.hdwallet.solowallet"}
-        AppService.shared.launchSignerApp(WALLETACTION.GET_WALLET.rawValue, coinType: COINTYPE.ETH.key, transaction: nil)
+        AppService.shared.launchSignerApp(CommandType.getWallet.rawValue, coinType: CoinType.ETH.key, transaction: nil)
     }
 }

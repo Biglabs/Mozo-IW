@@ -12,4 +12,6 @@ target 'SOLOWallet-ios' do
   pod 'JDStatusBarNotification', '~> 1.5.6'
   pod 'Texture', '~> 2.6'
   
+  # A tool to enforce Swift style and conventions
+  pod 'SwiftLint'
 end
