@@ -6,8 +6,8 @@ const Constants = {
         ADD_ADDRESS: "ADD_ADDRESS"
     },
     COIN_TYPE: {
-        BTC: { name: "BTC", value: 0 },
-        ETH: { name: "ETH", value: 60 },
+        BTC: { name: "BTC", value: 0, network: "BTC_TEST" },
+        ETH: { name: "ETH", value: 60, network: "ETH_TEST" },
         SOLO: { name: "SOLO", value: "Constract's Address" }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',

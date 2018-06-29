@@ -24,8 +24,9 @@ const AddressSchema = {
     name: 'Address',
     primaryKey: 'address',
     properties: {
-        coinType: 'int',
+        coinType: 'string',
         address: 'string',
+        network: 'string',
         derivedIndex: 'int',
         prvKey: 'string'
     },
@@ -217,7 +218,7 @@ class DataManager {
         });
     }
 
-    syncAddress(address, walletId, derivedIndex, coinType, network) {
+    syncAddress(walletId, address, derivedIndex, coinType, network) {
         try {
             this.sendRequest('http://192.168.1.98:9000/api/wallet-addresses', {
                 address : { 
@@ -259,9 +260,9 @@ class DataManager {
         return addresses;
     }
 
-    addAddress(coinType, address, derivedIndex, prvKey) {
+    addAddress(coinType, address, network, derivedIndex, prvKey) {
         DataManager.realm.write(() => {
-            DataManager.realm.create('Address', { coinType : coinType, address : address, derivedIndex : derivedIndex, prvKey : prvKey });
+            DataManager.realm.create('Address', { coinType : coinType, address : address, network: network, derivedIndex : derivedIndex, prvKey : prvKey });
         });
     }
 

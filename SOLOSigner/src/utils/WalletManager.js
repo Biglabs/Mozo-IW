@@ -17,7 +17,7 @@ createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let wallets = [];
     coinTypes.map(coinType => {
         let _rootKey = rootKey;
-        let wallet = _rootKey.derivePath(`m/44'/${coinType}'/0'/0`);
+        let wallet = _rootKey.derivePath(`m/44'/${coinType.value}'/0'/0`);
         wallets.push(wallet);
     });
     // let wallet = rootKey.derivePath("m/44'/60'/0'/0");
@@ -50,11 +50,11 @@ saveAddressToLocal = function(manager, coinType, walletData, pin) {
     // Encrypt private key before saving to DB, password: pin
     let encryption = require('../common/encryption');
     let encryptedPrivateKey = encryption.encrypt(walletData.privkey, pin);
-    manager.addAddress(coinType, walletData.address, walletData.derivedIndex, encryptedPrivateKey);
+    manager.addAddress(coinType.name, walletData.address, coinType.network, walletData.derivedIndex, encryptedPrivateKey);
     // TODO: Load all addresses of this wallet from server and save to local
 }
 
-registerWalletAndSyncAddress = function(manager, publicKey, address, derivedIndex, callback) {
+registerWalletAndSyncAddress = function(manager, publicKey, walletDataArray, callback) {
     console.log("Check wallet");
     manager.getExistingWalletFromServer(publicKey).then(walletInfo => {
         console.log('Wallet is registered.');
@@ -78,8 +78,11 @@ registerWalletAndSyncAddress = function(manager, publicKey, address, derivedInde
                 console.log('Wallet is registered.');
                 // Save Wallet Info - WalletId
                 manager.saveWalletInfo(walletInfo).then(result => {
-                    // Synchronize address to server
-                    manager.syncAddress(address, walletInfo.walletId, derivedIndex, "ETH", "ETH_TEST");
+                    walletDataArray.map((item) => {
+                        //walletData.address, walletData.derivedIndex
+                        // Synchronize all addresses to server
+                        manager.syncAddress(walletInfo.walletId, item.address, item.derivedIndex, item.coinType, item.network);
+                    });
                     //TODO: Should retry incase network error
                     AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
                     if (typeof callback === 'function') {
@@ -104,24 +107,25 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         // TODO: Set timer here for the next time when user have to re-enter PIN
         let isDefault = coinTypes ? false : true;
         if (isDefault) {
-            coinTypes = [Constant.COIN_TYPE.BTC.value, Constant.COIN_TYPE.ETH.value];
+            coinTypes = [Constant.COIN_TYPE.BTC, Constant.COIN_TYPE.ETH];
         }
         let wallets = createNewWallet(manager, importedPhrase, pin, coinTypes);
+        let walletDataArray = [];
         wallets.map((wallet, index) => {
-            let publicKey = wallet.neutered().toBase58();
             let coinType = coinTypes[index];
-            let walletData = getAddressAtIndex(wallet, coinType, 0);
+            let walletData = getAddressAtIndex(wallet, coinType.value, 0);
             saveAddressToLocal(manager, coinType, walletData, pin);
-            // Check wallet is registered on server or not
-            registerWalletAndSyncAddress(manager, publicKey, walletData.address, walletData.derivedIndex, (error, result) => {
-                if (typeof callback === 'function') {
-                    if (result) {
-                        callback(null, result);
-                    } else {
-                        callback(error, null);
-                    }
+            walletDataArray.push({coinType : coinType.name, address : walletData.address, network: coinType.network, derivedIndex : walletData.derivedIndex, prvKey : null });
+        });
+        let publicKey = wallets[0].neutered().toBase58();
+        registerWalletAndSyncAddress(manager, publicKey, walletDataArray, (error, result) => {
+            if (typeof callback === 'function') {
+                if (result) {
+                    callback(null, result);
+                } else {
+                    callback(error, null);
                 }
-            });
+            }
         });
     } else {
         //Compare PIN
@@ -133,8 +137,7 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
                     let publicKey = result;
                     let addresses = manager.getAllAddresses();
                     if (addresses && addresses.length > 0) {
-                        let address = addresses[0];
-                        registerWalletAndSyncAddress(manager, publicKey, address.address, address.derivedIndex, (error, result) => {
+                        registerWalletAndSyncAddress(manager, publicKey, addresses, (error, result) => {
                             if (typeof callback === 'function') {
                                 if (result) {
                                     callback(null, result);
