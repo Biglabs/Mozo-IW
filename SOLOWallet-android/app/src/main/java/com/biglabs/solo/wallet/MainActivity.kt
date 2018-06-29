@@ -1,5 +1,6 @@
 package com.biglabs.solo.wallet
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.RadioButton
 import android.widget.Toast
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.SignerListener
@@ -15,6 +17,9 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_tab_send.*
+import android.support.v4.content.res.ResourcesCompat
+
+
 
 class MainActivity : AppCompatActivity(), SignerListener {
 
@@ -22,6 +27,10 @@ class MainActivity : AppCompatActivity(), SignerListener {
     var value = "0.005"
 
     private var transactionData: String? = null
+
+    private var selectedTabId = -1
+    private var fontNormal: Typeface? = null
+    private var fontBold: Typeface? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +93,16 @@ class MainActivity : AppCompatActivity(), SignerListener {
                 transactionData = null
                 updateUI()
             }
+        }
+
+        fontNormal = ResourcesCompat.getFont(this, R.font.utm_avo_regular)
+        fontBold = ResourcesCompat.getFont(this, R.font.utm_avo_bold)
+        selectedTabId = action_nav_group.checkedRadioButtonId
+        action_nav_group.findViewById<RadioButton>(selectedTabId)?.typeface = fontBold
+        action_nav_group.setOnCheckedChangeListener { group, checkedId ->
+            group.findViewById<RadioButton>(selectedTabId)?.typeface = fontNormal
+            group.findViewById<RadioButton>(checkedId)?.typeface = fontBold
+            selectedTabId = checkedId
         }
     }
 

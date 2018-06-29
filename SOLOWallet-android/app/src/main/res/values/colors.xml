@@ -3,6 +3,7 @@
     <color name="colorPrimary">#006dff</color>
     <color name="colorPrimaryDark">#006dff</color>
 
+    <color name="colorPressedHighlight">#66006dff</color>
     <color name="colorControlHighLight">#80f4f9ff</color>
     <color name="textColorPrimary">#141a22</color>
     <color name="textColorContent">#747474</color>

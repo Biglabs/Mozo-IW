@@ -12,6 +12,7 @@
     <include layout="@layout/fragment_tab_send" />
 
     <RadioGroup
+        android:id="@+id/action_nav_group"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
