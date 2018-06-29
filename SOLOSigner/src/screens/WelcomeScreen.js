@@ -13,6 +13,7 @@ export default class WelcomeScreen extends Component {
         let {width} = Dimensions.get('window');
         this.logoWidth = 64 * width / 100;
         this.logoHeight = 37.8 * this.logoWidth / 100;
+        this.state = { animating: false };
     }
 
     render() {

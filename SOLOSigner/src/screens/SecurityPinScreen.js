@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {AsyncStorage, TouchableHighlight, View, Image} from 'react-native';
+import {AsyncStorage, TouchableHighlight, View, ActivityIndicator} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {FooterActions, RotationView, Text} from "../components/SoloComponent";
@@ -10,6 +10,7 @@ import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import TimerMixin from 'react-timer-mixin';
 import GlobalStorage from '../utils/GlobalStorage';
+import encryption from '../common/encryption';
 
 const accentColor = '#00fffc';
 const numbersPressedColor = '#003c8d';
@@ -36,7 +37,6 @@ export default class SecurityPinScreen extends Component {
     handleContinuePress() {
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
-
                 this.manageWallet((error, result) => {
                     if (result) {
                         this.props.isNewPIN = false;
@@ -51,14 +51,14 @@ export default class SecurityPinScreen extends Component {
         });
     }
 
-    componentDidUpdate(_, prevState) {
-        if (prevState.isShowingLoading === false && this.state.isShowingLoading === true) {
-            //console.warn('1.Component did upadte: ' + this.state.isShowingLoading + ", isShowingLoading: " + prevState.isShowingLoading);
-        }
-    }
-
-    createNewWallet() {
-        let mnemonic = this.props.importedPhrase || "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
+    createNewWallet(manager) {
+        let mnemonic = this.props.importedPhrase || 
+            "test pizza drift whip rebel empower flame mother service grace sweet kangaroo"; 
+            // bip39.generateMnemonic(128, null, (this.props.language || bip39.wordlists.english));
+        // Save PIN and mnemonic
+        let pin = JSON.stringify(this.pinCode);
+        let encryptedMnemonic = encryption.encrypt(mnemonic, pin);
+        manager.updateMnemonicWithPin(encryptedMnemonic, pin);
         let seed = bip39.mnemonicToSeedHex(mnemonic);
         let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
         let wallet = rootKey.derivePath("m/44'/60'/0'/0");
@@ -142,10 +142,8 @@ export default class SecurityPinScreen extends Component {
         // Store isDbExisting true
         AsyncStorage.setItem(Constant.FLAG_DB_EXISTING, 'true');
         if (this.props.isNewPIN) {
-            // Save PIN
-            manager.updatePin(this.pinCode);
             // TODO: Set timer here for the next time when user have to re-enter PIN
-            let ethWallet = this.createNewWallet();
+            let ethWallet = this.createNewWallet(manager);
             let publicKey = ethWallet.neutered().toBase58();
             let walletData = this.getAddressAtIndex(ethWallet, 0);
             let pin = JSON.stringify(this.pinCode);
@@ -226,10 +224,7 @@ export default class SecurityPinScreen extends Component {
         if (this.state.isShowingLoading)
             return (
                 <View style={styles.loading_container}>
-                    {/*<RotationView duration={1000}>*/}
-                    {/*<SvgUri width={50} height={50} source={require('../res/icons/ic_loading_indicator.svg')}/>*/}
-                    {/*</RotationView>*/}
-                    <Image source={require('../res/images/loading_abc.gif')}/>
+                    <ActivityIndicator size="large" color="#ffffff" animating={this.state.isShowingLoading}/>
                     <Text style={styles.loading_text}>Creating Interface</Text>
                 </View>
             );

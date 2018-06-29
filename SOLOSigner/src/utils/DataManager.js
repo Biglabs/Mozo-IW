@@ -5,6 +5,7 @@ const AppSchema = {
     primaryKey: 'pin',
     properties: {
         pin: 'string',
+        mnemonic: 'string'
     },
 }
 
@@ -74,7 +75,7 @@ class DataManager {
         }
     }
 
-    updatePin(pin){
+    updateMnemonicWithPin(mnemonic, pin){
         let appInfo = this.getAppInfo();
         let hashPin = this.convertToHash(pin);
         if(appInfo){
@@ -84,13 +85,13 @@ class DataManager {
             });
         } 
         //Add new
-        this.addPin(hashPin);
+        this.addMnemonicWithPin(mnemonic, hashPin);
         return hashPin;
     }
 
-    addPin(hashPin){
+    addMnemonicWithPin(mnemonic, hashPin){
         DataManager.realm.write(() => {
-            DataManager.realm.create('App', { pin : hashPin });
+            DataManager.realm.create('App', { pin : hashPin, mnemonic : mnemonic });
         });
     }
 
