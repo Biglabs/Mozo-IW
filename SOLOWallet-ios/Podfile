@@ -4,14 +4,13 @@ use_frameworks!
 
 target 'SOLOWallet-ios' do
 
-  pod 'SoloSDK'
   pod 'MMDrawerController', '~> 0.5.7'
   pod 'SwiftyJSON', '~> 3.1.4'
   pod 'KeychainAccess', '~> 3.1.0'
   pod 'JDStatusBarNotification', '~> 1.5.6'
   pod 'Texture', '~> 2.6'
 
-  pod 'SoloSDK', path: '../'
+  pod 'SoloSDK', path: '../SoloSDK-ios/'
   
   # A tool to enforce Swift style and conventions
   pod 'SwiftLint'
