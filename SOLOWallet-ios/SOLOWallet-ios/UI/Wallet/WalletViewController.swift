@@ -47,7 +47,7 @@ class WalletViewController: AbstractViewController {
     }
     
     @objc func refresh(_ sender: Any? = nil) {
-        self.delegate?.request(WALLETACTION.GET_BALANCE.rawValue)
+        self.delegate?.request(CommandType.getBalance.rawValue)
         if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
             refreshControl.endRefreshing()
         }

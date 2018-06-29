@@ -24,7 +24,7 @@ public class AppService {
         let com = CommunicationDTO(json: data)
         if let action = com?.action {
             switch action {
-            case WALLETACTION.GET_WALLET.rawValue:
+            case CommandType.getWallet.rawValue:
                 if let result = com?.result {
                     let wallet = WalletDTO(json: result)
                     if let walletId = wallet?.walletId {
@@ -37,9 +37,9 @@ public class AppService {
                     }
                 }
                 break
-            case WALLETACTION.ADD_ADDRESS.rawValue:
+            case CommandType.addAddress.rawValue:
                 break
-            case WALLETACTION.SIGN.rawValue:
+            case CommandType.sign.rawValue:
                 if let result = com?.result {
                     let value = TransactionDTO(json: result)
                     if let signedTransaction = value?.signedTransaction {

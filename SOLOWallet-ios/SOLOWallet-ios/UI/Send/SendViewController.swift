@@ -174,8 +174,8 @@ class SendViewController: AbstractViewController {
         transaction.value = Double(value)
         
         // sign eth
-        if self.currentCoin?.coin == COINTYPE.ETH.key {
-            AppService.shared.launchSignerApp(WALLETACTION.SIGN.rawValue, coinType: COINTYPE.ETH.key, transaction: transaction)
+        if self.currentCoin?.coin == CoinType.ETH.key {
+            AppService.shared.launchSignerApp(CommandType.sign.rawValue, coinType: CoinType.ETH.key, transaction: transaction)
         }
     }
     

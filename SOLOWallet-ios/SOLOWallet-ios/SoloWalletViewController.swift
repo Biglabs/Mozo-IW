@@ -28,19 +28,19 @@ class SoloWalletViewController: UIViewController {
         let walletVC = WalletViewController()
         walletVC.currentCoin = self.currentCoin
         walletVC.delegate = self
-        walletVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Wallet.value, image: UIImage.init(named: SOLOTAB.Wallet.icon), tag: 0)
+        walletVC.tabBarItem = UITabBarItem.init(title: SoloTab.Wallet.value, image: UIImage.init(named: SoloTab.Wallet.icon), tag: 0)
         controllerArray.append(walletVC)
         
         //Tab 2: Receive
         let receiveVC = ReceiveViewController()
-        receiveVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Receive.value, image: UIImage.init(named: SOLOTAB.Receive.icon), tag: 1)
+        receiveVC.tabBarItem = UITabBarItem.init(title: SoloTab.Receive.value, image: UIImage.init(named: SoloTab.Receive.icon), tag: 1)
         receiveVC.currentCoin = self.currentCoin
         receiveVC.delegate = self
         controllerArray.append(receiveVC)
         
         //Tab 3: Exchange
         let exchangeVC = ExchangeViewController()
-        exchangeVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Exchange.value, image: UIImage.init(named: SOLOTAB.Exchange.icon), tag: 2)
+        exchangeVC.tabBarItem = UITabBarItem.init(title: SoloTab.Exchange.value, image: UIImage.init(named: SoloTab.Exchange.icon), tag: 2)
         exchangeVC.currentCoin = self.currentCoin
         exchangeVC.delegate = self
         controllerArray.append(exchangeVC)
@@ -48,7 +48,7 @@ class SoloWalletViewController: UIViewController {
         //Tab 4: Send
         let storyboard = UIStoryboard(name: "SendViewController", bundle: nil)
         let sendVC = storyboard.instantiateViewController(withIdentifier: "SendVC") as! SendViewController
-        sendVC.tabBarItem = UITabBarItem.init(title: SOLOTAB.Send.value, image: UIImage.init(named: SOLOTAB.Send.icon), tag: 3)
+        sendVC.tabBarItem = UITabBarItem.init(title: SoloTab.Send.value, image: UIImage.init(named: SoloTab.Send.icon), tag: 3)
         sendVC.currentCoin = self.currentCoin
         sendVC.delegate = self
         controllerArray.append(sendVC)
@@ -100,9 +100,9 @@ class SoloWalletViewController: UIViewController {
 
 extension SoloWalletViewController: SoloWalletDelegate {
     func request(_ action: String) {
-        if action == WALLETACTION.GET_BALANCE.rawValue {
+        if action == CommandType.getBalance.rawValue {
             self.getBalance()
-        } else if action == SOLOACTION.Dismiss.rawValue {
+        } else if action == EventType.Dismiss.rawValue {
             self.dismiss(animated: true)
         }
     }

@@ -42,7 +42,7 @@ public class AbstractViewController: UIViewController {
     }
     
     @objc func back() {
-        self.delegate?.request(SOLOACTION.Dismiss.rawValue)
+        self.delegate?.request(EventType.Dismiss.rawValue)
     }
     
     open func updateAddress(_ sender: Any? = nil) {}

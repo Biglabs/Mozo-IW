@@ -26,7 +26,7 @@ public enum BackendError: Error {
     case invalidToken(String)
 }
 
-public enum COINTYPE {
+public enum CoinType {
     case BTC
     case ETH
     
@@ -52,7 +52,7 @@ public enum COINTYPE {
     }
 }
 
-public enum SOLOTAB {
+public enum SoloTab {
     case Wallet
     case Receive
     case Exchange
@@ -86,26 +86,21 @@ public enum SOLOTAB {
     }
 }
 
-public enum WALLETACTION: String {
-    case SIGN = "SIGN"
-    case GET_WALLET = "GET_WALLET"
-    case ADD_ADDRESS = "ADD_ADDRESS"
-    case GET_BALANCE = "GET_BALANCE"
+public enum CommandType: String {
+    case sign = "SIGN"
+    case getWallet = "GET_WALLET"
+    case addAddress = "ADD_ADDRESS"
+    case getBalance = "GET_BALANCE"
 }
 
-public enum SOLOACTION: String {
+public enum EventType: String {
     case Dismiss = "dismiss"
     case Success = "success"
+    case Fail = "fail"
 }
 
 public enum SoloNotification: String {
     case Login   = "LOGIN"
+    case Logout   = "LOGOUT"
     case Signed = "SIGNED"
-}
-
-public enum LOGINTYPE: String {
-    case Login = "login"
-    case Logout = "logout"
-    case Success = "success"
-    case Fail = "fail"
 }
