@@ -24,6 +24,7 @@ const AddressSchema = {
     name: 'Address',
     primaryKey: 'address',
     properties: {
+        coinType: 'int',
         address: 'string',
         derivedIndex: 'int',
         prvKey: 'string'

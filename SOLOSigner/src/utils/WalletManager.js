@@ -152,9 +152,9 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
 
 module.exports.viewBackupPharse = function(pin, callback) {
     let manager = DataManager.getInstance();
-    let appInfo = this.getAppInfo();
+    let appInfo = manager.getAppInfo();
     if (appInfo) {
-        let encryptedMnemonic = manager.getAppInfo();
+        let encryptedMnemonic = appInfo.mnemonic;
         let mnemonic = encryption.decrypt(encryptedMnemonic, pin);
         if (typeof callback === 'function') {
             callback(null, mnemonic);
@@ -164,4 +164,8 @@ module.exports.viewBackupPharse = function(pin, callback) {
             callback(new Error("Inputted PIN is not correct"), null);
         }
     }
+}
+
+module.exports.backupWallet = function(pin, callback) {
+    
 }

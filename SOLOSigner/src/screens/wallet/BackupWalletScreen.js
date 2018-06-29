@@ -16,7 +16,7 @@ export default class BackupWalletScreen extends Component<Props> {
     pressView(){
         WalletManager.viewBackupPharse(this.props.pin, (error, result) => {
             if (result) {
-                console.warn('Mnemonic: ' + result);
+                console.log('Mnemonic: ' + result);
                 //Actions.view_backup_phrase();
             } else {
 
@@ -51,10 +51,11 @@ export default class BackupWalletScreen extends Component<Props> {
 
                 <View style={styles.dash}/>
 
-                <TouchableOpacity style={styles.buttons}>
+                <TouchableOpacity style={styles.buttons}
+                        onPress={() => this.pressView()}>
                     <Text style={styles.buttons_text}>View Backup Phrase</Text>
 
-                    <TouchableOpacity style={styles.buttons_icon} onPress={() => this.pressView()}>
+                    <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
                             width={20}
                             height={20}
