@@ -1,142 +1,104 @@
 package com.biglabs.solo.wallet
 
+import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Typeface
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.view.View
 import android.widget.RadioButton
-import android.widget.Toast
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.SignerListener
 import com.biglabs.solo.signer.library.models.Wallet
-import com.google.gson.Gson
+import com.biglabs.solo.wallet.fragments.ExchangeFragment
+import com.biglabs.solo.wallet.fragments.ReceiveFragment
+import com.biglabs.solo.wallet.fragments.SendFragment
+import com.biglabs.solo.wallet.fragments.WalletFragment
+import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
+import com.biglabs.solo.wallet.models.WalletsViewModel
+import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.fragment_tab_send.*
-import android.support.v4.content.res.ResourcesCompat
-
+import org.greenrobot.eventbus.EventBus
 
 
 class MainActivity : AppCompatActivity(), SignerListener {
-
-    private val accounts = arrayOf("0x011df24265841dCdbf2e60984BB94007b0C1d76A", "0x213DE50319F5954D821F704d46e4fd50Fb09B459")
-    var value = "0.005"
-
-    private var transactionData: String? = null
-
     private var selectedTabId = -1
     private var fontNormal: Typeface? = null
     private var fontBold: Typeface? = null
+    private lateinit var walletsViewModel: WalletsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initializeLayoutsParams()
+        initializeEvents()
+        loadCurrentTabFragment()
+
+        walletsViewModel = ViewModelProviders.of(this).get(WalletsViewModel::class.java)
+        Signer.initialize(this, this, BuildConfig.APPLICATION_ID)
+    }
+
+    private fun initializeLayoutsParams() {
+        fontNormal = ResourcesCompat.getFont(this, R.font.utm_avo_regular)
+        fontBold = ResourcesCompat.getFont(this, R.font.utm_avo_bold)
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
+        selectedTabId = action_nav_group.checkedRadioButtonId
+        action_nav_group.findViewById<RadioButton>(selectedTabId)?.typeface = fontBold
+    }
+
+    private fun initializeEvents() {
         button_menu.setOnClickListener {
             if (!drawer_layout.isDrawerOpen(GravityCompat.END)) {
                 drawer_layout.openDrawer(GravityCompat.END)
             }
         }
 
-        radios.setOnCheckedChangeListener { _, _ ->
-            updateUI()
-        }
-
-        value_input.setText(value)
-        value_input.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-                value = p0?.toString()!!
-                updateUI()
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
-
-        buttonGetBalance.setOnClickListener {
-            if (radios.checkedRadioButtonId > 0 && radios.checkedRadioButtonId <= accounts.size) {
-                Signer.getInstance().getBalance(accounts[radios.checkedRadioButtonId - 1])
-            } else {
-                Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        buttonSend.setOnClickListener {
-            if (radios.checkedRadioButtonId > 0 && radios.checkedRadioButtonId <= accounts.size) {
-                val valueInNumber = value.toFloatOrNull()
-                if (valueInNumber == null || valueInNumber == 0f) {
-                    Toast.makeText(this, "Invalid value", Toast.LENGTH_LONG).show()
-                } else {
-
-                    val from = radios.checkedRadioButtonId - 1
-                    val to = accounts.size - from - 1
-                    Signer.getInstance().confirmTransaction(this, accounts[from], accounts[to], "ETH", value, message_input.text.toString())
-                }
-            } else {
-                Toast.makeText(this, "Please choose an account!", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        buttonSubmit.setOnClickListener {
-            if (transactionData != null) {
-                Signer.getInstance().sendTransaction(transactionData!!)
-                transactionData = null
-                updateUI()
-            }
-        }
-
-        fontNormal = ResourcesCompat.getFont(this, R.font.utm_avo_regular)
-        fontBold = ResourcesCompat.getFont(this, R.font.utm_avo_bold)
-        selectedTabId = action_nav_group.checkedRadioButtonId
-        action_nav_group.findViewById<RadioButton>(selectedTabId)?.typeface = fontBold
         action_nav_group.setOnCheckedChangeListener { group, checkedId ->
             group.findViewById<RadioButton>(selectedTabId)?.typeface = fontNormal
             group.findViewById<RadioButton>(checkedId)?.typeface = fontBold
             selectedTabId = checkedId
+            loadCurrentTabFragment()
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Signer.initialize(this, BuildConfig.APPLICATION_ID)
+    private fun loadCurrentTabFragment() {
+        var fragment: Fragment? = null
+        when (selectedTabId) {
+            R.id.action_nav_wallet -> fragment = WalletFragment.newInstance()
+            R.id.action_nav_receive -> fragment = ReceiveFragment.newInstance()
+            R.id.action_nav_exchange -> fragment = ExchangeFragment.newInstance()
+            R.id.action_nav_send -> fragment = SendFragment.newInstance()
+        }
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.contain_main_frame, fragment)
+                .commit()
     }
 
-    override fun onReceiveHandshake(walletID: String) {
-        textBalance.text = "walletID: $walletID"
-        Log.e("vu", "walletID: $walletID")
+    override fun onSyncCompleted() {
         Signer.getInstance().getWallets(this)
     }
 
     override fun onReceiveWallets(wallets: List<Wallet>?) {
-        Log.e("vu", "list : ${Gson().toJson(wallets)}")
-        textBalance.text = "list wallets: ${Gson().toJson(wallets)}"
+        // broadcast wallets to fragments
+        walletsViewModel.updateWallets(wallets!!)
     }
 
     override fun onReceiveBalance(balance: String) {
-        textBalance.text = balance
+        EventBus.getDefault().post(WalletInfoEventMessage(balance))
+    }
+
+    override fun onReceiveSignedTransaction(rawTx: String) {
+        EventBus.getDefault().post(WalletTransactionEventMessage(rawTx))
     }
 
     override fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String) {
-        textBalance.text = "send transaction: ${if (isSuccess) "successfully" else "failed"} \n txHash: $txHash"
-    }
-
-    override fun onReceiveSignedTransaction(signedTx: String) {
-        transactionData = signedTx
-        textBalance.text = "signed transaction: $transactionData"
-        updateUI()
-    }
-
-    fun updateUI() {
-        buttonSubmit.visibility = if (transactionData == null) View.GONE else View.VISIBLE
+        EventBus.getDefault().post(WalletTransactionEventMessage(isSuccess, txHash))
     }
 }

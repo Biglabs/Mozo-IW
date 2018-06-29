@@ -4,17 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:paddingTop="?actionBarSize"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <include layout="@layout/fragment_tab_send" />
+    <FrameLayout
+        android:id="@+id/contain_main_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/bottom_navigation_bar_height" />
 
     <RadioGroup
         android:id="@+id/action_nav_group"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/bottom_navigation_bar_height"
         android:layout_gravity="bottom"
         android:background="@color/windowBackground"
         android:checkedButton="@+id/action_nav_wallet"

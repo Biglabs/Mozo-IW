@@ -5,4 +5,6 @@
     <string name="common_text_receive">Receive</string>
     <string name="common_text_exchange">Exchange</string>
     <string name="common_text_send">Send</string>
+
+    <string name="wallet_address_type">%s address</string>
 </resources>
