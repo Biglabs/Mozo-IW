@@ -79,7 +79,6 @@ registerWalletAndSyncAddress = function(manager, publicKey, walletDataArray, cal
                 // Save Wallet Info - WalletId
                 manager.saveWalletInfo(walletInfo).then(result => {
                     walletDataArray.map((item) => {
-                        //walletData.address, walletData.derivedIndex
                         // Synchronize all addresses to server
                         manager.syncAddress(walletInfo.walletId, item.address, item.derivedIndex, item.coinType, item.network);
                     });
@@ -178,5 +177,5 @@ module.exports.viewBackupPharse = function(pin, callback) {
 }
 
 module.exports.backupWallet = function(pin, callback) {
-
+    
 }
