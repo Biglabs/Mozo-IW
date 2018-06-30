@@ -15,9 +15,10 @@ import com.biglabs.solo.wallet.fragments.ExchangeFragment
 import com.biglabs.solo.wallet.fragments.ReceiveFragment
 import com.biglabs.solo.wallet.fragments.SendFragment
 import com.biglabs.solo.wallet.fragments.WalletFragment
-import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
 import com.biglabs.solo.wallet.models.WalletsViewModel
+import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
+import com.biglabs.solo.wallet.utils.translucentStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.greenrobot.eventbus.EventBus
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity(), SignerListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        translucentStatusBar()
         setContentView(R.layout.activity_main)
         initializeLayoutsParams()
         initializeEvents()
@@ -86,7 +88,6 @@ class MainActivity : AppCompatActivity(), SignerListener {
     }
 
     override fun onReceiveWallets(wallets: List<Wallet>?) {
-        // broadcast wallets to fragments
         walletsViewModel.updateWallets(wallets!!)
     }
 

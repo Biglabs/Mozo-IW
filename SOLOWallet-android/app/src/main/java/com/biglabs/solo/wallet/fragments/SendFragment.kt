@@ -10,9 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.biglabs.solo.signer.library.Signer
-import com.biglabs.solo.signer.library.SignerListener
 import com.biglabs.solo.signer.library.models.Wallet
-import com.biglabs.solo.wallet.BuildConfig
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage

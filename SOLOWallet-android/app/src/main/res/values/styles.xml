@@ -4,13 +4,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:colorPressedHighlight">@color/colorPressedHighlight</item>
-        <item name="colorControlHighlight">@color/colorControlHighLight</item>
-
-        <item name="android:actionBarSize">83dp</item>
-        <item name="android:statusBarColor">@android:color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorControlHighlight">@color/colorHighlight</item>
+        <item name="android:colorPressedHighlight">@color/colorHighlight</item>
         <item name="android:windowBackground">@color/windowBackground</item>
 
         <item name="android:editTextStyle">@style/SoloStyle.EditText</item>
