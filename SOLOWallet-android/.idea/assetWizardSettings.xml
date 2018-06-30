@@ -14,11 +14,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="15" />
-                            <entry key="outputName" value="ic_nav_send" />
+                            <entry key="height" value="9" />
+                            <entry key="outputName" value="ic_moving_line" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\biglabs\Downloads\wallet\Icon-send.svg" />
-                            <entry key="width" value="15" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../../resources/Moving Line.svg" />
+                            <entry key="width" value="35" />
                           </map>
                         </option>
                       </PersistentState>

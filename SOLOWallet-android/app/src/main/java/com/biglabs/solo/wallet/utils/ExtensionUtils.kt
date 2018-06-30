@@ -1,11 +1,15 @@
 package com.biglabs.solo.wallet.utils
 
 import android.app.Activity
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
@@ -27,13 +31,27 @@ fun Activity.translucentStatusBar() {
         uiFlags = uiFlags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
     window.decorView.systemUiVisibility = uiFlags
+    window.statusBarColor = Color.TRANSPARENT
 
-    if (Build.VERSION.SDK_INT >= 21) {
-        setWindowFlag(window, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
-        setWindowFlag(window, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, true)
-        setWindowFlag(window, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, false)
-        window.statusBarColor = Color.TRANSPARENT
+    setWindowFlag(window, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
+    setWindowFlag(window, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, true)
+    setWindowFlag(window, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, false)
+}
+
+fun Dialog.fullscreenLayout() {
+    if (window == null) return
+
+    var uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    if (Build.VERSION.SDK_INT >= 23) {
+        uiFlags = uiFlags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
+    window.decorView.systemUiVisibility = uiFlags
+    window.setBackgroundDrawable(InsetDrawable(ColorDrawable(Color.TRANSPARENT), 0))
+    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+    setWindowFlag(window, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
+    setWindowFlag(window, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, true)
+    setWindowFlag(window, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, false)
 }
 
 

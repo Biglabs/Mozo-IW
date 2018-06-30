@@ -7,6 +7,7 @@
         <item name="colorControlHighlight">@color/colorHighlight</item>
         <item name="android:colorPressedHighlight">@color/colorHighlight</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:statusBarColor">@color/windowBackground</item>
 
         <item name="android:editTextStyle">@style/SoloStyle.EditText</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
@@ -14,7 +15,7 @@
         <item name="android:buttonStyle">@style/SoloStyle.Button</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -24,6 +25,7 @@
 
     <style name="SoloStyle..TextView" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/utm_avo</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="SoloStyle.Button" parent="Widget.AppCompat.Button">
@@ -61,5 +63,10 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@drawable/selector_nav_item_text_color</item>
         <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="DialogUpDownAnimation" parent="AppTheme">
+        <item name="android:windowEnterAnimation">@anim/slide_in_down</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_up</item>
     </style>
 </resources>

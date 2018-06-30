@@ -1,5 +1,6 @@
 package com.biglabs.solo.wallet
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Typeface
 import android.os.Bundle
@@ -7,10 +8,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.RadioButton
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.SignerListener
 import com.biglabs.solo.signer.library.models.Wallet
+import com.biglabs.solo.wallet.dialogs.WalletChooserDialog
 import com.biglabs.solo.wallet.fragments.ExchangeFragment
 import com.biglabs.solo.wallet.fragments.ReceiveFragment
 import com.biglabs.solo.wallet.fragments.SendFragment
@@ -39,7 +42,18 @@ class MainActivity : AppCompatActivity(), SignerListener {
         loadCurrentTabFragment()
 
         walletsViewModel = ViewModelProviders.of(this).get(WalletsViewModel::class.java)
+        walletsViewModel.getCurrentWallet().observe(this, Observer { onCurrentWalletChanged(it) })
         Signer.initialize(this, this, BuildConfig.APPLICATION_ID)
+
+        /* mock data */
+        val walletList = arrayListOf<Wallet>()
+        val wallet = Wallet()
+        wallet.address = "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
+        wallet.coin = "ETH"
+        wallet.id = "1"
+        wallet.network = "ETH_TEST"
+        walletList.add(wallet)
+        walletsViewModel.updateWallets(walletList)
     }
 
     private fun initializeLayoutsParams() {
@@ -55,6 +69,9 @@ class MainActivity : AppCompatActivity(), SignerListener {
     }
 
     private fun initializeEvents() {
+        button_choose_wallet.setOnClickListener {
+            WalletChooserDialog.newInstance().show(supportFragmentManager, "WalletChooser")
+        }
         button_menu.setOnClickListener {
             if (!drawer_layout.isDrawerOpen(GravityCompat.END)) {
                 drawer_layout.openDrawer(GravityCompat.END)
@@ -81,6 +98,13 @@ class MainActivity : AppCompatActivity(), SignerListener {
                 .beginTransaction()
                 .replace(R.id.contain_main_frame, fragment)
                 .commit()
+    }
+
+    private fun onCurrentWalletChanged(it: Wallet?) {
+        button_choose_wallet.visibility = View.VISIBLE
+
+        current_wallet_name.text = it?.coin
+
     }
 
     override fun onSyncCompleted() {

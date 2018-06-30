@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">SOLO Wallet</string>
 
+    <string name="common_text_activated">Activated</string>
     <string name="common_text_wallet">Wallet</string>
     <string name="common_text_receive">Receive</string>
     <string name="common_text_exchange">Exchange</string>
     <string name="common_text_send">Send</string>
 
     <string name="wallet_address_type">%s address</string>
+    <string name="wallet_list">Wallet list</string>
 </resources>
