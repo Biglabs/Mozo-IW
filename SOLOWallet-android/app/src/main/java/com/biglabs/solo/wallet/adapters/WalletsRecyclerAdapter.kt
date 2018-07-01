@@ -5,34 +5,39 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.biglabs.solo.wallet.R
-import com.biglabs.solo.wallet.utils.Coin
+import com.biglabs.solo.wallet.models.CoinCheckable
+import com.biglabs.solo.wallet.utils.RecyclerItemClickListener
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_list_coin.*
 
+class WalletsRecyclerAdapter(private val coins: List<CoinCheckable>, private val itemClickListener: RecyclerItemClickListener?) : RecyclerView.Adapter<WalletsRecyclerAdapter.WalletViewHolder>() {
 
-class WalletsRecyclerAdapter : RecyclerView.Adapter<WalletsRecyclerAdapter.WalletViewHolder>() {
+    var selectedIndex = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletViewHolder =
             WalletViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_list_coin, parent, false))
 
     override fun getItemCount(): Int {
-        return Coin.values().size
+        return coins.size
     }
 
     override fun onBindViewHolder(holder: WalletViewHolder, position: Int) {
-        holder.bind(Coin.values()[position])
+        val coin = coins[position]
+        if(coin.checked) selectedIndex = position
+        holder.bind(coin)
+        holder.itemView.setOnClickListener { itemClickListener?.onItemClicked(position) }
     }
 
-    inner class WalletViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val icon: ImageView = view.findViewById(R.id.item_coin_icon)
-        val name: TextView = view.findViewById(R.id.item_coin_name)
+    inner class WalletViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         @SuppressLint("ResourceType")
-        fun bind(coin: Coin) {
-            icon.setImageResource(coin.icon)
-            name.text = coin.name
+        fun bind(coin: CoinCheckable) {
+            item_coin_icon.setImageResource(coin.coin.icon)
+            item_coin_name.text = coin.coin.key
+
+            item_coin_activate_icon.visibility = if (coin.checked) View.VISIBLE else View.GONE
+            item_coin_activate_text.visibility = if (coin.checked) View.VISIBLE else View.GONE
         }
     }
 }

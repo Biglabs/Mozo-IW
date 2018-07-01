@@ -1,5 +1,6 @@
 package com.biglabs.solo.wallet
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Typeface
@@ -21,6 +22,7 @@ import com.biglabs.solo.wallet.fragments.WalletFragment
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
+import com.biglabs.solo.wallet.utils.WalletProvider
 import com.biglabs.solo.wallet.utils.translucentStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -39,21 +41,15 @@ class MainActivity : AppCompatActivity(), SignerListener {
         setContentView(R.layout.activity_main)
         initializeLayoutsParams()
         initializeEvents()
-        loadCurrentTabFragment()
+        Signer.initialize(this, this, BuildConfig.APPLICATION_ID)
 
         walletsViewModel = ViewModelProviders.of(this).get(WalletsViewModel::class.java)
         walletsViewModel.getCurrentWallet().observe(this, Observer { onCurrentWalletChanged(it) })
-        Signer.initialize(this, this, BuildConfig.APPLICATION_ID)
 
         /* mock data */
-        val walletList = arrayListOf<Wallet>()
-        val wallet = Wallet()
-        wallet.address = "0x011df24265841dCdbf2e60984BB94007b0C1d76A"
-        wallet.coin = "ETH"
-        wallet.id = "1"
-        wallet.network = "ETH_TEST"
-        walletList.add(wallet)
-        walletsViewModel.updateWallets(walletList)
+        walletsViewModel.updateWallets(WalletProvider.getWallet())
+
+        loadCurrentTabFragment()
     }
 
     private fun initializeLayoutsParams() {
@@ -94,17 +90,23 @@ class MainActivity : AppCompatActivity(), SignerListener {
             R.id.action_nav_exchange -> fragment = ExchangeFragment.newInstance()
             R.id.action_nav_send -> fragment = SendFragment.newInstance()
         }
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.contain_main_frame, fragment)
-                .commit()
+
+        fragment?.let {
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.contain_main_frame, it)
+                    .commit()
+        }
     }
 
-    private fun onCurrentWalletChanged(it: Wallet?) {
-        button_choose_wallet.visibility = View.VISIBLE
+    @SuppressLint("ResourceType")
+    private fun onCurrentWalletChanged(wallet: Wallet?) {
+        wallet?.coin()?.let {
+            button_choose_wallet.visibility = View.VISIBLE
 
-        current_wallet_name.text = it?.coin
-
+            current_wallet_name.text = it.key
+            current_wallet_icon.setImageResource(it.icon)
+        }
     }
 
     override fun onSyncCompleted() {

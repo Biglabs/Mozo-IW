@@ -2,6 +2,7 @@ package com.biglabs.solo.wallet.fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -18,6 +19,11 @@ import com.biglabs.solo.wallet.utils.toast
 import kotlinx.android.synthetic.main.fragment_nav_send.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import com.google.zxing.integration.android.IntentIntegrator
+import android.R.attr.data
+import android.widget.Toast
+import com.google.zxing.integration.android.IntentResult
+
 
 class SendFragment : Fragment() {
 
@@ -44,8 +50,8 @@ class SendFragment : Fragment() {
         val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
         walletsViewModel.getCurrentWallet().observe(this, Observer { this.wallet = it })
 
-        value_input.setText(value)
-        value_input.addTextChangedListener(object : TextWatcher {
+        input_amount.setText(value)
+        input_amount.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 value = p0?.toString()!!
                 updateUI()
@@ -58,16 +64,19 @@ class SendFragment : Fragment() {
             }
         })
 
+        button_scan_address.setOnClickListener {
+            IntentIntegrator.forSupportFragment(this).initiateScan()
+        }
+
         buttonSend.setOnClickListener {
             val address = wallet?.address
             if (address != null) {
                 val valueInNumber = value.toFloatOrNull()
-                if (valueInNumber == null || valueInNumber == 0f) {
+                if (valueInNumber == null || valueInNumber == 0f || input_receive_address.length() == 0) {
                     toast("Invalid value")
                 } else {
 
-                    val to = ""
-                    Signer.getInstance().confirmTransaction(context!!, address, to, "ETH", value, message_input.text.toString())
+                    Signer.getInstance().confirmTransaction(context!!, address, input_receive_address.toString(), "ETH", value, message_input.text.toString())
                 }
             } else {
                 toast("Please choose an account!")
@@ -83,10 +92,19 @@ class SendFragment : Fragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result?.contents != null) {
+            input_receive_address.setText(result.contents)
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveTransactionInfo(transaction: WalletTransactionEventMessage) {
         if (transaction.isSuccess!!) {
-            textBalance.text = "send transaction: ${if (transaction.isSuccess!!) "successfully" else "failed"} \n txHash: ${transaction.txHash}"
+            text_output.text = "send transaction: ${if (transaction.isSuccess!!) "successfully" else "failed"} \n txHash: ${transaction.txHash}"
         } else {
             "signed transaction: $transaction.rawTx"
         }

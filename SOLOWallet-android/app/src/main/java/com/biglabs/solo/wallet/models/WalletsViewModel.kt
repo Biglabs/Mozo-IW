@@ -16,6 +16,10 @@ class WalletsViewModel : ViewModel() {
         }
     }
 
+    fun updateCurrentWallet(wallet: Wallet) {
+        currentWalletLiveData.value = wallet
+    }
+
     fun getWallets(): LiveData<List<Wallet>> {
         return walletsLiveData
     }

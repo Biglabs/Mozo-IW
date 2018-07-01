@@ -2,6 +2,9 @@ package com.biglabs.solo.wallet.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
@@ -47,7 +50,7 @@ fun Dialog.fullscreenLayout() {
     }
     window.decorView.systemUiVisibility = uiFlags
     window.setBackgroundDrawable(InsetDrawable(ColorDrawable(Color.TRANSPARENT), 0))
-    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
     setWindowFlag(window, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
     setWindowFlag(window, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, true)
@@ -72,4 +75,12 @@ fun Fragment.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT): T
  */
 fun Fragment.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT): Toast {
     return context!!.toast(resId, duration)
+}
+
+/**
+ *  Copy this String to Clipboard
+ */
+fun String.copyToClipboard(label: String, context: Context) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    clipboard.primaryClip = ClipData.newPlainText(label, this)
 }

@@ -1,56 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/windowBackground">
+    android:paddingBottom="@dimen/bottom_navigation_bar_height">
 
-    <TextView
-        android:id="@android:id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="?actionBarSize"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text="@string/wallet_list"
-        android:textAllCaps="true"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackground">
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/colorSeparator"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@android:id/text1" />
+        <TextView
+            android:id="@android:id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/wallet_list"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/wallets_recycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_marginTop="1dp"
-        android:gravity="center"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_constraintDimensionRatio="h,1:1.3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@android:id/text1"
-        tools:listitem="@layout/item_list_coin" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/colorSeparator"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@android:id/text1" />
 
-    <ImageView
-        android:id="@+id/wallet_list_moving_line"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:contentDescription="@string/wallet_list"
-        android:padding="15dp"
-        android:src="@drawable/ic_moving_line"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wallets_recycler" />
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/wallets_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:layout_marginTop="1dp"
+            android:gravity="center"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/wallet_list_moving_line"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@android:id/text1"
+            tools:listitem="@layout/item_list_coin" />
+
+        <ImageView
+            android:id="@+id/wallet_list_moving_line"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@color/windowBackground"
+            android:contentDescription="@string/wallet_list"
+            android:elevation="8dp"
+            android:padding="15dp"
+            android:src="@drawable/ic_moving_line"
+            android:translationZ="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

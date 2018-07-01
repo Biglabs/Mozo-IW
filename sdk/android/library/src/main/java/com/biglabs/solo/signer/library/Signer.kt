@@ -98,8 +98,8 @@ class Signer private constructor(private val walletScheme: String) {
         this.mRopstenService.getBalance(params).enqueue(object : Callback<Result> {
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
                 if (this@Signer.mSignerListener != null && response.body() != null) {
-                    val balance = response.body()!!.result
-                    val bigInteger = BigDecimal(BigInteger(balance!!.replace("0x", ""), 16))
+                    val result = if (response.body()!!.result != null) response.body()!!.result else "0"
+                    val bigInteger = BigDecimal(BigInteger(result!!.replace("0x", ""), 16))
                     val balanceInEther = bigInteger.divide(BigDecimal("1000000000000000000"))
                     this@Signer.mSignerListener!!.onReceiveBalance(balanceInEther.toString())
                 }
