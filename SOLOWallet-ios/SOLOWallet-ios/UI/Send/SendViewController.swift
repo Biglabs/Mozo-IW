@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SoloSDK
 import SwiftyJSON
 import JDStatusBarNotification
 
@@ -38,6 +39,8 @@ class SendViewController: AbstractViewController {
     
     @IBOutlet weak var signButton: UIButton!
     
+    private var soloSDK: SoloSDK?
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,6 +48,8 @@ class SendViewController: AbstractViewController {
         self.automaticallyAdjustsScrollViewInsets = false
         self.navigationController?.navigationBar.isTranslucent = false
         self.tabBarController?.tabBar.isTranslucent = false
+        
+        self.soloSDK = SoloSDK.init()
         
         //address
         self.addressView.layer.cornerRadius = 5
@@ -182,7 +187,7 @@ class SendViewController: AbstractViewController {
     private func sendFund(_ signedTx: String) {
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
         self.resetValue()
-        RESTService.shared.infuraPOST(params) { value, error in
+        self.soloSDK?.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {

@@ -11,14 +11,29 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="clipartAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_content_copy_black_24dp.xml" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="15" />
-                            <entry key="outputName" value="ic_nav_send" />
+                            <entry key="height" value="18" />
+                            <entry key="outputName" value="ic_scan" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\biglabs\Downloads\wallet\Icon-send.svg" />
-                            <entry key="width" value="15" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../../resources/Scan Icon.svg" />
+                            <entry key="width" value="18" />
                           </map>
                         </option>
                       </PersistentState>

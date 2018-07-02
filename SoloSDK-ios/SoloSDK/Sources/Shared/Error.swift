@@ -13,6 +13,7 @@ public enum ConnectionError: Error {
     case noInternetConnection
     case requestTimedOut
     case requestNotFound
+    case unknowError
     case authenticationRequired
 }
 
@@ -27,6 +28,8 @@ extension ConnectionError: LocalizedError {
             return "The request timed out"
         case .requestNotFound:
             return "404 Not Found"
+        case .unknowError:
+            return "Unknow error"
         case .authenticationRequired:
             return "Authentication Required"
         }

@@ -94,6 +94,26 @@ public class RESTService {
                 completionProgressHandler(nil, nil, connectionError)
             }
         }
+        
+        if connectionError != nil { return }
+        
+        guard let result = response.result.value else {
+            connectionError = ConnectionError.unknowError
+            if let completionHandler = completion {
+                completionHandler(nil, connectionError)
+            }
+            if let completionProgressHandler = completionProgress {
+                completionProgressHandler(nil, nil, connectionError)
+            }
+            return
+        }
+        
+        if let completionHandler = completion {
+            completionHandler(result, nil)
+        }
+        if let completionProgressHandler = completionProgress {
+            completionProgressHandler(result, nil, nil)
+        }
     }
     
     private func mappingConnectionError(_ response: HTTPURLResponse?, error: Error?) -> ConnectionError?{

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingEnd="@dimen/screen_padding"
+    android:paddingStart="@dimen/screen_padding"
+    android:paddingTop="26dp"
+    tools:context=".fragments.WalletFragment">
+
+    <TextView
+        android:id="@+id/text_address_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My first wallet"
+        android:textColor="@color/textColorContent"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/button_copy_address"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="5dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@android:string/copy"
+        android:focusable="true"
+        android:padding="2dp"
+        android:src="@drawable/ic_content_copy"
+        app:layout_constraintLeft_toRightOf="@id/text_address_name" />
+
+    <TextView
+        android:id="@+id/text_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:textColor="@color/textColorContent"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_address_name"
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="SmallSp"
+        tools:text="1GzsipuLhHZVP3By1EHKMt5so7aD6bwq34" />
+
+    <TextView
+        android:id="@+id/button_change_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableEnd="@drawable/ic_expand_arrow_small_action"
+        android:drawablePadding="5dp"
+        android:focusable="true"
+        android:gravity="top"
+        android:paddingBottom="5dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/text_change_address"
+        android:textColor="@color/colorPrimary"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/text_address_name"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="SmallSp" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/bg_wallet_address_info_box"
+        android:paddingBottom="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/text_address">
+
+        <ImageView
+            android:id="@+id/button_get_balance"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/common_text_balance"
+            android:focusable="true"
+            android:padding="20dp"
+            android:src="@drawable/ic_refresh" />
+
+        <TextView
+            android:id="@+id/text_address_coin_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:textAllCaps="true"
+            android:textColor="@color/textColorContent"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@+id/text_address_balance"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="btc" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/text_address_balance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:lines="1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="28sp"
+            app:autoSizeMinTextSize="14sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/image_address_qr_code"
+            app:layout_constraintTop_toBottomOf="@+id/button_get_balance"
+            tools:text="7.020.020" />
+
+        <TextView
+            android:id="@+id/text_currency_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_expand_arrow_small_action"
+            android:drawablePadding="5dp"
+            android:focusable="true"
+            android:text="00.000 USD"
+            android:textColor="@color/textColorContent"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/text_address_balance"
+            app:layout_constraintTop_toBottomOf="@+id/text_address_balance" />
+
+        <ImageView
+            android:id="@+id/image_address_qr_code"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="@string/common_text_wallet"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_show_qr_code"
+            android:textColor="@color/textColorContent"
+            android:textSize="10sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/text_currency_rate"
+            app:layout_constraintLeft_toRightOf="@+id/image_address_qr_code"
+            app:layout_constraintRight_toLeftOf="@+id/image_address_qr_code"
+            tools:ignore="SmallSp" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

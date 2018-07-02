@@ -5,19 +5,16 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/windowBackground"
-            android:fitsSystemWindows="true"
             android:paddingTop="24dp"
             android:theme="@style/AppTheme.AppBarOverlay"
             android:translationZ="2dp">
@@ -25,7 +22,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="20dp"
                 app:contentInsetRight="0dp"
@@ -38,10 +35,49 @@
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_solo_logo" />
 
-                <ImageView
-                    android:id="@+id/button_menu"
+                <LinearLayout
+                    android:id="@+id/button_choose_wallet"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/current_wallet_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/common_text_wallet"
+                        tools:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/current_wallet_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="6dp"
+                        android:includeFontPadding="false"
+                        android:paddingBottom="2dp"
+                        android:textStyle="bold"
+                        tools:text="BTC" />
+
+                    <ImageView
+                        android:layout_width="7dp"
+                        android:layout_height="4dp"
+                        android:contentDescription="@string/common_text_wallet"
+                        android:src="@drawable/ic_expand_arrow" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/button_menu"
+                    android:layout_width="60dp"
+                    android:layout_height="?actionBarSize"
                     android:layout_gravity="end"
                     android:background="?selectableItemBackgroundBorderless"
                     android:clickable="true"
@@ -54,6 +90,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <include layout="@layout/content_main" />
+
     </android.support.design.widget.CoordinatorLayout>
 
     <include layout="@layout/drawer_menu" />

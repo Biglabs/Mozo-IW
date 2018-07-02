@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingEnd="@dimen/screen_padding"
+    android:paddingStart="@dimen/screen_padding"
+    android:paddingTop="27dp"
+    tools:context=".fragments.SendFragment">
+
+    <EditText
+        android:id="@+id/input_receive_address"
+        style="@style/SoloStyle.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
+        android:hint="@string/text_hint_enter_receiving_address"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:paddingEnd="70dp"
+        android:paddingStart="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/button_scan_address"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:contentDescription="@string/text_hint_enter_receiving_address"
+        android:drawablePadding="2dp"
+        android:drawableTop="@drawable/ic_scan"
+        android:focusable="true"
+        android:gravity="top|center_horizontal"
+        android:paddingBottom="8dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:text="@string/common_text_scan"
+        android:textColor="#969696"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/input_receive_address"
+        app:layout_constraintRight_toRightOf="@+id/input_receive_address"
+        app:layout_constraintTop_toTopOf="@+id/input_receive_address"
+        tools:ignore="SmallSp" />
+
+    <EditText
+        android:id="@+id/input_amount"
+        style="@style/SoloStyle.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/text_hint_enter_amount"
+        android:imeOptions="actionNext"
+        android:inputType="numberDecimal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_receive_address" />
+
+    <EditText
+        android:id="@+id/message_input"
+        style="@style/SoloStyle.EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="message"
+        app:layout_constraintTop_toBottomOf="@+id/input_amount" />
+
+    <Button
+        android:id="@+id/buttonSend"
+        style="@style/SoloStyle.Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="confirm transaction"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/buttonSubmit"
+        app:layout_constraintTop_toBottomOf="@id/message_input" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        style="@style/SoloStyle.Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/buttonSend"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/message_input" />
+
+    <TextView
+        android:id="@+id/text_output"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</android.support.constraint.ConstraintLayout>

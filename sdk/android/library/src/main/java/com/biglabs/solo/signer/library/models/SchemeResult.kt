@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class SchemeResult {
 
     @SerializedName("walletId")
-    var walletId: String? = null
+    var accountID: String? = null
 
     @SerializedName("signedTransaction")
     var transactionData: String? = null

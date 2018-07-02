@@ -1,1 +1,3 @@
+include ':signer-library'
+project(':signer-library').projectDir = new File(rootProject.projectDir, '../sdk/android/library')
 include ':app'

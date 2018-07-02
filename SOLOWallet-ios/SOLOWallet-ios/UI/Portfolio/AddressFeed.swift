@@ -9,12 +9,15 @@
 import Foundation
 import JDStatusBarNotification
 import SwiftyJSON
+import SoloSDK
 
 public class AddressFeed: ContentFeed {
     public private(set) var addressess: [AddressDTO]?
+    private var soloSDK: SoloSDK?
     
     public init(_ id: String) {
         super.init(id)
+        self.soloSDK = SoloSDK.init()
     }
     
     override public func reset(){
@@ -28,7 +31,7 @@ public class AddressFeed: ContentFeed {
     
     public override func loadContent(contentAndErrorCompletion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        RESTService.shared.getAddresses(id) { value, error in
+        self.soloSDK?.getAddresses(id) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {

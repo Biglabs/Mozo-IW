@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_navigation_bar_height">60dp</dimen>
+    <dimen name="screen_padding">20dp</dimen>
+    <dimen name="corners_radius">5dp</dimen>
+</resources>
