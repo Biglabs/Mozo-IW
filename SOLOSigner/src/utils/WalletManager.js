@@ -8,7 +8,6 @@ import RESTService from '../utils/RESTService';
 import ethUtil from 'ethereumjs-util';
 import Web3 from 'web3';
 import Transaction from 'ethereumjs-tx';
-import Bitcoin from 'react-native-bitcoinjs-lib';
 
 createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 

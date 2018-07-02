@@ -52,7 +52,7 @@ export default class AddWalletScreen extends Component {
                     style={styles.coin_list}
                     data={this.state.wallets}
                     extraData={this.state.wallets.length}
-                    keyExtractor={(item, index) => `${item.key}-${index}`}
+                    keyExtractor={(item, index) => `${item.name}-${index}`}
                     renderItem={
                         ({item}) => <CoinItemView icon={item.icon} label={item.name}/>
                     }

@@ -42,6 +42,13 @@ export default class AddMoreWalletScreen extends Component {
         });
     };
 
+    onInputSearch(text) {
+        let found = this.wallets.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
+        this.setState({
+            wallets: found,
+        });
+    }
+
     render() {
         let hasWalletSelected = this.state.selectedWallets.length > 0;
         let buttonAddTextColor = StyleSheet.value(hasWalletSelected ? '$primaryColor' : '$disableColor');
@@ -56,8 +63,9 @@ export default class AddMoreWalletScreen extends Component {
                         multiline={false}
                         numberOfLines={1}
                         returnKeyType='search'
-                        onSubmitEditing={() => {
-                        }}/>
+                        onChangeText={text => this.onInputSearch(text)}
+                        onSubmitEditing={text => this.onInputSearch(text)}
+                    />
 
                     <SvgUri
                         width={24}
@@ -74,7 +82,7 @@ export default class AddMoreWalletScreen extends Component {
                     style={styles.coin_list}
                     data={this.state.wallets}
                     extraData={this.state.selectedWallets.length}
-                    keyExtractor={(item, index) => `${item.key}-${index}`}
+                    keyExtractor={(item, index) => `${item.name}-${index}`}
                     renderItem={({item, index}) =>
                         <CoinItemView
                             id={index}
