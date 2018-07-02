@@ -4,6 +4,7 @@ import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import encryption from '../common/encryption';
 import {AsyncStorage} from 'react-native';
+import RESTService from '../utils/RESTService';
 
 createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 
@@ -56,7 +57,7 @@ saveAddressToLocal = function(manager, coinType, walletData, pin) {
 
 registerWalletAndSyncAddress = function(manager, publicKey, walletDataArray, callback) {
     console.log("Check wallet");
-    manager.getExistingWalletFromServer(publicKey).then(walletInfo => {
+    RESTService.getExistingWalletFromServer(publicKey).then(walletInfo => {
         console.log('Wallet is registered.');
         // Save Wallet Info - WalletId
         manager.saveWalletInfo(walletInfo).then(result => {
@@ -74,13 +75,13 @@ registerWalletAndSyncAddress = function(manager, publicKey, walletDataArray, cal
         } else {
             console.log('Register wallet');
             // Register wallet and save uid
-            manager.registerWallet(publicKey).then((walletInfo) => {
+            RESTService.registerWallet(publicKey).then((walletInfo) => {
                 console.log('Wallet is registered.');
                 // Save Wallet Info - WalletId
                 manager.saveWalletInfo(walletInfo).then(result => {
                     walletDataArray.map((item) => {
                         // Synchronize all addresses to server
-                        manager.syncAddress(walletInfo.walletId, item.address, item.derivedIndex, item.coinType, item.network);
+                        RESTService.syncAddress(walletInfo.walletId, item.address, item.derivedIndex, item.coinType, item.network);
                     });
                     //TODO: Should retry incase network error
                     AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
@@ -177,5 +178,9 @@ module.exports.viewBackupPharse = function(pin, callback) {
 }
 
 module.exports.backupWallet = function(pin, callback) {
+
+}
+
+module.exports.addNewAddress = function(pin, coinType, index, callback) {
     
 }

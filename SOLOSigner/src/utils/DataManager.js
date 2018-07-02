@@ -1,4 +1,5 @@
 import Realm from "realm";
+import Globals from "../common/Globals";
 
 const AppSchema = {
     name: 'App',
@@ -66,7 +67,7 @@ class DataManager {
         let appInfo = this.getAppInfo();
         if(appInfo && appInfo.pin) {
             let actualHashPin = appInfo.pin;
-            let expectedHashPin = this.convertToHash(expectedPin);
+            let expectedHashPin = Globals.convertToHash(expectedPin);
             if(expectedHashPin == actualHashPin){
                 return true;
             } else {
@@ -79,7 +80,7 @@ class DataManager {
 
     updateMnemonicWithPin(mnemonic, pin){
         let appInfo = this.getAppInfo();
-        let hashPin = this.convertToHash(pin);
+        let hashPin = Globals.convertToHash(pin);
         if(appInfo){
             //Remove old PIN
             DataManager.realm.write(() => {
@@ -96,144 +97,7 @@ class DataManager {
             DataManager.realm.create('App', { pin : hashPin, mnemonic : mnemonic });
         });
     }
-
-    sendRequest(url, params, isPost){
-        const FETCH_TIMEOUT = 30000;
-        return new Promise((resolve, reject) => {
-            try {
-                let body = JSON.stringify(params);
-                console.log(body);
-                let didTimeOut = false;
-                const timeout = setTimeout(function() {
-                    didTimeOut = true;
-                    reject({isTimeOut : true});
-                }, FETCH_TIMEOUT);
-                
-                let method = isPost ? 'POST' : 'GET';
-                
-                fetch(url, {
-                    method: method,
-                    body: isPost ? body : null,
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then((response) => { 
-                    // Clear the timeout as cleanup
-                    clearTimeout(timeout);
-                    if(!didTimeOut) {
-                        console.log('fetch good! ', response);
-                    }
-                    if(!response.ok){
-                        console.log(response);
-                        reject(response);
-                    } else {
-                        response.json().then(json => {
-                            console.log(json);
-                            if(json){
-                                resolve(json);
-                            } else {
-                                reject(new Error("No data"));
-                            }
-                        });
-                    }
-                })
-                .then((responseJson) => {
-                    console.log(responseJson);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    reject(error);
-                });
-            } catch (error) {
-                console.log(error);
-                // Rejection already happened with setTimeout
-                if(didTimeOut) return;
-                reject(error);
-            }
-        });
-    }
-
-    getAllAddressesFromServer(walletId){
-        return new Promise((resolve, reject) => {
-            try {
-                this.sendRequest('http://192.168.1.98:9000/api/', {
-                    walletId: walletId,
-                }, false)
-                .then((data) => {
-                    console.log(data);
-                    resolve(data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    reject(error);
-                }); 
-            } catch (error) {
-                console.log(error);
-                reject(error);
-            }
-        });
-    }
-
-    getExistingWalletFromServer(publicKey){
-        return new Promise((resolve, reject) => {
-            try {
-                let hash = this.convertToHash(publicKey);
-                this.sendRequest(`http://192.168.1.98:9000/api/wallets/${hash}`, false)
-                .then((walletInfo) => {
-                    console.log(walletInfo);
-                    resolve(walletInfo);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    reject(error);
-                }); 
-            } catch (error) {
-                console.log(error);
-                reject(error);
-            }
-        });
-    }
-
-    registerWallet(publicKey) {
-        return new Promise((resolve, reject) => {
-            try {
-                let hash = this.convertToHash(publicKey);
-                this.sendRequest('http://192.168.1.98:9000/api/wallets', {
-                    walletKey: hash,
-                }, true)
-                .then((walletInfo) => {
-                    console.log(walletInfo);
-                    resolve(walletInfo);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    reject(error);
-                }); 
-            } catch (error) {
-                console.log(error);
-                reject(error);
-            }
-        });
-    }
-
-    syncAddress(walletId, address, derivedIndex, coinType, network) {
-        try {
-            this.sendRequest('http://192.168.1.98:9000/api/wallet-addresses', {
-                address : { 
-                    address: address,
-                    derivedIndex : derivedIndex,
-                    coin: coinType,
-                    network: network
-                },
-                walletId : walletId
-            }, true);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
+    
     saveWalletInfo(walletInfo) {
         return new Promise((resolve, reject) => {
             try {

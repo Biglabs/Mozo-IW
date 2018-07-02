@@ -25,7 +25,20 @@ function responseToReceiver(result, jsonData) {
     );
 }
 
+function convertToHash(inputPIN){
+    let pinString = null;
+    if(typeof(responseData) === 'string'){
+        pinString = inputPIN;
+    } else {
+        pinString = JSON.stringify(inputPIN);
+    }
+    var sha512 = require('js-sha512');
+    let hashPin = sha512(pinString);
+    return hashPin;
+}
+
 module.exports = {
     checkWalletExisting: checkWalletExisting,
-    responseToReceiver: responseToReceiver
+    responseToReceiver: responseToReceiver,
+    convertToHash: convertToHash
 };
