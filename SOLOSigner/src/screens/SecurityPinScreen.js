@@ -13,21 +13,48 @@ const numberPad = [
     [7, 8, 9],
     ['CLR', 0, 'DEL']
 ];
-const PIN_LENGTH = 4;
+const PIN_LENGTH = 6;
 const inputNewPIN = "Create a new PIN";
+const inputConfirmPIN = "Confirm PIN";
 const inputExistingPIN = "Enter PIN";
 
 export default class SecurityPinScreen extends Component {
     constructor(props) {
         super(props);
         this.pinCode = Array.apply(null, Array(PIN_LENGTH));
-        this.state = {pinIndex: -1, isShowingLoading: false, title: inputExistingPIN};
+        this.pinCodeConfirm = Array.apply(null, Array(PIN_LENGTH));
+        this.state = {
+            pinIndex: -1, 
+            isShowingLoading: false, 
+            title: inputExistingPIN,
+            isConfirm: false
+        };
         if (this.props.isNewPIN) {
             this.state.title = inputNewPIN;
         }
     }
 
     handleContinuePress() {
+        if(this.props.isNewPIN){
+            if (this.state.isConfirm){
+                if(JSON.stringify(this.pinCode) === JSON.stringify(this.pinCodeConfirm)) {
+                    this.handleEnterRightPin();
+                } else {
+                    alert('Confirm PIN is not correct!');
+                    this.clearPin();
+                }
+            } else {
+                this.pinCodeConfirm = this.pinCode;
+                this.state.isConfirm = true;
+                this.state.title = inputConfirmPIN;
+                this.clearPin();
+            }
+        } else {
+            this.handleEnterRightPin();
+        }       
+    }
+
+    handleEnterRightPin() {
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
                 let pin = JSON.stringify(this.pinCode);
