@@ -8,6 +8,7 @@ import RESTService from '../utils/RESTService';
 import ethUtil from 'ethereumjs-util';
 import Web3 from 'web3';
 import Transaction from 'ethereumjs-tx';
+import Bitcoin from 'react-native-bitcoinjs-lib';
 
 createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 
@@ -97,6 +98,57 @@ registerWalletAndSyncAddress = function(manager, publicKey, walletDataArray, cal
                     callback(error, null);
                 }
             });
+        }
+    });
+}
+
+createNewBTCTransaction = function(txData, callback){
+    let params = JSON.stringify(txData.params);
+    RESTService.createNewBTCTransaction(params)
+    .then(result => {
+        if (typeof callback === 'function') {
+            callback(null, result);
+        }
+    })
+    .catch(error => {
+        if (typeof callback === 'function') {
+            callback(error, null);
+        }
+    });
+}
+
+signBTCTransaction = function(privateKey, totalAmount, amountToKeep, txData, callback){
+    createNewBTCTransaction(txData, (error, result) => {
+        if(result){
+            const TestNet = Bitcoin.networks.testnet;
+            let wallet = new Bitcoin.ECPair.fromWIF(privateKey, TestNet);
+            let publicKey = wallet.getAddress();
+            console.log("Wallet's public key:", publicKey);
+
+            let tx = new Bitcoin.TransactionBuilder(TestNet);
+
+            let amountWeHave = totalAmount; // 1.0 BTC
+            let transactionFee = 1000; // 0.0001 BTC
+            let amountToSend = amountWeHave - amountToKeep - transactionFee; // ~0.1 (0.0999)
+
+            result.tx.inputs.map(input => {
+                let prevTxHash = Buffer.from(input.prev_hash, 'hex');
+                tx.addInput(prevTxHash, input.output_value, input.sequence, input.script);
+            });
+            //tx.addInput('<one of my input transactions>', 0);
+
+            result.tx.outputs.map(output => {
+                tx.addOutput(output, amountToSend);
+            });
+            //tx.addOutput('<destination public key>', amountToSend);
+            tx.addOutput(publicKey, amountToKeep);
+            tx.sign(0, wallet);
+
+            let tx_hex = tx.build().toHex();
+        } else {
+            if (typeof callback === 'function') {
+                callback(error, null);
+            }
         }
     });
 }

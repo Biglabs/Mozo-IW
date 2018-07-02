@@ -6,6 +6,7 @@ const URL_GET_ALL_ADDRESSES = BASE_URL + API_PATH + "/wallet-addresses";
 const URL_GET_WALLET = BASE_URL + API_PATH + "/wallets/";
 const URL_REGISTER_WALLET = BASE_URL + API_PATH + "/wallets";
 const URL_SYNC_ADDRESS = BASE_URL + API_PATH + "/wallet-addresses";
+const URL_BTC_CREATE_TRANSACTION = 'https://api.blockcypher.com/v1/btc/main/txs/new';
 
 function sendRequest(url, params, isPost){
     const FETCH_TIMEOUT = 30000;
@@ -142,4 +143,23 @@ module.exports.syncAddress = function(walletId, address, derivedIndex, coinType,
     } catch (error) {
         console.log(error);
     }
+}
+
+module.exports.createNewBTCTransaction = function(data){
+    return new Promise((resolve, reject) => {
+        try {
+            sendRequest(URL_BTC_CREATE_TRANSACTION, data, true)
+            .then((txData) => {
+                console.log(txData);
+                resolve(txData);
+            })
+            .catch((error) => {
+                console.log(error);
+                reject(error);
+            }); 
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
 }
