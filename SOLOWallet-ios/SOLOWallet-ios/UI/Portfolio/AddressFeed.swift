@@ -6,18 +6,17 @@
 //  Copyright © 2018 biglabs. All rights reserved.
 //
 
-import Foundation
-import JDStatusBarNotification
-import SwiftyJSON
+
 import SoloSDK
+import SwiftyJSON
 
 public class AddressFeed: ContentFeed {
     public private(set) var addressess: [AddressDTO]?
-    private var soloSDK: SoloSDK?
+    private var soloSDK: SoloSDK!
     
-    public init(_ id: String) {
+    public init(_ id: String, soloSDK: SoloSDK) {
         super.init(id)
-        self.soloSDK = SoloSDK.init()
+        self.soloSDK = soloSDK
     }
     
     override public func reset(){
@@ -31,7 +30,7 @@ public class AddressFeed: ContentFeed {
     
     public override func loadContent(contentAndErrorCompletion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.getAddresses(id) { value, error in
+        self.soloSDK?.api?.getAddresses(id) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {

@@ -14,14 +14,13 @@ class SoloWalletViewController: UIViewController {
     
     let tabBarCtr = UITabBarController()
     var currentCoin: AddressDTO!
-    private var soloSDK: SoloSDK?
+    var soloSDK: SoloSDK!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.createTabBarController()
         self.getBalance()
-        self.soloSDK = SoloSDK.init()
     }
     
     func createTabBarController() {
@@ -30,6 +29,7 @@ class SoloWalletViewController: UIViewController {
         //Tab 1: Wallet
         let walletVC = WalletViewController()
         walletVC.currentCoin = self.currentCoin
+        walletVC.soloSDK = self.soloSDK
         walletVC.delegate = self
         walletVC.tabBarItem = UITabBarItem.init(title: SoloTab.Wallet.value, image: UIImage.init(named: SoloTab.Wallet.icon), tag: 0)
         controllerArray.append(walletVC)
@@ -38,6 +38,7 @@ class SoloWalletViewController: UIViewController {
         let receiveVC = ReceiveViewController()
         receiveVC.tabBarItem = UITabBarItem.init(title: SoloTab.Receive.value, image: UIImage.init(named: SoloTab.Receive.icon), tag: 1)
         receiveVC.currentCoin = self.currentCoin
+        receiveVC.soloSDK = self.soloSDK
         receiveVC.delegate = self
         controllerArray.append(receiveVC)
         
@@ -45,6 +46,7 @@ class SoloWalletViewController: UIViewController {
         let exchangeVC = ExchangeViewController()
         exchangeVC.tabBarItem = UITabBarItem.init(title: SoloTab.Exchange.value, image: UIImage.init(named: SoloTab.Exchange.icon), tag: 2)
         exchangeVC.currentCoin = self.currentCoin
+        exchangeVC.soloSDK = self.soloSDK
         exchangeVC.delegate = self
         controllerArray.append(exchangeVC)
         
@@ -53,6 +55,7 @@ class SoloWalletViewController: UIViewController {
         let sendVC = storyboard.instantiateViewController(withIdentifier: "SendVC") as! SendViewController
         sendVC.tabBarItem = UITabBarItem.init(title: SoloTab.Send.value, image: UIImage.init(named: SoloTab.Send.icon), tag: 3)
         sendVC.currentCoin = self.currentCoin
+        sendVC.soloSDK = self.soloSDK
         sendVC.delegate = self
         controllerArray.append(sendVC)
         
@@ -68,7 +71,7 @@ class SoloWalletViewController: UIViewController {
         }
         
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
-        self.soloSDK?.infuraPOST(params) { value, error in
+        self.soloSDK?.api?.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {

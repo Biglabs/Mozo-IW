@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-public class RESTService {
+public final class RESTService {
     
     public private (set) var client:  SessionManager
     
@@ -44,7 +44,19 @@ public class RESTService {
         return headers
     }
     
-    func execute(_ method: Alamofire.HTTPMethod, url: String, body: Any, completionHandler: completion = nil) {
+    func execute(_ method: Alamofire.HTTPMethod, url: String, parameters: Any? = nil, completionHandler: completion = nil) {
+        if parameters == nil {
+            self.execute(method, url: url, params: nil, completionHandler: completionHandler)
+        } else if let params = parameters as? [String: Any] {
+            self.execute(method, url: url, params: params, completionHandler: completionHandler)
+        } else if let param = parameters as? String {
+            self.execute(method, url: url, param: param, completionHandler: completionHandler)
+        } else {
+            self.execute(method, url: url, body: parameters!, completionHandler: completionHandler)
+        }
+    }
+    
+    private func execute(_ method: Alamofire.HTTPMethod, url: String, body: Any, completionHandler: completion = nil) {
         
         let headers = self.buildHTTPHeaders()
         guard let URL = URL(string: url) else {return}
@@ -59,7 +71,7 @@ public class RESTService {
         }
     }
     
-    func execute(_ method: Alamofire.HTTPMethod, url: String, param: String, completionHandler: completion = nil){
+    private func execute(_ method: Alamofire.HTTPMethod, url: String, param: String, completionHandler: completion = nil){
         let headers = self.buildHTTPHeaders()
         guard let URL = URL(string: url) else {return}
         var request = URLRequest(url: URL)
@@ -73,7 +85,7 @@ public class RESTService {
         }
     }
     
-    func execute(_ method: Alamofire.HTTPMethod, url: String, params: [String: Any]?, completionHandler: completion = nil) {
+    private func execute(_ method: Alamofire.HTTPMethod, url: String, params: [String: Any]?, completionHandler: completion = nil) {
         let headers = self.buildHTTPHeaders()
         self.client.request(url, method: method, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .responseJSON { response in

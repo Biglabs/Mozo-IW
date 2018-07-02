@@ -39,8 +39,6 @@ class SendViewController: AbstractViewController {
     
     @IBOutlet weak var signButton: UIButton!
     
-    private var soloSDK: SoloSDK?
-    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,8 +46,6 @@ class SendViewController: AbstractViewController {
         self.automaticallyAdjustsScrollViewInsets = false
         self.navigationController?.navigationBar.isTranslucent = false
         self.tabBarController?.tabBar.isTranslucent = false
-        
-        self.soloSDK = SoloSDK.init()
         
         //address
         self.addressView.layer.cornerRadius = 5
@@ -159,7 +155,7 @@ class SendViewController: AbstractViewController {
         }
         
         guard let balance = self.currentCoin?.balance, balance > 0 else {
-            JDStatusBarNotification.show(withStatus: "Your spendable is zero.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            JDStatusBarNotification.show(withStatus: "Your spendable is not enough fund.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
         
@@ -180,14 +176,25 @@ class SendViewController: AbstractViewController {
         
         // sign eth
         if self.currentCoin?.coin == CoinType.ETH.key {
-            AppService.shared.launchSignerApp(CommandType.sign.rawValue, coinType: CoinType.ETH.key, transaction: transaction)
+//            self.soloSDK.singner?.signTransaction(CoinType.ETH.key, transaction: transaction){ result in
+//                switch result {
+//                case .success(let signedTransaction):
+//                    self.sendAlertController()
+//                case .failure(let error):
+//                    let alert = UIAlertController(title: "Signed Message", message: "", preferredStyle: .alert)
+//                    alert.title = alert.title! + " Error"
+//                    alert.message = error.localizedDescription
+//                    alert.addAction(.init(title: "OK", style: .default, handler: nil))
+//                    Utils.getTopViewController().present(alert, animated: true, completion: nil)
+//                }
+//            }
         }
     }
     
     private func sendFund(_ signedTx: String) {
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
         self.resetValue()
-        self.soloSDK?.infuraPOST(params) { value, error in
+        self.soloSDK?.api?.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let backendError = error {

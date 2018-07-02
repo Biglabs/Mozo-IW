@@ -17,7 +17,7 @@ public class AppService {
     
     public func handleReceivedUrlFromWalletApp(jsonData: String){
         guard let jsonStr = jsonData.removingPercentEncoding else {
-            print("handleReceivedUrlFromWalletApp: jsonData is nil")
+            print("handleReceivedUrlFromWalletApp: data is nil")
             return
         }
         let data = SwiftyJSON.JSON.init(parseJSON: jsonStr)
@@ -61,8 +61,8 @@ public class AppService {
         func launchApp() {
             if let bundleId = Bundle.main.bundleIdentifier {
                 var urlStr = Configuration.URL_SCHEME_SIGNER + "://"
-                let model = CommunicationDTO(action: action, receiver: "\(bundleId).\(Configuration.URL_SCHEME_WALLET)", params: transaction, coinType: coinType)
-                urlStr += (model?.rawString())!
+                let model = CommunicationDTO(action: action, receiver: "\(bundleId).\(Configuration.URL_SCHEME_WALLET)", params: transaction, coinType: coinType)!
+                urlStr += model.rawString()
                 print("URL: [\(urlStr)]")
                 
                 if let url = URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)

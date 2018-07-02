@@ -8,9 +8,9 @@
 
 import Foundation
 
-public extension SoloSDK {
+public extension RESTService {
     // call infura for test only
     public func infuraPOST(_ params: [String: Any], completionHandler: completion = nil) {
-        return self.execute(.post, url: ROPSTEN_INFURA_URL, parameters: params, completionHandler: completionHandler)
+        return self.execute(.post, url: Configuration.ROPSTEN_INFURA_URL, parameters: params, completionHandler: completionHandler)
     }
 }

@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import Result
+import SoloSDK
+import JDStatusBarNotification
 
 @IBDesignable
 public class HandshakeView: UIView {
     var view: UIView!
+    var soloSDK: SoloSDK!
     
     @IBOutlet weak var walletIdLabel: UILabel!
     @IBOutlet weak var requestButton: UIButton!
@@ -46,7 +50,23 @@ public class HandshakeView: UIView {
     }
     
     @objc func requestButtonTapped() {
-        //solosigner://{"action":"GET_WALLET","receiver":"com.hdwallet.solowallet"}
-        AppService.shared.launchSignerApp(CommandType.getWallet.rawValue, coinType: CoinType.ETH.key, transaction: nil)
+        
+        self.soloSDK.singner?.getWallet(){ result in
+            switch result {
+            case .success(let walletId):
+                //Save walletId
+                UserDefaults.standard.set(walletId, forKey: KeychainKeys.WALLLET_ID)
+                //refresh
+                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+                    let drawerController = appDelegate.drawerController else {return}
+                drawerController.portfolioVC.createTableView()
+            case .failure(let error):
+                let alert = UIAlertController(title: "Handshake", message: "", preferredStyle: .alert)
+                alert.title = alert.title! + " Error"
+                alert.message = error.localizedDescription
+                alert.addAction(.init(title: "OK", style: .default, handler: nil))
+                Utils.getTopViewController().present(alert, animated: true, completion: nil)
+            }
+        }
     }
 }
