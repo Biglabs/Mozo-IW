@@ -169,25 +169,22 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        let transaction = TransactionDTO()!
-        transaction.from = from
-        transaction.to = toAddress
-        transaction.value = Double(value)
+        
         
         // sign eth
         if self.currentCoin?.coin == CoinType.ETH.key {
-//            self.soloSDK.singner?.signTransaction(CoinType.ETH.key, transaction: transaction){ result in
-//                switch result {
-//                case .success(let signedTransaction):
-//                    self.sendAlertController()
-//                case .failure(let error):
-//                    let alert = UIAlertController(title: "Signed Message", message: "", preferredStyle: .alert)
-//                    alert.title = alert.title! + " Error"
-//                    alert.message = error.localizedDescription
-//                    alert.addAction(.init(title: "OK", style: .default, handler: nil))
-//                    Utils.getTopViewController().present(alert, animated: true, completion: nil)
-//                }
-//            }
+            self.soloSDK.singner?.signTransaction(fromAddress: from, toAddress: toAddress, value: value, coinType: CoinType.ETH.key){ result in
+                switch result {
+                case .success(let signedTransaction):
+                    self.sendAlertController(signedTransaction)
+                case .failure(let error):
+                    let alert = UIAlertController(title: "Signed Message", message: "", preferredStyle: .alert)
+                    alert.title = alert.title! + " Error"
+                    alert.message = error.localizedDescription
+                    alert.addAction(.init(title: "OK", style: .default, handler: nil))
+                    Utils.getTopViewController().present(alert, animated: true, completion: nil)
+                }
+            }
         }
     }
     

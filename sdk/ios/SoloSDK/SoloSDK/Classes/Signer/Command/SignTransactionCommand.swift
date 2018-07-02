@@ -64,6 +64,11 @@ public final class SignTransactionCommand: Command {
         let data = SwiftyJSON.JSON.init(parseJSON: jsonStr)
         let com = CommunicationDTO(json: data)
         
+        // Handle error
+//        if let errorCode = Int("Error name"), let error = SignerError(rawValue: errorCode) {
+//            completion(.failure(error))
+//        }
+        
         guard let action = com?.action, action == self.name else {
             return false
         }
@@ -83,10 +88,14 @@ public final class SignTransactionCommand: Command {
 }
 
 public extension SignerManager {
-    public func signTransaction(_ coinType: String, transaction: TransactionDTO, completion: @escaping (Result<String, SignerError>) -> Void) {
+    public func signTransaction(fromAddress: String, toAddress: String, value: String, coinType: String, completion: @escaping (Result<String, SignerError>) -> Void) {
 //        guard self.hasSignerApp else {
 //            return fallbackToInstall()
 //        }
+        let transaction = TransactionDTO()!
+        transaction.from = fromAddress
+        transaction.to = toAddress
+        transaction.value = Double(value)
         let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, transaction: transaction, completion: completion)
         execute(command: command)
     }

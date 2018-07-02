@@ -44,6 +44,11 @@ public class SignWalletCommand: Command {
         let data = SwiftyJSON.JSON.init(parseJSON: jsonStr)
         let com = CommunicationDTO(json: data)
         
+        // Handle error
+        //        if let errorCode = Int("Error name"), let error = SignerError(rawValue: errorCode) {
+        //            completion(.failure(error))
+        //        }
+        
         guard let action = com?.action, action == self.name else {
             return false
         }

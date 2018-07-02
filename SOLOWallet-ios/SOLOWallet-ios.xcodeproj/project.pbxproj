@@ -49,7 +49,6 @@
 		C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */; };
 		C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */; };
 		C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F4D20DCA642009112FC /* KeychainService.swift */; };
-		C6CD7F5220DCAFC4009112FC /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5120DCAFC4009112FC /* AppService.swift */; };
 		C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5520DCB1BA009112FC /* Extensions.swift */; };
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DC687520DE26E800000665 /* ScannerViewController.swift */; };
@@ -105,7 +104,6 @@
 		C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFeed.swift; sourceTree = "<group>"; };
 		C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedProtocol.swift; sourceTree = "<group>"; };
 		C6CD7F4D20DCA642009112FC /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
-		C6CD7F5120DCAFC4009112FC /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
 		C6CD7F5520DCB1BA009112FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C6CD7F5920DCB532009112FC /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
@@ -321,7 +319,6 @@
 			isa = PBXGroup;
 			children = (
 				C6CD7F4D20DCA642009112FC /* KeychainService.swift */,
-				C6CD7F5120DCAFC4009112FC /* AppService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -495,7 +492,6 @@
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
 				C6134A2B20E3F4CA00A5FE50 /* CoinTableViewCell.swift in Sources */,
-				C6CD7F5220DCAFC4009112FC /* AppService.swift in Sources */,
 				C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */,
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */,

@@ -68,12 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        //com.hdwallet.solowallet://{"action":"GET_WALLET","result":{"uuid":"1141234","email":"user1@gmail.com"}}
-//        let urls = url.absoluteString.components(separatedBy: "://")
-//        if urls.count > 0 {
-//            let jsonData = urls[1]
-//            AppService.shared.handleReceivedUrlFromWalletApp(jsonData: jsonData)
-//        }
         /// Handle signer results
         return self.soloSDK.singner?.handleCallback(url: url) ?? false
     }
