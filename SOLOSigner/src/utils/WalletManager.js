@@ -5,6 +5,9 @@ import bip39 from 'bip39';
 import encryption from '../common/encryption';
 import {AsyncStorage} from 'react-native';
 import RESTService from '../utils/RESTService';
+import ethUtil from 'ethereumjs-util';
+import Web3 from 'web3';
+import Transaction from 'ethereumjs-tx';
 
 createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 
@@ -31,7 +34,6 @@ getAddressAtIndex = function(wallet, coinType, index) {
         var keyPair = userWallet.keyPair;
         var privKeyBuffer = keyPair.d.toBuffer(32);
         var privkey = privKeyBuffer.toString('hex');
-        var ethUtil = require('ethereumjs-util');
         var addressBuffer = ethUtil.privateToAddress(privKeyBuffer);
         var hexAddress = addressBuffer.toString('hex');
         var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
@@ -173,6 +175,57 @@ module.exports.viewBackupPharse = function(pin, callback) {
     } else {
         if (typeof callback === 'function') {
             callback(new Error("Inputted PIN is not correct"), null);
+        }
+    }
+}
+
+module.exports.signTransaction = function(txData, pin, callback){
+    let manager = DataManager.getInstance();
+    let fromAddress = txData.params.from;
+    let encryptedPrivateKey = manager.getPrivateKeyFromAddress(fromAddress);
+    if (!encryptedPrivateKey) {
+        if (typeof callback === 'function') {
+            callback(new Error("Not support this address."), null);
+        }
+        return;
+    }
+    if (!pin) {
+        if (typeof callback === 'function') {
+            callback(new Error("Can not use the PIN."), null);
+        }
+        return;
+    }
+    // Encrypt private key before saving to DB, password: pin
+    let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
+    let privateKeyInBuffer = ethUtil.toBuffer(privateKey);
+    if(privateKeyInBuffer){
+        const web3 = new Web3(
+            new Web3.providers.HttpProvider('https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir')
+        );
+        web3.eth.getTransactionCount(fromAddress).then(_nonce => {
+            const etherAmount = txData.params.value !== 'string' ? txData.params.value.toString() : txData.params.value;
+            const txParams = {
+                nonce: _nonce,
+                gasLimit: 3000000,
+                gasPrice: web3.utils.toHex(web3.utils.toWei('21', 'gwei')),
+                from: fromAddress,
+                to: txData.params.to,
+                value: web3.utils.toHex(web3.utils.toWei(etherAmount, 'ether')),
+                data: web3.utils.fromUtf8(txData.params.data || ''),
+                // EIP 155 chainId - mainnet: 1, ropsten: 3
+                chainId: 3
+            };
+            const tx = new Transaction(txParams);
+            tx.sign(privateKeyInBuffer);
+            const serializedTx = tx.serialize();
+            let signedTransaction = `0x${serializedTx.toString('hex')}`;
+            if (typeof callback === 'function') {
+                callback(null, signedTransaction);
+            }
+        });
+    } else {
+        if (typeof callback === 'function') {
+            callback(new Error("Not support this address's private key."), null);
         }
     }
 }

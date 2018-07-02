@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Alert, Linking, TouchableOpacity, View} from 'react-native';
+import {Alert, Linking, TouchableOpacity, View, ActivityIndicator} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
@@ -11,82 +11,42 @@ import Web3 from 'web3';
 import Bitcoin from "react-native-bitcoinjs-lib";
 import DataManager from '../../utils/DataManager';
 import Globals from '../../common/Globals';
+import WalletManager from '../../utils/WalletManager';
 
-export default class ConfirmationScreen extends Component {
+export default class ConfirmationScreen extends Component<Props> {
 
     constructor(props) {
         super(props);
         this.state = {
-            pressedConfirm: false
+            pressedConfirm: false,
+            isShowingLoading: false
         };
-        this.ethProvider = new Web3(
-            new Web3.providers.HttpProvider('https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir')
-        ).eth;
-    }
-
-    showAlert(message) {
-        Alert.alert(
-            "Alert",
-            message,
-            [
-                {text: 'OK'},
-            ],
-        );
-    }
-
-    //ONLY: For testing purpose
-    generatePrivateKey() {
-        let mnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo";
-        let seed = bip39.mnemonicToSeedHex(mnemonic);
-        let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
-        let bip32ExtendedKey = rootKey.derivePath("m/44'/60'/0'/0").derive(0);
-        this.privateKeyInBuffer = bip32ExtendedKey.keyPair.d.toBuffer(32);
     }
 
     onConfirmTransaction() {
-        let manager = DataManager.getInstance();
-        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(this.props.txData.params.from);
-        if (!encryptedPrivateKey) {
-            alert('Not support this address');
-            return;
-        }
-        if (!this.props.pin) {
-            alert("System error.");
-            return;
-        }
-        // Encrypt private key before saving to DB, password: pin
-        let encryption = require('../../common/encryption');
-        let privateKey = encryption.decrypt(encryptedPrivateKey, this.props.pin);
-        this.props.pin = null;
-        //TODO: Convert privateKey in string format to buffer
-        var ethUtil = require('ethereumjs-util');
-        this.privateKeyInBuffer = ethUtil.toBuffer(privateKey);
-        if (!this.privateKeyInBuffer) {
-            this.generatePrivateKey();
-        }
-        let txData = this.props.txData;
-        this.ethProvider.getTransactionCount(this.props.txData.params.from).then(_nonce => {
-            const etherAmount = txData.params.value !== 'string' ? txData.params.value.toString() : txData.params.value;
-            const txParams = {
-                nonce: _nonce,
-                gasLimit: 3000000,
-                gasPrice: Web3.utils.toHex(Web3.utils.toWei('21', 'gwei')),
-                from: txData.params.from,
-                to: txData.params.to,
-                value: Web3.utils.toHex(Web3.utils.toWei(etherAmount, 'ether')),
-                data: Web3.utils.fromUtf8('send ' + etherAmount + 'ETH from account 1 to account 2\nmessage: ' + txData.params.txData + "\nfrom: " + txData.receiver),
-                // EIP 155 chainId - mainnet: 1, ropsten: 3
-                chainId: 3
-            };
-            const tx = new Transaction(txParams);
-            tx.sign(this.privateKeyInBuffer);
-            let signedTransaction = `0x${tx.serialize().toString('hex')}`;
-            Actions.pop();
-            Globals.responseToReceiver({signedTransaction : signedTransaction}, txData);
+        this.setState({isShowingLoading: true}, () => {
+            setTimeout(() => {
+                WalletManager.signTransaction(this.props.txData, this.props.pin, (error, result) => {
+                    if (result) {
+                        Actions.pop();
+                        Globals.responseToReceiver({signedTransaction : result}, this.props.txData);
+                    } else {
+                        this.state.isShowingLoading = false;
+                        alert(error);
+                    }
+                });
+            }, 5);
         });
     }
 
     render() {
+        if (this.state.isShowingLoading)
+            return (
+                <View style={styles.loading_container}>
+                    <ActivityIndicator size="large" color="#ffffff" animating={this.state.isShowingLoading}/>
+                </View>
+            );
+        else
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -156,6 +116,20 @@ export default class ConfirmationScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+    loading_container: {
+        backgroundColor: '$primaryColor',
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    oading_container: {
+        backgroundColor: '$primaryColor',
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     container: {
         alignItems: 'flex-start',
         backgroundColor: '$screenBackground',
