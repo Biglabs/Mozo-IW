@@ -11,42 +11,40 @@ export default class AddMoreWalletScreen extends Component {
     constructor(props) {
         super(props);
 
-        const selectedWallets = this.props.selected;
+        this.selectedWallets = this.props.selected;
 
         this.wallets = [];
-        this.selectedIndex = [];
-        Object.keys(Constant.COIN_TYPE).map((key, index) => {
+        Object.keys(Constant.COIN_TYPE).map(key => {
             let coin = Constant.COIN_TYPE[key];
-            if (selectedWallets.includes(coin)) {
-                this.selectedIndex.push(index);
-                coin.selected = true;
-            }
+            coin.selected = this.selectedWallets.includes(coin);
             this.wallets.push(coin);
         });
 
         this.state = {
             wallets: this.wallets,
-            selectedIndex: this.selectedIndex
+            selectedWallets: this.selectedWallets
         }
     }
 
-    onItemClicked = (index) => {
+    onItemClicked(index) {
         const coin = this.wallets[index];
         this.wallets[index].selected = !coin.selected;
 
-        if (this.selectedIndex.includes(index)) {
-            this.selectedIndex.splice(this.selectedIndex.indexOf(index), 1);
+        if (this.selectedWallets.includes(coin)) {
+            this.selectedWallets.splice(this.selectedWallets.indexOf(coin), 1);
         } else {
-            this.selectedIndex.push(index);
+            this.selectedWallets.push(coin);
         }
 
         this.setState({
             wallets: this.wallets,
-            selectedIndex: this.selectedIndex
+            selectedWallets: this.selectedWallets
         });
     };
 
     render() {
+        let hasWalletSelected = this.state.selectedWallets.length > 0;
+        let buttonAddTextColor = StyleSheet.value(hasWalletSelected ? '$primaryColor' : '$disableColor');
         return (
             <View style={styles.container}>
                 <NavigationBar title='Add More Wallet'/>
@@ -75,7 +73,7 @@ export default class AddMoreWalletScreen extends Component {
                 <FlatList
                     style={styles.coin_list}
                     data={this.state.wallets}
-                    extraData={this.state.selectedIndex.length}
+                    extraData={this.state.selectedWallets.length}
                     keyExtractor={(item, index) => `${item.key}-${index}`}
                     renderItem={({item, index}) =>
                         <CoinItemView
@@ -83,15 +81,18 @@ export default class AddMoreWalletScreen extends Component {
                             icon={item.icon}
                             label={item.name}
                             checked={item.selected || false}
-                            onItemClicked={this.onItemClicked}/>
+                            onItemClicked={(index) => this.onItemClicked(index)}/>
                     }
                 />
 
                 <TouchableOpacity
+                    disabled={!hasWalletSelected}
                     style={styles.button_add}
                     onPress={() => {
+                        Actions.popTo("add_wallet", {selected: this.state.selectedWallets});
+                        Actions.refresh({selected: this.state.selectedWallets});
                     }}>
-                    <Text style={styles.button_add_text}>
+                    <Text style={[styles.button_add_text, {color: buttonAddTextColor}]}>
                         Add
                     </Text>
                 </TouchableOpacity>

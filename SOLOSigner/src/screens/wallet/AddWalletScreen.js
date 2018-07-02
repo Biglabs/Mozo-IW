@@ -11,6 +11,14 @@ export default class AddWalletScreen extends Component {
         this.state = {wallets: Constant.DEFAULT_COINS};
     }
 
+    componentWillReceiveProps() {
+        if (this.props.selected) {
+            this.setState({
+                wallets: this.props.selected
+            });
+        }
+    }
+
     addMoreWallet() {
         Actions.add_more_wallet({selected: this.state.wallets});
     }
@@ -53,8 +61,7 @@ export default class AddWalletScreen extends Component {
                 <FooterActions
                     onBackPress={() => Actions.pop()}
                     onContinuePress={() => {
-                        Actions.pop()
-                        // open security screen
+                        Actions.security_pin({isNewPIN : true, coinTypes: this.state.wallets});
                     }}/>
             </View>
         )

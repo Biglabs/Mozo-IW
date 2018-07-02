@@ -7,35 +7,28 @@ import Text from "./SoloText";
 import StyleSheet from 'react-native-extended-stylesheet';
 
 export default class CoinItemView extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.id = this.props.id;
-        this.icon = this.props.icon;
-        this.label = this.props.label;
-        this.checked = this.props.checked;
-        this.textRateMargin = this.checked ? 30 : 0;
-        this.isHandleItemClick = this.props.onItemClicked || false
-    }
 
     render() {
+        let isHandleItemClick = this.props.onItemClicked || false;
+        let textRateMargin = this.props.checked ? 30 : 0;
         return (
             <TouchableOpacity
                 onPress={() => {
-                    if (this.isHandleItemClick) {
-                        this.props.onItemClicked(this.id)
+                    if (isHandleItemClick) {
+                        this.props.onItemClicked(this.props.id)
                     }
                 }}
                 {...this.props}
                 style={[styles.container, {...this.props.style}]}
-                disabled={!this.isHandleItemClick}>
+                disabled={!isHandleItemClick}>
 
                 <View style={styles.content}>
-                    <SvgUri width={24} height={24} source={this.icon}/>
-                    <Text style={styles.label}>{this.label}</Text>
+                    <SvgUri width={24} height={24} source={this.props.icon}/>
+                    <Text style={styles.label}>{this.props.label}</Text>
 
-                    <Text style={[styles.text_rate, {marginRight: this.textRateMargin}]}>{"0 usd".toUpperCase()}</Text>
+                    <Text style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</Text>
                     {
-                        this.checked &&
+                        this.props.checked &&
                         <SvgUri
                             width={20}
                             height={20}
