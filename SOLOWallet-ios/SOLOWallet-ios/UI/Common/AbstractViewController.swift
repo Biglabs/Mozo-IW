@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SoloSDK
 import SwiftyJSON
 
 public class AbstractViewController: UIViewController {
@@ -15,6 +16,7 @@ public class AbstractViewController: UIViewController {
             self.updateAddress()
         }
     }
+    var soloSDK: SoloSDK!
     var delegate: SoloWalletDelegate?
     
     public override func viewDidLoad() {

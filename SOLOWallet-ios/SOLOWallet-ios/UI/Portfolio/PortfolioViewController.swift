@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SoloSDK
 import MMDrawerController
 
 class PortfolioViewController: UIViewController {
@@ -15,6 +16,7 @@ class PortfolioViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     
     internal var feed: AddressFeed?
+    var soloSDK: SoloSDK!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +83,7 @@ class PortfolioViewController: UIViewController {
             let displayWidth: CGFloat = self.view.frame.width
             let displayHeight: CGFloat = self.view.frame.height
             let handShakeView = HandshakeView()
+            handShakeView.soloSDK = self.soloSDK
             handShakeView.frame = CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight)
             self.view.addSubview(handShakeView)
         } else {
@@ -125,7 +128,7 @@ class PortfolioViewController: UIViewController {
         guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
             return
         }
-        self.feed = AddressFeed.init(walletId)
+        self.feed = AddressFeed.init(walletId, soloSDK: self.soloSDK)
         self.refresh()
     }
     
@@ -169,6 +172,7 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
         if let coin = self.feed?.addressess?.getElement(indexPath.row) {
             let soloWalletVC = SoloWalletViewController()
             soloWalletVC.currentCoin = coin
+            soloWalletVC.soloSDK = self.soloSDK
             Utils.getTopViewController().present(soloWalletVC, animated: true)
         }
     }

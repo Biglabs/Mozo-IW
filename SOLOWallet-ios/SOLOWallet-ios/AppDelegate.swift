@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SoloSDK
 import CoreData
 import MMDrawerController
 
@@ -15,11 +16,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var drawerController: MMDrawerController?
+    var soloSDK: SoloSDK!
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
+        
+        guard let bundleId = Bundle.main.bundleIdentifier else {
+            // do something when bundle Id is nil
+            let errorVC = UIViewController()
+            window?.rootViewController = errorVC
+            return true
+        }
+        
+        /// Instantiate the SoloSDK with the scheme registered for this app
+        self.soloSDK = SoloSDK(bundleId: bundleId)
+        
         let centerViewController = PortfolioViewController()
+        centerViewController.soloSDK = self.soloSDK
         let rightViewController = DrawerMenuViewController()
         
         let rightSideNav = UINavigationController(rootViewController: rightViewController)
@@ -44,18 +58,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+        /// Handle signer results
+        if let url = launchOptions?[.url] as? URL {
+            if let singner = self.soloSDK.singner {
+                return singner.handleCallback(url: url)
+            }
+        }
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        //com.hdwallet.solowallet://{"action":"GET_WALLET","result":{"uuid":"1141234","email":"user1@gmail.com"}}
-        let urls = url.absoluteString.components(separatedBy: "://")
-        if urls.count > 0 {
-            let jsonData = urls[1]
-            AppService.shared.handleReceivedUrlFromWalletApp(jsonData: jsonData)
-        }
-        return true
+        /// Handle signer results
+        return self.soloSDK.singner?.handleCallback(url: url) ?? false
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

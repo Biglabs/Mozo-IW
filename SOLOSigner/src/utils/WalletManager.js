@@ -161,7 +161,7 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         // TODO: Set timer here for the next time when user have to re-enter PIN
         let isDefault = coinTypes ? false : true;
         if (isDefault) {
-            coinTypes = [Constant.COIN_TYPE.BTC, Constant.COIN_TYPE.ETH];
+            coinTypes = Constant.DEFAULT_COINS;
         }
         let wallets = createNewWallet(manager, importedPhrase, pin, coinTypes);
         let walletDataArray = [];

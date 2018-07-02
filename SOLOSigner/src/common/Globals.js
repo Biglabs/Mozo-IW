@@ -6,7 +6,7 @@ function checkWalletExisting() {
     AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
         if (result === 'true') {
             /* has wallet */
-            Actions.reset('security_pin', {isNewPin: false});
+            Actions.reset('security_pin', {isNewPIN: false});
         } else {
             /* no wallet, create a new one */
             Actions.reset('welcome');

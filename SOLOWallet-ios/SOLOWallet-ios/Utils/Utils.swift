@@ -46,21 +46,5 @@ public class Utils {
         if let window = appDelegate!.window { return window?.visibleViewController }
         return nil
     }
-    
-    public static func handshakeWithSigner() {
-        let alertController = UIAlertController(title: "Config", message: "Handshake with signer.", preferredStyle: .alert)
-        
-        let actionOk = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction) in
-            AppService.shared.launchSignerApp(CommandType.getWallet.rawValue, coinType: CoinType.ETH.key, transaction: nil)
-        }
-        
-        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel) { (action:UIAlertAction) in
-            
-        }
-        
-        alertController.addAction(actionOk)
-        alertController.addAction(actionCancel)
-        Utils.getTopViewController().present(alertController, animated: true, completion: nil)
-    }
 }
 

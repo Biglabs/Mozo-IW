@@ -8,10 +8,10 @@
 
 import Foundation
 
-public extension SoloSDK {
+public extension RESTService {
     // get addresses by wallet id
     public func getAddresses(_ id: String, completionHandler: completion = nil) {
-        let url = BASE_URL + "/api/wallets/\(id)/addresses"
+        let url = Configuration.BASE_URL + "/api/wallets/\(id)/addresses"
         return self.execute(.get, url: url, completionHandler: completionHandler)
     }
 }
