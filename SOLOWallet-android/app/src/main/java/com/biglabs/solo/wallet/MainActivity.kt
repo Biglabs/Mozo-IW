@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), SignerListener {
         walletsViewModel.getCurrentWallet().observe(this, Observer { onCurrentWalletChanged(it) })
 
         /* mock data */
-        walletsViewModel.updateWallets(WalletProvider.getWallet())
+//        walletsViewModel.updateWallets(WalletProvider.getWallet())
 
         loadCurrentTabFragment()
     }

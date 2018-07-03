@@ -16,13 +16,11 @@ import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
 import com.biglabs.solo.wallet.utils.toast
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_nav_send.*
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import com.google.zxing.integration.android.IntentIntegrator
-import android.R.attr.data
-import android.widget.Toast
-import com.google.zxing.integration.android.IntentResult
 
 
 class SendFragment : Fragment() {
@@ -75,8 +73,7 @@ class SendFragment : Fragment() {
                 if (valueInNumber == null || valueInNumber == 0f || input_receive_address.length() == 0) {
                     toast("Invalid value")
                 } else {
-
-                    Signer.getInstance().confirmTransaction(context!!, address, input_receive_address.toString(), "ETH", value, message_input.text.toString())
+                    Signer.getInstance().confirmTransaction(context!!, address, input_receive_address.text.toString(), wallet?.coin()?.key!!, value, message_input.text.toString())
                 }
             } else {
                 toast("Please choose an account!")
@@ -92,6 +89,16 @@ class SendFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result?.contents != null) {
@@ -103,26 +110,18 @@ class SendFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveTransactionInfo(transaction: WalletTransactionEventMessage) {
-        if (transaction.isSuccess!!) {
+        if (transaction.isSuccess != null && transaction.isSuccess!!) {
             text_output.text = "send transaction: ${if (transaction.isSuccess!!) "successfully" else "failed"} \n txHash: ${transaction.txHash}"
         } else {
-            "signed transaction: $transaction.rawTx"
+            transactionData = transaction.rawTx
+            text_output.text = "signed transaction: $transaction.rawTx"
+            updateUI()
         }
     }
 
     fun updateUI() {
         buttonSubmit.visibility = if (transactionData == null) View.GONE else View.VISIBLE
     }
-
-//    override fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String) {
-//        textBalance.text = "send transaction: ${if (isSuccess) "successfully" else "failed"} \n txHash: $txHash"
-//    }
-//
-//    override fun onReceiveSignedTransaction(signedTx: String) {
-//        transactionData = signedTx
-//        textBalance.text = "signed transaction: $transactionData"
-//        updateUI()
-//    }
 
     companion object {
         /**
