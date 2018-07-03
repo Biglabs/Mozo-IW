@@ -101,57 +101,6 @@ registerWalletAndSyncAddress = function(manager, publicKey, walletDataArray, cal
     });
 }
 
-createNewBTCTransaction = function(txData, callback){
-    let params = JSON.stringify(txData.params);
-    RESTService.createNewBTCTransaction(params)
-    .then(result => {
-        if (typeof callback === 'function') {
-            callback(null, result);
-        }
-    })
-    .catch(error => {
-        if (typeof callback === 'function') {
-            callback(error, null);
-        }
-    });
-}
-
-signBTCTransaction = function(privateKey, totalAmount, amountToKeep, txData, callback){
-    createNewBTCTransaction(txData, (error, result) => {
-        if(result){
-            const TestNet = Bitcoin.networks.testnet;
-            let wallet = new Bitcoin.ECPair.fromWIF(privateKey, TestNet);
-            let publicKey = wallet.getAddress();
-            console.log("Wallet's public key:", publicKey);
-
-            let tx = new Bitcoin.TransactionBuilder(TestNet);
-
-            let amountWeHave = totalAmount; // 1.0 BTC
-            let transactionFee = 1000; // 0.0001 BTC
-            let amountToSend = amountWeHave - amountToKeep - transactionFee; // ~0.1 (0.0999)
-
-            result.tx.inputs.map(input => {
-                let prevTxHash = Buffer.from(input.prev_hash, 'hex');
-                tx.addInput(prevTxHash, input.output_value, input.sequence, input.script);
-            });
-            //tx.addInput('<one of my input transactions>', 0);
-
-            txData.params.outputs.map(output => {
-                tx.addOutput(output, amountToSend);
-            });
-            //tx.addOutput('<destination public key>', amountToSend);
-            tx.addOutput(publicKey, amountToKeep);
-            tx.sign(0, wallet);
-
-            let tx_hex = tx.build().toHex();
-        } else {
-            if (typeof callback === 'function') {
-                callback(error, null);
-            }
-        }
-    });
-}
-
 module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
     let manager = DataManager.getInstance();
     // Store isDbExisting true
@@ -228,6 +177,67 @@ module.exports.viewBackupPharse = function(pin, callback) {
             callback(new Error("Inputted PIN is not correct"), null);
         }
     }
+}
+
+
+createNewBTCTransaction = function(txData, callback){
+    // let params = JSON.stringify(txData.params);
+    RESTService.createNewBTCTransaction(txData)
+    .then(result => {
+        if (typeof callback === 'function') {
+            callback(null, result);
+        }
+    })
+    .catch(error => {
+        if (typeof callback === 'function') {
+            callback(error, null);
+        }
+    });
+}
+
+module.exports.testSignBTCTransaction = function(){
+    let jsonData = '{"inputs":[{"addresses": ["mvpCSaJ79T6WAv7xFFXDwr6j4Sstfmiqtf"]}, {"addresses":["mxhhZ4nTguSvxudu84zZoQnJaRt9dpraBz"]}],' +
+    '"outputs":[{"addresses": ["mgkDuotokdM8tigDM22tNQVJzkGJmfpKBG"], "value": 1000000}]}';
+    let txData = JSON.parse(jsonData);
+    let privkey1 = "cU36TsvdnaM3CrvuXmUckRN4byF7f7QzcdsckQ1yj7hHNxxTR59d";
+    let privkey2 = "cRLeQG2FPyM2WLaCPSNsaMgP3j88vcyug2Qv57wvbCoj7q5tvy1Y";
+    let privKeys = [privkey1, privkey2];
+
+    createNewBTCTransaction(txData, (error, result) => {
+        if(result){
+            if(result.errors){
+                if (typeof callback === 'function') {
+                    callback(errors, null);
+                }
+            } else {
+                let signedTransaction = signBTCTransaction(result, privKeys);
+                console.log('Signed transaction: ', signedTransaction);
+                let json = JSON.stringify(signedTransaction);
+                console.log('Signed transaction: ', json);
+            }
+        } else {
+            if (typeof callback === 'function') {
+                callback(error, null);
+            }
+        }
+    });
+}
+
+signBTCTransaction = function(validateTx, privKeys){
+    const TestNet = Bitcoin.networks.testnet;
+
+    // signing each of the hex-encoded string required to finalize the transaction
+    validateTx.pubkeys = [];
+    validateTx.signatures = [];
+    validateTx.tosign.map(function (tosign, index) {
+        let privateKey = privKeys[index];
+        let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, TestNet);
+        validateTx.pubkeys.push(keyPair.getPublicKeyBuffer().toString('hex'));
+        let sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
+        validateTx.signatures.push(sign);
+    });
+
+    return validateTx;
 }
 
 module.exports.signTransaction = function(txData, pin, callback){

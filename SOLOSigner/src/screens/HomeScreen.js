@@ -7,6 +7,7 @@ import {Button, Text} from "../components/SoloComponent";
 import LinkingManager from "../utils/LinkingManager";
 import Constant from '../common/Constants';
 import GlobalStorage from '../utils/GlobalStorage';
+import WalletManager from '../utils/WalletManager';
 
 export default class HomeScreen extends Component<Props> {
 
@@ -15,6 +16,7 @@ export default class HomeScreen extends Component<Props> {
     }
 
     componentDidMount() {
+        // WalletManager.testSignBTCTransaction();
         this.manageScheme();
     }
 
