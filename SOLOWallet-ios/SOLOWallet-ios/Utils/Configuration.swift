@@ -19,6 +19,9 @@ public class Configuration {
     public static var FONT_SIZE: UIFontTextSize = UIFontTextSize(.xSmall)
     public static var URL_SCHEME_SIGNER = "solosigner"
     public static var URL_SCHEME_WALLET = "solowallet"
+    public static let DEVICE_TOKEN = "DEVICE_TOKEN"
+    //Wallet
+    public static let WALLLET_ID = "WalletId"
     
     //development
     public static var BASE_URL = "http://192.168.1.98:9000"

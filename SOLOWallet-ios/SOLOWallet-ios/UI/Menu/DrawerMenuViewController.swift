@@ -46,15 +46,13 @@ extension DrawerMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "Cell")
-        cell.textLabel?.text = "Log out"
+        cell.textLabel?.text = "test"
         cell.textLabel?.textColor = .red
         return cell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
-        KeychainService.shared.setString(KeychainKeys.USER_NAME, value: nil)
-        self.mm_drawerController.toggle(MMDrawerSide.right, animated: true, completion: nil)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: SoloNotification.Login.rawValue), object: nil, userInfo: nil)
+        
     }
 }

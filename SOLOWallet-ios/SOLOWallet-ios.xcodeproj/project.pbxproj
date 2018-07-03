@@ -14,8 +14,6 @@
 		C6134A4020E4843C00A5FE50 /* HandshakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A3F20E4843C00A5FE50 /* HandshakeView.swift */; };
 		C6134A4220E4844400A5FE50 /* HandshakeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6134A4120E4844400A5FE50 /* HandshakeView.xib */; };
 		C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4320E49BA500A5FE50 /* AddressFeed.swift */; };
-		C6134A4620E4C37E00A5FE50 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */; };
-		C6134A4820E4C38800A5FE50 /* LoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */; };
 		C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DEEE20D8BFA400258ACE /* AppDelegate.swift */; };
 		C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */; };
 		C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C616DEF820D8BFA700258ACE /* Assets.xcassets */; };
@@ -48,7 +46,6 @@
 		C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7D020DA602400C61FA4 /* WalletViewController.swift */; };
 		C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */; };
 		C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */; };
-		C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F4D20DCA642009112FC /* KeychainService.swift */; };
 		C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5520DCB1BA009112FC /* Extensions.swift */; };
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DC687520DE26E800000665 /* ScannerViewController.swift */; };
@@ -66,8 +63,6 @@
 		C6134A3F20E4843C00A5FE50 /* HandshakeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeView.swift; sourceTree = "<group>"; };
 		C6134A4120E4844400A5FE50 /* HandshakeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HandshakeView.xib; sourceTree = "<group>"; };
 		C6134A4320E49BA500A5FE50 /* AddressFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressFeed.swift; sourceTree = "<group>"; };
-		C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginViewController.storyboard; sourceTree = "<group>"; };
 		C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOWallet-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C616DEEE20D8BFA400258ACE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C616DEF620D8BFA400258ACE /* SOLOWallet_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SOLOWallet_ios.xcdatamodel; sourceTree = "<group>"; };
@@ -103,7 +98,6 @@
 		C69AF7D020DA602400C61FA4 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
 		C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFeed.swift; sourceTree = "<group>"; };
 		C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedProtocol.swift; sourceTree = "<group>"; };
-		C6CD7F4D20DCA642009112FC /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		C6CD7F5520DCB1BA009112FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C6CD7F5920DCB532009112FC /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
@@ -174,7 +168,6 @@
 			isa = PBXGroup;
 			children = (
 				C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */,
-				C6CD7F4C20DCA639009112FC /* Service */,
 				C616DF2020D8EE4C00258ACE /* Resources */,
 				C616DF0420D8C4EE00258ACE /* UI */,
 				C69AF7B720DA0F6D00C61FA4 /* Data */,
@@ -209,7 +202,6 @@
 		C616DF0420D8C4EE00258ACE /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				C6AF8A5620E3943300B61FAC /* Login */,
 				C6134A2720E3F1EE00A5FE50 /* Portfolio */,
 				C616DF0920D8D86C00258ACE /* Wallet */,
 				C616DF0520D8D86C00258ACE /* Receive */,
@@ -306,23 +298,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		C6AF8A5620E3943300B61FAC /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				C6134A4520E4C37E00A5FE50 /* LoginViewController.swift */,
-				C6134A4720E4C38800A5FE50 /* LoginViewController.storyboard */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		C6CD7F4C20DCA639009112FC /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				C6CD7F4D20DCA642009112FC /* KeychainService.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
 		C6D4F69D20E0C1F000A6EFE3 /* Extended */ = {
 			isa = PBXGroup;
 			children = (
@@ -404,7 +379,6 @@
 				C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */,
 				C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */,
 				C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */,
-				C6134A4820E4C38800A5FE50 /* LoginViewController.storyboard in Resources */,
 				C6134A4220E4844400A5FE50 /* HandshakeView.xib in Resources */,
 				C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */,
 				C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */,
@@ -487,7 +461,6 @@
 				C6134A2920E3F31800A5FE50 /* PortfolioViewController.swift in Sources */,
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
 				C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */,
-				C6CD7F4E20DCA642009112FC /* KeychainService.swift in Sources */,
 				20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
@@ -496,7 +469,6 @@
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */,
 				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
-				C6134A4620E4C37E00A5FE50 /* LoginViewController.swift in Sources */,
 				C6692C8320E76506009AD357 /* typealias.swift in Sources */,
 				C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,

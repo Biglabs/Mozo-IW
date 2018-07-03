@@ -99,7 +99,6 @@ class SendViewController: AbstractViewController {
         
         self.bindData()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.signedTransaction(_:)), name: NSNotification.Name(rawValue: SoloNotification.Signed.rawValue), object: nil)
         //dummy data for test only
         self.addressTextField.text = "0x771521717F518a32248E435882c625aE94a5434c"
     }
