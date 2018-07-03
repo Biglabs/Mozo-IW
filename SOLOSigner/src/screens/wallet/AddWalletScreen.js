@@ -3,27 +3,13 @@ import {FlatList, Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {CoinItemView, FooterActions, Text} from "../../components/SoloComponent";
-import Constant from '../../common/Constants';
+import {inject, observer} from "mobx-react";
 
+@inject("selectedWalletsStore")
+@observer
 export default class AddWalletScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {wallets: Constant.DEFAULT_COINS};
-    }
-
-    componentWillReceiveProps() {
-        if (this.props.selected) {
-            this.setState({
-                wallets: this.props.selected
-            });
-        }
-    }
-
-    addMoreWallet() {
-        Actions.add_more_wallet({selected: this.state.wallets});
-    }
-
     render() {
+        let selectedWallets = this.props.selectedWalletsStore.wallets;
         return (
             <View style={styles.container}>
 
@@ -44,14 +30,14 @@ export default class AddWalletScreen extends Component {
 
                 <TouchableOpacity
                     style={styles.button_add_more}
-                    onPress={() => this.addMoreWallet()}>
+                    onPress={() => Actions.add_more_wallet({selectedWallets: selectedWallets})}>
                     <Text style={styles.button_add_more_text}>+ Add more wallet</Text>
                 </TouchableOpacity>
 
                 <FlatList
                     style={styles.coin_list}
-                    data={this.state.wallets}
-                    extraData={this.state.wallets.length}
+                    data={selectedWallets}
+                    extraData={selectedWallets.length}
                     keyExtractor={(item, index) => `${item.name}-${index}`}
                     renderItem={
                         ({item}) => <CoinItemView icon={item.icon} label={item.name}/>
@@ -59,9 +45,10 @@ export default class AddWalletScreen extends Component {
                 />
 
                 <FooterActions
+                    enabledContinue={selectedWallets.length > 0}
                     onBackPress={() => Actions.pop()}
                     onContinuePress={() => {
-                        Actions.security_pin({isNewPIN : true, coinTypes: this.state.wallets});
+                        Actions.confirm_backup_phrase({coinTypes: selectedWallets});
                     }}/>
             </View>
         )

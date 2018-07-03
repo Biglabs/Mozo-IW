@@ -1,4 +1,6 @@
 import React from 'react';
+import {Provider} from "mobx-react";
+import stores from "./common/stores";
 import {Router, Modal, Scene, Stack, Lightbox} from 'react-native-router-flux';
 /* initial common styles */
 import './res/common.styles.js';
@@ -11,6 +13,7 @@ import SecurityPinScreen from './screens/SecurityPinScreen';
 /* wallet screens */
 import AddWalletScreen from './screens/wallet/AddWalletScreen';
 import AddMoreWalletScreen from './screens/wallet/AddMoreWalletScreen';
+import ConfirmBackupPhrase from './screens/wallet/ConfirmBackupPhrase';
 import CreateWalletScreen from './screens/wallet/CreateWalletScreen';
 import ImportWalletScreen from './screens/wallet/ImportWalletScreen';
 import BackupWalletScreen from './screens/wallet/BackupWalletScreen';
@@ -34,35 +37,38 @@ Linking.addEventListener('url', LinkingManager.handleEventOpenUrl);
 
 export default () => {
     return (
-        <Router>
-            <Modal key="root" hideNavBar>
+        <Provider {...stores}>
+            <Router>
+                <Modal key="root" hideNavBar>
 
-                <Scene key="splash" component={SplashScreen} hideNavBar initial type="reset"/>
-                <Scene key="welcome" component={WelcomeScreen} hideNavBar type="reset"/>
-                <Scene key="security_pin" component={SecurityPinScreen} hideNavBar/>
+                    <Scene key="splash" component={SplashScreen} hideNavBar initial type="reset"/>
+                    <Scene key="welcome" component={WelcomeScreen} hideNavBar type="reset"/>
+                    <Scene key="security_pin" component={SecurityPinScreen} hideNavBar/>
 
-                <Scene key="add_wallet" component={AddWalletScreen} hideNavBar/>
-                <Scene key="add_more_wallet" component={AddMoreWalletScreen} hideNavBar/>
-                <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
-                <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
-                <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
-                <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
+                    <Scene key="add_wallet" component={AddWalletScreen} hideNavBar/>
+                    <Scene key="add_more_wallet" component={AddMoreWalletScreen} hideNavBar/>
+                    <Scene key="confirm_backup_phrase" component={ConfirmBackupPhrase} hideNavBar/>
+                    <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
+                    <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
+                    <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
+                    <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
 
-                <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
+                    <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
 
-                <Stack back backTitle="Home" key="main_stack" type="reset">
-                    <Scene key="home" component={HomeScreen} hideNavBar/>
-                    <Scene key="tab_bip39" title="39" component={Bip39}/>
-                    <Scene key="tab_bip44" title="44" component={Bip44}/>
-                    <Scene key="tab_bip38" title="38" component={Bip38}/>
-                </Stack>
+                    <Stack back backTitle="Home" key="main_stack" type="reset">
+                        <Scene key="home" component={HomeScreen} hideNavBar/>
+                        <Scene key="tab_bip39" title="39" component={Bip39}/>
+                        <Scene key="tab_bip44" title="44" component={Bip44}/>
+                        <Scene key="tab_bip38" title="38" component={Bip38}/>
+                    </Stack>
 
 
-                <Lightbox key="lightbox">
-                    <Scene key="export_qrcode" component={ExportQRCode} />
-                </Lightbox>
-                <Scene key="scan_qrcode" component={ScanQRCode}/>
-            </Modal>
-        </Router>
+                    <Lightbox key="lightbox">
+                        <Scene key="export_qrcode" component={ExportQRCode}/>
+                    </Lightbox>
+                    <Scene key="scan_qrcode" component={ScanQRCode}/>
+                </Modal>
+            </Router>
+        </Provider>
     );
 };

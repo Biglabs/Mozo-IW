@@ -5,48 +5,71 @@ import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 import {CoinItemView, NavigationBar, Text, TextInput} from "../../components/SoloComponent";
 import Constant from '../../common/Constants';
+import {inject} from "mobx-react";
 
+@inject("selectedWalletsStore")
 export default class AddMoreWalletScreen extends Component {
 
     constructor(props) {
         super(props);
-
-        this.selectedWallets = this.props.selected;
+        this.selectedWallets = this.props.selectedWallets;
 
         this.wallets = [];
         Object.keys(Constant.COIN_TYPE).map(key => {
             let coin = Constant.COIN_TYPE[key];
-            coin.selected = this.selectedWallets.includes(coin);
+
+            let coinIndex = this.selectedWallets.findIndex(item => {
+                return coin.name === item.name
+            });
+
+            coin.selected = coinIndex >= 0;
             this.wallets.push(coin);
         });
 
         this.state = {
             wallets: this.wallets,
-            selectedWallets: this.selectedWallets
+            selectedWallets: this.selectedWallets,
         }
     }
 
-    onItemClicked(index) {
-        const coin = this.wallets[index];
-        this.wallets[index].selected = !coin.selected;
+    onItemClicked(name) {
+        let coinIndex = this.wallets.findIndex(item => {
+            return item.name === name
+        });
+        if (coinIndex >= 0) {
+            const coin = this.wallets[coinIndex];
+            coin.selected = !coin.selected;
 
-        if (this.selectedWallets.includes(coin)) {
-            this.selectedWallets.splice(this.selectedWallets.indexOf(coin), 1);
-        } else {
-            this.selectedWallets.push(coin);
+            let selectedCoinIndex = this.selectedWallets.findIndex(item => {
+                return item.name === name
+            });
+            if (selectedCoinIndex >= 0) {
+                this.selectedWallets.splice(selectedCoinIndex, 1);
+            } else {
+                this.selectedWallets.push(coin);
+            }
         }
 
         this.setState({
-            wallets: this.wallets,
+            wallets: this.getSearchResult(),
             selectedWallets: this.selectedWallets
         });
     };
 
-    onInputSearch(text) {
-        let found = this.wallets.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
+    onAddClicked() {
+        this.props.selectedWalletsStore.updateWallets(this.state.selectedWallets);
+        Actions.pop();
+    }
+
+    doSearchWallet() {
         this.setState({
-            wallets: found,
+            wallets: this.getSearchResult(),
         });
+    }
+
+    getSearchResult() {
+        let keyword = this.searchKeyword || '';
+        return this.wallets.filter(item => item.name.toLowerCase().includes(keyword.toLowerCase()));
     }
 
     render() {
@@ -63,8 +86,11 @@ export default class AddMoreWalletScreen extends Component {
                         multiline={false}
                         numberOfLines={1}
                         returnKeyType='search'
-                        onChangeText={text => this.onInputSearch(text)}
-                        onSubmitEditing={text => this.onInputSearch(text)}
+                        onChangeText={(text) => {
+                            this.searchKeyword = text;
+                            this.doSearchWallet();
+                        }}
+                        onSubmitEditing={() => this.doSearchWallet()}
                     />
 
                     <SvgUri
@@ -81,25 +107,22 @@ export default class AddMoreWalletScreen extends Component {
                 <FlatList
                     style={styles.coin_list}
                     data={this.state.wallets}
-                    extraData={this.state.selectedWallets.length}
+                    extraData={this.state.wallets.length + this.state.selectedWallets.length}
                     keyExtractor={(item, index) => `${item.name}-${index}`}
-                    renderItem={({item, index}) =>
+                    renderItem={({item}) =>
                         <CoinItemView
-                            id={index}
+                            id={item.name}
                             icon={item.icon}
                             label={item.name}
                             checked={item.selected || false}
-                            onItemClicked={(index) => this.onItemClicked(index)}/>
+                            onItemClicked={(key) => this.onItemClicked(key)}/>
                     }
                 />
 
                 <TouchableOpacity
                     disabled={!hasWalletSelected}
                     style={styles.button_add}
-                    onPress={() => {
-                        Actions.popTo("add_wallet", {selected: this.state.selectedWallets});
-                        Actions.refresh({selected: this.state.selectedWallets});
-                    }}>
+                    onPress={() => this.onAddClicked()}>
                     <Text style={[styles.button_add_text, {color: buttonAddTextColor}]}>
                         Add
                     </Text>
