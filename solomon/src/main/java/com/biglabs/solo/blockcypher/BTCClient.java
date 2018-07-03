@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.*;
 //import org.springframework.http.client.support
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -58,18 +55,18 @@ public class BTCClient {
 //                BCYAddress ret = restTemplate.getForObject(url, BCYAddress.class);
             ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(url, BCYAddress.class);
             return ret.getBody();
-        } catch (HttpClientErrorException ex) {
+        } catch (HttpStatusCodeException ex) {
 //            System.out.println(ex.getResponseBodyAsString());
 //            System.out.println(ex.getResponseHeaders().toString());
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
-        } catch (HttpServerErrorException ex) {
-//            System.out.println(ex.getResponseBodyAsString());
-//            System.out.println(ex.getResponseHeaders().toString());
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
 
     public BCYAddress[] getLatestTx4MultiAddress(String[] addresses) throws BlockCypherException {
+        if (addresses.length == 1) {
+           return new BCYAddress[]{getAddressLatestTx(addresses[0])};
+        }
+
         String url = MessageFormat.format(addressEP + "/{0}/full?limit=1&txlimit=1", String.join(";", addresses));
         try {
             ResponseEntity<BCYAddress[]> ret = restTemplate.getForEntity(url,
@@ -80,9 +77,9 @@ public class BTCClient {
                 }});
             return ret.getBody();
         } catch (HttpClientErrorException ex) {
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         } catch (HttpServerErrorException ex) {
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
     public BCYAddress getAddressLatestTx(String addresses) throws BlockCypherException {
@@ -96,9 +93,9 @@ public class BTCClient {
                 }});
             return ret.getBody();
         } catch (HttpClientErrorException ex) {
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         } catch (HttpServerErrorException ex) {
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
 
@@ -115,15 +112,15 @@ public class BTCClient {
         }  catch (HttpClientErrorException ex) {
             System.out.println(ex.getResponseBodyAsString());
 //            System.out.println(ex.getResponseHeaders().toString());
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         } catch (HttpServerErrorException ex) {
 //            System.out.println(ex.getResponseBodyAsString());
 //            System.out.println(ex.getResponseHeaders().toString());
-            throw getBlockCypherException(ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
 
-    public static BlockCypherException getBlockCypherException(String errMessage, HttpStatus status, String body) {
+    public static BlockCypherException getBlockCypherException(HttpStatusCodeException ex, String errMessage, HttpStatus status, String body) {
         ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
@@ -137,9 +134,9 @@ public class BTCClient {
             }
             System.out.println("=== BlockCypherError");
             System.out.println(error);
-            return new BlockCypherException(errMessage, status.value(), error);
+            return new BlockCypherException(ex, errMessage, status.value(), error);
         } catch (IOException e) {
-            return new BlockCypherException(errMessage + " - " + e.getMessage() , status.value(), null);
+            return new BlockCypherException(ex, errMessage + " - " + e.getMessage() , status.value(), null);
         }
     }
 }

@@ -20,7 +20,7 @@ public class BCYAddress {
     private BigDecimal final_balance;
     private BigDecimal unconfirmed_balance;
     private Long n_tx;
-    private Long nUnconfirmedTx;
+    private Long unconfirmed_n_tx;
     private String tx_url;
     private List<Transaction> txs;
 
@@ -64,12 +64,12 @@ public class BCYAddress {
         this.n_tx = n_tx;
     }
 
-    public Long getnUnconfirmedTx() {
-        return nUnconfirmedTx;
+    public Long getUnconfirmed_n_tx() {
+        return unconfirmed_n_tx;
     }
 
-    public void setnUnconfirmedTx(Long nUnconfirmedTx) {
-        this.nUnconfirmedTx = nUnconfirmedTx;
+    public void setUnconfirmed_n_tx(Long unconfirmed_n_tx) {
+        this.unconfirmed_n_tx = unconfirmed_n_tx;
     }
 
     public List<Transaction> getTxs() {
@@ -96,7 +96,7 @@ public class BCYAddress {
             ", final_balance=" + final_balance +
             ", unconfirmed_balance=" + unconfirmed_balance +
             ", n_tx=" + n_tx +
-            ", nUnconfirmedTx=" + nUnconfirmedTx +
+            ", unconfirmed_n_tx=" + unconfirmed_n_tx +
             ", tx_url='" + tx_url + '\'' +
             ", txs=" + txs +
             '}';

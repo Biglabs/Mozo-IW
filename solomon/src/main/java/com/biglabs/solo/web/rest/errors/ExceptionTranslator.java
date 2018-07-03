@@ -1,8 +1,10 @@
 package com.biglabs.solo.web.rest.errors;
 
+import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.web.rest.util.HeaderUtil;
 
 import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -92,6 +94,18 @@ public class ExceptionTranslator implements ProblemHandling {
         Problem problem = Problem.builder()
             .withStatus(Status.CONFLICT)
             .with("message", ErrorConstants.ERR_CONCURRENCY_FAILURE)
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler(BlockCypherException.class)
+    public ResponseEntity<Problem> handleConcurrencyFailure(BlockCypherException ex, NativeWebRequest request) {
+        HttpStatus httpStatus = ex.getInternalException().getStatusCode();
+        Status status = httpStatus.is4xxClientError() ? Status.BAD_REQUEST : Status.INTERNAL_SERVER_ERROR;
+        Problem problem = Problem.builder()
+            .withStatus(status)
+            .with("message", ex.getMessage())
+            .with("errors", ex.getBlockCypherError().getErrors())
             .build();
         return create(ex, problem, request);
     }

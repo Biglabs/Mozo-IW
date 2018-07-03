@@ -1,6 +1,7 @@
 package com.biglabs.solo.blockcypher.exception;
 
 import com.biglabs.solo.blockcypher.model.BlockCypherError;
+import org.springframework.web.client.HttpStatusCodeException;
 
 /**
  * BlockCypherException
@@ -10,7 +11,20 @@ public class BlockCypherException extends Exception {
 
     private int status;
     private BlockCypherError blockCypherError;
-    private Exception exception;
+
+    public HttpStatusCodeException getInternalException() {
+        return internalException;
+    }
+
+    public void setInternalException(HttpStatusCodeException internalException) {
+        this.internalException = internalException;
+    }
+
+    public void setBlockCypherError(BlockCypherError blockCypherError) {
+        this.blockCypherError = blockCypherError;
+    }
+
+    private HttpStatusCodeException internalException;
 
     public BlockCypherException(String message, int status, BlockCypherError blockCypherError) {
         super(message);
@@ -18,8 +32,15 @@ public class BlockCypherException extends Exception {
         this.blockCypherError = blockCypherError;
     }
 
-    public BlockCypherException(Exception exception) {
-        this.exception = exception;
+    public BlockCypherException(HttpStatusCodeException ex, String message, int status, BlockCypherError blockCypherError) {
+        super(message);
+        this.status = status;
+        this.blockCypherError = blockCypherError;
+        this.internalException = ex;
+    }
+
+    public BlockCypherException(HttpStatusCodeException internalException) {
+        this.internalException = internalException;
     }
 
     public BlockCypherError getBlockCypherError() {
@@ -36,7 +57,7 @@ public class BlockCypherException extends Exception {
             "message=" + getMessage() +
             ", status=" + status +
             ", blockCypherError=" + (blockCypherError != null ? blockCypherError.getErrors() : "") +
-            ", exception=" + exception +
+            ", internalException=" + internalException +
             '}';
     }
 
