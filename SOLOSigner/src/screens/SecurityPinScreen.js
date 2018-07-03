@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {TouchableHighlight, View, ActivityIndicator} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {FooterActions, RotationView, Text} from "../components/SoloComponent";
+import {FooterActions, Text} from "../components/SoloComponent";
 import WalletManager from '../utils/WalletManager';
 
 const accentColor = '#00fffc';

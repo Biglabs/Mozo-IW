@@ -1,16 +1,12 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
 import {View} from "react-native";
 import StyleSheet from "react-native-extended-stylesheet";
 import Button from "./SoloButton";
 
 
-export default class FooterActions extends Component {
-    constructor(props) {
-        super(props);
-    }
-
+export default class FooterActions extends React.Component {
     render() {
         let colorBtnBack = (this.props.buttonsColor && this.props.buttonsColor.back) || StyleSheet.value('$textTitleColor');
         let colorBtnContinue = (this.props.buttonsColor && this.props.buttonsColor.continue) || StyleSheet.value('$primaryColor');

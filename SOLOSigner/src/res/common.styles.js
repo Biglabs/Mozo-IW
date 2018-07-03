@@ -4,6 +4,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 const primaryColor = '#006DFF';
 const textTitleColor = '#141a22';
 const textContentColor = '#747474';
+const errorColor = '#f05454';
 
 const fontRegular = Platform.select({ios: 'UTM Avo', android: 'utm-avo'});
 const fontBold = Platform.select({ios: 'UTMAvoBold', android: 'utm-avo-bold'});
@@ -21,7 +22,7 @@ EStyleSheet.build({
     $borderColor: '#cdcdcd',
     $screenBackground: '#FFFFFF',
     $disableColor: '#d1d7dd',
-    $errorColor: '#f05454',
+    $errorColor: errorColor,
 
     $screen_padding_bottom: 70,
     $screen_padding_horizontal: 30,
@@ -42,6 +43,11 @@ EStyleSheet.build({
         color: textContentColor,
         fontFamily: fontRegular,
         fontSize: 12
+    },
+    $warning_text: {
+        color: errorColor,
+        fontFamily: fontBold,
+        fontSize: 14
     },
     $back_button: {
         position: 'absolute',

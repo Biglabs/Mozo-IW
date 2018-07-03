@@ -24,7 +24,6 @@ import ConfirmationScreen from './screens/transaction/ConfirmationScreen';
 
 import ExportQRCode from './components/lightbox/ExportQRCode';
 import ScanQRCode from './components/lightbox/ScanQRCode';
-import Bip39 from './screens/Bip39';
 import Bip44 from './screens/Bip44';
 import Bip38 from './screens/Bip38';
 import LinkingManager from "./utils/LinkingManager";
@@ -57,7 +56,6 @@ export default () => {
 
                     <Stack back backTitle="Home" key="main_stack" type="reset">
                         <Scene key="home" component={HomeScreen} hideNavBar/>
-                        <Scene key="tab_bip39" title="39" component={Bip39}/>
                         <Scene key="tab_bip44" title="44" component={Bip44}/>
                         <Scene key="tab_bip38" title="38" component={Bip38}/>
                     </Stack>

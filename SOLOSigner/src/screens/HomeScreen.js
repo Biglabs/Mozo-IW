@@ -109,7 +109,6 @@ export default class HomeScreen extends Component<Props> {
                 <View style={styles.dash}/>
 
                 <View style={styles.content}>
-                    <Button title='Bip 39' onPress={() => Actions.tab_bip39()}/>
                     <Button title='Bip 44' onPress={() => Actions.tab_bip44()}/>
                     <Button title='Bip 38' onPress={() => Actions.tab_bip38()}/>
                 </View>

@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: 30,
-        paddingRight: 30
+        paddingLeft: '$screen_padding_horizontal',
+        paddingRight: '$screen_padding_horizontal'
     },
     button_add_more: {
         width: '100%',
