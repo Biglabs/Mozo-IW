@@ -28,13 +28,13 @@
 		C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF1E20D8E7F100258ACE /* Configuration.swift */; };
 		C616DF4E20D90B6000258ACE /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF4D20D90B6000258ACE /* Constant.swift */; };
 		C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF5020D916A800258ACE /* AbstractViewController.swift */; };
+		C6228E5320EB2D1A004C37C2 /* Typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6228E5220EB2D1A004C37C2 /* Typealias.swift */; };
 		C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */; };
 		C63A844120DB56650073EB08 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844020DB56650073EB08 /* Utils.swift */; };
 		C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C63A844420DB62BF0073EB08 /* SendViewController.storyboard */; };
 		C63A844720DB7D600073EB08 /* TransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844620DB7D600073EB08 /* TransactionDTO.swift */; };
 		C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844820DB88580073EB08 /* TransactionWalletTableViewCell.swift */; };
 		C63A844B20DB88620073EB08 /* TransactionWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */; };
-		C6692C8320E76506009AD357 /* typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6692C8220E76506009AD357 /* typealias.swift */; };
 		C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */; };
 		C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */; };
 		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
@@ -80,13 +80,13 @@
 		C616DF4220D8F58F00258ACE /* SoloWalletHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloWalletHeader.h; sourceTree = "<group>"; };
 		C616DF4D20D90B6000258ACE /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		C616DF5020D916A800258ACE /* AbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
+		C6228E5220EB2D1A004C37C2 /* Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealias.swift; sourceTree = "<group>"; };
 		C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		C63A844020DB56650073EB08 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		C63A844420DB62BF0073EB08 /* SendViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendViewController.storyboard; sourceTree = "<group>"; };
 		C63A844620DB7D600073EB08 /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
 		C63A844820DB88580073EB08 /* TransactionWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWalletTableViewCell.swift; sourceTree = "<group>"; };
 		C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionWalletTableViewCell.xib; sourceTree = "<group>"; };
-		C6692C8220E76506009AD357 /* typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = typealias.swift; sourceTree = "<group>"; };
 		C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo-bold.ttf"; sourceTree = "<group>"; };
 		C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo.ttf"; sourceTree = "<group>"; };
 		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
@@ -190,8 +190,8 @@
 				C616DF1E20D8E7F100258ACE /* Configuration.swift */,
 				C616DF4D20D90B6000258ACE /* Constant.swift */,
 				C616DF1620D8E09400258ACE /* ThemeManager.swift */,
-				C6692C8220E76506009AD357 /* typealias.swift */,
 				C6CD7F5920DCB532009112FC /* Protocols.swift */,
+				C6228E5220EB2D1A004C37C2 /* Typealias.swift */,
 				C616DF1C20D8E78400258ACE /* UIFontTextSize.swift */,
 				C6CD7F5520DCB1BA009112FC /* Extensions.swift */,
 				C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */,
@@ -415,7 +415,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/JDStatusBarNotification/JDStatusBarNotification.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
 				"${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework",
 				"${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework",
@@ -429,7 +428,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JDStatusBarNotification.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINCache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINOperation.framework",
@@ -469,11 +467,11 @@
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */,
 				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
-				C6692C8320E76506009AD357 /* typealias.swift in Sources */,
 				C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
 				C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */,
 				C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */,
+				C6228E5320EB2D1A004C37C2 /* Typealias.swift in Sources */,
 				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
 				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,

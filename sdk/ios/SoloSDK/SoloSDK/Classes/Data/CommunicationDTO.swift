@@ -8,11 +8,6 @@
 
 import Foundation
 import SwiftyJSON
-
-public protocol ResponseObjectSerializable: class {
-    init?(json: JSON)
-}
-
 public class CommunicationDTO: ResponseObjectSerializable {
     
     public var action: String?

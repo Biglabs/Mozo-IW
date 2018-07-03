@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 //completion closure
 public typealias completion = ((_ value: Any?, _ error: Error?) -> Void)?
