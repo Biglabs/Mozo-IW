@@ -179,13 +179,39 @@ module.exports.viewBackupPharse = function(pin, callback) {
     }
 }
 
-
-createNewBTCTransaction = function(txData, callback){
-    // let params = JSON.stringify(txData.params);
-    RESTService.createNewBTCTransaction(txData)
+signBTCTransaction = function(txData, privKeys, callback){
+    let params = txData.params;
+    RESTService.createNewBTCTransaction(params)
     .then(result => {
-        if (typeof callback === 'function') {
-            callback(null, result);
+        if(result){
+            if(result.errors){
+                if (typeof callback === 'function') {
+                    callback(errors, null);
+                }
+            } else {
+                let validateTx = result;
+                const net = (txData.network == Constant.COIN_TYPE.BTC.network ? Bitcoin.networks.bitcoin : Bitcoin.networks.testnet);
+                // signing each of the hex-encoded string required to finalize the transaction
+                validateTx.pubkeys = [];
+                validateTx.signatures = [];
+                validateTx.tosign.map(function (tosign, index) {
+                    let privateKey = privKeys[index];
+                    let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, net);
+                    validateTx.pubkeys.push(keyPair.getPublicKeyBuffer().toString('hex'));
+                    let sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
+                    validateTx.signatures.push(sign);
+                });
+                console.log('Signed transaction: ', validateTx);
+                let signedTransaction = JSON.stringify(validateTx);
+                console.log('Signed transaction: ', signedTransaction);
+                if (typeof callback === 'function') {
+                    callback(null, signedTransaction);
+                }
+            }
+        } else {
+            if (typeof callback === 'function') {
+                callback(error, null);
+            }
         }
     })
     .catch(error => {
@@ -195,98 +221,102 @@ createNewBTCTransaction = function(txData, callback){
     });
 }
 
-module.exports.testSignBTCTransaction = function(){
-    let jsonData = '{"inputs":[{"addresses": ["mvpCSaJ79T6WAv7xFFXDwr6j4Sstfmiqtf"]}, {"addresses":["mxhhZ4nTguSvxudu84zZoQnJaRt9dpraBz"]}],' +
-    '"outputs":[{"addresses": ["mgkDuotokdM8tigDM22tNQVJzkGJmfpKBG"], "value": 1000000}]}';
-    let txData = JSON.parse(jsonData);
-    let privkey1 = "cU36TsvdnaM3CrvuXmUckRN4byF7f7QzcdsckQ1yj7hHNxxTR59d";
-    let privkey2 = "cRLeQG2FPyM2WLaCPSNsaMgP3j88vcyug2Qv57wvbCoj7q5tvy1Y";
-    let privKeys = [privkey1, privkey2];
-
-    createNewBTCTransaction(txData, (error, result) => {
-        if(result){
-            if(result.errors){
-                if (typeof callback === 'function') {
-                    callback(errors, null);
-                }
-            } else {
-                let signedTransaction = signBTCTransaction(result, privKeys);
-                console.log('Signed transaction: ', signedTransaction);
-                let json = JSON.stringify(signedTransaction);
-                console.log('Signed transaction: ', json);
-            }
-        } else {
-            if (typeof callback === 'function') {
-                callback(error, null);
-            }
+signETHTransaction = function(txData, privateKeyInBuffer, callback){
+    let fromAddress = txData.params.from;
+    const web3 = new Web3(
+        new Web3.providers.HttpProvider('https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir')
+    );
+    web3.eth.getTransactionCount(fromAddress).then(_nonce => {
+        const etherAmount = txData.params.value !== 'string' ? txData.params.value.toString() : txData.params.value;
+        const txParams = {
+            nonce: _nonce,
+            gasLimit: 3000000,
+            gasPrice: web3.utils.toHex(web3.utils.toWei('21', 'gwei')),
+            from: fromAddress,
+            to: txData.params.to,
+            value: web3.utils.toHex(web3.utils.toWei(etherAmount, 'ether')),
+            data: web3.utils.fromUtf8(txData.params.data || ''),
+            // EIP 155 chainId - mainnet: 1, ropsten: 3
+            chainId: 3
+        };
+        const tx = new Transaction(txParams);
+        tx.sign(privateKeyInBuffer);
+        const serializedTx = tx.serialize();
+        let signedTransaction = `0x${serializedTx.toString('hex')}`;
+        if (typeof callback === 'function') {
+            callback(null, signedTransaction);
         }
     });
-}
-
-signBTCTransaction = function(validateTx, privKeys){
-    const TestNet = Bitcoin.networks.testnet;
-
-    // signing each of the hex-encoded string required to finalize the transaction
-    validateTx.pubkeys = [];
-    validateTx.signatures = [];
-    validateTx.tosign.map(function (tosign, index) {
-        let privateKey = privKeys[index];
-        let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, TestNet);
-        validateTx.pubkeys.push(keyPair.getPublicKeyBuffer().toString('hex'));
-        let sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
-        validateTx.signatures.push(sign);
-    });
-
-    return validateTx;
 }
 
 module.exports.signTransaction = function(txData, pin, callback){
-    let manager = DataManager.getInstance();
-    let fromAddress = txData.params.from;
-    let encryptedPrivateKey = manager.getPrivateKeyFromAddress(fromAddress);
-    if (!encryptedPrivateKey) {
-        if (typeof callback === 'function') {
-            callback(new Error("Not support this address."), null);
-        }
-        return;
-    }
     if (!pin) {
         if (typeof callback === 'function') {
             callback(new Error("Can not use the PIN."), null);
         }
         return;
     }
-    // Encrypt private key before saving to DB, password: pin
-    let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
-    let privateKeyInBuffer = ethUtil.toBuffer(privateKey);
-    if(privateKeyInBuffer){
-        const web3 = new Web3(
-            new Web3.providers.HttpProvider('https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir')
-        );
-        web3.eth.getTransactionCount(fromAddress).then(_nonce => {
-            const etherAmount = txData.params.value !== 'string' ? txData.params.value.toString() : txData.params.value;
-            const txParams = {
-                nonce: _nonce,
-                gasLimit: 3000000,
-                gasPrice: web3.utils.toHex(web3.utils.toWei('21', 'gwei')),
-                from: fromAddress,
-                to: txData.params.to,
-                value: web3.utils.toHex(web3.utils.toWei(etherAmount, 'ether')),
-                data: web3.utils.fromUtf8(txData.params.data || ''),
-                // EIP 155 chainId - mainnet: 1, ropsten: 3
-                chainId: 3
-            };
-            const tx = new Transaction(txParams);
-            tx.sign(privateKeyInBuffer);
-            const serializedTx = tx.serialize();
-            let signedTransaction = `0x${serializedTx.toString('hex')}`;
-            if (typeof callback === 'function') {
-                callback(null, signedTransaction);
+    let manager = DataManager.getInstance();    
+    switch (txData.coinType) {
+        case Constant.COIN_TYPE.BTC.name: {
+            var privKeys = [];
+            txData.params.inputs.map(input => {
+                let address = input.addresses[0];
+                let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address);
+                if (!encryptedPrivateKey) {
+                    if (typeof callback === 'function') {
+                        callback(new Error("Not support this address."), null);
+                    }
+                    return;
+                }
+                let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
+                privKeys.push(privateKey);               
+            });
+            signBTCTransaction(txData, privKeys, (error, result) => {
+                if(result){
+                    if (typeof callback === 'function') {
+                        callback(null, result);
+                    }
+                } else {
+                    if (typeof callback === 'function') {
+                        callback(new Error("Not support this address's private key."), null);
+                    }
+                }
+            });
+            break;
+        }
+        case Constant.COIN_TYPE.ETH.name: {
+            let fromAddress = txData.params.from;
+            let encryptedPrivateKey = manager.getPrivateKeyFromAddress(fromAddress);
+            if (!encryptedPrivateKey) {
+                if (typeof callback === 'function') {
+                    callback(new Error("Not support this address."), null);
+                }
+                return;
             }
-        });
-    } else {
-        if (typeof callback === 'function') {
-            callback(new Error("Not support this address's private key."), null);
+            let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
+            let privateKeyInBuffer = ethUtil.toBuffer(privateKey);
+            if(privateKeyInBuffer){
+                signETHTransaction(txData, privateKeyInBuffer, (error, result) => {
+                    if(result){
+                        if (typeof callback === 'function') {
+                            callback(null, result);
+                        }
+                    } else {
+                        if (typeof callback === 'function') {
+                            callback(new Error("Not support this address's private key."), null);
+                        }
+                    }
+                });
+            } else {
+                if (typeof callback === 'function') {
+                    callback(new Error("Not support this address's private key."), null);
+                }
+            }
+            break;
+        }
+        default: {
+            
         }
     }
 }
