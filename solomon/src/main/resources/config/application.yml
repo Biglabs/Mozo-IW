@@ -103,3 +103,22 @@ jhipster:
 # ===================================================================
 
 application:
+
+blockcypher:
+    endpoint: https://api.blockcypher.com
+    version: v1
+    token: abc
+    btcMain:
+        coin: btc
+        network: main
+    btcTest:
+        coin: btc
+        network: test3
+    ethMain:
+        coin: eth
+        network: main
+    ethTest:
+        coin: beth
+        network: main
+
+

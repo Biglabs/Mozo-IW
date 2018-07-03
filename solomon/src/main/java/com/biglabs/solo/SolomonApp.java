@@ -1,6 +1,7 @@
 package com.biglabs.solo;
 
 import com.biglabs.solo.config.ApplicationProperties;
+import com.biglabs.solo.blockcypher.BlockCypherProperties;
 import com.biglabs.solo.config.DefaultProfileUtil;
 
 import io.github.jhipster.config.JHipsterConstants;
@@ -23,7 +24,7 @@ import java.util.Collection;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
-@EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
+@EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class, BlockCypherProperties.class})
 public class SolomonApp {
 
     private static final Logger log = LoggerFactory.getLogger(SolomonApp.class);
