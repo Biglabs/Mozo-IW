@@ -99,9 +99,6 @@ class SendViewController: AbstractViewController {
         self.signButton.addTarget(self, action: #selector(self.signButtonTapped(_:)), for: .touchUpInside)
         
         self.bindData()
-        
-        //dummy data for test only
-        self.addressTextField.text = "0x771521717F518a32248E435882c625aE94a5434c"
     }
     
     func bindData() {
@@ -172,7 +169,8 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        if value == "0" || (Double(value)! < 0.001) {
+        //ETH only
+        if (value == "0" || (Double(value)! < 0.001)) {
             JDStatusBarNotification.show(withStatus: "Amount is below the minimum (0.001 ETH)", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
@@ -182,7 +180,7 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        
+        // validate gas for each coin
         
         // sign eth
         if self.currentCoin?.coin == CoinType.ETH.key {
