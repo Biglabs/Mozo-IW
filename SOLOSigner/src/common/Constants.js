@@ -6,12 +6,46 @@ const Constants = {
         ADD_ADDRESS: "ADD_ADDRESS"
     },
     COIN_TYPE: {
-        BTC: {name: "BTC", value: 0, network: "BTC_MAIN", icon: require("../res/icons/ic_coin_btc.svg")},
-        BTC_TEST: {name: "BTC", value: 1, network: "BTC_TEST", icon: require("../res/icons/ic_coin_btc.svg")},
-        ETH: {name: "ETH", value: 60, network: "ETH_MAIN", icon: require("../res/icons/ic_coin_eth.svg")},
-        ETH_TEST: {name: "ETH", value: 60, network: "ETH_TEST", icon: require("../res/icons/ic_coin_eth.svg")},
-        SOLO: {name: "SOLO", value: "Constract's Address", icon: require("../res/icons/ic_coin_solo.svg")},
-        MOZO: {name: "MOZO", value: "Constract's Address", icon: require("../res/icons/ic_coin_mozo.svg")}
+        BTC: {
+            displayName: "BTC",
+            name: "BTC",
+            value: 0,
+            network: "BTC_MAIN",
+            icon: require("../res/icons/ic_coin_btc.svg")
+        },
+        BTC_TEST: {
+            displayName: "BTC TESTNET",
+            name: "BTC",
+            value: 1,
+            network: "BTC_TEST",
+            icon: require("../res/icons/ic_coin_btc.svg")
+        },
+        ETH: {
+            displayName: "ETH",
+            name: "ETH",
+            value: 60,
+            network: "ETH_MAIN",
+            icon: require("../res/icons/ic_coin_eth.svg")
+        },
+        ETH_TEST: {
+            displayName: "ETH TESTNET",
+            name: "ETH",
+            value: 60,
+            network: "ETH_TEST",
+            icon: require("../res/icons/ic_coin_eth.svg")
+        },
+        SOLO: {
+            displayName: "SOLO",
+            name: "SOLO",
+            value: "Constract's Address",
+            icon: require("../res/icons/ic_coin_solo.svg")
+        },
+        MOZO: {
+            displayName: "MOZO",
+            name: "MOZO",
+            value: "Constract's Address",
+            icon: require("../res/icons/ic_coin_mozo.svg")
+        }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',
     FLAG_PUBLIC_KEY: '@publicKey:key',

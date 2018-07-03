@@ -12,14 +12,21 @@ export default class AddMoreWalletScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.selectedWallets = this.props.selectedWallets;
+
+        const getCoinIdentifierKey = function(coin) {
+            return coin.displayName.replace(" ", "_").concat(coin.value).concat(coin.network).toLowerCase()
+        };
+
+        this.selectedWallets = props.selectedWallets;
 
         this.wallets = [];
         Object.keys(Constant.COIN_TYPE).map(key => {
             let coin = Constant.COIN_TYPE[key];
+            coin.identifierKey = getCoinIdentifierKey(coin);
 
             let coinIndex = this.selectedWallets.findIndex(item => {
-                return coin.name === item.name
+                item.identifierKey = getCoinIdentifierKey(item);
+                return coin.identifierKey === item.identifierKey
             });
 
             coin.selected = coinIndex >= 0;
@@ -32,16 +39,16 @@ export default class AddMoreWalletScreen extends Component {
         }
     }
 
-    onItemClicked(name) {
+    onItemClicked(key) {
         let coinIndex = this.wallets.findIndex(item => {
-            return item.name === name
+            return item.identifierKey === key
         });
         if (coinIndex >= 0) {
             const coin = this.wallets[coinIndex];
             coin.selected = !coin.selected;
 
             let selectedCoinIndex = this.selectedWallets.findIndex(item => {
-                return item.name === name
+                return item.identifierKey === key
             });
             if (selectedCoinIndex >= 0) {
                 this.selectedWallets.splice(selectedCoinIndex, 1);
@@ -111,9 +118,9 @@ export default class AddMoreWalletScreen extends Component {
                     keyExtractor={(item, index) => `${item.name}-${index}`}
                     renderItem={({item}) =>
                         <CoinItemView
-                            id={item.name}
+                            id={item.identifierKey}
                             icon={item.icon}
-                            label={item.name}
+                            label={item.displayName}
                             checked={item.selected || false}
                             onItemClicked={(key) => this.onItemClicked(key)}/>
                     }

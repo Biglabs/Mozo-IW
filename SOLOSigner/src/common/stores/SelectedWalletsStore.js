@@ -9,7 +9,7 @@ export default class SelectedWalletsStore {
     updateWallets(wallets) {
         if (wallets) {
             this.wallets = wallets.sort(function (a, b) {
-                return a.name.localeCompare(b.name);
+                return a.displayName.localeCompare(b.displayName);
             });
         }
     }
