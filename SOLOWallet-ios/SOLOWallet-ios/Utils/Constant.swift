@@ -98,9 +98,3 @@ public enum EventType: String {
     case Success = "success"
     case Fail = "fail"
 }
-
-public enum SoloNotification: String {
-    case Login   = "LOGIN"
-    case Logout   = "LOGOUT"
-    case Signed = "SIGNED"
-}
