@@ -137,7 +137,7 @@ signBTCTransaction = function(privateKey, totalAmount, amountToKeep, txData, cal
             });
             //tx.addInput('<one of my input transactions>', 0);
 
-            result.tx.outputs.map(output => {
+            txData.params.outputs.map(output => {
                 tx.addOutput(output, amountToSend);
             });
             //tx.addOutput('<destination public key>', amountToSend);
