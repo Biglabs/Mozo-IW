@@ -46,5 +46,9 @@ public class Utils {
         if let window = appDelegate!.window { return window?.visibleViewController }
         return nil
     }
+    
+    public static func roundDouble(_ value: Double) -> Double{
+        return round(1000*value)/1000
+    }
 }
 

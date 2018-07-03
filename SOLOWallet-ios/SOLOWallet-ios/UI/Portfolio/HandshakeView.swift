@@ -55,7 +55,7 @@ public class HandshakeView: UIView {
             switch result {
             case .success(let walletId):
                 //Save walletId
-                UserDefaults.standard.set(walletId, forKey: KeychainKeys.WALLLET_ID)
+                UserDefaults.standard.set(walletId, forKey: Configuration.WALLLET_ID)
                 //refresh
                 guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
                     let drawerController = appDelegate.drawerController else {return}

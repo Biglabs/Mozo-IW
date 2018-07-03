@@ -1,8 +1,8 @@
 //
-//  typealias.swift
+//  Typealias.swift
 //  SOLOWallet-ios
 //
-//  Created by Tam Nguyen on 6/30/18.
+//  Created by Tam Nguyen on 7/3/18.
 //  Copyright © 2018 biglabs. All rights reserved.
 //
 

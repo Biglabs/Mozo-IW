@@ -9,7 +9,6 @@
 import Foundation
 import JDStatusBarNotification
 import SwiftyJSON
-import AsyncDisplayKit
 
 open class ContentFeed: NSObject, FeedProtocol {
     open var id: String!
@@ -33,13 +32,6 @@ open class ContentFeed: NSObject, FeedProtocol {
         self.fetchInProgress = false
         self.zeroData = false
         self.error = nil
-    }
-    
-    public func isShimmering(_ shimmeringNode: ASDisplayNode!) -> Bool {
-        if self.getContent() == nil && self.zeroData == false && shimmeringNode != nil {
-            return true
-        }
-        return false
     }
     
     public func errorFetching() -> Error! {

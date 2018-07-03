@@ -21,12 +21,7 @@ class PortfolioViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.login), name: NSNotification.Name(rawValue: SoloNotification.Login.rawValue), object: nil)
-        if KeychainService.shared.getString(KeychainKeys.USER_NAME) == nil {
-            self.login()
-        } else {
-            self.buildPortfolioView()
-        }
+        self.buildPortfolioView()
     }
     
     func buildPortfolioView() {
@@ -47,14 +42,6 @@ class PortfolioViewController: UIViewController {
         self.validateHandshake()
     }
     
-    @objc func login(){
-        let storyboard = UIStoryboard(name: "LoginViewController", bundle: nil)
-        if let loginVC: LoginViewController = storyboard.instantiateViewController(withIdentifier: "LoginVC") as? LoginViewController {
-            loginVC.delegate = self
-            self.present(loginVC, animated: false)
-        }
-    }
-    
     @objc func refresh(_ sender: Any? = nil) {
         self.feed?.refresh(){ content, error in
             self.completion(error: error)
@@ -72,14 +59,18 @@ class PortfolioViewController: UIViewController {
     
     private func completion(error: Error?){
         guard error == nil else {
+            //handle error screen
             self.tableView.reloadData()
             return
         }
         self.tableView.reloadData()
+        if self.feed?.zeroData == true {
+            // handle no data
+        }
     }
     
     func validateHandshake() {
-        if UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) == nil {
+        if UserDefaults.standard.string(forKey: Configuration.WALLLET_ID) == nil {
             let displayWidth: CGFloat = self.view.frame.width
             let displayHeight: CGFloat = self.view.frame.height
             let handShakeView = HandshakeView()
@@ -125,7 +116,7 @@ class PortfolioViewController: UIViewController {
         }
         self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
         
-        guard let walletId = UserDefaults.standard.string(forKey: KeychainKeys.WALLLET_ID) else {
+        guard let walletId = UserDefaults.standard.string(forKey: Configuration.WALLLET_ID) else {
             return
         }
         self.feed = AddressFeed.init(walletId, soloSDK: self.soloSDK)

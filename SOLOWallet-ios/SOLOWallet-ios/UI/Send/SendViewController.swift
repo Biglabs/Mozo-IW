@@ -73,6 +73,7 @@ class SendViewController: AbstractViewController {
         self.inputCoinNameLabel?.textColor = UIColor.white
         self.inputCoinTextField.textColor = ThemeManager.shared.font
         self.inputCoinTextField.keyboardType = UIKeyboardType.decimalPad
+        self.inputCoinTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
         self.inputUSDLabel?.textColor = ThemeManager.shared.placeholder
         
         self.spendableTitleLabel.textColor = ThemeManager.shared.title
@@ -98,17 +99,26 @@ class SendViewController: AbstractViewController {
         self.signButton.addTarget(self, action: #selector(self.signButtonTapped(_:)), for: .touchUpInside)
         
         self.bindData()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.signedTransaction(_:)), name: NSNotification.Name(rawValue: SoloNotification.Signed.rawValue), object: nil)
-        //dummy data for test only
-        self.addressTextField.text = "0x771521717F518a32248E435882c625aE94a5434c"
     }
     
     func bindData() {
-        self.inputCoinNameLabel?.text = "\(self.currentCoin?.coin ?? "")   "
-        self.inputUSDLabel?.text = "US$7,500.52"
-        self.spendableValueLabel?.text = "\(self.currentCoin?.balance ?? 0.0) \(self.currentCoin?.coin ?? "")"
+        let coinName = self.currentCoin?.coin ?? ""
+        let balance = self.currentCoin?.balance ?? 0.0
+        
+        self.inputCoinNameLabel?.text = "\(coinName)   "
+        self.spendableValueLabel?.text = "\(balance) \(coinName)"
         self.gasTextField?.text = "250.000"
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        var balance = 0.0
+        if let value = textField.text, value != "" {
+            balance = Double(value)!
+            
+        }
+        if let usd = self.currentCoin?.usd {
+            self.inputUSDLabel?.text = "US$\(Utils.roundDouble(usd*balance))"
+        }
     }
     
     override func updateAddress(_ sender: Any? = nil) {
@@ -159,7 +169,8 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        if value == "0" || (Double(value)! < 0.001) {
+        //ETH only
+        if (value == "0" || (Double(value)! < 0.001)) {
             JDStatusBarNotification.show(withStatus: "Amount is below the minimum (0.001 ETH)", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
@@ -169,7 +180,7 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        
+        // validate gas for each coin
         
         // sign eth
         if self.currentCoin?.coin == CoinType.ETH.key {

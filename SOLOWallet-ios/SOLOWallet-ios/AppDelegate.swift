@@ -126,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // implemented in your application delegate
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("RegisterForRemoteNotifications. Got token data! \(deviceToken.deviceToken)")
-        KeychainService.instance.setString(KeychainKeys.DEVICE_TOKEN, value: deviceToken.deviceToken)
+        UserDefaults.standard.set(deviceToken.deviceToken, forKey: Configuration.DEVICE_TOKEN)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

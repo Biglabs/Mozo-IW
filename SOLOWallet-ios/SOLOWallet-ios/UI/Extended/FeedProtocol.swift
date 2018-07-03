@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import AsyncDisplayKit
 
 public protocol FeedProtocol: class {
-    func isShimmering(_ shimmeringNode: ASDisplayNode!) -> Bool
+    
     func errorFetching() -> Error!
     func isZeroData() -> Bool
     func isHasMore() -> Bool
@@ -19,9 +18,6 @@ public protocol FeedProtocol: class {
 
 extension FeedProtocol {
     
-    func isShimmering(_ shimmeringNode: ASDisplayNode!) -> Bool {
-        return true
-    }
     func errorFetching() -> Error! {
         return nil
     }

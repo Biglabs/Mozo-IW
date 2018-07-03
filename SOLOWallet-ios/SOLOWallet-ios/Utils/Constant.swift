@@ -8,11 +8,6 @@
 
 import Foundation
 
-public enum MediaType: String {
-    case APPLICATION_JSON = "application/json"
-    case APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded"
-}
-
 public enum BackendError: Error {
     case network(error: Error) // Capture any underlying Error from the URLSession API
     case noInternetConnection
@@ -97,10 +92,4 @@ public enum EventType: String {
     case Dismiss = "dismiss"
     case Success = "success"
     case Fail = "fail"
-}
-
-public enum SoloNotification: String {
-    case Login   = "LOGIN"
-    case Logout   = "LOGOUT"
-    case Signed = "SIGNED"
 }
