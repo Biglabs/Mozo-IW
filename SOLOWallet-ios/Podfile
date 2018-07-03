@@ -6,9 +6,6 @@ target 'SOLOWallet-ios' do
 
   pod 'MMDrawerController', '~> 0.5.7'
   pod 'JDStatusBarNotification', '~> 1.5.6'
-  
-  # use Shimmer to set layout before data response (not implement yet)
-  pod 'Texture', '~> 2.6'
 
   pod 'SoloSDK', path: '../sdk/ios/SoloSDK'
 

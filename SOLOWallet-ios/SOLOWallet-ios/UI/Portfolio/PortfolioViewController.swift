@@ -59,10 +59,14 @@ class PortfolioViewController: UIViewController {
     
     private func completion(error: Error?){
         guard error == nil else {
+            //handle error screen
             self.tableView.reloadData()
             return
         }
         self.tableView.reloadData()
+        if self.feed?.zeroData == true {
+            // handle no data
+        }
     }
     
     func validateHandshake() {
