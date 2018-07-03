@@ -46,7 +46,7 @@ extension DrawerMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "Cell")
-        cell.textLabel?.text = "test"
+        cell.textLabel?.text = "Menu"
         cell.textLabel?.textColor = .red
         return cell
     }

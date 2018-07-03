@@ -73,6 +73,7 @@ class SendViewController: AbstractViewController {
         self.inputCoinNameLabel?.textColor = UIColor.white
         self.inputCoinTextField.textColor = ThemeManager.shared.font
         self.inputCoinTextField.keyboardType = UIKeyboardType.decimalPad
+        self.inputCoinTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
         self.inputUSDLabel?.textColor = ThemeManager.shared.placeholder
         
         self.spendableTitleLabel.textColor = ThemeManager.shared.title
@@ -104,10 +105,23 @@ class SendViewController: AbstractViewController {
     }
     
     func bindData() {
-        self.inputCoinNameLabel?.text = "\(self.currentCoin?.coin ?? "")   "
-        self.inputUSDLabel?.text = "US$7,500.52"
-        self.spendableValueLabel?.text = "\(self.currentCoin?.balance ?? 0.0) \(self.currentCoin?.coin ?? "")"
+        let coinName = self.currentCoin?.coin ?? ""
+        let balance = self.currentCoin?.balance ?? 0.0
+        
+        self.inputCoinNameLabel?.text = "\(coinName)   "
+        self.spendableValueLabel?.text = "\(balance) \(coinName)"
         self.gasTextField?.text = "250.000"
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        var balance = 0.0
+        if let value = textField.text, value != "" {
+            balance = Double(value)!
+            
+        }
+        if let usd = self.currentCoin?.usd {
+            self.inputUSDLabel?.text = "US$\(Utils.roundDouble(usd*balance))"
+        }
     }
     
     override func updateAddress(_ sender: Any? = nil) {

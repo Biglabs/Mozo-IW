@@ -43,6 +43,9 @@ public class InfoWalletTableViewCell: UITableViewCell {
         
         if let balance = coin.balance {
             self.balanceLabel.text = String(balance)
+            if let usd = coin.usd {
+                self.usdLabel.text = "\(Utils.roundDouble(usd*balance)) USD"
+            }
         }
         if let code = coin.address {
             self.qrcodeImageView.image = self.generateQRCode(from: code)

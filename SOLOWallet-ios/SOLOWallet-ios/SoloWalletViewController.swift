@@ -20,7 +20,13 @@ class SoloWalletViewController: UIViewController {
         super.viewDidLoad()
         
         self.createTabBarController()
-        self.getBalance()
+        if self.currentCoin.coin == CoinType.ETH.key {
+            //call getUSD() after have balance value
+            self.getETHBalance()
+        } else {
+            self.getUSD()
+        }
+        
     }
     
     func createTabBarController() {
@@ -65,12 +71,13 @@ class SoloWalletViewController: UIViewController {
     }
     
     // call infura for demo only
-    func getBalance() {
+    func getETHBalance() {
         guard let address = self.currentCoin.address else {
             return
         }
         
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.soloSDK?.api?.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
@@ -98,7 +105,48 @@ class SoloWalletViewController: UIViewController {
                         sendVC.currentCoin = self.currentCoin
                     }
                 }
+            }
+            self.getUSD()
+        }
+    }
+    
+    // call coinmarketcap for demo only
+    func getUSD() {
+        
+        var id = 0
+        if self.currentCoin.coin == CoinType.BTC.key {
+            id = 1
+        } else if self.currentCoin.coin == CoinType.ETH.key {
+            id = 1027
+        } else {
+            return
+        }
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.soloSDK?.api?.getTickerId("\(id)") { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            if let price = json["data"]["quotes"]["USD"]["price"].double {
+                self.currentCoin?.usd = price
                 
+                if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
+                    if let walletVC = navWalletController.topViewController as? WalletViewController {
+                        walletVC.currentCoin = self.currentCoin
+                    }
+                }
+                
+                if let navSendController = self.tabBarCtr.viewControllers?.getElement(3) as? UINavigationController {
+                    if let sendVC = navSendController.topViewController as? SendViewController {
+                        sendVC.currentCoin = self.currentCoin
+                    }
+                }
             }
         }
     }
@@ -107,7 +155,9 @@ class SoloWalletViewController: UIViewController {
 extension SoloWalletViewController: SoloWalletDelegate {
     func request(_ action: String) {
         if action == CommandType.getBalance.rawValue {
-            self.getBalance()
+            if self.currentCoin.coin == CoinType.ETH.key {
+                self.getETHBalance()
+            }
         } else if action == EventType.Dismiss.rawValue {
             self.dismiss(animated: true)
         }

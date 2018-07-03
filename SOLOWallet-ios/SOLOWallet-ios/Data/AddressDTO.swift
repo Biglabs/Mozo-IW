@@ -18,6 +18,9 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
     public var network: String?
     public var transactions: [TransactionDTO]?
     
+    // 1 coin = usd
+    public var usd: Double?
+    
     public required init?(id: String?, address: String?, coin: String?, balance: Double?, network: String?, transactions: [TransactionDTO]?) {
         self.id = id
         self.address = address
