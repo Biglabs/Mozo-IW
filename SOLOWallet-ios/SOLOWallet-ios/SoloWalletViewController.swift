@@ -183,7 +183,7 @@ class SoloWalletViewController: UIViewController {
 
 extension SoloWalletViewController: SoloWalletDelegate {
     func request(_ action: String) {
-        if action == CommandType.getBalance.rawValue {
+        if action == SDKAction.getBalance.rawValue {
             if self.currentCoin.coin == CoinType.ETH.key {
                 self.getETHBalance()
             } else if self.currentCoin.coin == CoinType.BTC.key {
