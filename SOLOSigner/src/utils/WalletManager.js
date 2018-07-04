@@ -17,29 +17,42 @@ createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let encryptedMnemonic = encryption.encrypt(mnemonic, pin);
     manager.updateMnemonicWithPin(encryptedMnemonic, pin);
     let seed = bip39.mnemonicToSeedHex(mnemonic);
-    let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
     let wallets = [];
     coinTypes.map(coinType => {
-        let _rootKey = rootKey;
-        let wallet = _rootKey.derivePath(`m/44'/${coinType.value}'/0'/0`);
+        let rootKey = coinType == Constant.COIN_TYPE.BTC_TEST ? Bitcoin.HDNode.fromSeedHex(seed, Bitcoin.networks.testnet) : Bitcoin.HDNode.fromSeedHex(seed);
+        let wallet = rootKey.derivePath(`m/44'/${coinType.value}'/0'/0`);
         wallets.push(wallet);
     });
-    // let wallet = rootKey.derivePath("m/44'/60'/0'/0");
     return wallets;
 }
 
 getAddressAtIndex = function(wallet, coinType, index) {
     try {
         let userWallet = wallet.derive(index);
+        var address = "";
+        var privkey = "";
         var keyPair = userWallet.keyPair;
-        var privKeyBuffer = keyPair.d.toBuffer(32);
-        var privkey = privKeyBuffer.toString('hex');
-        var addressBuffer = ethUtil.privateToAddress(privKeyBuffer);
-        var hexAddress = addressBuffer.toString('hex');
-        var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
-        var address = (coinType == Constant.COIN_TYPE.ETH.value ? ethUtil.addHexPrefix(checksumAddress) : checksumAddress);
-        console.log("Ethereum address: [" + address + "]");
-        privkey = ethUtil.addHexPrefix(privkey);
+        if(coinType == Constant.COIN_TYPE.BTC.value || coinType == Constant.COIN_TYPE.BTC_TEST.value){
+            address = keyPair.getAddress().toString();
+            // get privkey
+            var hasPrivkey = !userWallet.isNeutered();
+            var privkey = "NA";
+            if (hasPrivkey) {
+                privkey = keyPair.toWIF();                
+            }
+        } else if (coinType == Constant.COIN_TYPE.ETH.value){
+            // Ethereum values are different
+            var privKeyBuffer = keyPair.d.toBuffer(32);
+            privkey = privKeyBuffer.toString('hex');
+            var addressBuffer = ethUtil.privateToAddress(privKeyBuffer);
+            var hexAddress = addressBuffer.toString('hex');
+            var checksumAddress = ethUtil.toChecksumAddress(hexAddress);
+            address = ethUtil.addHexPrefix(checksumAddress);
+            privkey = ethUtil.addHexPrefix(privkey);
+        } else {
+            //TODO: Support SOLO and MOZO
+        }
+        console.log("Address: [" + address + "]");
         return {address: address, derivedIndex: index, privkey: privkey};
     } catch (error) {
         console.error(error);
