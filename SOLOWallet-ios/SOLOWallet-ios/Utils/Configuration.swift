@@ -27,7 +27,7 @@ public class Configuration {
     public static var BASE_URL = "http://192.168.1.98:9000"
     public static var ROPSTEN_ETHERSCAN_URL = "http://ropsten.etherscan.io/tx"
     public static var ROPSTEN_INFURA_URL = "https://ropsten.infura.io/V2vOGBNVvlHlDJQ17sIL"
-    
+    public static var BLOCK_CYPHER_SCAN_URL = "https://live.blockcypher.com/btc-testnet/tx"
     
     public static func getDomain() -> String?{
         let URL = NSURL(string: self.BASE_URL)

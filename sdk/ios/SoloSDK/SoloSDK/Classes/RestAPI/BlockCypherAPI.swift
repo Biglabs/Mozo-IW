@@ -14,4 +14,9 @@ public extension RESTService {
         let url = Configuration.BLOCK_CYPHER_TEST_URL + "addrs/\(address)/balance"
         return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
     }
+    
+    public func sendTransaction(_ param: String, completionHandler: completion = nil) {
+        let url = Configuration.BLOCK_CYPHER_TEST_URL + "txs/send"
+        return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
+    }
 }

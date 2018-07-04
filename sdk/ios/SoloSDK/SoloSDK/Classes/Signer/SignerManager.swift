@@ -24,7 +24,7 @@ public final class SignerManager {
     /// Handles an open URL callback
     ///
     /// - Returns: `true` is the URL was handled; `false` otherwise.
-    @objc public func handleCallback(url: URL) -> Bool {
+    public func handleCallback(url: URL) -> Bool {
         return pendingCommand?.handleCallback(url: url) ?? false
     }
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SoloSDK
 
 public class TransactionWalletTableViewCell: UITableViewCell {
     
@@ -38,17 +39,27 @@ public class TransactionWalletTableViewCell: UITableViewCell {
             self.dayLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "dd")
             self.monthLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "MMM")
         }
+
+        // If type = ETH
+        var from = ""
+        var to = ""
+        var value = 0.0
+        // If type = BTC
+        if coinName == CoinType.ETH.key {
+            let ethTx : ETH_TransactionDTO = transaction as! ETH_TransactionDTO
+            from = ethTx.from!
+        } else if coinName == CoinType.BTC.key {
+            
+        }
         
-        if transaction.from == address {
+        if from == address {
             self.typeLabel.text = "Sent"
-        } else if transaction.to == address {
+        } else if to == address {
             self.typeLabel.text = "Received"
         }
         
-        if let value = transaction.value {
-            self.valueLabel.text = "\(value) \(coinName)"
-            self.valueHighlightLabel.text = "\(value) \(coinName)"
-        }
+        self.valueLabel.text = "\(value) \(coinName)"
+        self.valueHighlightLabel.text = "\(value) \(coinName)"
     }
     
     public override func setSelected(_ selected: Bool, animated: Bool) {

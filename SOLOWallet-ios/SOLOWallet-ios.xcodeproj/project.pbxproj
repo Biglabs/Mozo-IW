@@ -34,7 +34,6 @@
 		C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */; };
 		C63A844120DB56650073EB08 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844020DB56650073EB08 /* Utils.swift */; };
 		C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C63A844420DB62BF0073EB08 /* SendViewController.storyboard */; };
-		C63A844720DB7D600073EB08 /* TransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844620DB7D600073EB08 /* TransactionDTO.swift */; };
 		C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844820DB88580073EB08 /* TransactionWalletTableViewCell.swift */; };
 		C63A844B20DB88620073EB08 /* TransactionWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */; };
 		C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */; };
@@ -88,7 +87,6 @@
 		C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		C63A844020DB56650073EB08 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		C63A844420DB62BF0073EB08 /* SendViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendViewController.storyboard; sourceTree = "<group>"; };
-		C63A844620DB7D600073EB08 /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
 		C63A844820DB88580073EB08 /* TransactionWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWalletTableViewCell.swift; sourceTree = "<group>"; };
 		C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionWalletTableViewCell.xib; sourceTree = "<group>"; };
 		C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo-bold.ttf"; sourceTree = "<group>"; };
@@ -298,7 +296,6 @@
 			children = (
 				C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */,
 				C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */,
-				C63A844620DB7D600073EB08 /* TransactionDTO.swift */,
 				20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */,
 			);
 			path = Data;
@@ -453,7 +450,6 @@
 				C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */,
 				C616DF1F20D8E7F100258ACE /* Configuration.swift in Sources */,
 				C616DF1B20D8E62A00258ACE /* DrawerMenuViewController.swift in Sources */,
-				C63A844720DB7D600073EB08 /* TransactionDTO.swift in Sources */,
 				C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */,
 				C6134A2920E3F31800A5FE50 /* PortfolioViewController.swift in Sources */,
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,

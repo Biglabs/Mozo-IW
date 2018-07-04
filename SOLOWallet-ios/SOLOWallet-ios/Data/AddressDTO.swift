@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import SoloSDK
 
 public class AddressDTO: Equatable, ResponseObjectSerializable {
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Result
 import SoloSDK
 import SwiftyJSON
 import JDStatusBarNotification
@@ -180,28 +181,60 @@ class SendViewController: AbstractViewController {
             return
         }
         
+        
         // validate gas for each coin
         
         // sign eth
         if self.currentCoin?.coin == CoinType.ETH.key {
-            self.soloSDK.singner?.signTransaction(fromAddress: from, toAddress: toAddress, value: value, coinType: CoinType.ETH.key){ result in
-                switch result {
-                case .success(let signedTransaction):
-                    self.sendAlertController(signedTransaction)
-                case .failure(let error):
-                    let alert = UIAlertController(title: "Signed Message", message: "", preferredStyle: .alert)
-                    alert.title = alert.title! + " Error"
-                    alert.message = error.localizedDescription
-                    alert.addAction(.init(title: "OK", style: .default, handler: nil))
-                    Utils.getTopViewController().present(alert, animated: true, completion: nil)
+            if self.validateETH() {
+                let transaction = ETH_TransactionDTO.init(from: from, to: toAddress, value: Double(value)!, gasPrice: 0, gasLimit: Double(gasLimit)!)!
+                self.signTransactionETH(transaction: transaction)
+            }
+        } else if self.currentCoin?.coin == CoinType.BTC.key {
+            if self.validateBTC() {
+                let input = InputDTO.init(addresses: [from])!
+                let output = OutputDTO.init(addresses: [toAddress], value: Double(value)!)!
+                let tx = BTC_TransactionDTO.init(inputs: [input], outputs: [output])!
+                self.signTransactionBTC(transaction: tx)
+            }
+        }
+    }
+    
+    func handleSignResult(result: Result<String, SignerError>){
+        switch result {
+        case .success(let signedTransaction):
+            self.sendAlertController(signedTransaction)
+        case .failure(let error):
+            let alert = UIAlertController(title: "Signed Message", message: "", preferredStyle: .alert)
+            alert.title = alert.title! + " Error"
+            alert.message = error.localizedDescription
+            alert.addAction(.init(title: "OK", style: .default, handler: nil))
+            Utils.getTopViewController().present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func sendBTC(_ signedTx: String){
+        self.soloSDK?.api?.sendTransaction(signedTx) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            if let tx = json["tx"].string {
+                let txJson = SwiftyJSON.JSON(tx)
+                if let hash = txJson["hash"].string {
+                    self.viewTransactionOnBrowser(hash)
                 }
             }
         }
     }
     
-    private func sendFund(_ signedTx: String) {
+    private func sendETH(_ signedTx: String){
         let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
-        self.resetValue()
         self.soloSDK?.api?.infuraPOST(params) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
@@ -215,6 +248,15 @@ class SendViewController: AbstractViewController {
             if let result = json["result"].string {
                 self.viewTransactionOnBrowser(result)
             }
+        }
+    }
+    
+    private func sendFund(_ signedTx: String) {
+        self.resetValue()
+        if self.currentCoin?.coin == CoinType.ETH.key {
+            self.sendETH(signedTx)
+        } else if self.currentCoin?.coin == CoinType.BTC.key {
+            self.sendBTC(signedTx)
         }
     }
     
@@ -240,7 +282,8 @@ class SendViewController: AbstractViewController {
         alertController.addAction(cancelAction)
         
         let OKAction = UIAlertAction(title: "Ok", style: .default) { (action) in
-            let url = URL(string: "\(Configuration.ROPSTEN_ETHERSCAN_URL)/\(txId)")
+            let baseUrl = self.currentCoin?.coin == CoinType.BTC.key ? Configuration.BLOCK_CYPHER_SCAN_URL : Configuration.ROPSTEN_ETHERSCAN_URL
+            let url = URL(string: "\(baseUrl)/\(txId)")
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
         }
         alertController.addAction(OKAction)

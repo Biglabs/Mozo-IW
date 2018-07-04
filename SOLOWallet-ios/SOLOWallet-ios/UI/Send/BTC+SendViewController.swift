@@ -7,9 +7,15 @@
 //
 
 import Foundation
+import SoloSDK
 
 extension SendViewController {
     func validateBTC() -> Bool {
-        return false
+        return true
+    }
+    func signTransactionBTC(transaction : BTC_TransactionDTO) {
+        self.soloSDK.singner?.signTransactionBTC(inputs: transaction.inputs!, outputs: transaction.outputs!, coinType: CoinType.BTC.key){ result in
+            self.handleSignResult(result:result)
+        }
     }
 }

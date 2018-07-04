@@ -8,6 +8,8 @@
 
 import Foundation
 import SwiftyJSON
+import SoloSDK
+
 public class CommunicationDTO: ResponseObjectSerializable {
     
     public var action: String?
