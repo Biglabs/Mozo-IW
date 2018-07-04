@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftyJSON
-import SoloSDK
 
 public class AddressDTO: Equatable, ResponseObjectSerializable {
     
@@ -17,12 +16,12 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
     public var coin: String?
     public var balance: Double?
     public var network: String?
-    public var transactions: [TransactionDTO]?
+    public var transactions: [TransactionHistoryDTO]?
     
     // 1 coin = usd
     public var usd: Double?
     
-    public required init?(id: String?, address: String?, coin: String?, balance: Double?, network: String?, transactions: [TransactionDTO]?) {
+    public required init?(id: String?, address: String?, coin: String?, balance: Double?, network: String?, transactions: [TransactionHistoryDTO]?) {
         self.id = id
         self.address = address
         self.coin = coin
@@ -37,7 +36,7 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
         self.coin = json["coin"].string
         self.balance = json["balance"].double
         self.network = json["network"].string
-        self.transactions = json["transactions"].array?.filter({ TransactionDTO(json: $0) != nil }).map({ TransactionDTO(json: $0)! })
+        self.transactions = json["transactions"].array?.filter({ TransactionHistoryDTO(json: $0) != nil }).map({ TransactionHistoryDTO(json: $0)! })
     }
     
     public required init?(){}

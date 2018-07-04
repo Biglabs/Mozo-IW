@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */; };
+		207E029920ECD545006543F6 /* TransactionHistoryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */; };
 		C6134A2920E3F31800A5FE50 /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A2820E3F31800A5FE50 /* PortfolioViewController.swift */; };
 		C6134A2B20E3F4CA00A5FE50 /* CoinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A2A20E3F4CA00A5FE50 /* CoinTableViewCell.swift */; };
 		C6134A2D20E3F4D300A5FE50 /* CoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6134A2C20E3F4D300A5FE50 /* CoinTableViewCell.xib */; };
@@ -55,7 +55,7 @@
 
 /* Begin PBXFileReference section */
 		0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.release.xcconfig"; sourceTree = "<group>"; };
-		20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationDTO.swift; sourceTree = "<group>"; };
+		207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDTO.swift; sourceTree = "<group>"; };
 		79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SOLOWallet_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		832B69B3E43B23B9D77FAD04 /* Pods-SOLOWallet-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		C6134A2820E3F31800A5FE50 /* PortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
@@ -296,7 +296,7 @@
 			children = (
 				C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */,
 				C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */,
-				20D5ACE020E0E7FB00398B70 /* CommunicationDTO.swift */,
+				207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -454,7 +454,6 @@
 				C6134A2920E3F31800A5FE50 /* PortfolioViewController.swift in Sources */,
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
 				C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */,
-				20D5ACE120E0E7FB00398B70 /* CommunicationDTO.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
 				C6134A2B20E3F4CA00A5FE50 /* CoinTableViewCell.swift in Sources */,
@@ -474,6 +473,7 @@
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C63A844120DB56650073EB08 /* Utils.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
+				207E029920ECD545006543F6 /* TransactionHistoryDTO.swift in Sources */,
 				C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */,
 				C6134A4020E4843C00A5FE50 /* HandshakeView.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,

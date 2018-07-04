@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SoloSDK
 
 public class TransactionWalletTableViewCell: UITableViewCell {
     
@@ -34,7 +33,7 @@ public class TransactionWalletTableViewCell: UITableViewCell {
         self.borderBottom.backgroundColor = ThemeManager.shared.border
     }
     
-    public func bindData(_ transaction: TransactionDTO, coinName: String, address: String){
+    public func bindData(_ transaction: TransactionHistoryDTO, coinName: String, address: String){
         if let time = transaction.time {
             self.dayLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "dd")
             self.monthLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "MMM")
@@ -46,8 +45,7 @@ public class TransactionWalletTableViewCell: UITableViewCell {
         var value = 0.0
         // If type = BTC
         if coinName == CoinType.ETH.key {
-            let ethTx : ETH_TransactionDTO = transaction as! ETH_TransactionDTO
-            from = ethTx.from!
+            
         } else if coinName == CoinType.BTC.key {
             
         }
