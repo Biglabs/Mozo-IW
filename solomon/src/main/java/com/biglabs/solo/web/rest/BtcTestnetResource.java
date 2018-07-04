@@ -4,11 +4,18 @@ import com.biglabs.solo.blockcypher.BTCMainnetClient;
 import com.biglabs.solo.blockcypher.BTCTestnetClient;
 import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.blockcypher.model.BCYAddress;
+import com.biglabs.solo.blockcypher.model.transaction.Transaction;
+import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.web.rest.vm.TransactionRequest;
+import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * BitcoinResource controller
@@ -40,6 +47,22 @@ public class BtcTestnetResource {
     @GetMapping("/addrs/{address}/balance")
     public BCYAddress getBalance(String address) throws BlockCypherException {
         return btcClient.balance(address);
+    }
+
+    @PostMapping("/txs")
+    @Timed
+    public ResponseEntity<IntermediaryTransaction> createTransaction(@Valid @RequestBody TransactionRequest txReq) throws BlockCypherException, URISyntaxException {
+        IntermediaryTransaction tx = btcClient.createTransaction(txReq);
+        return ResponseEntity.created(new URI("/api/btc/test/txs/" + tx.getTx().getHash()))
+            .body(tx);
+    }
+
+    @PostMapping("/txs/send-signed-tx")
+    @Timed
+    public ResponseEntity<IntermediaryTransaction> sendSignedTransaction(@Valid @RequestBody IntermediaryTransaction txReq) throws BlockCypherException, URISyntaxException {
+        IntermediaryTransaction tx = btcClient.sendSignedTransaction(txReq);
+        return ResponseEntity.created(new URI("/api/btc/test/txs/" + tx.getTx().getHash()))
+            .body(tx);
     }
 
 }

@@ -5,20 +5,17 @@ import com.biglabs.solo.blockcypher.model.BCYAddress;
 import com.biglabs.solo.blockcypher.model.BlockCypherError;
 import com.biglabs.solo.blockcypher.model.Error;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.*;
 //import org.springframework.http.client.support
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,9 +73,7 @@ public class BTCClient {
                     put("txlimit", 1);
                 }});
             return ret.getBody();
-        } catch (HttpClientErrorException ex) {
-            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
-        } catch (HttpServerErrorException ex) {
+        } catch (HttpStatusCodeException ex) {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
@@ -92,14 +87,12 @@ public class BTCClient {
                     put("txlimit", 1);
                 }});
             return ret.getBody();
-        } catch (HttpClientErrorException ex) {
-            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
-        } catch (HttpServerErrorException ex) {
+        } catch (HttpStatusCodeException ex) {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
 
-    public Transaction createRawTransaction(String rawTx) throws BlockCypherException {
+    public Transaction pushRawTransaction(String rawTx) throws BlockCypherException {
         String url = MessageFormat.format(transactionEP + "/push?token={0}", bycContext.getToken());
         System.out.println("Push raw tx to:  " + url);
         try {
@@ -109,24 +102,41 @@ public class BTCClient {
             rr.put("tx", rawTx);
             ResponseEntity<Transaction> res = restTemplate.postForEntity(url, rr, Transaction.class);
             return res.getBody();
-        }  catch (HttpClientErrorException ex) {
-            System.out.println(ex.getResponseBodyAsString());
-//            System.out.println(ex.getResponseHeaders().toString());
-            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
-        } catch (HttpServerErrorException ex) {
-//            System.out.println(ex.getResponseBodyAsString());
-//            System.out.println(ex.getResponseHeaders().toString());
+        } catch (HttpStatusCodeException ex) {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
+
+    public IntermediaryTransaction createTransaction(TransactionRequest transactionRequest) throws BlockCypherException {
+        String url = MessageFormat.format(transactionEP + "/new?token={0}", "618c6ab8511347f78f97f3d687c86b22");
+        System.out.println("Create new tx to:  " + url);
+        try {
+            ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, transactionRequest, IntermediaryTransaction.class);
+            return res.getBody();
+        } catch (HttpStatusCodeException ex) {
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+        }
+    }
+
+    public IntermediaryTransaction sendSignedTransaction(IntermediaryTransaction signedTx) throws BlockCypherException {
+        String url = MessageFormat.format(transactionEP + "/send?token={0}", "618c6ab8511347f78f97f3d687c86b22");
+        System.out.println("Create new tx to:  " + url);
+        try {
+            ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, signedTx, IntermediaryTransaction.class);
+            return res.getBody();
+        } catch (HttpStatusCodeException ex) {
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+        }
+    }
+
 
     public static BlockCypherException getBlockCypherException(HttpStatusCodeException ex, String errMessage, HttpStatus status, String body) {
         ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
-            System.out.println("========= Body ");
+            System.out.println("========= Body <<<");
             System.out.println(body);
-            System.out.println("========= Body ");
+            System.out.println("========= Body >>>");
             BlockCypherError error = om.readValue(body, BlockCypherError.class);
             if(error == null || error.getErrors().isEmpty()) {
                 Error er = om.readValue(body, Error.class);

@@ -2,6 +2,8 @@ package com.biglabs.solo.blockcypher.model.transaction.intermediary;
 
 
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +67,13 @@ import java.util.List;
  * }
  * @author <a href="mailto:seb.auvray@gmail.com">Sebastien Auvray</a>
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class IntermediaryTransaction {
 
     private Transaction tx;
+    @NotEmpty
     private List<String> tosign;
+    @NotEmpty
     private List<String> signatures = new ArrayList<String>();
     private List<String> pubkeys = new ArrayList<String>();
 
