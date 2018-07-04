@@ -23,6 +23,8 @@ class SoloWalletViewController: UIViewController {
         if self.currentCoin.coin == CoinType.ETH.key {
             //call getUSD() after have balance value
             self.getETHBalance()
+        } else if self.currentCoin.coin == CoinType.BTC.key {
+            self.getBTCBalance()
         } else {
             self.getUSD()
         }
@@ -70,6 +72,53 @@ class SoloWalletViewController: UIViewController {
         self.view.addSubview(self.tabBarCtr.view)
     }
     
+    func displayBalance( jsonStr : Any){
+        let json = SwiftyJSON.JSON(jsonStr)
+        var amount = 0.0
+        
+        if self.currentCoin.coin == CoinType.BTC.key {
+            if let result = json["balance"].double {
+                amount = result
+                amount = amount/1E+8
+            } else {return}
+        } else if self.currentCoin.coin == CoinType.ETH.key {
+            if let result = json["result"].string {
+                amount = Double(result)!
+                amount = amount/1E+18
+            } else {return}
+        }
+        self.currentCoin?.balance = amount
+        
+        if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
+            if let walletVC = navWalletController.topViewController as? WalletViewController {
+                walletVC.currentCoin = self.currentCoin
+            }
+        }
+        
+        if let navSendController = self.tabBarCtr.viewControllers?.getElement(3) as? UINavigationController {
+            if let sendVC = navSendController.topViewController as? SendViewController {
+                sendVC.currentCoin = self.currentCoin
+            }
+        }
+        self.getUSD()
+    }
+    
+    func getBTCBalance(){
+        guard let address = self.currentCoin.address else {
+            return
+        }
+        self.soloSDK?.api?.getBalance(address) { (value, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            self.displayBalance(jsonStr: value)
+        }
+    }
+    
     // call infura for demo only
     func getETHBalance() {
         guard let address = self.currentCoin.address else {
@@ -86,27 +135,7 @@ class SoloWalletViewController: UIViewController {
                 }
                 return
             }
-            
-            let json = SwiftyJSON.JSON(value)
-            if let result = json["result"].string {
-                var amount = Double(result)
-                //ETH
-                amount = amount!/1E+18
-                self.currentCoin?.balance = amount ?? 0
-                
-                if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
-                    if let walletVC = navWalletController.topViewController as? WalletViewController {
-                        walletVC.currentCoin = self.currentCoin
-                    }
-                }
-                
-                if let navSendController = self.tabBarCtr.viewControllers?.getElement(3) as? UINavigationController {
-                    if let sendVC = navSendController.topViewController as? SendViewController {
-                        sendVC.currentCoin = self.currentCoin
-                    }
-                }
-            }
-            self.getUSD()
+            self.displayBalance(jsonStr: value)
         }
     }
     
@@ -157,6 +186,8 @@ extension SoloWalletViewController: SoloWalletDelegate {
         if action == CommandType.getBalance.rawValue {
             if self.currentCoin.coin == CoinType.ETH.key {
                 self.getETHBalance()
+            } else if self.currentCoin.coin == CoinType.BTC.key {
+                self.getBTCBalance()
             }
         } else if action == EventType.Dismiss.rawValue {
             self.dismiss(animated: true)
