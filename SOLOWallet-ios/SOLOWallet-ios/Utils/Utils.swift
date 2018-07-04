@@ -6,7 +6,7 @@
 //  Copyright © 2018 biglabs. All rights reserved.
 //
 
-import Foundation
+import SoloSDK
 import JDStatusBarNotification
 
 let notificationDismissAfter: TimeInterval = 5
@@ -26,16 +26,18 @@ public class Utils {
         return dateString
     }
     
-    public static func showError(_ backendError: Error) {
-        switch backendError {
-        case BackendError.noInternetConnection:
-            JDStatusBarNotification.show(withStatus: "No Internet Connection.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleDark)
-        case BackendError.requestTimedOut:
-            JDStatusBarNotification.show(withStatus: "The request timed out.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleDark)
-        case BackendError.resourceNotFound:
-            JDStatusBarNotification.show(withStatus: "Resource Not Found", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
-        case BackendError.authenticationRequired:
-            JDStatusBarNotification.show(withStatus: "Authentication Required", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+    public static func showError(_ connectionError: Error) {
+        switch connectionError {
+        case ConnectionError.noInternetConnection:
+            JDStatusBarNotification.show(withStatus: ConnectionError.noInternetConnection.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleDark)
+        case ConnectionError.requestTimedOut:
+            JDStatusBarNotification.show(withStatus: ConnectionError.requestNotFound.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleDark)
+        case ConnectionError.requestNotFound:
+            JDStatusBarNotification.show(withStatus: ConnectionError.requestNotFound.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+        case ConnectionError.authenticationRequired:
+            JDStatusBarNotification.show(withStatus: ConnectionError.authenticationRequired.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+        case ConnectionError.network(let error):
+            print("Error: \(error)")
         default:
             JDStatusBarNotification.show(withStatus: "Network Error.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
         }

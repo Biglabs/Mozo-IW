@@ -82,8 +82,8 @@ open class ContentFeed: NSObject, FeedProtocol {
             guard error == nil else {
                 self.error = error
                 contentAndErrorCompletion(nil, error)
-                if let backendError = error {
-                    Utils.showError(backendError)
+                if let connectionError = error {
+                    Utils.showError(connectionError)
                 }
                 return
             }

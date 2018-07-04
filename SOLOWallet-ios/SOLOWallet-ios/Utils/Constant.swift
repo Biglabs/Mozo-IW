@@ -8,19 +8,6 @@
 
 import Foundation
 
-public enum BackendError: Error {
-    case network(error: Error) // Capture any underlying Error from the URLSession API
-    case noInternetConnection
-    case requestTimedOut
-    case authenticationRequired
-    case resourceNotFound
-    case invalidStatusCode(String)
-    case dataReturnedNil
-    case customError(String)
-    case confirmCodeRequired(error: Error)
-    case invalidToken(String)
-}
-
 public enum CoinType {
     case BTC
     case ETH
