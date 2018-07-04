@@ -29,6 +29,8 @@
 		C616DF4E20D90B6000258ACE /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF4D20D90B6000258ACE /* Constant.swift */; };
 		C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DF5020D916A800258ACE /* AbstractViewController.swift */; };
 		C6228E5320EB2D1A004C37C2 /* Typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6228E5220EB2D1A004C37C2 /* Typealias.swift */; };
+		C63080D420ECA3F1002E638E /* ETH+SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63080D320ECA3F1002E638E /* ETH+SendViewController.swift */; };
+		C63080D620ECA582002E638E /* BTC+SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63080D520ECA582002E638E /* BTC+SendViewController.swift */; };
 		C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */; };
 		C63A844120DB56650073EB08 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A844020DB56650073EB08 /* Utils.swift */; };
 		C63A844520DB62BF0073EB08 /* SendViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C63A844420DB62BF0073EB08 /* SendViewController.storyboard */; };
@@ -81,6 +83,8 @@
 		C616DF4D20D90B6000258ACE /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		C616DF5020D916A800258ACE /* AbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
 		C6228E5220EB2D1A004C37C2 /* Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealias.swift; sourceTree = "<group>"; };
+		C63080D320ECA3F1002E638E /* ETH+SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ETH+SendViewController.swift"; sourceTree = "<group>"; };
+		C63080D520ECA582002E638E /* BTC+SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTC+SendViewController.swift"; sourceTree = "<group>"; };
 		C63A843E20DB42BB0073EB08 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		C63A844020DB56650073EB08 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		C63A844420DB62BF0073EB08 /* SendViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendViewController.storyboard; sourceTree = "<group>"; };
@@ -227,6 +231,8 @@
 			children = (
 				C616DF0C20D8D93400258ACE /* SendViewController.swift */,
 				C63A844420DB62BF0073EB08 /* SendViewController.storyboard */,
+				C63080D320ECA3F1002E638E /* ETH+SendViewController.swift */,
+				C63080D520ECA582002E638E /* BTC+SendViewController.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -441,6 +447,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C63080D620ECA582002E638E /* BTC+SendViewController.swift in Sources */,
 				C616DF1520D8DCF800258ACE /* SoloWalletViewController.swift in Sources */,
 				C616DF4E20D90B6000258ACE /* Constant.swift in Sources */,
 				C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */,
@@ -465,6 +472,7 @@
 				C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */,
 				C6228E5320EB2D1A004C37C2 /* Typealias.swift in Sources */,
 				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
+				C63080D420ECA3F1002E638E /* ETH+SendViewController.swift in Sources */,
 				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
