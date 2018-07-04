@@ -25,13 +25,19 @@ public class Configuration {
     
     //development
     public static var BASE_URL = "http://192.168.1.98:9000"
+    //Testnet
     public static var ROPSTEN_ETHERSCAN_URL = "http://ropsten.etherscan.io/tx"
     public static var ROPSTEN_INFURA_URL = "https://ropsten.infura.io/V2vOGBNVvlHlDJQ17sIL"
-    public static var BLOCK_CYPHER_SCAN_URL = "https://live.blockcypher.com/btc-testnet/tx"
+    public static var BLOCK_CYPHER_TESTNET_SCAN_URL = "https://live.blockcypher.com/btc-testnet/tx"
     
-    public static func getDomain() -> String?{
-        let URL = NSURL(string: self.BASE_URL)
-        let domain = URL?.host
-        return domain
+    public static func getScanURL(_ coinType: String?, isTestnet: Bool) -> String{
+        if isTestnet {
+            if coinType == CoinType.BTC.key {
+                return BLOCK_CYPHER_TESTNET_SCAN_URL
+            } else if coinType == CoinType.BTC.key {
+                return ROPSTEN_ETHERSCAN_URL
+            }
+        }
+        return ""
     }
 }
