@@ -222,13 +222,10 @@ class SendViewController: AbstractViewController {
                 }
                 return
             }
-            
+            print("BTC Tx: ", value);
             let json = SwiftyJSON.JSON(value)
-            if let tx = json["tx"].string {
-                let txJson = SwiftyJSON.JSON(tx)
-                if let hash = txJson["hash"].string {
-                    self.viewTransactionOnBrowser(hash)
-                }
+            if let hash = json["tx"]["hash"].string {
+                self.viewTransactionOnBrowser(hash)
             }
         }
     }

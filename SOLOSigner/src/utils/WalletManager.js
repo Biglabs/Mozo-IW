@@ -194,6 +194,8 @@ module.exports.viewBackupPharse = function(pin, callback) {
 
 signBTCTransaction = function(txData, privKeys, callback){
     let params = txData.params;
+    params.outputs[0].value *= 100000000;
+    console.log("Sign BTC tx param: " + JSON.stringify(params));
     RESTService.createNewBTCTransaction(params)
     .then(result => {
         if(result){
@@ -278,7 +280,7 @@ module.exports.signTransaction = function(txData, pin, callback){
                 let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address);
                 if (!encryptedPrivateKey) {
                     if (typeof callback === 'function') {
-                        callback(new Error("Not support this address."), null);
+                        callback(new Error("Not support this address: " + address), null);
                     }
                     return;
                 }
@@ -291,6 +293,7 @@ module.exports.signTransaction = function(txData, pin, callback){
                         callback(null, result);
                     }
                 } else {
+                    console.log(error);
                     if (typeof callback === 'function') {
                         callback(new Error("Not support this address's private key."), null);
                     }

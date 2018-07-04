@@ -31,7 +31,7 @@ export default class ConfirmationScreen extends Component<Props> {
                         Actions.pop();
                         Globals.responseToReceiver({signedTransaction : result}, this.props.txData);
                     } else {
-                        this.state.isShowingLoading = false;
+                        this.setState({isShowingLoading: false});
                         alert(error);
                     }
                 });
@@ -64,7 +64,7 @@ export default class ConfirmationScreen extends Component<Props> {
                         <Text style={styles.text_send}>Send</Text>
                     </View>
                     <Text style={styles.text_value}>
-                        {this.props.txData.params.value} {(this.props.txData.coinType || '').toUpperCase()}
+                        {this.props.txData.params.value || this.props.txData.params.outputs[0].value} {(this.props.txData.coinType || '').toUpperCase()}
                     </Text>
                     <Text style={styles.text_usd}>... USD</Text>
 
@@ -79,13 +79,13 @@ export default class ConfirmationScreen extends Component<Props> {
 
                     <Text style={styles.text_section}>To:</Text>
                     <Text style={styles.text_address} numberOfLines={1}
-                          ellipsizeMode='middle'>{this.props.txData.params.to}</Text>
+                          ellipsizeMode='middle'>{this.props.txData.params.to || this.props.txData.params.outputs[0].addresses[0]}</Text>
 
                     <View style={styles.dash}/>
 
                     <Text style={styles.text_section}>From:</Text>
                     <Text style={styles.text_address} numberOfLines={1}
-                          ellipsizeMode='middle'>{this.props.txData.params.from}</Text>
+                          ellipsizeMode='middle'>{this.props.txData.params.from || this.props.txData.params.inputs[0].addresses[0]}</Text>
 
                     <View style={styles.dash}/>
 
