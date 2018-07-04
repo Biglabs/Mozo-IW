@@ -73,6 +73,7 @@ public class IntermediaryTransaction {
     private Transaction tx;
     @NotEmpty
     private List<String> tosign;
+
     @NotEmpty
     private List<String> signatures = new ArrayList<String>();
     private List<String> pubkeys = new ArrayList<String>();
@@ -95,7 +96,21 @@ public class IntermediaryTransaction {
     public Transaction getTx() {
         return tx;
     }
+    public List<String> getSignatures() {
+        return signatures;
+    }
 
+    public void setSignatures(List<String> signatures) {
+        this.signatures = signatures;
+    }
+
+    public List<String> getPubkeys() {
+        return pubkeys;
+    }
+
+    public void setPubkeys(List<String> pubkeys) {
+        this.pubkeys = pubkeys;
+    }
 //    @Override
 //    public String toString() {
 //        return GsonFactory.getGson().toJson(this);

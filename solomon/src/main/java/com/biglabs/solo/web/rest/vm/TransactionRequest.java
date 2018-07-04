@@ -35,6 +35,7 @@ public class TransactionRequest {
     }
 
     public static class TxInput {
+        @NotEmpty
         private List<String> addresses = new ArrayList<String>();
 
         public List<String> getAddresses() {
