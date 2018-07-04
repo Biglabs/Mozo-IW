@@ -1,6 +1,7 @@
 package com.biglabs.solo.blockcypher.model;
 
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
+import com.biglabs.solo.blockcypher.model.transaction.summary.TransactionSummary;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class BCYAddress {
     private Long unconfirmed_n_tx;
     private String tx_url;
     private List<Transaction> txs;
+    private List<TransactionSummary> txrefs;
 
     public String getAddress() {
         return address;
@@ -88,6 +90,14 @@ public class BCYAddress {
         this.tx_url = tx_url;
     }
 
+    public List<TransactionSummary> getTxrefs() {
+        return txrefs;
+    }
+
+    public void setTxrefs(List<TransactionSummary> txrefs) {
+        this.txrefs = txrefs;
+    }
+
     @Override
     public String toString() {
         return "BCYAddress{" +
@@ -99,6 +109,7 @@ public class BCYAddress {
             ", unconfirmed_n_tx=" + unconfirmed_n_tx +
             ", tx_url='" + tx_url + '\'' +
             ", txs=" + txs +
+            ", txrefs=" + txrefs +
             '}';
     }
 

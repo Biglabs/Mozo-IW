@@ -21,6 +21,7 @@ import org.zalando.problem.spring.web.advice.validation.ConstraintViolationProbl
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -105,7 +106,7 @@ public class ExceptionTranslator implements ProblemHandling {
         Problem problem = Problem.builder()
             .withStatus(status)
             .with("message", ex.getMessage())
-            .with("errors", ex.getBlockCypherError().getErrors())
+            .with("errors", ex.getBlockCypherError() != null ? ex.getBlockCypherError().getErrors() : Collections.emptyList())
             .build();
         return create(ex, problem, request);
     }

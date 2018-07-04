@@ -1,5 +1,8 @@
 package com.biglabs.solo.blockcypher.model.transaction.summary;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 /**
@@ -16,11 +19,15 @@ import java.math.BigDecimal;
  * }
  * @author <a href="mailto:seb.auvray@gmail.com">Sebastien Auvray</a>
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionSummary {
-
+    @JsonProperty(value = "tx_hash")
     private String txHash;
+    @JsonProperty(value = "block_height")
     private Long blockHeight;
+    @JsonProperty(value = "tx_input_n")
     private Long txInputN;
+    @JsonProperty(value = "tx_output_n")
     private Long txOutputN;
     private BigDecimal value;
     private boolean spent;
@@ -93,5 +100,19 @@ public class TransactionSummary {
 
     public void setConfirmed(String confirmed) {
         this.confirmed = confirmed;
+    }
+
+    @Override
+    public String toString() {
+        return "TransactionSummary{" +
+            "txHash='" + txHash + '\'' +
+            ", blockHeight=" + blockHeight +
+            ", txInputN=" + txInputN +
+            ", txOutputN=" + txOutputN +
+            ", value=" + value +
+            ", spent=" + spent +
+            ", confirmations=" + confirmations +
+            ", confirmed='" + confirmed + '\'' +
+            '}';
     }
 }

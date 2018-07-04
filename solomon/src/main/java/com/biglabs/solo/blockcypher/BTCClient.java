@@ -64,7 +64,8 @@ public class BTCClient {
            return new BCYAddress[]{getAddressLatestTx(addresses[0])};
         }
 
-        String url = MessageFormat.format(addressEP + "/{0}/full?limit=1&txlimit=1", String.join(";", addresses));
+        String url = MessageFormat.format(addressEP + "/{0}/full", String.join(";", addresses));
+        logger.info("API url {}", url);
         try {
             ResponseEntity<BCYAddress[]> ret = restTemplate.getForEntity(url,
                 BCYAddress[].class,
@@ -78,7 +79,7 @@ public class BTCClient {
         }
     }
     public BCYAddress getAddressLatestTx(String addresses) throws BlockCypherException {
-        String url = MessageFormat.format(addressEP + "/{0}/full?limit=1&txlimit=1", String.join(";", addresses));
+        String url = MessageFormat.format(addressEP + "/{0}/full", String.join(";", addresses));
         try {
             ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(url,
                 BCYAddress.class,
@@ -108,8 +109,8 @@ public class BTCClient {
     }
 
     public IntermediaryTransaction createTransaction(TransactionRequest transactionRequest) throws BlockCypherException {
-        String url = MessageFormat.format(transactionEP + "/new?token={0}", "618c6ab8511347f78f97f3d687c86b22");
-        System.out.println("Create new tx to:  " + url);
+        String url = MessageFormat.format(transactionEP + "/new?token={0}", bycContext.getToken());
+        logger.info("Create new tx to:  " + url);
         try {
             ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, transactionRequest, IntermediaryTransaction.class);
             return res.getBody();
