@@ -10,11 +10,13 @@ export default class FooterActions extends React.Component {
     render() {
         let colorBtnBack = (this.props.buttonsColor && this.props.buttonsColor.back) || StyleSheet.value('$textTitleColor');
         let colorBtnContinue = (this.props.buttonsColor && this.props.buttonsColor.continue) || StyleSheet.value('$primaryColor');
+        let leftButtonText = this.props.leftButtonText || 'Back';
+        let rightButtonText = this.props.rightButtonText || 'Continue';
         return (
             <View {...this.props} style={[styles.footer_button, this.props.style]}>
                 {
                     this.props.onBackPress &&
-                    <Button title='Back'
+                    <Button title={leftButtonText}
                             style={StyleSheet.value('$back_button')}
                             fontSize={16}
                             icon={require('../res/icons/ic_arrow_left.svg')}
@@ -23,7 +25,7 @@ export default class FooterActions extends React.Component {
                 }
                 {
                     this.props.onContinuePress &&
-                    <Button title='Continue'
+                    <Button title={rightButtonText}
                             titleBold={true}
                             style={StyleSheet.value('$continue_button')}
                             enabled={this.props.enabledContinue}
