@@ -4,12 +4,6 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 import {Button, NavigationBar, Text} from "../../components/SoloComponent";
-
-import bip39 from 'bip39';
-import Transaction from 'ethereumjs-tx';
-import Web3 from 'web3';
-import Bitcoin from "react-native-bitcoinjs-lib";
-import DataManager from '../../utils/DataManager';
 import Globals from '../../common/Globals';
 import WalletManager from '../../utils/WalletManager';
 
@@ -21,6 +15,28 @@ export default class ConfirmationScreen extends Component<Props> {
             pressedConfirm: false,
             isShowingLoading: false
         };
+
+        this.value = 0;
+        if(this.props.txData.params.value) this.value = this.props.txData.params.value;
+        else {
+            this.props.txData.params.outputs.map(item => this.value += item.value);
+        }
+
+        this.toAddress = [];
+        if(this.props.txData.params.to) this.toAddress.push(this.props.txData.params.to);
+        else {
+            this.props.txData.params.outputs.map(out => {
+                out.addresses.map(address => this.toAddress.push(address));
+            });
+        }
+
+        this.fromAddress = [];
+        if(this.props.txData.params.from) this.fromAddress.push(this.props.txData.params.from);
+        else {
+            this.props.txData.params.inputs.map(inp => {
+                inp.addresses.map(address => this.fromAddress.push(address));
+            });
+        }
     }
 
     onConfirmTransaction() {
@@ -64,7 +80,7 @@ export default class ConfirmationScreen extends Component<Props> {
                         <Text style={styles.text_send}>Send</Text>
                     </View>
                     <Text style={styles.text_value}>
-                        {this.props.txData.params.value || this.props.txData.params.outputs[0].value} {(this.props.txData.coinType || '').toUpperCase()}
+                        {this.value} {(this.props.txData.coinType || '').toUpperCase()}
                     </Text>
                     <Text style={styles.text_usd}>... USD</Text>
 
@@ -78,15 +94,21 @@ export default class ConfirmationScreen extends Component<Props> {
                     <View style={styles.dash}/>
 
                     <Text style={styles.text_section}>To:</Text>
-                    <Text style={styles.text_address} numberOfLines={1}
-                          ellipsizeMode='middle'>{this.props.txData.params.to || this.props.txData.params.outputs[0].addresses[0]}</Text>
+
+                    {
+                        this.toAddress.map(address => {
+                            return <Text key={address} style={styles.text_address} numberOfLines={1} ellipsizeMode='middle'>{address}</Text>
+                        })
+                    }
 
                     <View style={styles.dash}/>
 
                     <Text style={styles.text_section}>From:</Text>
-                    <Text style={styles.text_address} numberOfLines={1}
-                          ellipsizeMode='middle'>{this.props.txData.params.from || this.props.txData.params.inputs[0].addresses[0]}</Text>
-
+                    {
+                        this.fromAddress.map(address => {
+                            return <Text key={address} style={styles.text_address} numberOfLines={1} ellipsizeMode='middle'>{address}</Text>
+                        })
+                    }
                     <View style={styles.dash}/>
 
                     {
