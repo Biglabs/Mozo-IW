@@ -53,7 +53,7 @@ public class InfoWalletTableViewCell: UITableViewCell {
     }
     
     @objc func refreshButtonTapped() {
-        self.delegate?.request(CommandType.getBalance.rawValue)
+        self.delegate?.request(SDKAction.getBalance.rawValue)
     }
     
     func generateQRCode(from string: String) -> UIImage? {

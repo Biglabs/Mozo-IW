@@ -19,8 +19,8 @@ extension SendViewController {
         self.soloSDK?.api?.sendTransaction(signedTx) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
+                if let connectionError = error {
+                    Utils.showError(connectionError)
                 }
                 return
             }

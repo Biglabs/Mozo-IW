@@ -237,7 +237,7 @@ class SendViewController: AbstractViewController {
         alertController.addAction(cancelAction)
         
         let OKAction = UIAlertAction(title: "Ok", style: .default) { (action) in
-            let baseUrl = self.currentCoin?.coin == CoinType.BTC.key ? Configuration.BLOCK_CYPHER_SCAN_URL : Configuration.ROPSTEN_ETHERSCAN_URL
+            let baseUrl = Configuration.getScanURL(self.currentCoin?.coin, isTestnet: true)
             let url = URL(string: "\(baseUrl)/\(txId)")
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
         }

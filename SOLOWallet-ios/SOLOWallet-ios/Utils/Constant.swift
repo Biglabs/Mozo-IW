@@ -8,19 +8,6 @@
 
 import Foundation
 
-public enum BackendError: Error {
-    case network(error: Error) // Capture any underlying Error from the URLSession API
-    case noInternetConnection
-    case requestTimedOut
-    case authenticationRequired
-    case resourceNotFound
-    case invalidStatusCode(String)
-    case dataReturnedNil
-    case customError(String)
-    case confirmCodeRequired(error: Error)
-    case invalidToken(String)
-}
-
 public enum CoinType {
     case BTC
     case ETH
@@ -41,8 +28,8 @@ public enum CoinType {
     
     public var icon : String {
         switch self {
-        case .BTC: return "ic_bitcoin"
-        case .ETH: return "ic_ethereum"
+        case .BTC: return "ic_BTC"
+        case .ETH: return "ic_ETH"
         }
     }
 }
@@ -81,7 +68,7 @@ public enum SoloTab {
     }
 }
 
-public enum CommandType: String {
+public enum SDKAction: String {
     case sign = "SIGN"
     case getWallet = "GET_WALLET"
     case addAddress = "ADD_ADDRESS"
