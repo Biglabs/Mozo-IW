@@ -6,7 +6,7 @@ const URL_GET_ALL_ADDRESSES = BASE_URL + API_PATH + "/wallet-addresses";
 const URL_GET_WALLET = BASE_URL + API_PATH + "/wallets/";
 const URL_REGISTER_WALLET = BASE_URL + API_PATH + "/wallets";
 const URL_SYNC_ADDRESS = BASE_URL + API_PATH + "/wallet-addresses";
-const URL_BTC_CREATE_TRANSACTION = 'https://api.blockcypher.com/v1/btc/test3/txs/new';
+const URL_BTC_CREATE_TRANSACTION = "/btc/test/txs"; //'https://api.blockcypher.com/v1/btc/test3/txs/new';
 const URL_BTC_TX_REF = 'http://api.blockcypher.com/v1/btc/test3/addrs/';
 
 function sendRequest(url, params, isPost){
