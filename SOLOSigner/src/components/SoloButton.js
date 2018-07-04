@@ -80,11 +80,14 @@ export default class SoloButton extends Component {
         let finalIconColor = this.iconColor;
 
         let isEnabled = (typeof this.props.enabled === 'undefined') || this.props.enabled;
-        if(!isEnabled){
+        if (!isEnabled) {
             finalTextStyle.push({
                 color: this.disableColor,
             });
             finalIconColor = this.disableColor;
+        }
+        if (this.props.textStyle) {
+            finalTextStyle.push(this.props.textStyle);
         }
 
         return (
