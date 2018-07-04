@@ -6,16 +6,29 @@
 //  Copyright © 2018 biglabs. All rights reserved.
 //
 
-import Foundation
-import SoloSDK
+import UIKit
+import SwiftyJSON
 
 extension SendViewController {
     func validateBTC() -> Bool {
         return true
     }
-    func signTransactionBTC(transaction : BTC_TransactionDTO) {
-        self.soloSDK.singner?.signTransactionBTC(inputs: transaction.inputs!, outputs: transaction.outputs!, coinType: CoinType.BTC.key){ result in
-            self.handleSignResult(result:result)
+    
+    func sendBTC(_ signedTx: String){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.soloSDK?.api?.sendTransaction(signedTx) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            print("BTC Tx: ", value);
+            let json = SwiftyJSON.JSON(value)
+            if let hash = json["tx"]["hash"].string {
+                self.viewTransactionOnBrowser(hash)
+            }
         }
     }
 }

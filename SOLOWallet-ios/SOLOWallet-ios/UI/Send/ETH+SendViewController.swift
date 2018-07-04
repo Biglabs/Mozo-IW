@@ -7,16 +7,35 @@
 //
 
 import Foundation
-import SoloSDK
+import JDStatusBarNotification
+import SwiftyJSON
 
 extension SendViewController {
-    func validateETH() -> Bool {
+    func validateETH(value: String) -> Bool {
         //TODO: Check gas price || gas limit
+        if value == "0" || (Double(value)! < 0.001) {
+            JDStatusBarNotification.show(withStatus: "Amount is below the minimum (0.001 ETH)", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return false
+        }
         return true
     }
-    func signTransactionETH(transaction : ETH_TransactionDTO) {
-        self.soloSDK.singner?.signTransactionETH(fromAddress: transaction.from!, toAddress: transaction.to!, value: transaction.value!, coinType: CoinType.ETH.key){ result in
-            self.handleSignResult(result:result)
+    
+    func sendETH(_ signedTx: String){
+        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.soloSDK?.api?.infuraPOST(params) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let backendError = error {
+                    Utils.showError(backendError)
+                }
+                return
+            }
+            
+            let json = SwiftyJSON.JSON(value)
+            if let result = json["result"].string {
+                self.viewTransactionOnBrowser(result)
+            }
         }
     }
 }

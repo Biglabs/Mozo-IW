@@ -165,37 +165,30 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        guard let balance = self.currentCoin?.balance, balance > 0 else {
+        guard let spendable = self.currentCoin?.balance, spendable > 0 else {
             JDStatusBarNotification.show(withStatus: "Your spendable is not enough fund.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
         
-        //ETH only
-        if (value == "0" || (Double(value)! < 0.001)) {
-            JDStatusBarNotification.show(withStatus: "Amount is below the minimum (0.001 ETH)", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
-            return
-        }
-        
-        if Double(value)! > (Double(gasLimit)! + balance) {
+        if Double(value)! > (Double(gasLimit)! + spendable) {
             JDStatusBarNotification.show(withStatus: "Spendable is is not enough.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
             return
         }
         
-        
-        // validate gas for each coin
-        
-        // sign eth
         if self.currentCoin?.coin == CoinType.ETH.key {
-            if self.validateETH() {
-                let transaction = ETH_TransactionDTO.init(from: from, to: toAddress, value: Double(value)!, gasPrice: 0, gasLimit: Double(gasLimit)!)!
-                self.signTransactionETH(transaction: transaction)
+            if self.validateETH(value: value) {
+                self.soloSDK.singner?.signTransactionETH(fromAddress: from, toAddress: toAddress, value: Double(value)!, coinType: CoinType.ETH.key){ result in
+                    self.handleSignResult(result:result)
+                }
             }
         } else if self.currentCoin?.coin == CoinType.BTC.key {
             if self.validateBTC() {
                 let input = InputDTO.init(addresses: [from])!
                 let output = OutputDTO.init(addresses: [toAddress], value: Double(value)!)!
-                let tx = BTC_TransactionDTO.init(inputs: [input], outputs: [output])!
-                self.signTransactionBTC(transaction: tx)
+                
+                self.soloSDK.singner?.signTransactionBTC(inputs: [input], outputs: [output], coinType: CoinType.BTC.key){ result in
+                    self.handleSignResult(result:result)
+                }
             }
         }
     }
@@ -210,41 +203,6 @@ class SendViewController: AbstractViewController {
             alert.message = error.localizedDescription
             alert.addAction(.init(title: "OK", style: .default, handler: nil))
             Utils.getTopViewController().present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    private func sendBTC(_ signedTx: String){
-        self.soloSDK?.api?.sendTransaction(signedTx) { value, error in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
-                }
-                return
-            }
-            print("BTC Tx: ", value);
-            let json = SwiftyJSON.JSON(value)
-            if let hash = json["tx"]["hash"].string {
-                self.viewTransactionOnBrowser(hash)
-            }
-        }
-    }
-    
-    private func sendETH(_ signedTx: String){
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_sendRawTransaction", "params": [signedTx]] as [String : Any]
-        self.soloSDK?.api?.infuraPOST(params) { value, error in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let backendError = error {
-                    Utils.showError(backendError)
-                }
-                return
-            }
-            
-            let json = SwiftyJSON.JSON(value)
-            if let result = json["result"].string {
-                self.viewTransactionOnBrowser(result)
-            }
         }
     }
     

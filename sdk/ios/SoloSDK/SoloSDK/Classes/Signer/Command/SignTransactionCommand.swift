@@ -89,9 +89,6 @@ public final class SignTransactionCommand: Command {
 
 public extension SignerManager {
     public func signTransactionETH(fromAddress: String, toAddress: String, value: Double, coinType: String, completion: @escaping (Result<String, SignerError>) -> Void) {
-//        guard self.hasSignerApp else {
-//            return fallbackToInstall()
-//        }
         let transaction = ETH_TransactionDTO()!
         transaction.from = fromAddress
         transaction.to = toAddress
@@ -99,10 +96,8 @@ public extension SignerManager {
         let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, transaction: transaction, completion: completion)
         execute(command: command)
     }
+    
     public func signTransactionBTC(inputs: [InputDTO], outputs: [OutputDTO], coinType: String, completion: @escaping (Result<String, SignerError>) -> Void) {
-        //        guard self.hasSignerApp else {
-        //            return fallbackToInstall()
-        //        }
         let transaction = BTC_TransactionDTO()!
         transaction.inputs = inputs
         transaction.outputs = outputs
