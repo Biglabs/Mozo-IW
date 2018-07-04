@@ -1,0 +1,1 @@
+export default "<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" x=\"0px\" y=\"0px\" viewBox=\"0 0 8 14\"> <polygon fill=\"#006DFF\" points=\"8,1.8 2.7,7 8,12.2 6.7,13.5 0,7 6.7,0.5 \"/></svg>";

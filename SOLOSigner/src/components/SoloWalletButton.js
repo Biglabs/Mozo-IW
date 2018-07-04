@@ -1,15 +1,16 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
 import {Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import Text from "./SoloText";
 import * as ButtonStyles from '../res/button.styles';
+import {icCheckCircle} from '../res/icons';
 // noinspection JSUnusedLocalSymbols, exclude color, fontFamily, fontSize, textAlign from ButtonStyles.BorderGrayStyle
 const {color, fontFamily, fontSize, textAlign, ...buttonGrayStyle} = ButtonStyles.BorderGrayStyle;
 
-export default class SoloWalletButton extends Component {
+export default class SoloWalletButton extends React.Component {
     constructor(props) {
         super(props);
         this.label = props.label || props.title || 'Label';
@@ -39,7 +40,7 @@ export default class SoloWalletButton extends Component {
                         && <SvgUri width={18}
                                    height={18}
                                    fill={this.props.iconColor || (isSelected ? '#ffffff' : StyleSheet.value('$textTitleColor'))}
-                                   source={this.props.icon}
+                                   svgXmlData={this.props.icon}
                                    style={{
                                        position: 'absolute',
                                        marginLeft: 14,
@@ -49,7 +50,7 @@ export default class SoloWalletButton extends Component {
 
                     <SvgUri width={20}
                             height={20}
-                            source={require('../res/icons/ic_check_circle.svg')}
+                            svgXmlData={icCheckCircle}
                             style={{
                                 position: 'absolute',
                                 alignSelf: 'flex-end',

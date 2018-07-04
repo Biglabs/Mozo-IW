@@ -1,13 +1,14 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
 import {TouchableOpacity, View} from "react-native";
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from "react-native-extended-stylesheet";
 import Text from "./SoloText";
 import {Actions} from 'react-native-router-flux';
+import {icArrowBack} from '../res/icons';
 
-export default class NavigationBarView extends Component {
+export default class NavigationBarView extends React.Component {
     constructor(props) {
         super(props);
 
@@ -27,7 +28,7 @@ export default class NavigationBarView extends Component {
                         width={8}
                         height={13}
                         fill={this.backIconColor}
-                        source={require('../res/icons/ic_arrow_back.svg')}
+                        svgXmlData={icArrowBack}
                         style={{
                             marginLeft: 16,
                             marginRight: 6,

@@ -5,17 +5,17 @@ import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {FadeInView} from "../components/SoloComponent";
 import Globals from '../common/Globals';
-import {ic_signer_logo} from '../res/icons';
+import {icSoloLogo} from '../res/icons';
 
 export default class SplashScreen extends React.Component {
 
     componentDidMount() {
         YellowBox.ignoreWarnings(['Warning: isMounted(...)']);
         YellowBox.ignoreWarnings(['Warning: Failed prop type']);
-        // this.timer = TimerMixin.setTimeout(
-        //     () => this.handleFlow(),
-        //     3000
-        // );
+        this.timer = TimerMixin.setTimeout(
+            () => this.handleFlow(),
+            3000
+        );
     }
 
     handleFlow() {
@@ -30,7 +30,7 @@ export default class SplashScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <FadeInView duration={500}>
-                    <SvgUri width={logoWidth} height={logoHeight} svgXmlData={ic_signer_logo}/>
+                    <SvgUri width={logoWidth} height={logoHeight} svgXmlData={icSoloLogo}/>
                 </FadeInView>
             </View>
         );

@@ -1,11 +1,12 @@
 import React from "react";
-import {TouchableOpacity, Image, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {FooterActions, NavigationBar, Text} from "../../components/SoloComponent";
 import WalletManager from '../../utils/WalletManager';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode';
+import {icCancel, icWarning} from '../../res/icons';
 
 export default class ViewBackupPhrase extends React.Component {
 
@@ -56,7 +57,7 @@ export default class ViewBackupPhrase extends React.Component {
                         <View style={styles.warning_text}>
                             <SvgUri width={20}
                                     height={20}
-                                    source={require('../../res/icons/ic_warning.svg')}
+                                    svgXmlData={icWarning}
                                     style={{marginRight: 6}}/>
                             <Text style={[StyleSheet.value('$warning_text'), {paddingBottom: 5}]}>WARNING</Text>
                         </View>
@@ -115,7 +116,7 @@ export default class ViewBackupPhrase extends React.Component {
                             <SvgUri width={18}
                                     height={18}
                                     fill={StyleSheet.value('$primaryColor')}
-                                    source={require('../../res/icons/ic_cancel.svg')}
+                                    svgXmlData={icCancel}
                                     style={{marginRight: 4}}/>
                             <Text style={styles.button_cancel}>Cancel</Text>
                         </TouchableOpacity>
