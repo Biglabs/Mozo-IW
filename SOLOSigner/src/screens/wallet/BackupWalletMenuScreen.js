@@ -1,38 +1,20 @@
-import React, {Component} from "react";
+import React from "react";
 import {TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {NavigationBar, Text} from "../../components/SoloComponent";
-import DataManager from '../../utils/DataManager';
-import WalletManager from '../../utils/WalletManager';
-import encryption from '../../common/encryption';
 
-export default class BackupWalletScreen extends Component<Props> {
-    constructor(props) {
-        super(props);
-    }
-
-    pressView(){
-        WalletManager.viewBackupPharse(this.props.pin, (error, result) => {
-            if (result) {
-                console.log('Mnemonic: ' + result);
-                //Actions.view_backup_phrase();
-            } else {
-
-            }
-        });
-    }
-
+export default class BackupWalletMenuScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-
                 <NavigationBar title='Backup Wallet'/>
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
-                    onPress={() => {}}>
+                    onPress={() => {
+                    }}>
                     <Text style={styles.buttons_text}>Backup Wallet</Text>
 
                     <SvgUri
@@ -51,8 +33,9 @@ export default class BackupWalletScreen extends Component<Props> {
 
                 <View style={styles.dash}/>
 
-                <TouchableOpacity style={styles.buttons}
-                        onPress={() => this.pressView()}>
+                <TouchableOpacity
+                    style={styles.buttons}
+                    onPress={() => Actions.view_backup_phrase({pin: this.props.pin})}>
                     <Text style={styles.buttons_text}>View Backup Phrase</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
@@ -80,8 +63,6 @@ const styles = StyleSheet.create({
     buttons: {
         width: '100%',
         height: 60,
-        color: '$textTitleColor',
-        fontSize: 14,
         flexDirection: 'row',
         paddingLeft: '$screen_padding_horizontal',
         paddingRight: '$screen_padding_horizontal',

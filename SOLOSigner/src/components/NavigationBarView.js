@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     button: {
-        flex: 0.25,
+        flex: 0.2,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         paddingBottom: 3,
     },
     title: {
-        flex: 0.5,
+        flex: 0.6,
         fontFamily: '$primaryFontBold',
         fontSize: 16,
         color: '$primaryColor',
