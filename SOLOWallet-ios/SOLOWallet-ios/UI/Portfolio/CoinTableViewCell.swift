@@ -24,7 +24,7 @@ public class CoinTableViewCell: UITableViewCell {
     public func bindData(_ address: AddressDTO){
         if let name = address.coin {
             self.iconImage.image = UIImage.init(named: "ic_\(name)")
-            self.nameLabel.text = name
+            self.nameLabel.text = address.network ?? name
         }
     }
     
