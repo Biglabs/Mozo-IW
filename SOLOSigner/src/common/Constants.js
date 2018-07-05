@@ -49,6 +49,13 @@ const Constants = {
             icon: icCoinMozo
         }
     },
+    ERROR_TYPE:{
+        UNKNOWN: -1,
+	    NONE: 0,
+	    CANCELLED: 1,
+        INVALID_REQUEST: 2,
+        WATCH_ONLY: 3
+    },
     FLAG_DB_EXISTING: '@DbExisting:key',
     FLAG_PUBLIC_KEY: '@publicKey:key',
     FLAG_SCHEME_DATA: '@schemeData:key',
