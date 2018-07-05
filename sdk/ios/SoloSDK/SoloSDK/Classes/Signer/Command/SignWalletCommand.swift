@@ -31,6 +31,21 @@ public class SignWalletCommand: Command {
     }
     
     public  func handleCallback(url: URL) -> Bool {
+//        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false), components.host == name else {
+//            return false
+//        }
+//
+//        if let value = components.queryItems?.first(where: { $0.name == "error" })?.value,
+//            let errorCode = Int(value),
+//            let error = SignerError(rawValue: errorCode) {
+//            completion(.failure(error))
+//            return true
+//        }
+//
+//        guard let walletId = components.queryItems?.first(where: { $0.name == "walletId" })?.value else {
+//            return false
+//        }
+        
         let urls: [String] = url.absoluteString.components(separatedBy: "://")
         if urls.count == 0 {
             return false
@@ -57,8 +72,7 @@ public class SignWalletCommand: Command {
             return false
         }
         
-        let wallet = WalletDTO(json: result)
-        guard let walletId = wallet?.walletId else {
+        guard let walletId = result["walletId"].string else {
             return false
         }
         

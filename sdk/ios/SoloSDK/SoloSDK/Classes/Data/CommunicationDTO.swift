@@ -55,24 +55,3 @@ public class CommunicationDTO: ResponseObjectSerializable {
         return json.rawString()!
     }
 }
-
-public class WalletDTO: ResponseObjectSerializable {
-    public var walletId: String?
-    public required init?(walletId: String?) {
-        self.walletId = walletId
-    }
-    
-    public required init?(json: SwiftyJSON.JSON) {
-        self.walletId = json["walletId"].string
-    }
-    
-    public required init?(){}
-    
-    public func toJSON() -> Dictionary<String, Any> {
-        var json = Dictionary<String, Any>()
-        if let walletId = self.walletId {
-            json["walletId"] = walletId
-        }
-        return json
-    }
-}
