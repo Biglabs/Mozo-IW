@@ -24,7 +24,6 @@ extension SendViewController {
                 }
                 return
             }
-            print("BTC Tx: ", value);
             let json = SwiftyJSON.JSON(value)
             if let hash = json["tx"]["hash"].string {
                 self.viewTransactionOnBrowser(hash)
