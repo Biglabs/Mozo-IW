@@ -176,7 +176,7 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
     }
 }
 
-module.exports.viewBackupPharse = function(pin, callback) {
+module.exports.viewBackupPhrase = function(pin, callback) {
     let manager = DataManager.getInstance();
     let appInfo = manager.getAppInfo();
     if (appInfo) {
@@ -190,7 +190,7 @@ module.exports.viewBackupPharse = function(pin, callback) {
             callback(new Error("Inputted PIN is not correct"), null);
         }
     }
-}
+};
 
 signBTCTransaction = function(txData, privKeys, callback){
     let params = txData.params;

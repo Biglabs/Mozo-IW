@@ -9,11 +9,13 @@ import {icCheck, icExportQR, icExportText} from "../../res/icons";
 import encryption from "../../common/encryption";
 import QRCode from 'react-native-qrcode-svg';
 
+const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+
 export default class BackupWalletScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {isShowError: false, errorMessage: ''};
-        WalletManager.viewBackupPharse(this.props.pin, (error, result) => {
+        this.state = {isShowError: false, errorMessage: '', errorViewIndex: -1};
+        WalletManager.viewBackupPhrase(this.props.pin, (error, result) => {
             if (result) {
                 this.backupPhrase = result;
             } else {
@@ -25,6 +27,9 @@ export default class BackupWalletScreen extends React.Component {
                 )
             }
         });
+
+        this.borderError = StyleSheet.value('$errorColor');
+        this.borderNormal = StyleSheet.value('$borderColor');
     }
 
     doBackup() {
@@ -48,12 +53,12 @@ export default class BackupWalletScreen extends React.Component {
 
     doExportText() {
         Share.share({
-            message: 'BAM: we\'re helping your business with awesome React Native apps',
-            url: 'http://bam.tech',
-            title: 'Wow, did you see that?'
+            message: this.state.encryptedData,
+            url: this.state.encryptedData,
+            title: 'Backup Wallet as text file'
         }, {
             // Android only:
-            dialogTitle: 'Share BAM goodness',
+            dialogTitle: 'Backup Wallet as text file',
             // iOS only:
             excludedActivityTypes: [
                 'com.apple.UIKit.activity.PostToTwitter'
@@ -63,12 +68,21 @@ export default class BackupWalletScreen extends React.Component {
 
     validatePassword() {
         if (this.newEncryptPassword && this.newEncryptPassword.length > 0) {
-            if (this.newEncryptPassword !== this.confirmEncryptPassword) {
-                this.setState({isShowError: true, errorMessage: 'The password does not match'});
+            if (passwordRegex.test(this.newEncryptPassword)) {
+                if (this.newEncryptPassword !== this.confirmEncryptPassword) {
+                    this.setState({isShowError: true, errorMessage: 'The password does not match', errorViewIndex: 1});
+                    return false;
+                }
+            } else {
+                this.setState({
+                    isShowError: true,
+                    errorMessage: 'Please choose a stronger password. Try a mix of letters, numbers, symbols and at least 8 characters.',
+                    errorViewIndex: 0
+                });
                 return false;
             }
         } else {
-            this.setState({isShowError: true, errorMessage: 'Password cannot be empty'});
+            this.setState({isShowError: true, errorMessage: 'Password cannot be empty', errorViewIndex: 0});
             return false;
         }
 
@@ -76,7 +90,7 @@ export default class BackupWalletScreen extends React.Component {
     }
 
     clearError() {
-        this.setState({isShowError: false, errorMessage: ''});
+        this.setState({isShowError: false, errorMessage: '', errorViewIndex: -1});
     }
 
     render() {
@@ -89,12 +103,15 @@ export default class BackupWalletScreen extends React.Component {
                     <View style={styles.view_contain}>
                         <Text style={StyleSheet.value('$screen_sub_title_text')}>Enter a new encrypt password</Text>
                         <Text
-                            style={[StyleSheet.value('$screen_explain_text'), {color: StyleSheet.value('$errorColor')}]}>
+                            style={[StyleSheet.value('$screen_explain_text'), {color: StyleSheet.value('$textTitleColor')}]}>
                             Your Backup Phrase will be encrypted. The encrypt password cannot be recovered.{'\n'}
                             Be sure to write it down.</Text>
 
+                        <Text style={{marginTop: 20, fontSize: 12}}>
+                            Use 8 or more characters with a mix of letters, numbers & symbols
+                        </Text>
                         <TextInput
-                            style={styles.input_password}
+                            style={[styles.input_password, {borderColor: this.state.errorViewIndex === 0 ? this.borderError : this.borderNormal}]}
                             placeholder='Encrypt password'
                             multiline={false}
                             numberOfLines={1}
@@ -104,7 +121,7 @@ export default class BackupWalletScreen extends React.Component {
                             onChangeText={text => this.newEncryptPassword = text}/>
 
                         <TextInput
-                            style={styles.input_password}
+                            style={[styles.input_password, {borderColor: this.state.errorViewIndex === 1 ? this.borderError : this.borderNormal}]}
                             placeholder='Repeat the encrypt password'
                             multiline={false}
                             numberOfLines={1}
@@ -192,14 +209,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     input_password: {
-        marginTop: 20,
+        marginTop: 15,
         paddingLeft: 15,
         paddingRight: 15,
     },
     error_text: {
         width: '100%',
         color: '$errorColor',
-        fontSize: 12
+        fontSize: 12,
+        marginTop: 15,
     },
     button_confirm: {
         height: '$screen_padding_bottom',
@@ -239,7 +257,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    export_button_text:{
+    export_button_text: {
         fontFamily: '$primaryFontBold',
         color: '$textTitleColor'
     }

@@ -16,7 +16,7 @@ export default class ViewBackupPhrase extends React.Component {
             countDownDuration: 5,
             userConfirmed: false,
         };
-        WalletManager.viewBackupPharse(this.props.pin, (error, result) => {
+        WalletManager.viewBackupPhrase(this.props.pin, (error, result) => {
             if (result) {
                 this.doViewBackupPhrase(result);
             } else {
