@@ -6,6 +6,7 @@ import SvgUri from 'react-native-svg-uri';
 import {FooterActions, Text, TextInput} from "../../components/SoloComponent";
 import {RNCamera} from 'react-native-camera';
 import bip39 from 'bip39';
+import {icScanArea} from '../../res/icons';
 
 export default class ImportWalletScreen extends Component {
 
@@ -79,7 +80,7 @@ export default class ImportWalletScreen extends Component {
                         })}>
                         <SvgUri width={200}
                                 height={200}
-                                source={require('../../res/icons/ic_scan_area.svg')}/>
+                                svgXmlData={icScanArea}/>
                         {
                             this.state.isScanningQRCode &&
                             <RNCamera

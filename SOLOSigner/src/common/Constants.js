@@ -1,3 +1,5 @@
+import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons';
+
 const Constants = {
     ACTION_SCHEME: {
         NONE: "NONE",
@@ -11,40 +13,40 @@ const Constants = {
             name: "BTC",
             value: 0,
             network: "BTC_MAIN",
-            icon: require("../res/icons/ic_coin_btc.svg")
+            icon: icCoinBtc
         },
         BTC_TEST: {
             displayName: "BTC TESTNET",
             name: "BTC",
             value: 1,
             network: "BTC_TEST",
-            icon: require("../res/icons/ic_coin_btc.svg")
+            icon: icCoinBtc
         },
         ETH: {
             displayName: "ETH",
             name: "ETH",
             value: 60,
             network: "ETH_MAIN",
-            icon: require("../res/icons/ic_coin_eth.svg")
+            icon: icCoinEth
         },
         ETH_TEST: {
             displayName: "ETH TESTNET",
             name: "ETH",
             value: 60,
             network: "ETH_TEST",
-            icon: require("../res/icons/ic_coin_eth.svg")
+            icon: icCoinEth
         },
         SOLO: {
             displayName: "SOLO",
             name: "SOLO",
             value: "Constract's Address",
-            icon: require("../res/icons/ic_coin_solo.svg")
+            icon: icCoinSolo
         },
         MOZO: {
             displayName: "MOZO",
             name: "MOZO",
             value: "Constract's Address",
-            icon: require("../res/icons/ic_coin_mozo.svg")
+            icon: icCoinMozo
         }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',

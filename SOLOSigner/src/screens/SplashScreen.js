@@ -1,14 +1,13 @@
-import React, {Component} from 'react';
-import {Dimensions, View, YellowBox, Platform, Linking, AsyncStorage} from 'react-native';
+import React from 'react';
+import {Dimensions, View, YellowBox} from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {FadeInView} from "../components/SoloComponent";
 import Globals from '../common/Globals';
-import Constant from '../common/Constants';
-import LinkingManager from '../utils/LinkingManager';
+import {icSoloLogo} from '../res/icons';
 
-export default class SplashScreen extends Component {
+export default class SplashScreen extends React.Component {
 
     componentDidMount() {
         YellowBox.ignoreWarnings(['Warning: isMounted(...)']);
@@ -31,7 +30,7 @@ export default class SplashScreen extends Component {
         return (
             <View style={styles.container}>
                 <FadeInView duration={500}>
-                    <SvgUri width={logoWidth} height={logoHeight} source={require('../res/icons/logo.svg')}/>
+                    <SvgUri width={logoWidth} height={logoHeight} svgXmlData={icSoloLogo}/>
                 </FadeInView>
             </View>
         );

@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Dimensions, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Button, Text} from "../components/SoloComponent";
+import {icSoloLogo} from '../res/icons';
 
-export default class WelcomeScreen extends Component {
+export default class WelcomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -13,7 +14,7 @@ export default class WelcomeScreen extends Component {
         let {width} = Dimensions.get('window');
         this.logoWidth = 64 * width / 100;
         this.logoHeight = 37.8 * this.logoWidth / 100;
-        this.state = { animating: false };
+        this.state = {animating: false};
     }
 
     render() {
@@ -22,7 +23,7 @@ export default class WelcomeScreen extends Component {
                 <SvgUri width={this.logoWidth}
                         height={this.logoHeight}
                         fill={StyleSheet.value('$primaryColor')}
-                        source={require('../res/icons/logo.svg')}
+                        svgXmlData={icSoloLogo}
                         style={{
                             flex: .5,
                             justifyContent: 'flex-end',

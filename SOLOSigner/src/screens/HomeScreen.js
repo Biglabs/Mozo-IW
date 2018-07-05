@@ -1,13 +1,12 @@
 import React, {Component} from "react";
-import {Linking, TouchableOpacity, View, AsyncStorage, Platform} from 'react-native';
+import {AsyncStorage, Linking, Platform, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {Button, Text} from "../components/SoloComponent";
 import LinkingManager from "../utils/LinkingManager";
-import Constant from '../common/Constants';
 import GlobalStorage from '../utils/GlobalStorage';
-import WalletManager from '../utils/WalletManager';
+import {icBackup, icCheck, icInformation, icNote, icSoloTitle, icSync} from '../res/icons';
 
 export default class HomeScreen extends Component<Props> {
 
@@ -20,13 +19,13 @@ export default class HomeScreen extends Component<Props> {
         this.manageScheme();
     }
 
-    manageScheme(){
+    manageScheme() {
         let storage = GlobalStorage.getInstance();
         let schemeData = storage.getSchemeData();
-        if(schemeData){
+        if (schemeData) {
             LinkingManager.manageScheme(schemeData, this.props.pin);
             GlobalStorage.getInstance().setSchemeData(null);
-        }        
+        }
     }
 
     render() {
@@ -38,7 +37,7 @@ export default class HomeScreen extends Component<Props> {
                         width={78}
                         height={36}
                         fill={StyleSheet.value('$primaryColor')}
-                        source={require('../res/icons/ic_solo_signer_title.svg')}
+                        svgXmlData={icSoloTitle}
                         style={{
                             marginBottom: 10,
                         }}/>
@@ -46,25 +45,25 @@ export default class HomeScreen extends Component<Props> {
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
-                    onPress={() => Actions.backup_wallet({ pin : this.props.pin })}>
+                    onPress={() => Actions.backup_wallet({pin: this.props.pin})}>
                     <SvgUri
                         width={24}
                         height={20}
                         fill={StyleSheet.value('$primaryColor')}
-                        source={require('../res/icons/ic_backup.svg')}/>
+                        svgXmlData={icBackup}/>
                     <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
 
                     <SvgUri
                         width={20}
                         height={20}
-                        source={require('../res/icons/ic_check.svg')}
+                        svgXmlData={icCheck}
                         style={{margin: 9}}/>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
                             width={20}
                             height={20}
-                            source={require('../res/icons/ic_information.svg')}/>
+                            svgXmlData={icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 
@@ -75,14 +74,14 @@ export default class HomeScreen extends Component<Props> {
                         width={20}
                         height={20}
                         fill={StyleSheet.value('$primaryColor')}
-                        source={require('../res/icons/ic_sync.svg')}/>
+                        svgXmlData={icSync}/>
                     <Text style={styles.buttons_text}>Pair Devices</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
                             width={20}
                             height={20}
-                            source={require('../res/icons/ic_information.svg')}/>
+                            svgXmlData={icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 
@@ -95,14 +94,14 @@ export default class HomeScreen extends Component<Props> {
                         width={20}
                         height={20}
                         fill={StyleSheet.value('$primaryColor')}
-                        source={require('../res/icons/ic_note.svg')}/>
+                        svgXmlData={icNote}/>
                     <Text style={styles.buttons_text}>Paper Wallet</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
                             width={20}
                             height={20}
-                            source={require('../res/icons/ic_information.svg')}/>
+                            svgXmlData={icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 

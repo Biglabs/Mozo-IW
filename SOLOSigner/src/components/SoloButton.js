@@ -101,7 +101,7 @@ export default class SoloButton extends Component {
                     && <SvgUri width={this.iconSize}
                                height={this.iconSize}
                                fill={finalIconColor}
-                               source={this.props.icon}
+                               svgXmlData={this.props.icon}
                                style={this.iconStyle}/>
                 }
             </TouchableOpacity>

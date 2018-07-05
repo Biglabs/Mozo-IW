@@ -6,6 +6,7 @@ import {Actions} from 'react-native-router-flux';
 import {CoinItemView, NavigationBar, Text, TextInput} from "../../components/SoloComponent";
 import Constant from '../../common/Constants';
 import {inject} from "mobx-react";
+import {icSearch} from '../../res/icons';
 
 @inject("selectedWalletsStore")
 export default class AddMoreWalletScreen extends Component {
@@ -13,7 +14,7 @@ export default class AddMoreWalletScreen extends Component {
     constructor(props) {
         super(props);
 
-        const getCoinIdentifierKey = function(coin) {
+        const getCoinIdentifierKey = function (coin) {
             return coin.displayName.replace(" ", "_").concat(coin.value).concat(coin.network).toLowerCase()
         };
 
@@ -103,7 +104,7 @@ export default class AddMoreWalletScreen extends Component {
                     <SvgUri
                         width={24}
                         height={24}
-                        source={require('../../res/icons/ic_search.svg')}
+                        svgXmlData={icSearch}
                         style={{
                             position: 'absolute',
                             right: 0,

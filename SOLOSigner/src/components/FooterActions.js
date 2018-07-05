@@ -4,7 +4,7 @@ import React from 'react';
 import {View} from "react-native";
 import StyleSheet from "react-native-extended-stylesheet";
 import Button from "./SoloButton";
-
+import {icArrowLeft, icArrowRight} from '../res/icons';
 
 export default class FooterActions extends React.Component {
     render() {
@@ -19,7 +19,7 @@ export default class FooterActions extends React.Component {
                     <Button title={leftButtonText}
                             style={StyleSheet.value('$back_button')}
                             fontSize={16}
-                            icon={require('../res/icons/ic_arrow_left.svg')}
+                            icon={icArrowLeft}
                             iconColor={colorBtnBack}
                             onPress={this.props.onBackPress}/>
                 }
@@ -30,7 +30,7 @@ export default class FooterActions extends React.Component {
                             style={StyleSheet.value('$continue_button')}
                             enabled={this.props.enabledContinue}
                             fontSize={16}
-                            icon={require('../res/icons/ic_arrow_right.svg')}
+                            icon={icArrowRight}
                             iconColor={colorBtnContinue}
                             iconPosition='right'
                             onPress={this.props.onContinuePress}/>

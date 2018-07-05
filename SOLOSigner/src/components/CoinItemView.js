@@ -1,12 +1,13 @@
 'use strict';
 
-import React, {PureComponent} from 'react';
+import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import Text from "./SoloText";
 import StyleSheet from 'react-native-extended-stylesheet';
+import {icCheckCircle} from '../res/icons';
 
-export default class CoinItemView extends PureComponent {
+export default class CoinItemView extends React.PureComponent {
 
     render() {
         let isHandleItemClick = this.props.onItemClicked || false;
@@ -23,7 +24,7 @@ export default class CoinItemView extends PureComponent {
                 disabled={!isHandleItemClick}>
 
                 <View style={styles.content}>
-                    <SvgUri width={24} height={24} source={this.props.icon}/>
+                    <SvgUri width={24} height={24} svgXmlData={this.props.icon}/>
                     <Text style={styles.label}>{this.props.label}</Text>
 
                     <Text style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</Text>
@@ -32,7 +33,7 @@ export default class CoinItemView extends PureComponent {
                         <SvgUri
                             width={20}
                             height={20}
-                            source={require('../res/icons/ic_check_circle.svg')}
+                            svgXmlData={icCheckCircle}
                             fill={StyleSheet.value('$primaryColor')}
                             style={{
                                 position: 'absolute',
