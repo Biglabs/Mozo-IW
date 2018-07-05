@@ -89,18 +89,13 @@ public final class SignTransactionCommand: Command {
 
 public extension SignerManager {
     public func signTransactionETH(fromAddress: String, toAddress: String, value: Double, coinType: String, completion: @escaping (Result<String, SignerError>) -> Void) {
-        let transaction = ETH_TransactionDTO()!
-        transaction.from = fromAddress
-        transaction.to = toAddress
-        transaction.value = Double(value)
+        let transaction = EthereumTransactionDTO.init(from: fromAddress, to: toAddress, value: Double(value))!
         let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, transaction: transaction, completion: completion)
         execute(command: command)
     }
     
     public func signTransactionBTC(inputs: [InputDTO], outputs: [OutputDTO], coinType: String, completion: @escaping (Result<String, SignerError>) -> Void) {
-        let transaction = BTC_TransactionDTO()!
-        transaction.inputs = inputs
-        transaction.outputs = outputs
+        let transaction = BitcoinTransactionDTO.init(inputs: inputs, outputs: outputs)!
         let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, transaction: transaction, completion: completion)
         execute(command: command)
     }
