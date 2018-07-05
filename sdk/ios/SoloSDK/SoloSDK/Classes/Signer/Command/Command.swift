@@ -16,7 +16,7 @@ public protocol Command {
     var bundleId: String { get set }
     
     /// Singer request URL
-    func requestURL() -> URL?
+    func requestURL() -> URL
     
     /// Handles a callback URL
     func handleCallback(url: URL) -> Bool

@@ -30,14 +30,12 @@ public final class SignerManager {
     
     func execute(command: Command) {
         pendingCommand = command
-        if let url = command.requestURL() {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            } else {
-                UIApplication.shared.openURL(url)
-            }
+        
+        let url = command.requestURL()
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         } else {
-            self.fallbackToInstall()
+            UIApplication.shared.openURL(url)
         }
     }
     

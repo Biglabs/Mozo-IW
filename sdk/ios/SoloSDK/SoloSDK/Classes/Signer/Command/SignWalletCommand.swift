@@ -15,11 +15,11 @@ public class SignWalletCommand: Command {
     
     public var bundleId: String
     
-    public func requestURL() -> URL? {
+    public func requestURL() -> URL {
         var urlStr = Configuration.SIGNER_URL_SCHEME + "://"
-        let model = CommunicationDTO(action: self.name, receiver: "\(self.bundleId).\(Configuration.WALLET_URL_SCHEME)", params: nil, coinType: nil)!
-        urlStr += model.rawString()
-        return URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)
+        let comm = CommunicationDTO(action: self.name, receiver: "\(self.bundleId).\(Configuration.WALLET_URL_SCHEME)", params: nil, coinType: nil)!
+        urlStr += comm.rawString()
+        return URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
     }
     
     /// Completion closure
