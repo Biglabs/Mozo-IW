@@ -337,9 +337,19 @@ module.exports.signTransaction = function(txData, pin, callback){
     }
 }
 
-module.exports.backupWallet = function(pin, callback) {
-
-}
+module.exports.backupWallet = function (pin, encryptPassword, callback) {
+    this.viewBackupPhrase(pin, (error, result) => {
+        if (result) {
+            if (typeof callback === 'function') {
+                callback(null, encryption.encrypt(result, encryptPassword));
+            }
+        } else {
+            if (typeof callback === 'function') {
+                callback(error, null);
+            }
+        }
+    })
+};
 
 module.exports.addNewAddress = function(pin, coinType, index, callback) {
     let manager = DataManager.getInstance();

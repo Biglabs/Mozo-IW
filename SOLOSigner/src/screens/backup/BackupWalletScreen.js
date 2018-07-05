@@ -6,7 +6,6 @@ import {NavigationBar, Text, TextInput} from "../../components/SoloComponent";
 import WalletManager from '../../utils/WalletManager';
 import {Actions} from "react-native-router-flux";
 import {icCheck, icExportQR, icExportText} from "../../res/icons";
-import encryption from "../../common/encryption";
 import QRCode from 'react-native-qrcode-svg';
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
@@ -15,29 +14,25 @@ export default class BackupWalletScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {isShowError: false, errorMessage: '', errorViewIndex: -1};
-        WalletManager.viewBackupPhrase(this.props.pin, (error, result) => {
-            if (result) {
-                this.backupPhrase = result;
-            } else {
-                Alert.alert(
-                    'Something went wrong!',
-                    "Cannot backup wallet right now, try again later.",
-                    [{text: 'OK', onPress: () => Actions.pop()},],
-                    {cancelable: false}
-                )
-            }
-        });
-
         this.borderError = StyleSheet.value('$errorColor');
         this.borderNormal = StyleSheet.value('$borderColor');
     }
 
     doBackup() {
-        if (this.backupPhrase && this.validatePassword()) {
-            let encryptedData = encryption.encrypt(this.backupPhrase, this.newEncryptPassword);
-            this.setState({encryptedData: encryptedData});
+        if (this.validatePassword()) {
+            WalletManager.backupWallet(this.props.pin, this.newEncryptPassword, (error, result) => {
+                if (result) {
+                    this.setState({encryptedData: result});
+                } else {
+                    Alert.alert(
+                        'Something went wrong!',
+                        "Cannot backup wallet right now, try again later.",
+                        [{text: 'OK', onPress: () => Actions.pop()},],
+                        {cancelable: false}
+                    )
+                }
+            });
 
-            this.backupPhrase = null;
             this.newEncryptPassword = null;
             this.confirmEncryptPassword = null;
         }
