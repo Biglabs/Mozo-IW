@@ -59,13 +59,14 @@ export default class SecurityPinScreen extends Component {
             setTimeout(() => {
                 let pin = JSON.stringify(this.pinCode);
                 WalletManager.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
-                    if (result) {
+                    //Check error type
+                    if(error && error.message != "Network request failed") {
+                        this.clearPin();
+                    } else {
                         this.props.isNewPIN = false;
                         // Open Home Screen
                         let pin = JSON.stringify(this.pinCode);
                         Actions.main_stack({pin: pin});
-                    } else {
-                        this.clearPin();
                     }
                 });
             }, 5);
