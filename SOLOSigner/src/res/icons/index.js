@@ -9,6 +9,8 @@ import ic_coin_btc from './ic_coin_btc';
 import ic_coin_eth from './ic_coin_eth';
 import ic_coin_mozo from './ic_coin_mozo';
 import ic_coin_solo from './ic_coin_solo';
+import ic_export_qr from './ic_export_qr';
+import ic_export_text from './ic_export_text';
 import ic_flash from './ic_flash';
 import ic_information from './ic_information';
 import ic_note from './ic_note';
@@ -33,6 +35,8 @@ const icons = {
     icCoinEth: ic_coin_eth,
     icCoinMozo: ic_coin_mozo,
     icCoinSolo: ic_coin_solo,
+    icExportQR: ic_export_qr,
+    icExportText: ic_export_text,
     icFlash: ic_flash,
     icInformation: ic_information,
     icNote: ic_note,

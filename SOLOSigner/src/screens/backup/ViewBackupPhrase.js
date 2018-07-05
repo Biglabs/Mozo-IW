@@ -1,28 +1,38 @@
 import React from "react";
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {FooterActions, NavigationBar, Text} from "../../components/SoloComponent";
 import WalletManager from '../../utils/WalletManager';
 import {Actions} from "react-native-router-flux";
-import QRCode from 'react-native-qrcode';
+import QRCode from 'react-native-qrcode-svg';
 import {icCancel, icWarning} from '../../res/icons';
 
 export default class ViewBackupPhrase extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             countDownDuration: 5,
             userConfirmed: false,
         };
-
         WalletManager.viewBackupPharse(this.props.pin, (error, result) => {
-            this.backupPhrase = result;
-            this.arrayOfWords = result.split(" ");
+            if (result) {
+                this.doViewBackupPhrase(result);
+            } else {
+                Alert.alert(
+                    'Something went wrong!',
+                    "Cannot view Backup Phrase right now, try again later.",
+                    [{text: 'OK', onPress: () => Actions.pop()},],
+                    {cancelable: false}
+                )
+            }
         });
+    }
 
+    doViewBackupPhrase(result) {
+        this.backupPhrase = result;
+        this.arrayOfWords = result.split(" ");
         this.countDownHandler = () => {
             if (Actions.currentScene === 'view_backup_phrase') {
                 this.setState({
@@ -30,9 +40,6 @@ export default class ViewBackupPhrase extends React.Component {
                 }, () => this.startTimerCountDown());
             }
         };
-    }
-
-    componentDidMount() {
         this.startTimerCountDown();
     }
 
@@ -59,7 +66,7 @@ export default class ViewBackupPhrase extends React.Component {
                                     height={20}
                                     svgXmlData={icWarning}
                                     style={{marginRight: 6}}/>
-                            <Text style={[StyleSheet.value('$warning_text'), {paddingBottom: 5}]}>WARNING</Text>
+                            <Text style={[StyleSheet.value('$warning_text'), {paddingBottom: 4}]}>WARNING</Text>
                         </View>
 
                         <Text style={styles.explain_text}>
@@ -94,12 +101,7 @@ export default class ViewBackupPhrase extends React.Component {
                             Phrase below.</Text>
 
                         <View style={styles.image_qr_code}>
-                            <QRCode
-                                value={this.backupPhrase}
-                                size={120}
-                                bgColor={'#000'}
-                                fgColor={'#FFF'}
-                            />
+                            <QRCode value={this.backupPhrase} size={120}/>
                         </View>
 
                         <View style={styles.phrase_container}>
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     warning_text: {
-        marginTop: 40,
+        marginTop: '$screen_padding_top',
         marginBottom: 15,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -205,6 +207,7 @@ const styles = StyleSheet.create({
     button_cancel: {
         color: '$textTitleColor',
         fontSize: 16,
-        fontFamily: '$primaryFontBold'
+        fontFamily: '$primaryFontBold',
+        marginBottom: 2,
     }
 });

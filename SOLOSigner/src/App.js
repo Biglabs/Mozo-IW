@@ -20,6 +20,7 @@ import BackupWalletMenuScreen from './screens/wallet/BackupWalletMenuScreen';
 import PaperWalletScreen from './screens/wallet/PaperWalletScreen';
 
 /* backup screens */
+import BackupWalletScreen from './screens/backup/BackupWalletScreen';
 import ConfirmBackupPhrase from './screens/backup/ConfirmBackupPhrase';
 import ViewBackupPhrase from './screens/backup/ViewBackupPhrase';
 
@@ -58,10 +59,11 @@ export default () => {
                     <Scene key="add_more_wallet" component={AddMoreWalletScreen} hideNavBar/>
                     <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
                     <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
-                    <Scene key="backup_wallet" component={BackupWalletMenuScreen} hideNavBar/>
+                    <Scene key="backup_wallet_menu" component={BackupWalletMenuScreen} hideNavBar/>
                     <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
 
                     {/* backup screens */}
+                    <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
                     <Scene key="confirm_backup_phrase" component={ConfirmBackupPhrase} hideNavBar/>
                     <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/>
 

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
@@ -8,7 +8,7 @@ import {RNCamera} from 'react-native-camera';
 import bip39 from 'bip39';
 import {icScanArea} from '../../res/icons';
 
-export default class ImportWalletScreen extends Component {
+export default class ImportWalletScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: 30,
-        paddingRight: 30
+        paddingLeft: '$screen_padding_horizontal',
+        paddingRight: '$screen_padding_horizontal'
     },
     scroll_container: {
         width: '100%',

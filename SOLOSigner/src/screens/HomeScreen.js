@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {AsyncStorage, Linking, Platform, TouchableOpacity, View} from 'react-native';
+import React from "react";
+import {TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
@@ -8,7 +8,7 @@ import LinkingManager from "../utils/LinkingManager";
 import GlobalStorage from '../utils/GlobalStorage';
 import {icBackup, icCheck, icInformation, icNote, icSoloTitle, icSync} from '../res/icons';
 
-export default class HomeScreen extends Component<Props> {
+export default class HomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -45,7 +45,7 @@ export default class HomeScreen extends Component<Props> {
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
-                    onPress={() => Actions.backup_wallet({pin: this.props.pin})}>
+                    onPress={() => Actions.backup_wallet_menu({pin: this.props.pin})}>
                     <SvgUri
                         width={24}
                         height={20}
