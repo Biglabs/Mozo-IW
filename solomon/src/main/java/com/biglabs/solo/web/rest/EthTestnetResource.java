@@ -36,7 +36,7 @@ public class EthTestnetResource {
     * GET getAddressDetails
     */
     @GetMapping("/addrs/{addresses}/latest")
-    public BCYAddress[] getAddressDetail(String addresses) throws BlockCypherException {
+    public BCYAddress[] getAddressDetail(@PathVariable String addresses) throws BlockCypherException {
         String[] parsedAddress = addresses.split(";");
         return ethTestnetClient.getLatestTx4MultiAddress(parsedAddress);
 //        return "getAddressDetails";
@@ -46,13 +46,13 @@ public class EthTestnetResource {
     * GET getBalance
     */
     @GetMapping("/addrs/{address}/balance")
-    public BCYAddress getBalance(String address) throws BlockCypherException {
+    public BCYAddress getBalance(@PathVariable String address) throws BlockCypherException {
         return ethTestnetClient.balance(address);
     }
 
     @PostMapping("/faucet")
     @Timed
-    public ResponseEntity<Map> faucet(@Valid @RequestBody FaucetReq faucetReq) throws BlockCypherException, URISyntaxException {
+    public ResponseEntity<Map> faucet(@Valid @RequestBody FaucetReq faucetReq) throws BlockCypherException {
         Map<String, String> tx = ethTestnetClient.faucet(faucetReq);
         return ResponseEntity.ok()
             .body(tx);

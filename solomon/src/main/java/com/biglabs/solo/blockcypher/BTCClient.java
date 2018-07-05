@@ -47,14 +47,10 @@ public class BTCClient {
     public BCYAddress balance(String address) throws BlockCypherException {
         String url = MessageFormat.format(addressEP + "/{0}/balance", address);
         System.out.println("Get balance " + url);
-        //            BCYAddress ret = restTemplate.getForObject(url, BCYAddress.class);
         try {
-//                BCYAddress ret = restTemplate.getForObject(url, BCYAddress.class);
             ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(url, BCYAddress.class);
             return ret.getBody();
         } catch (HttpStatusCodeException ex) {
-//            System.out.println(ex.getResponseBodyAsString());
-//            System.out.println(ex.getResponseHeaders().toString());
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
@@ -97,8 +93,6 @@ public class BTCClient {
         String url = MessageFormat.format(transactionEP + "/push?token={0}", bycContext.getToken());
         System.out.println("Push raw tx to:  " + url);
         try {
-//            MultiValueMap<String, Object> req = new LinkedMultiValueMap<>();
-//            req.put("tx", Arrays.asList(rawTx));
             Map<String, String> rr = new HashMap<>();
             rr.put("tx", rawTx);
             ResponseEntity<Transaction> res = restTemplate.postForEntity(url, rr, Transaction.class);

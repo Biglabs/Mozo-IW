@@ -35,7 +35,7 @@ public class BtcTestnetResource {
     * GET getAddressDetails
     */
     @GetMapping("/addrs/{addresses}/latest")
-    public BCYAddress[] getAddressDetail(String addresses) throws BlockCypherException {
+    public BCYAddress[] getAddressDetail(@PathVariable String addresses) throws BlockCypherException {
         String[] parsedAddress = addresses.split(";");
         return btcClient.getLatestTx4MultiAddress(parsedAddress);
 //        return "getAddressDetails";
@@ -45,7 +45,7 @@ public class BtcTestnetResource {
     * GET getBalance
     */
     @GetMapping("/addrs/{address}/balance")
-    public BCYAddress getBalance(String address) throws BlockCypherException {
+    public BCYAddress getBalance(@PathVariable String address) throws BlockCypherException {
         return btcClient.balance(address);
     }
 

@@ -54,14 +54,14 @@ public class ETHClient {
             bycContext.getCoininfo().getNetwork());
     }
 
-    public BCYAddress balance(String address) {
+    public BCYAddress balance(String address) throws BlockCypherException {
         String url = MessageFormat.format(addressEP + "/{0}/balance", address);
         System.out.println("Get balance " + url);
         try {
             BCYAddress ret = restTemplate.getForObject(url, BCYAddress.class);
             return ret;
-        } catch (RestClientException ex) {
-            throw ex;
+        } catch (HttpStatusCodeException ex) {
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
 
