@@ -76,17 +76,11 @@ class SoloWalletViewController: UIViewController {
         let json = SwiftyJSON.JSON(jsonStr)
         var amount = 0.0
         
-        if self.currentCoin.coin == CoinType.BTC.key {
-            if let result = json["balance"].double {
-                amount = result
-                amount = amount/1E+8
-            } else {return}
-        } else if self.currentCoin.coin == CoinType.ETH.key {
-            if let result = json["balance"].double {
-                amount = result
-                amount = amount/1E+18
-            } else {return}
-        }
+        if let result = json["balance"].double {
+            amount = result
+            amount = amount / (self.currentCoin.coin == CoinType.BTC.key ? 1E+8 : 1E+18)
+        } else {return}
+
         self.currentCoin?.balance = amount
         
         if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
