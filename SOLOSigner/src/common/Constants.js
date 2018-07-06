@@ -54,7 +54,8 @@ const Constants = {
 	    NONE: 0,
 	    CANCELLED: 1,
         INVALID_REQUEST: 2,
-        WATCH_ONLY: 3
+        TIME_OUT: 3,
+        WALLET_NOT_REGISTERED: 4
     },
     FLAG_DB_EXISTING: '@DbExisting:key',
     FLAG_PUBLIC_KEY: '@publicKey:key',

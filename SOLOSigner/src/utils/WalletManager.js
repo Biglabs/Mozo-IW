@@ -7,7 +7,6 @@ import {AsyncStorage} from 'react-native';
 import RESTService from '../utils/RESTService';
 import ethUtil from 'ethereumjs-util';
 import Web3 from 'web3';
-import Transaction from 'ethereumjs-tx';
 
 createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 
@@ -192,42 +191,17 @@ module.exports.viewBackupPharse = function(pin, callback) {
     }
 }
 
-signBTCTransaction = function(txData, privKeys, callback){
+signBTCTransaction = function(txData, privKeys, network, callback){
     let params = txData.params;
-    params.outputs[0].value *= 100000000;
+    params.outputs[0].value *= 100000000; //(in satoshis)
     console.log("Sign BTC tx param: " + JSON.stringify(params));
     RESTService.createNewBTCTransaction(params)
     .then(result => {
-        if(result){
-            if(result.errors){
-                if (typeof callback === 'function') {
-                    callback(errors, null);
-                }
-            } else {
-                let validateTx = result;
-                const net = (txData.network == Constant.COIN_TYPE.BTC.network ? Bitcoin.networks.bitcoin : Bitcoin.networks.testnet);
-                // signing each of the hex-encoded string required to finalize the transaction
-                validateTx.pubkeys = [];
-                validateTx.signatures = [];
-                validateTx.tosign.map(function (tosign, index) {
-                    let privateKey = privKeys[index];
-                    let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, net);
-                    validateTx.pubkeys.push(keyPair.getPublicKeyBuffer().toString('hex'));
-                    let sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
-                    validateTx.signatures.push(sign);
-                });
-                console.log('Signed transaction: ', validateTx);
-                let signedTransaction = JSON.stringify(validateTx);
-                console.log('Signed transaction: ', signedTransaction);
-                if (typeof callback === 'function') {
-                    callback(null, signedTransaction);
-                }
-            }
-        } else {
+        handleSignTransaction(result, privKeys, network, (error, result) => {
             if (typeof callback === 'function') {
-                callback(error, null);
+                callback(error, result);
             }
-        }
+        });
     })
     .catch(error => {
         if (typeof callback === 'function') {
@@ -236,32 +210,95 @@ signBTCTransaction = function(txData, privKeys, callback){
     });
 }
 
-signETHTransaction = function(txData, privateKeyInBuffer, callback){
-    let fromAddress = txData.params.from;
-    const web3 = new Web3(
-        new Web3.providers.HttpProvider('https://ropsten.infura.io/Onb2hCxHKDYIL0LNn8Ir')
-    );
-    web3.eth.getTransactionCount(fromAddress).then(_nonce => {
-        const etherAmount = txData.params.value !== 'string' ? txData.params.value.toString() : txData.params.value;
-        const txParams = {
-            nonce: _nonce,
-            gasLimit: 3000000,
-            gasPrice: web3.utils.toHex(web3.utils.toWei('21', 'gwei')),
-            from: fromAddress,
-            to: txData.params.to,
-            value: web3.utils.toHex(web3.utils.toWei(etherAmount, 'ether')),
-            data: web3.utils.fromUtf8(txData.params.data || ''),
-            // EIP 155 chainId - mainnet: 1, ropsten: 3
-            chainId: 3
-        };
-        const tx = new Transaction(txParams);
-        tx.sign(privateKeyInBuffer);
-        const serializedTx = tx.serialize();
-        let signedTransaction = `0x${serializedTx.toString('hex')}`;
+signETHTransaction = function(txData, privKeys, network, callback){
+    let params = txData.params;
+    let etherAmount = params.outputs[0].value;
+    params.outputs[0].value = Web3.utils.toWei(etherAmount.toString(), 'ether'); //(in wei)
+    console.log("Sign ETH tx param: " + JSON.stringify(params));
+    RESTService.createNewETHTransaction(params)
+    .then(result => {
+        handleSignTransaction(result, privKeys, network, (error, result) => {
+            if (typeof callback === 'function') {
+                callback(error, result);
+            }
+        });
+    })
+    .catch(error => {
+        console.log('Sign ETH error: ' + (error.errors || error));
+        if (typeof callback === 'function') {
+            callback(error.errors || error, null);
+        }
+    });
+}
+
+//0x30 < length r + length s + 4 > 0x02 < length r > r 0x02 < length s > s
+concatSig = function (v, r, s) {
+    const rSig = ethUtil.fromSigned(r);
+    const sSig = ethUtil.fromSigned(s);
+    let prefix = "30" + (r.length + s.length + 4).toString(16);
+    let rStr = "02" + r.length.toString(16) + ethUtil.toUnsigned(rSig).toString('hex');
+    let sStr = "02" + s.length.toString(16) + ethUtil.toUnsigned(sSig).toString('hex');
+    return ethUtil.addHexPrefix(prefix.concat(rStr, sStr)).toString('hex')
+}
+
+signTxMessage = function(tosign, privateKey, net){
+    var sign = null;
+    if(Web3.utils.isHex(privateKey)){ //ETH
+        let buffer =  ethUtil.toBuffer(privateKey);
+        let tosignBuffer = new Buffer(tosign, 'hex');
+        let msgSign = ethUtil.ecsign(tosignBuffer, buffer);
+        sign = concatSig(msgSign.v, msgSign.r, msgSign.s);
+        console.log('Sign: ' + sign);
+    } else { //BTC
+        let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, net);
+        validateTx.pubkeys.push(keyPair.getPublicKeyBuffer().toString('hex'));
+        sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
+    }
+    return sign;
+}
+
+handleSignTransaction = function(result, privKeys, network, callback) {
+    if(result.errors && result.errors.length > 0){
+        if (typeof callback === 'function') {
+            console.warn("Error handle sign transaction: " + result.errors);
+            callback(result.errors, null);
+        }
+    } else {
+        let validateTx = result;
+        const net = (network == Constant.COIN_TYPE.BTC.network ? Bitcoin.networks.bitcoin : Bitcoin.networks.testnet);
+        // signing each of the hex-encoded string required to finalize the transaction
+        validateTx.pubkeys = [];
+        validateTx.signatures = [];
+        validateTx.tosign.map(function (tosign, index) {
+            var privateKey = privKeys[index];
+            var sign = signTxMessage(tosign, privateKey, net);
+            validateTx.signatures.push(sign);
+        });
+        console.log('Signed transaction: ', validateTx);
+        let signedTransaction = JSON.stringify(validateTx);
+        console.log('Signed transaction: ', signedTransaction);
         if (typeof callback === 'function') {
             callback(null, signedTransaction);
         }
+    }
+}
+
+getAllPrivateKeys = function(pin, inputs){
+    let manager = DataManager.getInstance();
+    var privKeys = [];
+    inputs.map(input => {
+        let address = input.addresses[0];
+        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address);
+        if (!encryptedPrivateKey) {
+            if (typeof callback === 'function') {
+                callback(new Error("Not support this address: " + address), null);
+            }
+            return;
+        }
+        let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
+        privKeys.push(privateKey);               
     });
+    return privKeys;
 }
 
 module.exports.signTransaction = function(txData, pin, callback){
@@ -271,64 +308,28 @@ module.exports.signTransaction = function(txData, pin, callback){
         }
         return;
     }
-    let manager = DataManager.getInstance();    
+    var privKeys = getAllPrivateKeys(pin, txData.params.inputs);
+    if (!privKeys || privKeys.length == 0) {
+        if (typeof callback === 'function') {
+            callback(new Error("Can not load private keys."), null);
+        }
+        return;
+    }
     switch (txData.coinType) {
         case Constant.COIN_TYPE.BTC.name: {
-            var privKeys = [];
-            txData.params.inputs.map(input => {
-                let address = input.addresses[0];
-                let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address);
-                if (!encryptedPrivateKey) {
-                    if (typeof callback === 'function') {
-                        callback(new Error("Not support this address: " + address), null);
-                    }
-                    return;
-                }
-                let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
-                privKeys.push(privateKey);               
-            });
-            signBTCTransaction(txData, privKeys, (error, result) => {
-                if(result){
-                    if (typeof callback === 'function') {
-                        callback(null, result);
-                    }
-                } else {
-                    console.log(error);
-                    if (typeof callback === 'function') {
-                        callback(new Error("Not support this address's private key."), null);
-                    }
+            signBTCTransaction(txData, privKeys, txData.network, (error, result) => {
+                if (typeof callback === 'function') {
+                    callback(error, result);
                 }
             });
             break;
         }
         case Constant.COIN_TYPE.ETH.name: {
-            let fromAddress = txData.params.from;
-            let encryptedPrivateKey = manager.getPrivateKeyFromAddress(fromAddress);
-            if (!encryptedPrivateKey) {
+            signETHTransaction(txData, privKeys, txData.network, (error, result) => {
                 if (typeof callback === 'function') {
-                    callback(new Error("Not support this address."), null);
+                    callback(error, result);
                 }
-                return;
-            }
-            let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
-            let privateKeyInBuffer = ethUtil.toBuffer(privateKey);
-            if(privateKeyInBuffer){
-                signETHTransaction(txData, privateKeyInBuffer, (error, result) => {
-                    if(result){
-                        if (typeof callback === 'function') {
-                            callback(null, result);
-                        }
-                    } else {
-                        if (typeof callback === 'function') {
-                            callback(new Error("Not support this address's private key."), null);
-                        }
-                    }
-                });
-            } else {
-                if (typeof callback === 'function') {
-                    callback(new Error("Not support this address's private key."), null);
-                }
-            }
+            });
             break;
         }
         default: {

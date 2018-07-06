@@ -6,7 +6,8 @@ const URL_GET_ALL_ADDRESSES = BASE_URL + API_PATH + "/wallet-addresses";
 const URL_GET_WALLET = BASE_URL + API_PATH + "/wallets/";
 const URL_REGISTER_WALLET = BASE_URL + API_PATH + "/wallets";
 const URL_SYNC_ADDRESS = BASE_URL + API_PATH + "/wallet-addresses";
-const URL_BTC_CREATE_TRANSACTION = "/btc/test/txs"; //'https://api.blockcypher.com/v1/btc/test3/txs/new';
+const URL_BTC_CREATE_TRANSACTION = BASE_URL + API_PATH + "/btc/test/txs";
+const URL_ETH_CREATE_TRANSACTION = BASE_URL + API_PATH + "/eth/test/txs";
 const URL_BTC_TX_REF = 'http://api.blockcypher.com/v1/btc/test3/addrs/';
 
 function sendRequest(url, params, isPost){
@@ -150,6 +151,25 @@ module.exports.createNewBTCTransaction = function(data){
     return new Promise((resolve, reject) => {
         try {
             sendRequest(URL_BTC_CREATE_TRANSACTION, data, true)
+            .then((txData) => {
+                console.log(txData);
+                resolve(txData);
+            })
+            .catch((error) => {
+                console.log(error);
+                reject(error);
+            }); 
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+
+module.exports.createNewETHTransaction = function(data){
+    return new Promise((resolve, reject) => {
+        try {
+            sendRequest(URL_ETH_CREATE_TRANSACTION, data, true)
             .then((txData) => {
                 console.log(txData);
                 resolve(txData);
