@@ -82,8 +82,8 @@ class SoloWalletViewController: UIViewController {
                 amount = amount/1E+8
             } else {return}
         } else if self.currentCoin.coin == CoinType.ETH.key {
-            if let result = json["result"].string {
-                amount = Double(result)!
+            if let result = json["balance"].double {
+                amount = result
                 amount = amount/1E+18
             } else {return}
         }
@@ -107,7 +107,7 @@ class SoloWalletViewController: UIViewController {
         guard let address = self.currentCoin.address else {
             return
         }
-        self.soloSDK?.api?.getBalance(address) { (value, error) in
+        self.soloSDK?.api?.getBtcBalance(address) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
@@ -125,9 +125,7 @@ class SoloWalletViewController: UIViewController {
             return
         }
         
-        let params = ["jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [address,"latest"]] as [String : Any]
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.api?.infuraPOST(params) { value, error in
+        self.soloSDK?.api?.getEthBalance(address) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {

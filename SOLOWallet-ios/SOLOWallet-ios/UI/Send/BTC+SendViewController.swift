@@ -16,7 +16,7 @@ extension SendViewController {
     
     func sendBTC(_ signedTx: String){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.api?.sendTransaction(signedTx) { value, error in
+        self.soloSDK?.api?.sendBtcTransaction(signedTx) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
