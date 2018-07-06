@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import Lightbox from './BaseLightbox';
-import QRCode from 'react-native-qrcode';
+import QRCode from 'react-native-qrcode-svg';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,8 +21,6 @@ const ExportQRCode = ({ data, children }) => (
     <QRCode
       value={data}
       size={260}
-      bgColor={'#000'}
-      fgColor={'#FFF'}
     />
   </Lightbox>
 );

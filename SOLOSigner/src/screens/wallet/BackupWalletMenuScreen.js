@@ -14,8 +14,7 @@ export default class BackupWalletMenuScreen extends React.Component {
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
-                    onPress={() => {
-                    }}>
+                    onPress={() => Actions.backup_wallet({pin: this.props.pin})}>
                     <Text style={styles.buttons_text}>Backup Wallet</Text>
 
                     <SvgUri

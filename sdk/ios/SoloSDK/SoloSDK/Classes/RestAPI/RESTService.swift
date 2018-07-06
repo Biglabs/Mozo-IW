@@ -44,6 +44,19 @@ public final class RESTService {
         return headers
     }
     
+    private func buildHeaderOauth() -> HTTPHeaders {
+        let credentialData = "{OAUTH_CLIENT_ID}:{OAUTH_SECRET}".data(using:String.Encoding.utf8)
+        let base64Credentials = credentialData?.base64EncodedString(options: []) ?? ""
+        let authorization = "Basic \(base64Credentials)"
+        let headers: HTTPHeaders = [
+            "Authorization": authorization,
+            "Content-Type": MediaType.APPLICATION_FORM_URLENCODED.rawValue,
+            "Accept": MediaType.APPLICATION_JSON.rawValue,
+            "user-agent": "IOS"
+        ]
+        return headers
+    }
+    
     func execute(_ method: Alamofire.HTTPMethod, url: String, parameters: Any? = nil, completionHandler: completion = nil) {
         if parameters == nil {
             self.execute(method, url: url, params: nil, completionHandler: completionHandler)

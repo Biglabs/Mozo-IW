@@ -24,6 +24,7 @@ EStyleSheet.build({
     $disableColor: '#d1d7dd',
     $errorColor: errorColor,
 
+    $screen_padding_top: 40,
     $screen_padding_bottom: 70,
     $screen_padding_horizontal: 30,
     $buttonRadius: 5,

@@ -15,11 +15,11 @@ public class SignWalletCommand: Command {
     
     public var bundleId: String
     
-    public func requestURL() -> URL? {
+    public func requestURL() -> URL {
         var urlStr = Configuration.SIGNER_URL_SCHEME + "://"
         let model = CommunicationDTO(action: self.name, receiver: "\(self.bundleId).\(Configuration.WALLET_URL_SCHEME)", params: nil, coinType: nil, network: nil)!
         urlStr += model.rawString()
-        return URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)
+        return URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
     }
     
     /// Completion closure
@@ -31,6 +31,21 @@ public class SignWalletCommand: Command {
     }
     
     public  func handleCallback(url: URL) -> Bool {
+//        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false), components.host == name else {
+//            return false
+//        }
+//
+//        if let value = components.queryItems?.first(where: { $0.name == "error" })?.value,
+//            let errorCode = Int(value),
+//            let error = SignerError(rawValue: errorCode) {
+//            completion(.failure(error))
+//            return true
+//        }
+//
+//        guard let walletId = components.queryItems?.first(where: { $0.name == "walletId" })?.value else {
+//            return false
+//        }
+        
         let urls: [String] = url.absoluteString.components(separatedBy: "://")
         if urls.count == 0 {
             return false
@@ -57,8 +72,7 @@ public class SignWalletCommand: Command {
             return false
         }
         
-        let wallet = WalletDTO(json: result)
-        guard let walletId = wallet?.walletId else {
+        guard let walletId = result["walletId"].string else {
             return false
         }
         

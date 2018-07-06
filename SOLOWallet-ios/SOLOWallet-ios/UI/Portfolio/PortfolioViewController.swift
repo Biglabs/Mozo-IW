@@ -27,7 +27,6 @@ class PortfolioViewController: UIViewController {
     func buildPortfolioView() {
         self.title = "Portfolio"
         self.createLogoBarButton()
-        self.createMenuBarButton()
         
         //effect relax
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(self.doubleTap))
@@ -94,6 +93,8 @@ class PortfolioViewController: UIViewController {
     }
     
     func createTableView() {
+        self.createMenuBarButton()
+        
         self.view.subviews.forEach({ $0.removeFromSuperview() })
         
         self.tableView = UITableView()

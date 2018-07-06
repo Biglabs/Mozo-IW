@@ -21,11 +21,11 @@ public final class SignTransactionCommand: Command {
     
     public var transaction: TransactionDTO?
     
-    public func requestURL() -> URL? {
+    public func requestURL() -> URL {
         var urlStr = Configuration.SIGNER_URL_SCHEME + "://"
         let model = CommunicationDTO(action: self.name, receiver: "\(self.bundleId).\(Configuration.WALLET_URL_SCHEME)", params: transaction, coinType: coinType, network: network)!
         urlStr += model.rawString()
-        return URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)
+        return URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
     }
     
     /// Completion closure
@@ -91,23 +91,6 @@ public final class SignTransactionCommand: Command {
 }
 
 public extension SignerManager {
-//    public func signTransactionETH(fromAddress: String, toAddress: String, value: Double, coinType: String, completion: @escaping (Result<String, SignerError>) -> Void) {
-//        let transaction = ETH_TransactionDTO()!
-//        transaction.from = fromAddress
-//        transaction.to = toAddress
-//        transaction.value = Double(value)
-//        let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, transaction: transaction, completion: completion)
-//        execute(command: command)
-//    }
-//
-//    public func signTransactionBTC(inputs: [InputDTO], outputs: [OutputDTO], coinType: String, completion: @escaping (Result<String, SignerError>) -> Void) {
-//        let transaction = BTC_TransactionDTO()!
-//        transaction.inputs = inputs
-//        transaction.outputs = outputs
-//        let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, transaction: transaction, completion: completion)
-//        execute(command: command)
-//    }
-    
     public func signTransaction(transaction: TransactionDTO, coinType: String, network: String, completion: @escaping (Result<String, SignerError>) -> Void){
         let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, network: network, transaction: transaction, completion: completion)
         execute(command: command)

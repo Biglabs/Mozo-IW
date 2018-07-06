@@ -129,8 +129,8 @@ export default class ConfirmationScreen extends Component<Props> {
                                           }}>
                             <SvgUri
                                 fill={StyleSheet.value('$primaryColor')}
-                                width={33}
-                                height={33}
+                                width={20}
+                                height={20}
                                 svgXmlData={icCheck}/>
                             <Text style={styles.text_confirm}>Confirm</Text>
                         </TouchableOpacity>
@@ -206,6 +206,7 @@ const styles = StyleSheet.create({
         marginLeft: 6,
     },
     button_confirm: {
+        height: '$screen_padding_bottom',
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -213,7 +214,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: '36%',
         right: '36%',
-        marginBottom: 20,
     },
     confirmation_container: {
         alignItems: 'center',
