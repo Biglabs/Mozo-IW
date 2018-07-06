@@ -15,7 +15,7 @@ public extension RESTService {
         return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
     }
     
-    public func sendEthTransaction(_ param: String, completionHandler: completion = nil) {
+    public func sendEthTransaction(_ param: Any, completionHandler: completion = nil) {
         let url = Configuration.BASE_URL + "/api/eth/test/txs/send-signed-tx"
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
     }

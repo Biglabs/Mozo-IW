@@ -29,13 +29,14 @@ public class Configuration {
     public static var ROPSTEN_ETHERSCAN_URL = "http://ropsten.etherscan.io/tx"
     public static var ROPSTEN_INFURA_URL = "https://ropsten.infura.io/V2vOGBNVvlHlDJQ17sIL"
     public static var BLOCK_CYPHER_TESTNET_SCAN_URL = "https://live.blockcypher.com/btc-testnet/tx"
+    public static var BLOCK_CYPHER_ETH_VIEW_TRANSACTION = "https://api.blockcypher.com/v1/beth/test/txs/"
     
     public static func getScanURL(_ coinType: String?, isTestnet: Bool) -> String{
         if isTestnet {
             if coinType == CoinType.BTC.key {
                 return BLOCK_CYPHER_TESTNET_SCAN_URL
-            } else if coinType == CoinType.BTC.key {
-                return ROPSTEN_ETHERSCAN_URL
+            } else if coinType == CoinType.ETH.key {
+                return BLOCK_CYPHER_ETH_VIEW_TRANSACTION
             }
         }
         return ""

@@ -231,30 +231,66 @@ signETHTransaction = function(txData, privKeys, network, callback){
     });
 }
 
-//0x30 < length r + length s + 4 > 0x02 < length r > r 0x02 < length s > s
-concatSig = function (v, r, s) {
-    const rSig = ethUtil.fromSigned(r);
-    const sSig = ethUtil.fromSigned(s);
-    let prefix = "30" + (r.length + s.length + 4).toString(16);
-    let rStr = "02" + r.length.toString(16) + ethUtil.toUnsigned(rSig).toString('hex');
-    let sStr = "02" + s.length.toString(16) + ethUtil.toUnsigned(sSig).toString('hex');
-    return ethUtil.addHexPrefix(prefix.concat(rStr, sStr)).toString('hex')
+// Serialize returns the ECDSA signature in the more strict DER format.  Note
+// that the serialized bytes returned do not include the appended hash type
+// used in Bitcoin signature scripts.
+//
+// encoding/asn1 is broken so we hand roll this output:
+//
+// 0x30 <length> 0x02 <length r> r 0x02 <length s> s
+serialize = function (v, r, s) {
+    let rB = canonicalizeInt(r);
+    let sB = canonicalizeInt(s);
+    let prefix = "30" + (rB.length + sB.length + 4).toString(16);
+    let rStr = "02" + rB.length.toString(16) + rB.toString('hex');
+    let sStr = "02" + sB.length.toString(16) + sB.toString('hex');
+    return prefix.concat(rStr, sStr).toString('hex');
 }
 
+// canonicalizeInt returns the bytes for the passed big integer adjusted as
+// necessary to ensure that a big-endian encoded integer can't possibly be
+// misinterpreted as a negative number.  This can happen when the most
+// significant bit is set, so it is padded by a leading zero byte in this case.
+// Also, the returned bytes will have at least a single byte when the passed
+// value is 0.  This is required for DER encoding.
+canonicalizeInt = function (buffer) {
+	var bytes = buffer;
+	if (bytes.length == 0) {
+		bytes[0] = 0x00;
+	}
+	if ((bytes[0] & 0x80) != 0) {
+        var paddedBytes = new Buffer(bytes.length + 1);
+        paddedBytes[0] = 0x00;
+        bytes.copy(paddedBytes, 1);
+		bytes = paddedBytes;
+	}
+	return bytes;
+}
+
+/**
+ * Returns the object including signature of `tosign` and public key from private key.
+ * The output of this function can be use in `handleSignTransaction` to complete the transaction.
+ * @param {String} tosign
+ * @param {Buffer} privateKey
+ * @param {String} net
+ * @returns {Object}
+ */
 signTxMessage = function(tosign, privateKey, net){
     var sign = null;
+    var publicKey = null;
     if(Web3.utils.isHex(privateKey)){ //ETH
-        let buffer =  ethUtil.toBuffer(privateKey);
+        let buffer = ethUtil.toBuffer(privateKey);
+        publicKey = ethUtil.privateToPublic(buffer).toString('hex');
         let tosignBuffer = new Buffer(tosign, 'hex');
         let msgSign = ethUtil.ecsign(tosignBuffer, buffer);
-        sign = concatSig(msgSign.v, msgSign.r, msgSign.s);
+        sign = serialize(msgSign.v, msgSign.r, msgSign.s);
         console.log('Sign: ' + sign);
     } else { //BTC
         let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, net);
-        validateTx.pubkeys.push(keyPair.getPublicKeyBuffer().toString('hex'));
+        publicKey = keyPair.getPublicKeyBuffer().toString('hex');
         sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
     }
-    return sign;
+    return { signature : sign, publicKey : publicKey };
 }
 
 handleSignTransaction = function(result, privKeys, network, callback) {
@@ -272,7 +308,8 @@ handleSignTransaction = function(result, privKeys, network, callback) {
         validateTx.tosign.map(function (tosign, index) {
             var privateKey = privKeys[index];
             var sign = signTxMessage(tosign, privateKey, net);
-            validateTx.signatures.push(sign);
+            validateTx.pubkeys.push(sign.publicKey);
+            validateTx.signatures.push(sign.signature);
         });
         console.log('Signed transaction: ', validateTx);
         let signedTransaction = JSON.stringify(validateTx);

@@ -183,7 +183,8 @@ class SendViewController: AbstractViewController {
         }
         if isValidate {
             let input = InputDTO.init(addresses: [from])!
-            let output = OutputDTO.init(addresses: [toAddress], value: Double(value)!)!
+            let trimToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
+            let output = OutputDTO.init(addresses: [trimToAddress], value: Double(value)!)!
             let transaction = TransactionDTO.init(inputs: [input], outputs: [output])
             self.soloSDK.singner?.signTransaction(transaction: transaction!, coinType: (currentCoin?.coin!)!, network: (currentCoin?.network)!){ result in
                 self.handleSignResult(result:result)
