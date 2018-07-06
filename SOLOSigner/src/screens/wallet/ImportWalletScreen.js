@@ -97,9 +97,11 @@ export default class ImportWalletScreen extends React.Component {
 
                     <TouchableOpacity
                         style={{marginBottom: 30}}
-                        onPress={() => this.setState({
+                        onPress={() => {
+                            //TODO: requestStoragePermission
+                            this.setState({
                             isScanningQRCode: !this.state.isScanningQRCode
-                        })}>
+                        })}}>
                         <Text style={styles.scan_text_button}>
                             {
                                 this.state.isScanningQRCode ? 'Cancel' : 'Scan QR Code'

@@ -1,12 +1,14 @@
 import React from "react";
-import {Alert, Share, TouchableOpacity, View} from 'react-native';
+import {Alert, CameraRoll, PermissionsAndroid, TouchableOpacity, View} from 'react-native';
 import StyleSheet from "react-native-extended-stylesheet";
 import SvgUri from 'react-native-svg-uri';
+import {Actions} from "react-native-router-flux";
+import QRCode from 'react-native-qrcode-svg';
+import RNFS from "react-native-fs";
+import {icCheck, icExportQR, icExportText} from "../../res/icons";
 import {NavigationBar, Text, TextInput} from "../../components/SoloComponent";
 import WalletManager from '../../utils/WalletManager';
-import {Actions} from "react-native-router-flux";
-import {icCheck, icExportQR, icExportText} from "../../res/icons";
-import QRCode from 'react-native-qrcode-svg';
+import PermissionUtils from "../../utils/PermissionUtils";
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
@@ -38,25 +40,45 @@ export default class BackupWalletScreen extends React.Component {
     }
 
     doExportImage() {
-        if (this.qrCode) {
-            this.qrCode.toDataURL(data => {
-                console.warn(data);
-            });
-        }
+        PermissionUtils.requestStoragePermission().then(granted => {
+            if (granted && this.qrCode) {
+                this.qrCode.toDataURL(data => {
+                    const today = new Date();
+                    let filePath = RNFS.ExternalStorageDirectoryPath + `/wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}_${today.getTime()}.png`;
+                    RNFS.writeFile(filePath, data, 'base64')
+                        .then(() => {
+                            return CameraRoll.saveToCameraRoll(filePath, 'photo');
+                        })
+                        .then(() => {
+                            Alert.alert(
+                                'Well done!',
+                                "The QR Code image has been saved to Camera Roll",
+                                [{text: 'OK'},],
+                                {cancelable: false}
+                            );
+                        });
+                });
+            } else {
+                console.warn("doExportImage: " + granted + ", qrCode: " + this.qrCode);
+            }
+        });
     }
 
     doExportText() {
-        Share.share({
-            message: this.state.encryptedData,
-            url: this.state.encryptedData,
-            title: 'Backup Wallet as text file'
-        }, {
-            // Android only:
-            dialogTitle: 'Backup Wallet as text file',
-            // iOS only:
-            excludedActivityTypes: [
-                'com.apple.UIKit.activity.PostToTwitter'
-            ]
+        PermissionUtils.requestStoragePermission().then(granted => {
+            if (granted) {
+                const today = new Date();
+                let filePath = RNFS.ExternalStorageDirectoryPath + `/wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}_${today.getTime()}.txt`;
+                RNFS.writeFile(filePath, this.state.encryptedData)
+                    .then(() => {
+                        Alert.alert(
+                            'Well done!',
+                            "Your wallet has been saved to text file",
+                            [{text: 'OK'},],
+                            {cancelable: false}
+                        );
+                    });
+            }
         });
     }
 

@@ -44,6 +44,7 @@
     "react-native-camera": "^1.1.4",
     "react-native-crypto": "^2.1.2",
     "react-native-extended-stylesheet": "^0.8.1",
+    "react-native-fs": "^2.10.14",
     "react-native-http": "tradle/react-native-http#834492d",
     "react-native-level-fs": "^3.0.0",
     "react-native-os": "^1.0.1",

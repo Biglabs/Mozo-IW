@@ -77,7 +77,7 @@ export default class AddMoreWalletScreen extends Component {
 
     getSearchResult() {
         let keyword = this.searchKeyword || '';
-        return this.wallets.filter(item => item.name.toLowerCase().includes(keyword.toLowerCase()));
+        return this.wallets.filter(item => item.displayName.toLowerCase().includes(keyword.toLowerCase()));
     }
 
     render() {
