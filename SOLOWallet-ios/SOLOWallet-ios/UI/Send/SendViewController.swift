@@ -129,6 +129,10 @@ class SendViewController: AbstractViewController {
     func resetValue() {
         self.inputCoinTextField.text = ""
         self.addressTextField.text = ""
+        self.addressTextField.resignFirstResponder()
+        self.inputCoinTextField.resignFirstResponder()
+        self.gasTextField?.resignFirstResponder()
+        self.dataTextField.resignFirstResponder()
     }
     
     @objc func signedTransaction(_ notification: NSNotification) {
