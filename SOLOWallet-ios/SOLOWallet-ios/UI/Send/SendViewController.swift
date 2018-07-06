@@ -175,22 +175,29 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        if self.currentCoin?.coin == CoinType.ETH.key {
-            if self.validateETH(value: value) {
-                self.soloSDK.singner?.signTransactionETH(fromAddress: from, toAddress: toAddress, value: Double(value)!, coinType: CoinType.ETH.key){ result in
-                    self.handleSignResult(result:result)
-                }
-            }
-        } else if self.currentCoin?.coin == CoinType.BTC.key {
-            if self.validateBTC() {
-                let input = InputDTO.init(addresses: [from])!
-                let output = OutputDTO.init(addresses: [toAddress], value: Double(value)!)!
-                
-                self.soloSDK.singner?.signTransactionBTC(inputs: [input], outputs: [output], coinType: CoinType.BTC.key){ result in
-                    self.handleSignResult(result:result)
-                }
-            }
+        let input = InputDTO.init(addresses: [from])!
+        let output = OutputDTO.init(addresses: [toAddress], value: Double(value)!)!
+        let transaction = TransactionDTO.init(inputs: [input], outputs: [output])
+        self.soloSDK.singner?.signTransaction(transaction: transaction!, coinType: (currentCoin?.coin!)!, network: (currentCoin?.network)!){ result in
+            self.handleSignResult(result:result)
         }
+        
+//        if self.currentCoin?.coin == CoinType.ETH.key {
+//            if self.validateETH(value: value) {
+//                self.soloSDK.singner?.signTransactionETH(fromAddress: from, toAddress: toAddress, value: Double(value)!, coinType: CoinType.ETH.key){ result in
+//                    self.handleSignResult(result:result)
+//                }
+//            }
+//        } else if self.currentCoin?.coin == CoinType.BTC.key {
+//            if self.validateBTC() {
+//                let input = InputDTO.init(addresses: [from])!
+//                let output = OutputDTO.init(addresses: [toAddress], value: Double(value)!)!
+//
+//                self.soloSDK.singner?.signTransactionBTC(inputs: [input], outputs: [output], coinType: CoinType.BTC.key){ result in
+//                    self.handleSignResult(result:result)
+//                }
+//            }
+//        }
     }
     
     func handleSignResult(result: Result<String, SignerError>){

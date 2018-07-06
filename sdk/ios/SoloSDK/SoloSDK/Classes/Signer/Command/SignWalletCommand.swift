@@ -17,7 +17,7 @@ public class SignWalletCommand: Command {
     
     public func requestURL() -> URL? {
         var urlStr = Configuration.SIGNER_URL_SCHEME + "://"
-        let model = CommunicationDTO(action: self.name, receiver: "\(self.bundleId).\(Configuration.WALLET_URL_SCHEME)", params: nil, coinType: nil)!
+        let model = CommunicationDTO(action: self.name, receiver: "\(self.bundleId).\(Configuration.WALLET_URL_SCHEME)", params: nil, coinType: nil, network: nil)!
         urlStr += model.rawString()
         return URL(string : urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)
     }
