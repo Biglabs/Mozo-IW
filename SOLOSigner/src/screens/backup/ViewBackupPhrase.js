@@ -16,18 +16,17 @@ export default class ViewBackupPhrase extends React.Component {
             countDownDuration: 5,
             userConfirmed: false,
         };
-        WalletManager.viewBackupPhrase(this.props.pin, (error, result) => {
-            if (result) {
-                this.doViewBackupPhrase(result);
-            } else {
-                Alert.alert(
-                    'Something went wrong!',
-                    "Cannot view Backup Phrase right now, try again later.",
-                    [{text: 'OK', onPress: () => Actions.pop()},],
-                    {cancelable: false}
-                )
-            }
-        });
+        let result = WalletManager.viewBackupPhrase(this.props.pin); 
+        if (result) {
+            this.doViewBackupPhrase(result);
+        } else {
+            Alert.alert(
+                'Something went wrong!',
+                "Cannot view Backup Phrase right now, try again later.",
+                [{text: 'OK', onPress: () => Actions.pop()},],
+                {cancelable: false}
+            )
+        }
     }
 
     doViewBackupPhrase(result) {

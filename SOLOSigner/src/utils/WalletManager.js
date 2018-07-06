@@ -175,20 +175,15 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
     }
 }
 
-module.exports.viewBackupPhrase = function(pin, callback) {
+module.exports.viewBackupPhrase = function(pin) {
     let manager = DataManager.getInstance();
     let appInfo = manager.getAppInfo();
     if (appInfo) {
         let encryptedMnemonic = appInfo.mnemonic;
         let mnemonic = encryption.decrypt(encryptedMnemonic, pin);
-        if (typeof callback === 'function') {
-            callback(null, mnemonic);
-        }
-    } else {
-        if (typeof callback === 'function') {
-            callback(new Error("Inputted PIN is not correct"), null);
-        }
-    }
+        return mnemonic;
+    } 
+    return null;
 };
 
 signBTCTransaction = function(txData, privKeys, network, callback){
@@ -375,18 +370,12 @@ module.exports.signTransaction = function(txData, pin, callback){
     }
 }
 
-module.exports.backupWallet = function (pin, encryptPassword, callback) {
-    this.viewBackupPhrase(pin, (error, result) => {
-        if (result) {
-            if (typeof callback === 'function') {
-                callback(null, encryption.encrypt(result, encryptPassword));
-            }
-        } else {
-            if (typeof callback === 'function') {
-                callback(error, null);
-            }
-        }
-    })
+module.exports.backupWallet = function (pin, encryptPassword) {
+    let mnemonic = this.viewBackupPhrase(pin);
+    if (mnemonic) {
+        return encryption.encrypt(mnemonic, encryptPassword);
+    } 
+    return null;
 };
 
 module.exports.addNewAddress = function(pin, coinType, index, callback) {

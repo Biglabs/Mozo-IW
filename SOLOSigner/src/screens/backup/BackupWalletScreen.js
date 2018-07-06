@@ -20,18 +20,17 @@ export default class BackupWalletScreen extends React.Component {
 
     doBackup() {
         if (this.validatePassword()) {
-            WalletManager.backupWallet(this.props.pin, this.newEncryptPassword, (error, result) => {
-                if (result) {
-                    this.setState({encryptedData: result});
-                } else {
-                    Alert.alert(
-                        'Something went wrong!',
-                        "Cannot backup wallet right now, try again later.",
-                        [{text: 'OK', onPress: () => Actions.pop()},],
-                        {cancelable: false}
-                    )
-                }
-            });
+            let result = WalletManager.backupWallet(this.props.pin, this.newEncryptPassword);
+            if (result) {
+                this.setState({encryptedData: result});
+            } else {
+                Alert.alert(
+                    'Something went wrong!',
+                    "Cannot backup wallet right now, try again later.",
+                    [{text: 'OK', onPress: () => Actions.pop()},],
+                    {cancelable: false}
+                )
+            }
 
             this.newEncryptPassword = null;
             this.confirmEncryptPassword = null;
