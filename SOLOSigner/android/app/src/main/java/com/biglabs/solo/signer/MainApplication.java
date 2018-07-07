@@ -4,8 +4,11 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 
+import cl.json.RNSharePackage;
+
 import com.rnfs.RNFSPackage;
 
+import cl.json.ShareApplication;
 import io.realm.react.RealmReactPackage;
 
 import org.reactnative.camera.RNCameraPackage;
@@ -20,7 +23,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication, ShareApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
         @Override
@@ -33,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.asList(
                     new MainReactPackage(),
                     new RNFSPackage(),
+                    new RNSharePackage(),
                     new RealmReactPackage(),
                     new RNCameraPackage(),
                     new SvgPackage(),
@@ -45,6 +49,11 @@ public class MainApplication extends Application implements ReactApplication {
             return "index";
         }
     };
+
+    @Override
+    public String getFileProviderAuthority() {
+        return BuildConfig.APPLICATION_ID + ".provider";
+    }
 
     @Override
     public ReactNativeHost getReactNativeHost() {

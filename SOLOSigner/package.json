@@ -7,6 +7,7 @@
     "android": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android",
     "android-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android --variant=release",
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
+    "ios-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios --configuration Release",
     "test": "jest"
   },
   "rnpm": {
@@ -53,6 +54,7 @@
     "react-native-router-flux": "^4.0.0-beta.31",
     "react-native-safe-crypto": "^1.0.1",
     "react-native-secure-randombytes": "^2.2.3",
+    "react-native-share": "^1.0.27",
     "react-native-svg": "^6.4.1",
     "react-native-svg-uri": "^1.2.3",
     "react-native-tcp": "^3.3.0",

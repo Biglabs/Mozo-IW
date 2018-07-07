@@ -1,16 +1,21 @@
 import React from "react";
-import {Alert, CameraRoll, PermissionsAndroid, TouchableOpacity, View} from 'react-native';
+import {Alert, Platform, TouchableOpacity, View} from 'react-native';
 import StyleSheet from "react-native-extended-stylesheet";
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
 import RNFS from "react-native-fs";
+import Share from 'react-native-share';
 import {icCheck, icExportQR, icExportText} from "../../res/icons";
 import {NavigationBar, Text, TextInput} from "../../components/SoloComponent";
 import WalletManager from '../../utils/WalletManager';
 import PermissionUtils from "../../utils/PermissionUtils";
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+const backupFolder = Platform.select({
+    ios: RNFS.DocumentDirectoryPath,
+    android: `${RNFS.ExternalStorageDirectoryPath}/Documents`
+}) + '/SoloSigner';
 
 export default class BackupWalletScreen extends React.Component {
     constructor(props) {
@@ -18,6 +23,11 @@ export default class BackupWalletScreen extends React.Component {
         this.state = {isShowError: false, errorMessage: '', errorViewIndex: -1};
         this.borderError = StyleSheet.value('$errorColor');
         this.borderNormal = StyleSheet.value('$borderColor');
+
+        /* Create backup folder if not exist for both platform */
+        RNFS.exists(backupFolder).then(existing => {
+            if (!existing) RNFS.mkdir(backupFolder);
+        });
     }
 
     doBackup() {
@@ -43,20 +53,14 @@ export default class BackupWalletScreen extends React.Component {
         PermissionUtils.requestStoragePermission().then(granted => {
             if (granted && this.qrCode) {
                 this.qrCode.toDataURL(data => {
-                    const today = new Date();
-                    let filePath = RNFS.ExternalStorageDirectoryPath + `/wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}_${today.getTime()}.png`;
-                    RNFS.writeFile(filePath, data, 'base64')
-                        .then(() => {
-                            return CameraRoll.saveToCameraRoll(filePath, 'photo');
-                        })
-                        .then(() => {
-                            Alert.alert(
-                                'Well done!',
-                                "The QR Code image has been saved to Camera Roll",
-                                [{text: 'OK'},],
-                                {cancelable: false}
-                            );
-                        });
+
+                    let shareOptions = {
+                        url: `data:image/jpg;base64,${data}`,
+                    };
+
+                    Share.open(shareOptions)
+                        .then((res) => console.log('res:', res))
+                        .catch(err => console.log('err', err))
                 });
             } else {
                 console.warn("doExportImage: " + granted + ", qrCode: " + this.qrCode);
@@ -68,15 +72,16 @@ export default class BackupWalletScreen extends React.Component {
         PermissionUtils.requestStoragePermission().then(granted => {
             if (granted) {
                 const today = new Date();
-                let filePath = RNFS.ExternalStorageDirectoryPath + `/wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}_${today.getTime()}.txt`;
+                let filePath = `${backupFolder}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.txt`;
                 RNFS.writeFile(filePath, this.state.encryptedData)
                     .then(() => {
-                        Alert.alert(
-                            'Well done!',
-                            "Your wallet has been saved to text file",
-                            [{text: 'OK'},],
-                            {cancelable: false}
-                        );
+                        let shareOptions = {
+                            url: `file://${filePath}`,
+                        };
+
+                        Share.open(shareOptions)
+                            .then((res) => console.log('res:', res))
+                            .catch(err => console.log('err', err))
                     });
             }
         });
@@ -117,13 +122,15 @@ export default class BackupWalletScreen extends React.Component {
                 {
                     !this.state.encryptedData &&
                     <View style={styles.view_contain}>
-                        <Text style={StyleSheet.value('$screen_sub_title_text')}>Enter a new encrypt password</Text>
                         <Text
-                            style={[StyleSheet.value('$screen_explain_text'), {color: StyleSheet.value('$textTitleColor')}]}>
+                            style={StyleSheet.value('$warning_text')}>
                             Your Backup Phrase will be encrypted. The encrypt password cannot be recovered.{'\n'}
                             Be sure to write it down.</Text>
 
-                        <Text style={{marginTop: 20, fontSize: 12}}>
+                        <Text style={[StyleSheet.value('$screen_sub_title_text'), styles.text_sub_title]}>Enter a new
+                            encrypt password</Text>
+
+                        <Text style={StyleSheet.value('$screen_explain_text')}>
                             Use 8 or more characters with a mix of letters, numbers & symbols
                         </Text>
                         <TextInput
@@ -224,7 +231,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
     },
+    text_sub_title: {
+        marginTop: 20
+    },
     input_password: {
+        height: 45,
         marginTop: 15,
         paddingLeft: 15,
         paddingRight: 15,
