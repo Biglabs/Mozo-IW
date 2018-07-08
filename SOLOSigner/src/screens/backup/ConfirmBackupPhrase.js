@@ -1,9 +1,10 @@
 import React from "react";
-import {Alert, TouchableOpacity, ScrollView, View} from 'react-native';
+import {Alert, AsyncStorage, ScrollView, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {Button, FooterActions, Text} from "../../components/SoloComponent";
 import Bip39 from 'bip39';
+import Constant from "../../common/Constants";
 
 const phraseLanguage = Bip39.wordlists.english;
 const phraseLength = 12; //[12 ... 24]
@@ -43,6 +44,7 @@ export default class ConfirmBackupPhrase extends React.Component {
     onContinueClicked() {
         if (this.state.isConfirmingStep) {
             if (this.state.answerWord.toUpperCase() === this.state.confirmWord.toUpperCase()) {
+                AsyncStorage.setItem(Constant.FLAG_BACKUP_WALLET, 'true');
                 this.openSecurityPin();
             } else {
                 Alert.alert(

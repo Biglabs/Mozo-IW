@@ -61,6 +61,7 @@ const Constants = {
     FLAG_PUBLIC_KEY: '@publicKey:key',
     FLAG_SCHEME_DATA: '@schemeData:key',
     FLAG_ADDRESS_SYNC: '@addressSync:key',
+    FLAG_BACKUP_WALLET: '@backupWallet:key',
 };
 
 const DEFAULT_COINS = [Constants.COIN_TYPE.BTC, Constants.COIN_TYPE.BTC_TEST, Constants.COIN_TYPE.ETH];

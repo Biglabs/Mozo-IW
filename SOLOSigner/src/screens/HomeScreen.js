@@ -1,21 +1,16 @@
 import React from "react";
-import {TouchableOpacity, View} from 'react-native';
+import {AsyncStorage, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {Button, Text} from "../components/SoloComponent";
+import {BackupWalletStateIcon, Text} from "../components/SoloComponent";
 import LinkingManager from "../utils/LinkingManager";
 import GlobalStorage from '../utils/GlobalStorage';
-import {icBackup, icCheck, icInformation, icNote, icSoloTitle, icSync} from '../res/icons';
+import {icBackup, icInformation, icNote, icSoloTitle, icSync} from '../res/icons';
 
 export default class HomeScreen extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
-        // WalletManager.testSignBTCTransaction();
         this.manageScheme();
     }
 
@@ -53,11 +48,7 @@ export default class HomeScreen extends React.Component {
                         svgXmlData={icBackup}/>
                     <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
 
-                    <SvgUri
-                        width={20}
-                        height={20}
-                        svgXmlData={icCheck}
-                        style={{margin: 9}}/>
+                    <BackupWalletStateIcon/>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
@@ -108,8 +99,6 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.dash}/>
 
                 <View style={styles.content}>
-                    <Button title='Bip 44' onPress={() => Actions.tab_bip44()}/>
-                    <Button title='Bip 38' onPress={() => Actions.tab_bip38()}/>
                 </View>
             </View>
         )

@@ -1,12 +1,13 @@
 import React from "react";
-import {TouchableOpacity, View} from 'react-native';
+import {AsyncStorage, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {NavigationBar, Text} from "../../components/SoloComponent";
-import {icCheck, icInformation} from '../../res/icons';
+import {BackupWalletStateIcon, NavigationBar, Text} from "../../components/SoloComponent";
+import {icInformation} from '../../res/icons';
 
 export default class BackupWalletMenuScreen extends React.Component {
+
     render() {
         return (
             <View style={styles.container}>
@@ -17,11 +18,7 @@ export default class BackupWalletMenuScreen extends React.Component {
                     onPress={() => Actions.backup_wallet({pin: this.props.pin})}>
                     <Text style={styles.buttons_text}>Backup Wallet</Text>
 
-                    <SvgUri
-                        width={20}
-                        height={20}
-                        svgXmlData={icCheck}
-                        style={{margin: 9}}/>
+                    <BackupWalletStateIcon/>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri

@@ -10,6 +10,7 @@ import RotationView from './RotationView';
 import FadeInView from './FadeInView';
 import FooterActions from './FooterActions';
 import NavigationBarView from './NavigationBarView';
+import BackupWalletStateIcon from './BackupWalletStateIcon';
 
 const SoloComponent = {
     Button: SoloButton,
@@ -22,6 +23,7 @@ const SoloComponent = {
     FadeInView: FadeInView,
     FooterActions: FooterActions,
     NavigationBar: NavigationBarView,
+    BackupWalletStateIcon: BackupWalletStateIcon,
 };
 
 module.exports = SoloComponent;
