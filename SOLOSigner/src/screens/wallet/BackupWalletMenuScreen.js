@@ -3,21 +3,10 @@ import {AsyncStorage, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {NavigationBar, Text} from "../../components/SoloComponent";
-import {icCheck, icInformation, icWarning} from '../../res/icons';
-import Constant from "../../common/Constants";
+import {BackupWalletStateIcon, NavigationBar, Text} from "../../components/SoloComponent";
+import {icInformation} from '../../res/icons';
 
 export default class BackupWalletMenuScreen extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {isAlreadyBackupBefore: -1 /* true = 1 */};
-        AsyncStorage.getItem(Constant.FLAG_BACKUP_WALLET, (error, result) => {
-            this.setState({
-                isAlreadyBackupBefore: (result === 'true') ? 1 : 0
-            });
-        });
-    }
 
     render() {
         return (
@@ -29,14 +18,7 @@ export default class BackupWalletMenuScreen extends React.Component {
                     onPress={() => Actions.backup_wallet({pin: this.props.pin})}>
                     <Text style={styles.buttons_text}>Backup Wallet</Text>
 
-                    {
-                        this.state.isAlreadyBackupBefore >= 0 &&
-                        <SvgUri
-                            width={20}
-                            height={20}
-                            svgXmlData={this.state.isAlreadyBackupBefore === 1 ? icCheck : icWarning}
-                            style={{margin: 9}}/>
-                    }
+                    <BackupWalletStateIcon/>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri

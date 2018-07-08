@@ -11,6 +11,7 @@ import {FooterActions, NavigationBar, Text, TextInput} from "../../components/So
 import WalletManager from '../../utils/WalletManager';
 import PermissionUtils from "../../utils/PermissionUtils";
 import Constant from "../../common/Constants";
+import {inject} from "mobx-react";
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const backupFolder = Platform.select({
@@ -18,6 +19,7 @@ const backupFolder = Platform.select({
     android: `${RNFS.ExternalStorageDirectoryPath}/Documents`
 }) + '/SoloSigner';
 
+@inject("backupWalletStateStore")
 export default class BackupWalletScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -104,6 +106,7 @@ export default class BackupWalletScreen extends React.Component {
 
     doHandleResult = (result) => {
         if (result) {
+            this.props.backupWalletStateStore.setBackupWalletState(true);
             AsyncStorage.setItem(Constant.FLAG_BACKUP_WALLET, 'true');
         }
     };
