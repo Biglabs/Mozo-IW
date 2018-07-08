@@ -44,10 +44,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow us to scan documents and capture images.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allows backup your wallet as image</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Allows backup your wallet as image</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>utm-avo-bold.ttf</string>

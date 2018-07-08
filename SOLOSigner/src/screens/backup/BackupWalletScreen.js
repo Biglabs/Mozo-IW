@@ -1,15 +1,16 @@
 import React from "react";
-import {Alert, Platform, TouchableOpacity, View} from 'react-native';
+import {Alert, AsyncStorage, Platform, TouchableOpacity, View} from 'react-native';
 import StyleSheet from "react-native-extended-stylesheet";
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
 import RNFS from "react-native-fs";
 import Share from 'react-native-share';
-import {icCheck, icExportQR, icExportText} from "../../res/icons";
-import {NavigationBar, Text, TextInput} from "../../components/SoloComponent";
+import {icExportQR, icExportText} from "../../res/icons";
+import {FooterActions, NavigationBar, Text, TextInput} from "../../components/SoloComponent";
 import WalletManager from '../../utils/WalletManager';
 import PermissionUtils from "../../utils/PermissionUtils";
+import Constant from "../../common/Constants";
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const backupFolder = Platform.select({
@@ -50,22 +51,34 @@ export default class BackupWalletScreen extends React.Component {
     }
 
     doExportImage() {
-        PermissionUtils.requestStoragePermission().then(granted => {
-            if (granted && this.qrCode) {
+        if (this.qrCode) {
+            if (Platform.OS === 'ios') {
                 this.qrCode.toDataURL(data => {
-
-                    let shareOptions = {
-                        url: `data:image/jpg;base64,${data}`,
-                    };
-
-                    Share.open(shareOptions)
-                        .then((res) => console.log('res:', res))
-                        .catch(err => console.log('err', err))
+                    Share.open({url: `data:image/jpg;base64,${data}`})
+                        .then(this.doHandleResult)
+                        .catch(() => {
+                            /* bypass Promise warning*/
+                        });
                 });
             } else {
-                console.warn("doExportImage: " + granted + ", qrCode: " + this.qrCode);
+                PermissionUtils.requestStoragePermission().then(granted => {
+                    if (granted) {
+                        this.qrCode.toDataURL(data => {
+                            const today = new Date();
+                            let filePath = `${backupFolder}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.png`;
+                            RNFS.writeFile(filePath, data, 'base64')
+                                .then(() => {
+                                    let shareOptions = {
+                                        url: `file://${filePath}`,
+                                    };
+                                    Share.open(shareOptions)
+                                        .then(this.doHandleResult);
+                                });
+                        });
+                    }
+                });
             }
-        });
+        }
     }
 
     doExportText() {
@@ -80,12 +93,20 @@ export default class BackupWalletScreen extends React.Component {
                         };
 
                         Share.open(shareOptions)
-                            .then((res) => console.log('res:', res))
-                            .catch(err => console.log('err', err))
+                            .then(this.doHandleResult)
+                            .catch(() => {
+                                /* bypass Promise warning*/
+                            });
                     });
             }
         });
     }
+
+    doHandleResult = (result) => {
+        if (result) {
+            AsyncStorage.setItem(Constant.FLAG_BACKUP_WALLET, 'true');
+        }
+    };
 
     validatePassword() {
         if (this.newEncryptPassword && this.newEncryptPassword.length > 0) {
@@ -158,16 +179,7 @@ export default class BackupWalletScreen extends React.Component {
                             * {this.state.errorMessage}
                         </Text>
 
-                        <TouchableOpacity
-                            style={styles.button_confirm}
-                            onPress={() => this.doBackup()}>
-                            <SvgUri
-                                fill={StyleSheet.value('$primaryColor')}
-                                width={20}
-                                height={20}
-                                svgXmlData={icCheck}/>
-                            <Text style={styles.button_confirm_text}>Confirm</Text>
-                        </TouchableOpacity>
+                        <FooterActions onContinuePress={() => this.doBackup()}/>
                     </View>
                 }
                 {
@@ -245,23 +257,6 @@ const styles = StyleSheet.create({
         color: '$errorColor',
         fontSize: 12,
         marginTop: 15,
-    },
-    button_confirm: {
-        height: '$screen_padding_bottom',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        position: 'absolute',
-        bottom: 0,
-        left: '36%',
-        right: '36%',
-    },
-    button_confirm_text: {
-        color: '$textTitleColor',
-        fontSize: 16,
-        fontFamily: '$primaryFontBold',
-        marginBottom: 2,
-        marginLeft: 5,
     },
     image_qr_code: {
         width: 240,
