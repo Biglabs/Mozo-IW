@@ -64,26 +64,20 @@ const Constants = {
             detail: "No internet while requesting new transaction.\nServer do not response while requesting new transaction.",
             type: "Infrastructure & Business"
         },
-        BALANCE_NOT_ENOUGH: {
-            code: "ERR-003",
-            title: "Balance is not enough.",
-            detail: "",
-            type: "Business"
-        },
 	    CANCEL_REQUEST: {
-            code: "ERR-004",
+            code: "ERR-003",
             title: "User cancel request.",
             detail: "User click cancel button or back button.",
             type: "Business"
         },
         TIME_OUT_CONFIRM: {
-            code: "ERR-005",
+            code: "ERR-004",
             title: "Timeout confirmation",
             detail: "User wait too long for confirmation.",
             type: "Business"
         },
         INVALID_ADDRESS: {
-            code: "ERR-006",
+            code: "ERR-005",
             title: "Invalid address",
             detail: "Address(es) is not created by Signer.",
             type: "Business"
