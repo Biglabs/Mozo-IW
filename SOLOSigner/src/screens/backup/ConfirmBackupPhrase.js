@@ -2,7 +2,7 @@ import React from "react";
 import {Alert, AsyncStorage, ScrollView, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {Button, FooterActions, Text} from "../../components/SoloComponent";
+import {Button, ScreenFooterActions, Text} from "../../components";
 import Bip39 from 'bip39';
 import Constant from "../../common/Constants";
 
@@ -153,7 +153,7 @@ export default class ConfirmBackupPhrase extends React.Component {
                     <View style={styles.dash}/>
                 }
 
-                <FooterActions
+                <ScreenFooterActions
                     enabledContinue={
                         (this.state.isUserHasRead && !this.state.isConfirmingStep) ||
                         (this.state.isConfirmingStep && (this.state.confirmWord || '').length > 0)

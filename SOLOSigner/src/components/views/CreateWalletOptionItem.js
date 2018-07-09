@@ -4,13 +4,13 @@ import React from 'react';
 import {Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
-import Text from "./SoloText";
-import * as ButtonStyles from '../res/button.styles';
-import {icCheckCircle} from '../res/icons';
+import SoloText from "../widgets/SoloText";
+import * as ButtonStyles from '../../res/button.styles';
+import {icCheckCircle} from '../../res/icons';
 // noinspection JSUnusedLocalSymbols, exclude color, fontFamily, fontSize, textAlign from ButtonStyles.BorderGrayStyle
 const {color, fontFamily, fontSize, textAlign, ...buttonGrayStyle} = ButtonStyles.BorderGrayStyle;
 
-export default class SoloWalletButton extends React.Component {
+export default class CreateWalletOptionItem extends React.Component {
     constructor(props) {
         super(props);
         this.label = props.label || props.title || 'Label';
@@ -59,19 +59,19 @@ export default class SoloWalletButton extends React.Component {
                                 zIndex: isSelected ? 0 : -1
                             }}/>
 
-                    <Text style={[
+                    <SoloText style={[
                         styles.button_name,
                         {
                             color: isSelected ? '#ffffff' : StyleSheet.value('$textTitleColor')
                         }
-                    ]}>{this.label}</Text>
+                    ]}>{this.label}</SoloText>
 
-                    <Text style={[
+                    <SoloText style={[
                         styles.button_content,
                         {
                             color: isSelected ? '#ffffff' : StyleSheet.value('$textContentColor')
                         }
-                    ]}>{this.content}</Text>
+                    ]}>{this.content}</SoloText>
                 </TouchableOpacity>
 
                 <Image
@@ -81,7 +81,7 @@ export default class SoloWalletButton extends React.Component {
                             opacity: isSelected ? 1.0 : 0.0,
                             width: this.containerWidth * 0.85 || 0
                         }]}
-                    source={require('../res/images/im_button_shadow.png')}/>
+                    source={require('../../res/images/im_button_shadow.png')}/>
             </View>
         )
     }

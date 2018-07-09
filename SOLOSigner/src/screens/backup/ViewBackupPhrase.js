@@ -2,7 +2,7 @@ import React from "react";
 import {Alert, Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
-import {FooterActions, NavigationBar, Text} from "../../components/SoloComponent";
+import {ScreenFooterActions, ScreenHeaderActions, Text} from "../../components";
 import WalletManager from '../../utils/WalletManager';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
@@ -55,7 +55,7 @@ export default class ViewBackupPhrase extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavigationBar title='View Backup Phrase'/>
+                <ScreenHeaderActions title='View Backup Phrase'/>
 
                 {
                     !this.state.userConfirmed &&
@@ -85,7 +85,7 @@ export default class ViewBackupPhrase extends React.Component {
                 }
                 {
                     !this.state.userConfirmed &&
-                    <FooterActions
+                    <ScreenFooterActions
                         rightButtonText='I understand'
                         onBackPress={() => Actions.pop()}
                         enabledContinue={this.state.countDownDuration === 0}

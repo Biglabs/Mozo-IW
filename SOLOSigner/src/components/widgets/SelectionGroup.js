@@ -1,9 +1,10 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {View} from 'react-native';
 
-export default class SoloSelectionGroup extends Component {
+export default class SelectionGroup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {selectedIndex: -1}
@@ -37,3 +38,8 @@ export default class SoloSelectionGroup extends Component {
         )
     }
 }
+
+SelectionGroup.propTypes = {
+    children: PropTypes.element.isRequired,
+    onSelectionChanged: PropTypes.func,
+};

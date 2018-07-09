@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {TouchableHighlight, View, ActivityIndicator} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {FooterActions, Text} from "../components/SoloComponent";
+import {ScreenFooterActions, Text} from "../components";
 import WalletManager from '../utils/WalletManager';
 
 const accentColor = '#00fffc';
@@ -157,7 +157,7 @@ export default class SecurityPinScreen extends Component {
                         }
                     </View>
 
-                    <FooterActions
+                    <ScreenFooterActions
                         buttonsColor={{back: accentColor, continue: accentColor}}
                         onBackPress={this.props.isNewPIN ? () => Actions.pop() : null}
                         enabledContinue={this.state.pinIndex === (this.pinCode.length - 1)}

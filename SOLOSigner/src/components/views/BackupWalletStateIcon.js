@@ -4,7 +4,7 @@ import React from "react";
 import {View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import {inject, observer} from "mobx-react";
-import {icCheck, icWarning} from "../res/icons";
+import {icCheck, icWarning} from "../../res/icons";
 
 @inject("backupWalletStateStore")
 @observer

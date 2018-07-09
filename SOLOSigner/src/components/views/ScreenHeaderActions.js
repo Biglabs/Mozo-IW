@@ -1,14 +1,15 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import {TouchableOpacity, View} from "react-native";
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from "react-native-extended-stylesheet";
-import Text from "./SoloText";
+import SoloText from "../widgets/SoloText";
 import {Actions} from 'react-native-router-flux';
-import {icArrowBack} from '../res/icons';
+import {icArrowBack} from '../../res/icons';
 
-export default class NavigationBarView extends React.Component {
+export default class ScreenHeaderActions extends React.Component {
     constructor(props) {
         super(props);
 
@@ -17,13 +18,18 @@ export default class NavigationBarView extends React.Component {
         this.backIconColor = props.accentColor || primaryColor;
         this.backTextColor = props.accentColor || StyleSheet.value('$textTitleColor');
         this.titleColor = props.accentColor || primaryColor;
+        this.onPressAction = props.onBackPress || this.onBackPress;
     }
+
+    onBackPress = () => {
+        Actions.pop();
+    };
 
     render() {
         return (
             <View {...this.props} style={[styles.toolbar, {backgroundColor: this.backgroundColor}, this.props.style]}>
 
-                <TouchableOpacity style={styles.button} onPress={() => Actions.pop()}>
+                <TouchableOpacity style={styles.button} onPress={this.onPressAction}>
                     <SvgUri
                         width={8}
                         height={13}
@@ -33,14 +39,14 @@ export default class NavigationBarView extends React.Component {
                             marginLeft: 16,
                             marginRight: 6,
                         }}/>
-                    <Text style={[styles.button_text, {color: this.backTextColor}]}>Back</Text>
+                    <SoloText style={[styles.button_text, {color: this.backTextColor}]}>Back</SoloText>
                 </TouchableOpacity>
 
-                <Text style={[styles.title, {color: this.titleColor}]}>
+                <SoloText style={[styles.title, {color: this.titleColor}]}>
                     {
                         (this.props.title || 'screen title').toUpperCase()
                     }
-                </Text>
+                </SoloText>
             </View>
         );
     }
@@ -84,3 +90,10 @@ const styles = StyleSheet.create({
         includeFontPadding: false,
     }
 });
+
+ScreenHeaderActions.propTypes = {
+    title: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    accentColor: PropTypes.string,
+    onBackPress: PropTypes.func,
+};

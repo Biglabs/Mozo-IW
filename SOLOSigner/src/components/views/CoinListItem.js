@@ -1,13 +1,14 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import {TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import Text from "./SoloText";
+import SoloText from "../widgets/SoloText";
 import StyleSheet from 'react-native-extended-stylesheet';
-import {icCheckCircle} from '../res/icons';
+import {icCheckCircle} from '../../res/icons';
 
-export default class CoinItemView extends React.PureComponent {
+export default class CoinListItem extends React.PureComponent {
 
     render() {
         let isHandleItemClick = this.props.onItemClicked || false;
@@ -25,9 +26,9 @@ export default class CoinItemView extends React.PureComponent {
 
                 <View style={styles.content}>
                     <SvgUri width={24} height={24} svgXmlData={this.props.icon}/>
-                    <Text style={styles.label}>{this.props.label}</Text>
+                    <SoloText style={styles.label}>{this.props.label}</SoloText>
 
-                    <Text style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</Text>
+                    <SoloText style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</SoloText>
                     {
                         this.props.checked &&
                         <SvgUri
@@ -83,3 +84,10 @@ const styles = StyleSheet.create({
         backgroundColor: '$disableColor',
     },
 });
+
+CoinListItem.propTypes = {
+    checked: PropTypes.bool,
+    onItemClicked: PropTypes.func,
+    icon: PropTypes.string,
+    label: PropTypes.string,
+};

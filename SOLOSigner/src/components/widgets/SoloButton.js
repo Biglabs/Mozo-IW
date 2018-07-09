@@ -1,12 +1,12 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
-import * as ButtonStyles from '../res/button.styles';
+import * as ButtonStyles from '../../res/button.styles';
 
-export default class SoloButton extends Component {
+export default class SoloButton extends React.Component {
     constructor(props) {
         super(props);
         switch (props.type ? props.type : '') {

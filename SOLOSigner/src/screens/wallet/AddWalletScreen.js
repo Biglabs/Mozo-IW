@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {FlatList, Image, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {CoinItemView, FooterActions, Text} from "../../components/SoloComponent";
+import {CoinItemView, ScreenFooterActions, Text} from "../../components";
 import {inject, observer} from "mobx-react";
 
 @inject("selectedWalletsStore")
@@ -44,7 +44,7 @@ export default class AddWalletScreen extends Component {
                     }
                 />
 
-                <FooterActions
+                <ScreenFooterActions
                     enabledContinue={selectedWallets.length > 0}
                     onBackPress={() => Actions.pop()}
                     onContinuePress={() => {

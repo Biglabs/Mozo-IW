@@ -3,7 +3,7 @@ import {Dimensions, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
-import {Button, Text} from "../components/SoloComponent";
+import {Button, Text} from "../components";
 import {icSoloLogo} from '../res/icons';
 
 export default class WelcomeScreen extends React.Component {

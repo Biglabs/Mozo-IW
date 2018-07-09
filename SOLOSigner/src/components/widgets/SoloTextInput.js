@@ -1,11 +1,11 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
 import {TextInput} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
-import {BaseBorderStyle} from '../res/button.styles';
+import {BaseBorderStyle} from '../../res/button.styles';
 
-export default class SoloTextInput extends Component {
+export default class SoloTextInput extends React.Component {
     render() {
         return (
             <TextInput

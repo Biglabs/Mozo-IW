@@ -3,7 +3,7 @@ import {ScrollView, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import SvgUri from 'react-native-svg-uri';
-import {FooterActions, Text, TextInput} from "../../components/SoloComponent";
+import {ScreenFooterActions, Text, TextInput} from "../../components";
 import {RNCamera} from 'react-native-camera';
 import bip39 from 'bip39';
 import {icScanArea} from '../../res/icons';
@@ -110,7 +110,7 @@ export default class ImportWalletScreen extends React.Component {
                     </TouchableOpacity>
                 </ScrollView>
 
-                <FooterActions
+                <ScreenFooterActions
                     onBackPress={() => Actions.pop()}
                     enabledContinue={this.state.isPhraseValid}
                     onContinuePress={() => {

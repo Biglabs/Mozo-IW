@@ -3,7 +3,7 @@ import {AsyncStorage, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {BackupWalletStateIcon, Text} from "../components/SoloComponent";
+import {BackupWalletStateIcon, Text} from "../components";
 import LinkingManager from "../utils/LinkingManager";
 import GlobalStorage from '../utils/GlobalStorage';
 import {icBackup, icInformation, icNote, icSoloTitle, icSync} from '../res/icons';

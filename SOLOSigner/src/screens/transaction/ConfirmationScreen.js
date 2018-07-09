@@ -1,14 +1,14 @@
-import React, {Component} from "react";
+import React from "react";
 import {ActivityIndicator, Alert, Linking, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
-import {NavigationBar, Text} from "../../components/SoloComponent";
+import {ScreenHeaderActions, Text} from "../../components";
 import Globals from '../../common/Globals';
 import WalletManager from '../../utils/WalletManager';
 import {icCheck, icSend} from '../../res/icons';
 
-export default class ConfirmationScreen extends Component<Props> {
+export default class ConfirmationScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -66,7 +66,7 @@ export default class ConfirmationScreen extends Component<Props> {
         else
             return (
                 <View style={styles.container}>
-                    <NavigationBar
+                    <ScreenHeaderActions
                         title='Send Confirmation'
                         backgroundColor={StyleSheet.value('$primaryColor')}
                         accentColor='#ffffff'/>

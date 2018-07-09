@@ -3,7 +3,7 @@ import {Dimensions, View, YellowBox} from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
-import {FadeInView} from "../components/SoloComponent";
+import {AnimatedView} from "../components";
 import Globals from '../common/Globals';
 import {icSoloLogo} from '../res/icons';
 
@@ -29,9 +29,9 @@ export default class SplashScreen extends React.Component {
         let logoHeight = 37.8 * logoWidth / 100;
         return (
             <View style={styles.container}>
-                <FadeInView duration={500}>
+                <AnimatedView animation='fade_in' duration={500}>
                     <SvgUri width={logoWidth} height={logoHeight} svgXmlData={icSoloLogo}/>
-                </FadeInView>
+                </AnimatedView>
             </View>
         );
     }

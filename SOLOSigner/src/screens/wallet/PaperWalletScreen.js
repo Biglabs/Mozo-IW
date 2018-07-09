@@ -2,14 +2,14 @@ import React, {Component} from "react";
 import {View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {NavigationBar} from "../../components/SoloComponent";
+import {ScreenHeaderActions} from "../../components";
 
 export default class PaperWalletScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
 
-                <NavigationBar title='Paper Wallet'/>
+                <ScreenHeaderActions title='Paper Wallet'/>
 
             </View>
         )

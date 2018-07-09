@@ -1,10 +1,10 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
 import {Text} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 
-export default class SoloText extends Component {
+export default class SoloText extends React.Component {
     render() {
         return (
             <Text {...this.props} style={[styles.customFont, this.props.style]}>

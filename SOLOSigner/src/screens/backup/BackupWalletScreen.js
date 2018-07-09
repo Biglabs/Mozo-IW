@@ -7,7 +7,7 @@ import QRCode from 'react-native-qrcode-svg';
 import RNFS from "react-native-fs";
 import Share from 'react-native-share';
 import {icExportQR, icExportText} from "../../res/icons";
-import {FooterActions, NavigationBar, Text, TextInput} from "../../components/SoloComponent";
+import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput} from "../../components";
 import WalletManager from '../../utils/WalletManager';
 import PermissionUtils from "../../utils/PermissionUtils";
 import Constant from "../../common/Constants";
@@ -141,7 +141,7 @@ export default class BackupWalletScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavigationBar title='Backup Wallet'/>
+                <ScreenHeaderActions title='Backup Wallet'/>
 
                 {
                     !this.state.encryptedData &&
@@ -182,7 +182,7 @@ export default class BackupWalletScreen extends React.Component {
                             * {this.state.errorMessage}
                         </Text>
 
-                        <FooterActions onContinuePress={() => this.doBackup()}/>
+                        <ScreenFooterActions onContinuePress={() => this.doBackup()}/>
                     </View>
                 }
                 {

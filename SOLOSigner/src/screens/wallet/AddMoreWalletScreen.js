@@ -3,7 +3,7 @@ import {FlatList, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
-import {CoinItemView, NavigationBar, Text, TextInput} from "../../components/SoloComponent";
+import {CoinItemView, ScreenHeaderActions, Text, TextInput} from "../../components";
 import Constant from '../../common/Constants';
 import {inject} from "mobx-react";
 import {icSearch} from '../../res/icons';
@@ -85,7 +85,7 @@ export default class AddMoreWalletScreen extends Component {
         let buttonAddTextColor = StyleSheet.value(hasWalletSelected ? '$primaryColor' : '$disableColor');
         return (
             <View style={styles.container}>
-                <NavigationBar title='Add More Wallet'/>
+                <ScreenHeaderActions title='Add More Wallet'/>
 
                 <View style={styles.search_box}>
                     <TextInput

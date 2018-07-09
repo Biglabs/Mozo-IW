@@ -3,7 +3,7 @@ import {AsyncStorage, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import {BackupWalletStateIcon, NavigationBar, Text} from "../../components/SoloComponent";
+import {BackupWalletStateIcon, ScreenHeaderActions, Text} from "../../components";
 import {icInformation} from '../../res/icons';
 
 export default class BackupWalletMenuScreen extends React.Component {
@@ -11,7 +11,7 @@ export default class BackupWalletMenuScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavigationBar title='Backup Wallet'/>
+                <ScreenHeaderActions title='Backup Wallet'/>
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
