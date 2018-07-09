@@ -55,8 +55,12 @@ function manageScheme(data, pin){
                 walletInfo = { walletId : walletInfo.walletId };
                 Globals.responseToReceiver(walletInfo, jsonData);
             } else {
-                alert("This wallet is not registered. Try again.");
+                Globals.responseToReceiver({error: Constant.ERROR_TYPE.NO_WALLET_INFO}, jsonData);
             }
+            break;
+        }
+        case Constant.ACTION_SCHEME.ADD_ADDRESS: {
+            console.log("Processing add new address.");
             break;
         }
         default: {

@@ -50,12 +50,44 @@ const Constants = {
         }
     },
     ERROR_TYPE:{
-        UNKNOWN: -1,
-	    NONE: 0,
-	    CANCELLED: 1,
-        INVALID_REQUEST: 2,
-        TIME_OUT: 3,
-        WALLET_NOT_REGISTERED: 4
+        UNKNOWN: {},
+        NONE: {},
+        NO_WALLET_INFO: {
+            code: "ERR-001",
+            title: "Offline - Wallet info not found",
+            detail: "User are in offline mode, there is no wallet info at this time.",
+            type: "Infrastructure & Business"
+        },
+        CREATE_TRANSACTION_FAIL: {
+            code: "ERR-002",
+            title: "Transaction is created unsuccessfully!",
+            detail: "No internet while requesting new transaction.\nServer do not response while requesting new transaction.",
+            type: "Infrastructure & Business"
+        },
+        BALANCE_NOT_ENOUGH: {
+            code: "ERR-003",
+            title: "Balance is not enough.",
+            detail: "",
+            type: "Business"
+        },
+	    CANCEL_REQUEST: {
+            code: "ERR-004",
+            title: "User cancel request.",
+            detail: "User click cancel button or back button.",
+            type: "Business"
+        },
+        TIME_OUT_CONFIRM: {
+            code: "ERR-005",
+            title: "Timeout confirmation",
+            detail: "User wait too long for confirmation.",
+            type: "Business"
+        },
+        INVALID_ADDRESS: {
+            code: "ERR-006",
+            title: "Invalid address",
+            detail: "Address(es) is not created by Signer.",
+            type: "Business"
+        },
     },
     FLAG_DB_EXISTING: '@DbExisting:key',
     FLAG_PUBLIC_KEY: '@publicKey:key',
