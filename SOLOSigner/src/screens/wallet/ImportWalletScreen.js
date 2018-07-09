@@ -1,12 +1,9 @@
 import React from "react";
-import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
-import SvgUri from 'react-native-svg-uri';
-import {ScreenFooterActions, Text, TextInput} from "../../components";
-import {RNCamera} from 'react-native-camera';
+import {QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 import bip39 from 'bip39';
-import {icScanArea} from '../../res/icons';
 
 export default class ImportWalletScreen extends React.Component {
 
@@ -35,7 +32,7 @@ export default class ImportWalletScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Text style={StyleSheet.value('$screen_title_text')}>Import/Restore Wallet</Text>
+                <Text style={StyleSheet.value('$screen_title_text')}>Import Wallet</Text>
 
                 <ScrollView
                     style={styles.scroll_container}
@@ -73,41 +70,10 @@ export default class ImportWalletScreen extends React.Component {
                         <View style={styles.dash}/>
                     </View>
 
-                    <TouchableOpacity
-                        disabled={this.state.isScanningQRCode}
-                        onPress={() => this.setState({
-                            isScanningQRCode: true
-                        })}>
-                        <SvgUri width={200}
-                                height={200}
-                                svgXmlData={icScanArea}/>
-                        {
-                            this.state.isScanningQRCode &&
-                            <RNCamera
-                                style={{width: 180, height: 180, position: 'absolute', top: 10, left: 10}}
-                                ratio='1:1'
-                                permissionDialogTitle={'Permission to use camera'}
-                                permissionDialogMessage={'We need your permission to use your camera phone'}
-                                onBarCodeRead={(event) => {
-                                    this.setState({isScanningQRCode: false});
-                                    this.onSubmitPhrase(event.data);
-                                }}/>
-                        }
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={{marginBottom: 30}}
-                        onPress={() => {
-                            //TODO: requestStoragePermission
-                            this.setState({
-                            isScanningQRCode: !this.state.isScanningQRCode
-                        })}}>
-                        <Text style={styles.scan_text_button}>
-                            {
-                                this.state.isScanningQRCode ? 'Cancel' : 'Scan QR Code'
-                            }
-                        </Text>
-                    </TouchableOpacity>
+                    <QRCodeScanner
+                        cameraSize={180}
+                        scanning={this.state.isScanningQRCode}
+                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
                 </ScrollView>
 
                 <ScreenFooterActions
@@ -160,7 +126,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 0,
-        marginBottom: 30,
+        marginBottom: 20,
     },
     separator_text: {
         color: '$textTitleColor',
@@ -173,10 +139,5 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: '$disableColor',
         marginTop: 2
-    },
-    scan_text_button: {
-        color: '$primaryColor',
-        fontFamily: '$primaryFontBold',
-        padding: 5
     }
 });

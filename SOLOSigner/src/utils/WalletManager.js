@@ -378,6 +378,10 @@ module.exports.backupWallet = function (pin, encryptPassword) {
     return null;
 };
 
+module.exports.restoreWallet = function (data, password) {
+    return encryption.decrypt(data, password);
+};
+
 module.exports.addNewAddress = function(pin, coinType, index, callback) {
     let manager = DataManager.getInstance();
     let appInfo = manager.getAppInfo();

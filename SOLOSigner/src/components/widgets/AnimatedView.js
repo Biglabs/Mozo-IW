@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Animated, Easing} from 'react-native';
 
 const TYPE_FADE_IN = 'fade_in';
@@ -66,3 +67,10 @@ export default class AnimatedView extends Component {
         );
     }
 }
+
+AnimatedView.propTypes = {
+    animation: PropTypes.oneOf([TYPE_FADE_IN, TYPE_ROTATE]).isRequired,
+    children: PropTypes.element.isRequired,
+    duration: PropTypes.number,
+    loop: PropTypes.bool,
+};

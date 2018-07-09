@@ -17,6 +17,7 @@ export default class SoloText extends React.Component {
 const styles = StyleSheet.create({
     customFont: {
         fontFamily: '$primaryFont',
-        fontSize: 14
+        fontSize: 14,
+        includeFontPadding: false,
     }
 });

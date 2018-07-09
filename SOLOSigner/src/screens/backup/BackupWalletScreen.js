@@ -195,10 +195,13 @@ export default class BackupWalletScreen extends React.Component {
                                 value={this.state.encryptedData}
                                 getRef={(c) => (this.qrCode = c)}/>
                         </View>
-                        <Text style={{textAlign: 'center'}}>
-                            From the destination device, go to Welcome screen > Import Wallet{'\n'}and scan this QR code
+                        <Text style={styles.export_explain_text}>
+                            From the destination device, go to
+                            <Text style={styles.export_explain_text_highlight}> Welcome screen </Text>
+                            >
+                            <Text style={styles.export_explain_text_highlight}> Restore Encrypted Wallet </Text>
+                            and scan this QR code{'\n'}or save as file for restore later
                         </Text>
-                        <Text>or save as file for restore later</Text>
                         <View style={styles.export_container}>
                             <TouchableOpacity
                                 style={styles.export_button}
@@ -276,6 +279,12 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1,
         flexDirection: 'row',
+    },
+    export_explain_text: {
+        textAlign: 'center'
+    },
+    export_explain_text_highlight: {
+        fontFamily: '$primaryFontBold',
     },
     export_button: {
         flex: 0.5,
