@@ -18,14 +18,6 @@ export default class ConfirmationScreen extends React.Component {
             isShowingLoading: false
         };
 
-        this.value = 0;
-        this.props.txData.params.tx.outputs.map(item => this.value += item.value);
-        if (this.value > 0) {
-            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
-        }
-
-        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
-
         this.toAddress = [];
         this.props.txData.params.tx.outputs.map(out => {
             out.addresses.map(address => this.toAddress.push(address));
@@ -35,6 +27,21 @@ export default class ConfirmationScreen extends React.Component {
         this.props.txData.params.tx.inputs.map(inp => {
             inp.addresses.map(address => this.fromAddress.push(address));
         });
+
+        this.value = 0;
+        this.props.txData.params.tx.outputs.map(item => {
+            // Do not add return money
+            // BlockCypher will set the change address to the first transaction input/address listed in the transaction. 
+            // To redirect this default behavior, you can set an optional change_address field within the TX request object.
+            if(item.addresses[0] != this.fromAddress[0]){
+                this.value += item.value;
+            }
+        });
+        if (this.value > 0) {
+            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
+        }
+
+        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
     }
 
     onConfirmTransaction() {
