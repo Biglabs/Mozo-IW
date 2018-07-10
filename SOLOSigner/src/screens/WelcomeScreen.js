@@ -32,13 +32,17 @@ export default class WelcomeScreen extends React.Component {
 
                 <View style={styles.button_container}>
                     <Button title='Create New Wallet'
-                            style={[styles.buttons, {marginBottom: 15}]}
+                            style={styles.buttons}
                             type='solid'
                             onPress={() => Actions.create_wallet()}/>
 
                     <Button title='Import Wallet'
                             style={styles.buttons}
                             onPress={() => Actions.import_wallet()}/>
+
+                    <Button title='Restore Encrypted Wallet'
+                            style={styles.buttons}
+                            onPress={() => Actions.restore_wallet()}/>
                 </View>
             </View>
         );
@@ -68,6 +72,7 @@ const styles = StyleSheet.create({
     },
     buttons: {
         width: '84%',
+        marginBottom: 15,
     },
     '@media (min-width: 500)': {
         buttons: {

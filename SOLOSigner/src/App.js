@@ -16,6 +16,7 @@ import AddWalletScreen from './screens/wallet/AddWalletScreen';
 import AddMoreWalletScreen from './screens/wallet/AddMoreWalletScreen';
 import CreateWalletScreen from './screens/wallet/CreateWalletScreen';
 import ImportWalletScreen from './screens/wallet/ImportWalletScreen';
+import RestoreWalletScreen from './screens/wallet/RestoreWalletScreen';
 import BackupWalletMenuScreen from './screens/wallet/BackupWalletMenuScreen';
 import PaperWalletScreen from './screens/wallet/PaperWalletScreen';
 
@@ -59,6 +60,7 @@ export default () => {
                     <Scene key="add_more_wallet" component={AddMoreWalletScreen} hideNavBar/>
                     <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
                     <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
+                    <Scene key="restore_wallet" component={RestoreWalletScreen} hideNavBar/>
                     <Scene key="backup_wallet_menu" component={BackupWalletMenuScreen} hideNavBar/>
                     <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
 
