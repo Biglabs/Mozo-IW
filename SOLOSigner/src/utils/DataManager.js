@@ -130,10 +130,21 @@ class DataManager {
         });
     }
 
-    getPrivateKeyFromAddress(address) {
-        let adrObj = DataManager.realm.objectForPrimaryKey('Address', address);
-        if(adrObj && adrObj.prvKey) {
-            return adrObj.prvKey;
+    getPrivateKeyFromAddress(address, caseInsensitive) {
+        if(!caseInsensitive) {
+            let adrObj = DataManager.realm.objectForPrimaryKey('Address', address);
+            if(adrObj && adrObj.prvKey) {
+                return adrObj.prvKey;
+            }
+        } else {
+            let addresses = DataManager.realm.objects('Address');
+            var prvKey = null;
+            addresses.map(item => {
+                if (item.address.toUpperCase() == address.toUpperCase()) {
+                    prvKey = item.prvKey;
+                }
+            });
+            return prvKey;
         }
         return null;
     }

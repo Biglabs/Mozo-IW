@@ -5,6 +5,7 @@ import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 import {ScreenHeaderActions, Text} from "../../components";
 import Globals from '../../common/Globals';
+import Constant from '../../common/Constants';
 import WalletManager from '../../utils/WalletManager';
 import {icCheck, icSend} from '../../res/icons';
 
@@ -18,26 +19,22 @@ export default class ConfirmationScreen extends React.Component {
         };
 
         this.value = 0;
-        if (this.props.txData.params.value) this.value = this.props.txData.params.value;
-        else {
-            this.props.txData.params.outputs.map(item => this.value += item.value);
+        this.props.txData.params.tx.outputs.map(item => this.value += item.value);
+        if (this.value > 0) {
+            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
         }
+
+        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
 
         this.toAddress = [];
-        if (this.props.txData.params.to) this.toAddress.push(this.props.txData.params.to);
-        else {
-            this.props.txData.params.outputs.map(out => {
-                out.addresses.map(address => this.toAddress.push(address));
-            });
-        }
+        this.props.txData.params.tx.outputs.map(out => {
+            out.addresses.map(address => this.toAddress.push(address));
+        });
 
         this.fromAddress = [];
-        if (this.props.txData.params.from) this.fromAddress.push(this.props.txData.params.from);
-        else {
-            this.props.txData.params.inputs.map(inp => {
-                inp.addresses.map(address => this.fromAddress.push(address));
-            });
-        }
+        this.props.txData.params.tx.inputs.map(inp => {
+            inp.addresses.map(address => this.fromAddress.push(address));
+        });
     }
 
     onConfirmTransaction() {
@@ -49,7 +46,7 @@ export default class ConfirmationScreen extends React.Component {
                         Globals.responseToReceiver({signedTransaction: result}, this.props.txData);
                     } else {
                         this.setState({isShowingLoading: false});
-                        alert(error);
+                        alert(error.message);
                     }
                 });
             }, 5);
@@ -88,8 +85,8 @@ export default class ConfirmationScreen extends React.Component {
                         <View style={styles.dash}/>
 
                         <Text>
-                            <Text style={styles.text_section}>Mining Fee: </Text>
-                            <Text style={[styles.text_section, styles.text_mining_fee_value]}>... BTC</Text>
+                            <Text style={styles.text_section}>Mining Fee: {this.fees}</Text>
+                            <Text style={[styles.text_section, styles.text_mining_fee_value]}> {this.props.txData.coinType}</Text>
                         </Text>
 
                         <View style={styles.dash}/>

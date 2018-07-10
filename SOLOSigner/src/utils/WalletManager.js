@@ -186,46 +186,6 @@ module.exports.viewBackupPhrase = function(pin) {
     return null;
 };
 
-signBTCTransaction = function(txData, privKeys, network, callback){
-    let params = txData.params;
-    params.outputs[0].value *= 100000000; //(in satoshis)
-    console.log("Sign BTC tx param: " + JSON.stringify(params));
-    RESTService.createNewBTCTransaction(params)
-    .then(result => {
-        handleSignTransaction(result, privKeys, network, (error, result) => {
-            if (typeof callback === 'function') {
-                callback(error, result);
-            }
-        });
-    })
-    .catch(error => {
-        if (typeof callback === 'function') {
-            callback(error, null);
-        }
-    });
-}
-
-signETHTransaction = function(txData, privKeys, network, callback){
-    let params = txData.params;
-    let etherAmount = params.outputs[0].value;
-    params.outputs[0].value = Web3.utils.toWei(etherAmount.toString(), 'ether'); //(in wei)
-    console.log("Sign ETH tx param: " + JSON.stringify(params));
-    RESTService.createNewETHTransaction(params)
-    .then(result => {
-        handleSignTransaction(result, privKeys, network, (error, result) => {
-            if (typeof callback === 'function') {
-                callback(error, result);
-            }
-        });
-    })
-    .catch(error => {
-        console.log('Sign ETH error: ' + (error.errors || error));
-        if (typeof callback === 'function') {
-            callback(error.errors || error, null);
-        }
-    });
-}
-
 // Serialize returns the ECDSA signature in the more strict DER format.  Note
 // that the serialized bytes returned do not include the appended hash type
 // used in Bitcoin signature scripts.
@@ -288,39 +248,21 @@ signTxMessage = function(tosign, privateKey, net){
     return { signature : sign, publicKey : publicKey };
 }
 
-handleSignTransaction = function(result, privKeys, network, callback) {
-    if(result.errors && result.errors.length > 0){
-        if (typeof callback === 'function') {
-            console.warn("Error handle sign transaction: " + result.errors);
-            callback(result.errors, null);
-        }
-    } else {
-        let validateTx = result;
-        const net = (network == Constant.COIN_TYPE.BTC.network ? Bitcoin.networks.bitcoin : Bitcoin.networks.testnet);
-        // signing each of the hex-encoded string required to finalize the transaction
-        validateTx.pubkeys = [];
-        validateTx.signatures = [];
-        validateTx.tosign.map(function (tosign, index) {
-            var privateKey = privKeys[index];
-            var sign = signTxMessage(tosign, privateKey, net);
-            validateTx.pubkeys.push(sign.publicKey);
-            validateTx.signatures.push(sign.signature);
-        });
-        console.log('Signed transaction: ', validateTx);
-        let signedTransaction = JSON.stringify(validateTx);
-        console.log('Signed transaction: ', signedTransaction);
-        if (typeof callback === 'function') {
-            callback(null, signedTransaction);
-        }
-    }
-}
-
-getAllPrivateKeys = function(pin, inputs){
+getAllPrivateKeys = function(pin, inputs, coinType){
     let manager = DataManager.getInstance();
     var privKeys = [];
     inputs.map(input => {
         let address = input.addresses[0];
-        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address);
+        var caseInsensitive = false;
+        // Because Signer store ETH address in hex format
+        // Therefore, if inputs address formats are not in hex, they must be converted to hex.
+        if (coinType == Constant.COIN_TYPE.ETH.name) {
+            if(!address.startsWith("0x")){
+                address = "0x" + address;
+            }
+            caseInsensitive = true;
+        }
+        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address, caseInsensitive);
         if (!encryptedPrivateKey) {
             if (typeof callback === 'function') {
                 callback(new Error("Not support this address: " + address), null);
@@ -340,32 +282,35 @@ module.exports.signTransaction = function(txData, pin, callback){
         }
         return;
     }
-    var privKeys = getAllPrivateKeys(pin, txData.params.inputs);
+    var inputs = txData.params.tx.inputs;
+    var privKeys = getAllPrivateKeys(pin, inputs, txData.coinType);
     if (!privKeys || privKeys.length == 0) {
         if (typeof callback === 'function') {
-            callback(new Error("Can not load private keys."), null);
+            callback(Constant.ERROR_TYPE.INVALID_ADDRESS, null);
         }
         return;
     }
-    switch (txData.coinType) {
-        case Constant.COIN_TYPE.BTC.name: {
-            signBTCTransaction(txData, privKeys, txData.network, (error, result) => {
-                if (typeof callback === 'function') {
-                    callback(error, result);
-                }
-            });
-            break;
+
+    try {
+        var validateTx = txData.params;
+        var network = txData.network; 
+        const net = (network == Constant.COIN_TYPE.BTC.network ? Bitcoin.networks.bitcoin : Bitcoin.networks.testnet);
+        // signing each of the hex-encoded string required to finalize the transaction
+        validateTx.pubkeys = [];
+        validateTx.signatures = [];
+        validateTx.tosign.map(function (tosign, index) {
+            var privateKey = privKeys[index];
+            var sign = signTxMessage(tosign, privateKey, net);
+            validateTx.pubkeys.push(sign.publicKey);
+            validateTx.signatures.push(sign.signature);
+        });
+        let signedTransaction = JSON.stringify(validateTx);
+        if (typeof callback === 'function') {
+            callback(null, signedTransaction);
         }
-        case Constant.COIN_TYPE.ETH.name: {
-            signETHTransaction(txData, privKeys, txData.network, (error, result) => {
-                if (typeof callback === 'function') {
-                    callback(error, result);
-                }
-            });
-            break;
-        }
-        default: {
-            
+    } catch (error) {
+        if (typeof callback === 'function') {
+            callback(error, null);
         }
     }
 }
