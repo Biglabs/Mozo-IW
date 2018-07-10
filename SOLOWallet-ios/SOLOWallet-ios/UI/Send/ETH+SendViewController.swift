@@ -9,6 +9,7 @@
 import Foundation
 import JDStatusBarNotification
 import SwiftyJSON
+import SoloSDK
 
 extension SendViewController {
     func validateETH(value: String) -> Bool {
@@ -18,6 +19,29 @@ extension SendViewController {
             return false
         }
         return true
+    }
+    
+    func createNewEthTx(_ transaction: TransactionDTO, completion: @escaping (Any?, Error?) -> ()){
+        //Convert value from ether to wei
+        transaction.outputs?.forEach({ (output) in
+            output.value = output.value! * 1E+18
+        })
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.soloSDK?.api?.createNewEthTransaction(transaction) { value, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let connectionError = error {
+                    Utils.showError(connectionError)
+                }
+                return
+            }
+            let json = SwiftyJSON.JSON(value)
+            if let errors = json["errors"].array {
+                JDStatusBarNotification.show(withStatus: errors[0].string, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+                return
+            }
+            completion(json, nil)
+        }
     }
     
     func sendETH(_ signedTx: String){

@@ -43,11 +43,11 @@ public enum SignerError: Int {
     /// No Error occurred
     case none = 0
     
-    /// Error generated when the user cancells the sign request.
+    /// Error occour when the user cancel transacion signing request.
     case cancelled = 1
     
-    /// Error generated when the request is invalid.
-    case invalidRequest = 2
+    /// Error generated when address(es) is invalid.
+    case invalidAddress = 2
     
     /// Error generated when current signer is watch only
     case watchOnly = 3
@@ -62,7 +62,7 @@ extension SignerError: LocalizedError {
             return "No Error"
         case .cancelled:
             return "User cancelled"
-        case .invalidRequest:
+        case .invalidAddress:
             return "Signing request is invalid"
         case .watchOnly:
             return "Signer is watch only"
