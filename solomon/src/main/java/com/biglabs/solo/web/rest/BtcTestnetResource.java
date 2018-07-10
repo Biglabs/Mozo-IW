@@ -4,6 +4,7 @@ import com.biglabs.solo.blockcypher.BTCMainnetClient;
 import com.biglabs.solo.blockcypher.BTCTestnetClient;
 import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.blockcypher.model.BCYAddress;
+import com.biglabs.solo.blockcypher.model.blockchain.BtcBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
 import com.biglabs.solo.web.rest.vm.TransactionRequest;
@@ -63,6 +64,12 @@ public class BtcTestnetResource {
         IntermediaryTransaction tx = btcClient.sendSignedTransaction(txReq);
         return ResponseEntity.created(new URI("/api/btc/test/txs/" + tx.getTx().getHash()))
             .body(tx);
+    }
+
+    @GetMapping("/")
+    @Timed
+    public BtcBlockchain getBlockchainInfo() throws BlockCypherException {
+        return btcClient.getBlockchain();
     }
 
 }

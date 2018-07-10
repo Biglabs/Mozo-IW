@@ -17,7 +17,7 @@ public class TransactionRequest {
     private List<TxInput> inputs;
     @NotEmpty
     private List<TxOutput> outputs;
-
+    private BigDecimal fees;
     public List<TxInput> getInputs() {
         return inputs;
     }

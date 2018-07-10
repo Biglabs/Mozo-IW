@@ -4,6 +4,8 @@ import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.blockcypher.model.BCYAddress;
 import com.biglabs.solo.blockcypher.model.BlockCypherError;
 import com.biglabs.solo.blockcypher.model.Error;
+import com.biglabs.solo.blockcypher.model.blockchain.BtcBlockchain;
+import com.biglabs.solo.blockcypher.model.blockchain.EthBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
 import com.biglabs.solo.domain.enumeration.Network;
@@ -119,8 +121,10 @@ public class ETHClient {
         System.out.println("Create new tx to:  " + url);
         try {
             ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, transactionRequest, IntermediaryTransaction.class);
+            logger.debug("SUCCESS create tx: {}", res.getBody());
             return res.getBody();
         } catch (HttpStatusCodeException ex) {
+            logger.error("Cannot create tx for request {}", transactionRequest);
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
@@ -132,24 +136,37 @@ public class ETHClient {
             ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, signedTx, IntermediaryTransaction.class);
             return res.getBody();
         } catch (HttpStatusCodeException ex) {
+            logger.error("Cannot send signed tx for {}", signedTx);
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
+    }
+
+    public EthBlockchain getBlockchain() throws BlockCypherException {
+        String url = rootEP;
+        logger.debug("Get blockchain {}", url);
+        try {
+            ResponseEntity<EthBlockchain> res = restTemplate.getForEntity(url, EthBlockchain.class);
+            return res.getBody();
+        } catch (HttpStatusCodeException ex) {
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+        }
+
     }
 
     public static BlockCypherException getBlockCypherException(HttpStatusCodeException ex, String errMessage, HttpStatus status, String body) {
         ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
-            System.out.println("========= Body ");
-            System.out.println(body);
-            System.out.println("========= Body ");
+            logger.info("========= Error Body <<<");
+            logger.info(body);
+            logger.info("========= Error Body >>>");
             BlockCypherError error = om.readValue(body, BlockCypherError.class);
             if(error == null || error.getErrors().isEmpty()) {
+                logger.info("Cannot deserialize bcyerror. Try deserialize Error");
                 Error er = om.readValue(body, Error.class);
                 error.addError(er);
             }
-            System.out.println("=== BlockCypherError");
-            System.out.println(error);
+            logger.info("==== deserialize bcyerror {}", error);
             return new BlockCypherException(ex, errMessage, status.value(), error);
         } catch (IOException e) {
             return new BlockCypherException(ex, errMessage + " - " + e.getMessage() , status.value(), null);

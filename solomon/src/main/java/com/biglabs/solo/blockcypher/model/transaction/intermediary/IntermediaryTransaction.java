@@ -116,4 +116,14 @@ public class IntermediaryTransaction {
 //        return GsonFactory.getGson().toJson(this);
 //    }
 
+
+    @Override
+    public String toString() {
+        return "IntermediaryTransaction{" +
+            "tx=" + tx +
+            ", tosign=" + tosign +
+            ", signatures=" + signatures +
+            ", pubkeys=" + pubkeys +
+            '}';
+    }
 }

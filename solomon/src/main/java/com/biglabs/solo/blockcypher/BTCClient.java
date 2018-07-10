@@ -4,6 +4,7 @@ import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.blockcypher.model.BCYAddress;
 import com.biglabs.solo.blockcypher.model.BlockCypherError;
 import com.biglabs.solo.blockcypher.model.Error;
+import com.biglabs.solo.blockcypher.model.blockchain.BtcBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
 import com.biglabs.solo.web.rest.vm.TransactionRequest;
@@ -24,15 +25,19 @@ import java.util.Map;
  */
 public class BTCClient {
     private static final Logger logger = LoggerFactory.getLogger(BTCClient.class);
-    private final String addressEP;
-    private final String transactionEP ;
-    private final BCYContext bycContext;
-    private final RestOperations restTemplate;
+    protected final String rootEP;
+    protected final String addressEP;
+    protected final String transactionEP ;
+    protected final BCYContext bycContext;
+    protected final RestOperations restTemplate;
 
     public BTCClient(BCYContext bcyContext, RestOperations restOperations) {
         this.bycContext = bcyContext;
         this.restTemplate = restOperations;
-
+        this.rootEP = MessageFormat.format(bcyContext.BLOCK_CYPHER_ENDPOINT + "/{0}/{1}/{2}",
+            bycContext.getVersion(),
+            bycContext.getCoininfo().getCoin(),
+            bycContext.getCoininfo().getNetwork());
         this.addressEP = MessageFormat.format(bcyContext.BLOCK_CYPHER_ENDPOINT + "/{0}/{1}/{2}/addrs",
             bycContext.getVersion(),
             bycContext.getCoininfo().getCoin(),
@@ -46,7 +51,7 @@ public class BTCClient {
 
     public BCYAddress balance(String address) throws BlockCypherException {
         String url = MessageFormat.format(addressEP + "/{0}/balance", address);
-        System.out.println("Get balance " + url);
+        logger.debug("Get balance " + url);
         try {
             ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(url, BCYAddress.class);
             return ret.getBody();
@@ -91,7 +96,7 @@ public class BTCClient {
 
     public Transaction pushRawTransaction(String rawTx) throws BlockCypherException {
         String url = MessageFormat.format(transactionEP + "/push?token={0}", bycContext.getToken());
-        System.out.println("Push raw tx to:  " + url);
+        logger.debug("Push raw tx to:  " + url);
         try {
             Map<String, String> rr = new HashMap<>();
             rr.put("tx", rawTx);
@@ -107,38 +112,52 @@ public class BTCClient {
         logger.info("Create new tx to:  " + url);
         try {
             ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, transactionRequest, IntermediaryTransaction.class);
+            logger.debug("SUCCESS create tx: {}", res.getBody());
             return res.getBody();
         } catch (HttpStatusCodeException ex) {
+            logger.error("Cannot create tx for request {}", transactionRequest);
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
 
     public IntermediaryTransaction sendSignedTransaction(IntermediaryTransaction signedTx) throws BlockCypherException {
         String url = MessageFormat.format(transactionEP + "/send?token={0}", "618c6ab8511347f78f97f3d687c86b22");
-        System.out.println("Create new tx to:  " + url);
+        logger.debug("Create new tx to:  " + url);
         try {
             ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, signedTx, IntermediaryTransaction.class);
             return res.getBody();
         } catch (HttpStatusCodeException ex) {
+            logger.error("Cannot send signed tx for {}", signedTx);
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
 
+    public BtcBlockchain getBlockchain() throws BlockCypherException {
+        String url = rootEP;
+        logger.debug("Get blockchain {}", url);
+        try {
+            ResponseEntity<BtcBlockchain> res = restTemplate.getForEntity(url, BtcBlockchain.class);
+            return res.getBody();
+        } catch (HttpStatusCodeException ex) {
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+        }
+
+    }
 
     public static BlockCypherException getBlockCypherException(HttpStatusCodeException ex, String errMessage, HttpStatus status, String body) {
         ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
-            System.out.println("========= Body <<<");
-            System.out.println(body);
-            System.out.println("========= Body >>>");
+            logger.debug("========= Body <<<");
+            logger.debug(body);
+            logger.debug("========= Body >>>");
             BlockCypherError error = om.readValue(body, BlockCypherError.class);
             if(error == null || error.getErrors().isEmpty()) {
                 Error er = om.readValue(body, Error.class);
                 error.addError(er);
             }
-            System.out.println("=== BlockCypherError");
-            System.out.println(error);
+            logger.debug("=== BlockCypherError");
+            logger.debug(error.toString());
             return new BlockCypherException(ex, errMessage, status.value(), error);
         } catch (IOException e) {
             return new BlockCypherException(ex, errMessage + " - " + e.getMessage() , status.value(), null);
