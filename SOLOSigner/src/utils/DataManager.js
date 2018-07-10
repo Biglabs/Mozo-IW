@@ -138,13 +138,20 @@ class DataManager {
             }
         } else {
             let addresses = DataManager.realm.objects('Address');
-            var prvKey = null;
-            addresses.map(item => {
+            for(var i = 0; i < address.length; i++) {
+                let item = addresses[i];
                 if (item.address.toUpperCase() == address.toUpperCase()) {
-                    prvKey = item.prvKey;
+                    return item.prvKey;
                 }
-            });
-            return prvKey;
+            }
+
+            // var prvKey = null;
+            // addresses.map(item => {
+            //     if (item.address.toUpperCase() == address.toUpperCase()) {
+            //         prvKey = item.prvKey;
+            //     }
+            // });
+            // return prvKey;
         }
         return null;
     }

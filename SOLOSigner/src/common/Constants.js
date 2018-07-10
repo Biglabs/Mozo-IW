@@ -58,26 +58,20 @@ const Constants = {
             detail: "User are in offline mode, there is no wallet info at this time.",
             type: "Infrastructure & Business"
         },
-        CREATE_TRANSACTION_FAIL: {
-            code: "ERR-002",
-            title: "Transaction is created unsuccessfully!",
-            detail: "No internet while requesting new transaction.\nServer do not response while requesting new transaction.",
-            type: "Infrastructure & Business"
-        },
 	    CANCEL_REQUEST: {
-            code: "ERR-003",
+            code: "ERR-002",
             title: "User cancel request.",
             detail: "User click cancel button or back button.",
             type: "Business"
         },
         TIME_OUT_CONFIRM: {
-            code: "ERR-004",
+            code: "ERR-003",
             title: "Timeout confirmation",
             detail: "User wait too long for confirmation.",
             type: "Business"
         },
         INVALID_ADDRESS: {
-            code: "ERR-005",
+            code: "ERR-004",
             title: "Invalid address",
             detail: "Address(es) is not created by Signer.",
             type: "Business"

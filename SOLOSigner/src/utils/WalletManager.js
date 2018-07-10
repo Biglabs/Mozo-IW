@@ -231,27 +231,32 @@ canonicalizeInt = function (buffer) {
  * @returns {Object}
  */
 signTxMessage = function(tosign, privateKey, net){
-    var sign = null;
-    var publicKey = null;
-    if(Web3.utils.isHex(privateKey)){ //ETH
-        let buffer = ethUtil.toBuffer(privateKey);
-        publicKey = ethUtil.privateToPublic(buffer).toString('hex');
-        let tosignBuffer = new Buffer(tosign, 'hex');
-        let msgSign = ethUtil.ecsign(tosignBuffer, buffer);
-        sign = serialize(msgSign.v, msgSign.r, msgSign.s);
-        console.log('Sign: ' + sign);
-    } else { //BTC
-        let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, net);
-        publicKey = keyPair.getPublicKeyBuffer().toString('hex');
-        sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
+    try {
+        var sign = null;
+        var publicKey = null;
+        if(Web3.utils.isHex(privateKey)){ //ETH
+            let buffer = ethUtil.toBuffer(privateKey);
+            let tosignBuffer = new Buffer(tosign, 'hex');
+            let msgSign = ethUtil.ecsign(tosignBuffer, buffer);
+            sign = serialize(msgSign.v, msgSign.r, msgSign.s);
+            console.log('Sign: ' + sign);
+        } else { //BTC
+            let keyPair = new Bitcoin.ECPair.fromWIF(privateKey, net);
+            publicKey = keyPair.getPublicKeyBuffer().toString('hex');
+            sign = keyPair.sign(new Buffer(tosign, 'hex')).toDER().toString('hex');
+        }
+        return { signature : sign, publicKey : publicKey };
+    } catch (error) {
+        console.log("Error signTxMessage: " + error);
     }
-    return { signature : sign, publicKey : publicKey };
+    return null;
 }
 
 getAllPrivateKeys = function(pin, inputs, coinType){
     let manager = DataManager.getInstance();
     var privKeys = [];
-    inputs.map(input => {
+    for(var i = 0; i < inputs.length; i++) {
+        let input = inputs[i];
         let address = input.addresses[0];
         // Because Signer store ETH address in hex format
         // Therefore, if inputs address formats are not in hex, they must be converted to hex.
@@ -263,14 +268,11 @@ getAllPrivateKeys = function(pin, inputs, coinType){
         }
         let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address, true);
         if (!encryptedPrivateKey) {
-            if (typeof callback === 'function') {
-                callback(new Error("Not support this address: " + address), null);
-            }
-            return;
+            return null;
         }
         let privateKey = encryption.decrypt(encryptedPrivateKey, pin);
-        privKeys.push(privateKey);               
-    });
+        privKeys.push(privateKey);
+    }
     return privKeys;
 }
 
@@ -303,6 +305,12 @@ module.exports.signTransaction = function(txData, pin, callback){
             validateTx.pubkeys.push(sign.publicKey);
             validateTx.signatures.push(sign.signature);
         });
+        if (validateTx.signatures.length != validateTx.tosign.length) {
+            if (typeof callback === 'function') {
+                callback(Constant.ERROR_TYPE.INVALID_ADDRESS, null);
+            }
+            return;
+        }
         let signedTransaction = JSON.stringify(validateTx);
         if (typeof callback === 'function') {
             callback(null, signedTransaction);

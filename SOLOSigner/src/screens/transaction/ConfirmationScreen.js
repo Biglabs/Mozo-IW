@@ -53,7 +53,7 @@ export default class ConfirmationScreen extends React.Component {
                         Globals.responseToReceiver({signedTransaction: result}, this.props.txData);
                     } else {
                         this.setState({isShowingLoading: false});
-                        alert(error.message);
+                        alert(error.message || error.detail);
                     }
                 });
             }, 5);
