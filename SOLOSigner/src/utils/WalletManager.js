@@ -253,7 +253,6 @@ getAllPrivateKeys = function(pin, inputs, coinType){
     var privKeys = [];
     inputs.map(input => {
         let address = input.addresses[0];
-        var caseInsensitive = false;
         // Because Signer store ETH address in hex format
         // Therefore, if inputs address formats are not in hex, they must be converted to hex.
         if (coinType == Constant.COIN_TYPE.ETH.name) {
@@ -262,7 +261,7 @@ getAllPrivateKeys = function(pin, inputs, coinType){
             }
             caseInsensitive = true;
         }
-        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address, caseInsensitive);
+        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address, true);
         if (!encryptedPrivateKey) {
             if (typeof callback === 'function') {
                 callback(new Error("Not support this address: " + address), null);
