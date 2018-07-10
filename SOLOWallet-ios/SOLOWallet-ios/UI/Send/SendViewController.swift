@@ -59,6 +59,7 @@ class SendViewController: AbstractViewController {
         self.scannerText.addTarget(self, action: #selector(self.scanQRCode), for: .touchUpInside)
         self.scannerText.tintColor = ThemeManager.shared.font
         self.addressTextField.textColor = ThemeManager.shared.font
+        self.addressTextField.addTarget(self, action: #selector(self.addressTextFieldDidChange(_:)), for: .editingChanged)
         
         //value coin
         self.inputCoinView.layer.cornerRadius = 5
@@ -120,6 +121,11 @@ class SendViewController: AbstractViewController {
         if let usd = self.currentCoin?.usd {
             self.inputUSDLabel?.text = "US$\(Utils.roundDouble(usd*balance))"
         }
+//        self.validateCurrentTransaction(isSigning: false)
+    }
+    
+    @objc func addressTextFieldDidChange(_ textField: UITextField) {
+        self.validateCurrentTransaction(isSigning: false)
     }
     
     override func updateAddress(_ sender: Any? = nil) {
@@ -179,19 +185,44 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        var isValidate = false
-        if self.currentCoin?.coin == CoinType.ETH.key {
-            isValidate = self.validateETH(value: value)
-        } else if self.currentCoin?.coin == CoinType.BTC.key {
-            isValidate = self.validateBTC()
+        self.validateCurrentTransaction(isSigning: true)
+    }
+    
+    func validateCurrentTransaction(isSigning: Bool){
+        let input = InputDTO.init(addresses: [(self.currentCoin?.address)!])!
+        let trimToAddress = self.addressTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        var value = 0.0
+        if !(self.inputCoinTextField.text?.isEmpty)! {
+            value = Double(self.inputCoinTextField.text!)!
         }
-        if isValidate {
-            let input = InputDTO.init(addresses: [from])!
-            let trimToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
-            let output = OutputDTO.init(addresses: [trimToAddress], value: Double(value)!)!
-            let transaction = TransactionDTO.init(inputs: [input], outputs: [output])
-            self.soloSDK.singner?.signTransaction(transaction: transaction!, coinType: (currentCoin?.coin!)!, network: (currentCoin?.network)!){ result in
-                self.handleSignResult(result:result)
+        let output = OutputDTO.init(addresses: [trimToAddress!], value: value)!
+        let transaction = TransactionDTO.init(inputs: [input], outputs: [output])
+        
+        self.validateTransaction(transaction: transaction!, isSigning: isSigning)
+    }
+    
+    func validateTransaction(transaction: TransactionDTO, isSigning: Bool){
+        if self.currentCoin?.coin == CoinType.ETH.key {
+            self.createNewEthTx(transaction){value, error in
+                self.handleValidationResult(value: value, isSigning: isSigning)
+            }
+        } else if self.currentCoin?.coin == CoinType.BTC.key {
+            self.createNewBtcTx(transaction){value, error in
+                self.handleValidationResult(value: value, isSigning: isSigning)
+            }
+        }
+    }
+    
+    func handleValidationResult(value: Any?, isSigning: Bool){
+        if value != nil {
+            let interTx = IntermediaryTransactionDTO.init(json: value as! JSON)!
+            if isSigning {
+                self.soloSDK.singner?.signTransaction(transaction: interTx, coinType: (self.currentCoin?.coin!)!, network: (self.currentCoin?.network)!){ result in
+                    self.handleSignResult(result:result)
+                }
+            } else {
+                let fee = Double((interTx.tx?.fees)!) / (self.currentCoin?.coin == CoinType.BTC.key ? 1E+8 : 1E+18)
+                self.gasTextField?.text = String(format: "%f", fee)
             }
         }
     }

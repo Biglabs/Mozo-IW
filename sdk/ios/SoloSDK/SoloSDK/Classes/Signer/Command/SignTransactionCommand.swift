@@ -19,7 +19,7 @@ public final class SignTransactionCommand: Command {
     
     public var network: String
     
-    public var transaction: TransactionDTO?
+    public var transaction: IntermediaryTransactionDTO?
     
     public func requestURL() -> URL {
         var urlStr = Configuration.SIGNER_URL_SCHEME + "://"
@@ -45,7 +45,7 @@ public final class SignTransactionCommand: Command {
         return components.url!
     }
     
-    public init(bundleId: String, coinType: String, network: String, transaction: TransactionDTO, callbackScheme: String? = nil, completion: @escaping (Result<String, SignerError>) -> Void) {
+    public init(bundleId: String, coinType: String, network: String, transaction: IntermediaryTransactionDTO, callbackScheme: String? = nil, completion: @escaping (Result<String, SignerError>) -> Void) {
         self.bundleId = bundleId
         self.coinType = coinType
         self.network = network
@@ -80,8 +80,7 @@ public final class SignTransactionCommand: Command {
             return false
         }
         
-        let transaction = TransactionDTO(json: result)
-        guard let signedTransaction = transaction?.signedTransaction else {
+        guard let signedTransaction = result["signedTransaction"].string else {
             return false
         }
         
@@ -91,7 +90,7 @@ public final class SignTransactionCommand: Command {
 }
 
 public extension SignerManager {
-    public func signTransaction(transaction: TransactionDTO, coinType: String, network: String, completion: @escaping (Result<String, SignerError>) -> Void){
+    public func signTransaction(transaction: IntermediaryTransactionDTO, coinType: String, network: String, completion: @escaping (Result<String, SignerError>) -> Void){
         let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, network: network, transaction: transaction, completion: completion)
         execute(command: command)
     }
