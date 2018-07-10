@@ -4,7 +4,7 @@ import StyleSheet from "react-native-extended-stylesheet";
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
-import RNFS from "react-native-fs";
+import RNFileSystem from "react-native-fs";
 import Share from 'react-native-share';
 import {icExportQR, icExportText} from "../../res/icons";
 import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput} from "../../components";
@@ -14,10 +14,6 @@ import Constant from "../../common/Constants";
 import {inject} from "mobx-react";
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-const backupFolder = Platform.select({
-    ios: RNFS.DocumentDirectoryPath,
-    android: `${RNFS.ExternalStorageDirectoryPath}/Documents`
-}) + '/SoloSigner';
 
 @inject("backupWalletStateStore")
 export default class BackupWalletScreen extends React.Component {
@@ -28,8 +24,8 @@ export default class BackupWalletScreen extends React.Component {
         this.borderNormal = StyleSheet.value('$borderColor');
 
         /* Create backup folder if not exist for both platform */
-        RNFS.exists(backupFolder).then(existing => {
-            if (!existing) RNFS.mkdir(backupFolder);
+        RNFileSystem.exists(Constant.BACKUP_FOLDER).then(existing => {
+            if (!existing) RNFileSystem.mkdir(Constant.BACKUP_FOLDER);
         });
     }
 
@@ -67,8 +63,8 @@ export default class BackupWalletScreen extends React.Component {
                     if (granted) {
                         this.qrCode.toDataURL(data => {
                             const today = new Date();
-                            let filePath = `${backupFolder}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.png`;
-                            RNFS.writeFile(filePath, data, 'base64')
+                            let filePath = `${Constant.BACKUP_FOLDER}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.png`;
+                            RNFileSystem.writeFile(filePath, data, 'base64')
                                 .then(() => {
                                     let shareOptions = {
                                         url: `file://${filePath}`,
@@ -87,8 +83,8 @@ export default class BackupWalletScreen extends React.Component {
         PermissionUtils.requestStoragePermission().then(granted => {
             if (granted) {
                 const today = new Date();
-                let filePath = `${backupFolder}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.txt`;
-                RNFS.writeFile(filePath, this.state.encryptedData)
+                let filePath = `${Constant.BACKUP_FOLDER}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.txt`;
+                RNFileSystem.writeFile(filePath, this.state.encryptedData)
                     .then(() => {
                         let shareOptions = {
                             url: `file://${filePath}`,
