@@ -1,6 +1,9 @@
 import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons/index';
 
 const Constants = {
+    SATOSHI_UNIT: 100000000,
+    WEI_UNIT: 1000000000000000000,
+    CONFIRM_TIME_OUT: 1000, // 1 minute by default
     ACTION_SCHEME: {
         NONE: "NONE",
         GET_WALLET: "GET_WALLET",
@@ -82,6 +85,7 @@ const Constants = {
     FLAG_SCHEME_DATA: '@schemeData:key',
     FLAG_ADDRESS_SYNC: '@addressSync:key',
     FLAG_BACKUP_WALLET: '@backupWallet:key',
+    FLAG_CONFIRM_TIME_OUT: '@confirmTimeout:key'
 };
 
 const DEFAULT_COINS = [Constants.COIN_TYPE.BTC, Constants.COIN_TYPE.BTC_TEST, Constants.COIN_TYPE.ETH];

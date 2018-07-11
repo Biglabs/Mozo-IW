@@ -38,10 +38,10 @@ export default class ConfirmationScreen extends React.Component {
             }
         });
         if (this.value > 0) {
-            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
+            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
         }
 
-        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
+        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
     }
 
     onConfirmTransaction() {
