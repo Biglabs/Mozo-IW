@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     content: {
+        width: '100%',
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -274,6 +275,8 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         paddingBottom: 27,
+        paddingLeft: '$screen_padding_horizontal',
+        paddingRight: '$screen_padding_horizontal',
     },
     button_confirm: {
         height: '$screen_padding_bottom',
