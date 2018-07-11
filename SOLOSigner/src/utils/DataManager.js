@@ -144,14 +144,6 @@ class DataManager {
                     return item.prvKey;
                 }
             }
-
-            // var prvKey = null;
-            // addresses.map(item => {
-            //     if (item.address.toUpperCase() == address.toUpperCase()) {
-            //         prvKey = item.prvKey;
-            //     }
-            // });
-            // return prvKey;
         }
         return null;
     }
