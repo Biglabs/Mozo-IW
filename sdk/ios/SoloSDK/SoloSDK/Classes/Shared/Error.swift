@@ -35,37 +35,3 @@ extension ConnectionError: LocalizedError {
         }
     }
 }
-
-public enum SignerError: Int {
-    /// Unknown Error
-    case unknown = -1
-    
-    /// No Error occurred
-    case none = 0
-    
-    /// Error occour when the user cancel transacion signing request.
-    case cancelled = 1
-    
-    /// Error generated when address(es) is invalid.
-    case invalidAddress = 2
-    
-    /// Error generated when current signer is watch only
-    case watchOnly = 3
-}
-
-extension SignerError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .unknown:
-            return "Unknown Error"
-        case .none:
-            return "No Error"
-        case .cancelled:
-            return "User cancelled"
-        case .invalidAddress:
-            return "Signing request is invalid"
-        case .watchOnly:
-            return "Signer is watch only"
-        }
-    }
-}

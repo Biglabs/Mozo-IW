@@ -23,14 +23,14 @@ public class SignWalletCommand: Command {
     }
     
     /// Completion closure
-    public var completion: (Result<String, SignerError>) -> Void
+    public var completion: (Result<String, ErrorDTO>) -> Void
     
-    public init(bundleId: String, completion: @escaping (Result<String, SignerError>) -> Void) {
+    public init(bundleId: String, completion: @escaping (Result<String, ErrorDTO>) -> Void) {
         self.bundleId = bundleId
         self.completion = completion
     }
     
-    public  func handleCallback(url: URL) -> Bool {
+    public func handleCallback(url: URL) -> Bool {
 //        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false), components.host == name else {
 //            return false
 //        }
@@ -72,7 +72,12 @@ public class SignWalletCommand: Command {
             return false
         }
         
-        guard let walletId = result["walletId"].string else {
+        if let error = result.error, error.code != nil {
+            completion(.failure(error))
+            return false
+        }
+        
+        guard let walletId = result.walletId else {
             return false
         }
         
@@ -82,7 +87,7 @@ public class SignWalletCommand: Command {
 }
 
 public extension SignerManager {
-    public func getWallet(_ completion: @escaping (Result<String, SignerError>) -> Void) {
+    public func getWallet(_ completion: @escaping (Result<String, ErrorDTO>) -> Void) {
 //        guard self.hasSignerApp else {
 //            return fallbackToInstall()
 //        }

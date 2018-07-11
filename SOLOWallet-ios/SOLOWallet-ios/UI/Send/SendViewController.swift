@@ -239,14 +239,12 @@ class SendViewController: AbstractViewController {
         }
     }
     
-    func handleSignResult(result: Result<String, SignerError>){
+    func handleSignResult(result: Result<String, ErrorDTO>){
         switch result {
         case .success(let signedTransaction):
             self.sendAlertController(signedTransaction)
         case .failure(let error):
-            let alert = UIAlertController(title: "Signed Message", message: "", preferredStyle: .alert)
-            alert.title = alert.title! + " Error"
-            alert.message = error.localizedDescription
+            let alert = UIAlertController(title: error.title, message: error.detail, preferredStyle: .alert)
             alert.addAction(.init(title: "OK", style: .default, handler: nil))
             Utils.getTopViewController().present(alert, animated: true, completion: nil)
         }

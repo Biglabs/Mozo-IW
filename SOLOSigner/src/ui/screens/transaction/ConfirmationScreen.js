@@ -1,8 +1,10 @@
 import React from "react";
-import {ActivityIndicator, Alert, Linking, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Alert, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
+import CountDown from 'react-native-countdown-component';
+
 import {ScreenHeaderActions, Text} from "../../components";
 import Globals from '../../../services/GlobalService';
 import Constant from '../../../helpers/Constants';
@@ -38,10 +40,12 @@ export default class ConfirmationScreen extends React.Component {
             }
         });
         if (this.value > 0) {
-            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
+            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
         }
 
-        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? 100000000 : 1000000000000000000);
+        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
+
+        this.confirmTimeout = Constant.CONFIRM_TIME_OUT;
     }
 
     onConfirmTransaction() {
@@ -53,7 +57,7 @@ export default class ConfirmationScreen extends React.Component {
                         Globals.responseToReceiver({signedTransaction: result}, this.props.txData);
                     } else {
                         this.setState({isShowingLoading: false});
-                        alert(error.message || error.detail);
+                        console.log(error.message || error.detail);
                     }
                 });
             }, 5);
@@ -62,6 +66,20 @@ export default class ConfirmationScreen extends React.Component {
 
     cancelTransaction() {
         Actions.pop();
+        Globals.responseToReceiver({error: Constant.ERROR_TYPE.CANCEL_REQUEST}, this.props.txData);
+    }
+
+    handleConfirmTimeout() {
+        Alert.alert(
+            'Transaction confirmation timeout',
+            'This transaction has been time out. Please try again.',
+            [
+                {text: 'OK', onPress: () => {
+                    this.cancelTransaction();
+                }},
+            ],
+            { cancelable: false }
+        );
     }
 
     render() {
@@ -133,19 +151,35 @@ export default class ConfirmationScreen extends React.Component {
                                 <Text style={styles.confirmation_text}>Hold 5s to confirm send transaction</Text>
                             </View>
                         }
-                        <TouchableOpacity style={styles.button_confirm}
-                                          onPressIn={() => this.setState({pressedConfirm: true})}
-                                          onPressOut={() => {
-                                              this.setState({pressedConfirm: false});
-                                              this.onConfirmTransaction();
-                                          }}>
-                            <SvgUri
-                                fill={StyleSheet.value('$primaryColor')}
-                                width={20}
-                                height={20}
-                                svgXmlData={icCheck}/>
-                            <Text style={styles.text_confirm}>Confirm</Text>
-                        </TouchableOpacity>
+                        <View style={styles.confirmation_footer}>
+                            <CountDown
+                                style={styles.countdown_confirm}
+                                digitBgColor={StyleSheet.value('$primaryColor')}
+                                digitTxtColor={StyleSheet.value('$screenBackground')}
+                                timeTxtColor={StyleSheet.value('$primaryColor')}
+                                until={this.confirmTimeout}
+                                onFinish={() => this.handleConfirmTimeout()}
+                                size={20}
+                                timeToShow={['M', 'S']}
+                            />
+                            <TouchableOpacity style={styles.button_confirm}
+                                            onPressIn={() => this.setState({pressedConfirm: true})}
+                                            onPressOut={() => {
+                                                this.setState({pressedConfirm: false});
+                                                this.onConfirmTransaction();
+                                            }}>
+                                <SvgUri
+                                    fill={StyleSheet.value('$primaryColor')}
+                                    width={20}
+                                    height={20}
+                                    svgXmlData={icCheck}/>
+                                <Text style={styles.text_confirm}>Confirm</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.text_reject} onPress={() => {
+                                            this.cancelTransaction();
+                                        }}>Reject</Text>
+                        </View>
+                        
                     </View>
                 </View>
             )
@@ -160,19 +194,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    oading_container: {
-        backgroundColor: '$primaryColor',
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     container: {
         alignItems: 'flex-start',
         backgroundColor: '$screenBackground',
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
+    },
+    confirmation_footer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     content: {
         flex: 1,
@@ -217,6 +252,14 @@ const styles = StyleSheet.create({
         fontFamily: '$primaryFontBold',
         marginLeft: 6,
     },
+    text_reject: {
+        color: '$errorColor',
+        fontSize: 14,
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        paddingBottom: 27,
+    },
     button_confirm: {
         height: '$screen_padding_bottom',
         alignItems: 'center',
@@ -226,6 +269,9 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: '36%',
         right: '36%',
+    },
+    countdown_confirm: {
+        marginBottom: 100
     },
     confirmation_container: {
         alignItems: 'center',
