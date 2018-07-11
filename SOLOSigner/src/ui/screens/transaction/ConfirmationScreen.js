@@ -1,5 +1,5 @@
 import React from "react";
-import {ActivityIndicator, Alert, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Alert, AppState, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
@@ -80,6 +80,21 @@ export default class ConfirmationScreen extends React.Component {
             ],
             { cancelable: false }
         );
+    }
+
+    componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+        if (nextAppState !== 'active') {
+            console.log('App has come to the background!')
+            Actions.pop();
+        }
     }
 
     render() {
