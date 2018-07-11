@@ -40,6 +40,6 @@ export default class SelectionGroup extends React.Component {
 }
 
 SelectionGroup.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
     onSelectionChanged: PropTypes.func,
 };

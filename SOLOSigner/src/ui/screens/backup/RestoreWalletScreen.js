@@ -1,5 +1,5 @@
 import React from "react";
-import {TouchableOpacity, View} from 'react-native';
+import {Platform, TouchableOpacity, View} from 'react-native';
 import StyleSheet from "react-native-extended-stylesheet";
 import {Actions} from "react-native-router-flux";
 import RNFileSelector from 'react-native-file-selector';
@@ -20,7 +20,7 @@ export default class RestoreWalletScreen extends React.Component {
             if (granted) {
                 let fileSelectorProps = {
                     title: 'Choose backup file',
-                    filter: ".*\\.png$|.*\\.txt$",
+                    filter: Platform.select({ios: [], android: ".*\\.png$|.*\\.txt$"}),
                     onDone: this.doReadFile
                 };
 
