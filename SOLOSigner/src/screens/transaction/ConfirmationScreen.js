@@ -60,6 +60,10 @@ export default class ConfirmationScreen extends React.Component {
         });
     }
 
+    cancelTransaction() {
+        Actions.pop();
+    }
+
     render() {
         if (this.state.isShowingLoading)
             return (
@@ -73,7 +77,11 @@ export default class ConfirmationScreen extends React.Component {
                     <ScreenHeaderActions
                         title='Send Confirmation'
                         backgroundColor={StyleSheet.value('$primaryColor')}
-                        accentColor='#ffffff'/>
+                        accentColor='#ffffff'
+                        onBackPress={() => {
+                            this.cancelTransaction();
+                        }}
+                        />
 
                     <View style={styles.content}>
                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
