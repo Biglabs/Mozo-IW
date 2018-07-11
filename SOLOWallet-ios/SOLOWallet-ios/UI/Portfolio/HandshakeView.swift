@@ -61,9 +61,7 @@ public class HandshakeView: UIView {
                     let drawerController = appDelegate.drawerController else {return}
                 drawerController.portfolioVC.createTableView()
             case .failure(let error):
-                let alert = UIAlertController(title: "Handshake", message: "", preferredStyle: .alert)
-                alert.title = alert.title! + " Error"
-                alert.message = error.localizedDescription
+                let alert = UIAlertController(title: error.title, message: error.detail, preferredStyle: .alert)
                 alert.addAction(.init(title: "OK", style: .default, handler: nil))
                 Utils.getTopViewController().present(alert, animated: true, completion: nil)
             }

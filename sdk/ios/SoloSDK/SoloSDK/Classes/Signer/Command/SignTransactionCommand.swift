@@ -29,7 +29,7 @@ public final class SignTransactionCommand: Command {
     }
     
     /// Completion closure
-    public var completion: (Result<String, SignerError>) -> Void
+    public var completion: (Result<String, ErrorDTO>) -> Void
     
     /// Callback scheme
     public var callbackScheme: String?
@@ -45,7 +45,7 @@ public final class SignTransactionCommand: Command {
         return components.url!
     }
     
-    public init(bundleId: String, coinType: String, network: String, transaction: IntermediaryTransactionDTO, callbackScheme: String? = nil, completion: @escaping (Result<String, SignerError>) -> Void) {
+    public init(bundleId: String, coinType: String, network: String, transaction: IntermediaryTransactionDTO, callbackScheme: String? = nil, completion: @escaping (Result<String, ErrorDTO>) -> Void) {
         self.bundleId = bundleId
         self.coinType = coinType
         self.network = network
@@ -80,7 +80,12 @@ public final class SignTransactionCommand: Command {
             return false
         }
         
-        guard let signedTransaction = result["signedTransaction"].string else {
+        if let error = result.error, error.code != nil {
+            completion(.failure(error))
+            return false
+        }
+        
+        guard let signedTransaction = result.signedTransaction else {
             return false
         }
         
@@ -90,7 +95,7 @@ public final class SignTransactionCommand: Command {
 }
 
 public extension SignerManager {
-    public func signTransaction(transaction: IntermediaryTransactionDTO, coinType: String, network: String, completion: @escaping (Result<String, SignerError>) -> Void){
+    public func signTransaction(transaction: IntermediaryTransactionDTO, coinType: String, network: String, completion: @escaping (Result<String, ErrorDTO>) -> Void){
         let command = SignTransactionCommand(bundleId: self.bundleId, coinType: coinType, network: network, transaction: transaction, completion: completion)
         execute(command: command)
     }
