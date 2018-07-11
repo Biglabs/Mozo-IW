@@ -3,7 +3,7 @@ import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons/index';
 const Constants = {
     SATOSHI_UNIT: 100000000,
     WEI_UNIT: 1000000000000000000,
-    CONFIRM_TIME_OUT: 1000, // 1 minute by default
+    CONFIRM_TIME_OUT: 60, // 1 minute by default
     ACTION_SCHEME: {
         NONE: "NONE",
         GET_WALLET: "GET_WALLET",
