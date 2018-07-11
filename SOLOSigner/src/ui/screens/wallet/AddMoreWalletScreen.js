@@ -6,7 +6,7 @@ import {Actions} from 'react-native-router-flux';
 import {CoinItemView, ScreenHeaderActions, Text, TextInput} from "../../components";
 import Constant from '../../../helpers/Constants';
 import {inject} from "mobx-react";
-import {icSearch} from '../../../res/icons/index';
+import {icSearch} from '../../../res/icons';
 
 @inject("selectedWalletsStore")
 export default class AddMoreWalletScreen extends Component {

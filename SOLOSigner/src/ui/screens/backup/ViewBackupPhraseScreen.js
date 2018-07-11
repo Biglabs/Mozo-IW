@@ -6,7 +6,7 @@ import {ScreenFooterActions, ScreenHeaderActions, Text} from "../../components";
 import WalletManager from '../../../services/WalletService';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
-import {icCancel, icWarning} from '../../../res/icons/index';
+import {icCancel, icWarning} from '../../../res/icons';
 
 export default class ViewBackupPhraseScreen extends React.Component {
 

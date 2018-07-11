@@ -5,7 +5,7 @@ import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {AnimatedView} from "../components";
 import Globals from '../../services/GlobalService';
-import {icSoloLogo} from '../../res/icons/index';
+import {icSoloLogo} from '../../res/icons';
 
 export default class SplashScreen extends React.Component {
 

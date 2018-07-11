@@ -2,8 +2,12 @@ import React from "react";
 import {TouchableOpacity, View} from 'react-native';
 import StyleSheet from "react-native-extended-stylesheet";
 import {Actions} from "react-native-router-flux";
-import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
+import RNFileSelector from 'react-native-file-selector';
+import RNFileSystem from "react-native-fs";
 import WalletManager from '../../../services/WalletService';
+import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
+import PermissionUtils from "../../../helpers/PermissionUtils";
+import Constant from "../../../helpers/Constants";
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
@@ -12,7 +16,30 @@ export default class RestoreWalletScreen extends React.Component {
     }
 
     openFileChooser = () => {
+        PermissionUtils.requestStoragePermission().then(granted => {
+            if (granted) {
+                let fileSelectorProps = {
+                    title: 'Choose backup file',
+                    filter: ".*\\.png$|.*\\.txt$",
+                    onDone: this.doReadFile
+                };
 
+                RNFileSystem.exists(Constant.BACKUP_FOLDER).then(existing => {
+                    if (existing) fileSelectorProps.path = Constant.BACKUP_FOLDER;
+                    RNFileSelector.Show(fileSelectorProps);
+                });
+            }
+        });
+    };
+
+    doReadFile = path => {
+        if (path && path.toLowerCase().endsWith('png')) {
+            //base64
+        } else if (path && path.toLowerCase().endsWith('txt')) {
+            RNFileSystem.readFile(path, 'utf8').then(data => {
+                this.onReceiveData(data);
+            });
+        }
     };
 
     onReceiveData(encryptedData) {
@@ -24,6 +51,16 @@ export default class RestoreWalletScreen extends React.Component {
         if (this.encryptedData && this.encryptPassword) {
             let result = WalletManager.restoreWallet(this.encryptedData, this.encryptPassword);
             this.setState({backupPhrase: result})
+        }
+    }
+
+    onBackPress() {
+        if (this.state.loadedBackupData) {
+            this.encryptedData = null;
+            this.encryptPassword = null;
+            this.setState({loadedBackupData: false});
+        } else {
+            Actions.pop();
         }
     }
 
@@ -80,7 +117,7 @@ export default class RestoreWalletScreen extends React.Component {
                 }
 
                 <ScreenFooterActions
-                    onBackPress={() => Actions.pop()}
+                    onBackPress={() => this.onBackPress()}
                     enabledContinue={this.state.loadedBackupData}
                     onContinuePress={() => this.doDecryptData()}/>
             </View>

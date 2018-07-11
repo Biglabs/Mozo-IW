@@ -19,12 +19,12 @@ import AddWalletScreen from './ui/screens/wallet/AddWalletScreen';
 import AddMoreWalletScreen from './ui/screens/wallet/AddMoreWalletScreen';
 import CreateWalletScreen from './ui/screens/wallet/CreateWalletScreen';
 import ImportWalletScreen from './ui/screens/wallet/ImportWalletScreen';
-import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
 import BackupWalletMenuScreen from './ui/screens/wallet/BackupWalletMenuScreen';
 import PaperWalletScreen from './ui/screens/wallet/PaperWalletScreen';
 
 /* backup screens */
 import BackupWalletScreen from './ui/screens/backup/BackupWalletScreen';
+import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
 import ConfirmBackupPhrase from './ui/screens/backup/ConfirmBackupPhraseScreen';
 import ViewBackupPhrase from './ui/screens/backup/ViewBackupPhraseScreen';
 

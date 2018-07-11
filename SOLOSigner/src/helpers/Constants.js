@@ -1,4 +1,11 @@
-import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons/index';
+import {Platform} from "react-native";
+import RNFileSystem from "react-native-fs";
+import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons';
+
+const defaultPath = Platform.select({
+    ios: RNFileSystem.DocumentDirectoryPath,
+    android: `${RNFileSystem.ExternalStorageDirectoryPath}/Documents`
+});
 
 const Constants = {
     ACTION_SCHEME: {
@@ -49,7 +56,7 @@ const Constants = {
             icon: icCoinMozo
         }
     },
-    ERROR_TYPE:{
+    ERROR_TYPE: {
         UNKNOWN: {},
         NONE: {},
         NO_WALLET_INFO: {
@@ -58,7 +65,7 @@ const Constants = {
             detail: "User are in offline mode, there is no wallet info at this time.",
             type: "Infrastructure & Business"
         },
-	    CANCEL_REQUEST: {
+        CANCEL_REQUEST: {
             code: "ERR-002",
             title: "User cancel request.",
             detail: "User click cancel button or back button.",
@@ -82,6 +89,7 @@ const Constants = {
     FLAG_SCHEME_DATA: '@schemeData:key',
     FLAG_ADDRESS_SYNC: '@addressSync:key',
     FLAG_BACKUP_WALLET: '@backupWallet:key',
+    BACKUP_FOLDER: `${defaultPath}/SoloSigner`,
 };
 
 const DEFAULT_COINS = [Constants.COIN_TYPE.BTC, Constants.COIN_TYPE.BTC_TEST, Constants.COIN_TYPE.ETH];

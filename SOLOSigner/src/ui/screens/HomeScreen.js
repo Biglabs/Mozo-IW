@@ -6,7 +6,7 @@ import {Actions} from 'react-native-router-flux';
 import {BackupWalletStateIcon, Text} from "../components";
 import LinkingManager from "../../services/LinkingService";
 import SchemeDataStore from '../../stores/SchemeDataStore';
-import {icBackup, icInformation, icNote, icSoloTitle, icSync} from '../../res/icons/index';
+import {icBackup, icInformation, icNote, icSoloTitle, icSync} from '../../res/icons';
 
 export default class HomeScreen extends React.Component {
 

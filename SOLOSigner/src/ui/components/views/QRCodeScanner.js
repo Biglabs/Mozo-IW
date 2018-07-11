@@ -7,7 +7,7 @@ import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {RNCamera} from 'react-native-camera';
 import SoloText from '../widgets/SoloText';
-import {icScanArea} from "../../../res/icons/index";
+import {icScanArea} from "../../../res/icons";
 
 export default class QRCodeScanner extends React.Component {
     constructor(props) {

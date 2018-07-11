@@ -6,7 +6,7 @@ import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
 import RNFileSystem from "react-native-fs";
 import Share from 'react-native-share';
-import {icExportQR, icExportText} from "../../../res/icons/index";
+import {icExportQR, icExportText} from "../../../res/icons";
 import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput} from "../../components";
 import WalletManager from '../../../services/WalletService';
 import PermissionUtils from "../../../helpers/PermissionUtils";

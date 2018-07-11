@@ -7,7 +7,7 @@ import {ScreenHeaderActions, Text} from "../../components";
 import Globals from '../../../services/GlobalService';
 import Constant from '../../../helpers/Constants';
 import WalletManager from '../../../services/WalletService';
-import {icCheck, icSend} from '../../../res/icons/index';
+import {icCheck, icSend} from '../../../res/icons';
 
 export default class ConfirmationScreen extends React.Component {
 
