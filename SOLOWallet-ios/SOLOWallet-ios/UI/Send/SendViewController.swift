@@ -121,11 +121,10 @@ class SendViewController: AbstractViewController {
         if let usd = self.currentCoin?.usd {
             self.inputUSDLabel?.text = "US$\(Utils.roundDouble(usd*balance))"
         }
-//        self.validateCurrentTransaction(isSigning: false)
     }
     
     @objc func addressTextFieldDidChange(_ textField: UITextField) {
-        self.validateCurrentTransaction(isSigning: false)
+//        self.validateCurrentTransaction(isSigning: false)
     }
     
     override func updateAddress(_ sender: Any? = nil) {
@@ -195,10 +194,23 @@ class SendViewController: AbstractViewController {
         if !(self.inputCoinTextField.text?.isEmpty)! {
             value = Double(self.inputCoinTextField.text!)!
         }
-        let output = OutputDTO.init(addresses: [trimToAddress!], value: value)!
+        let txValue = value > 0.0 ? convertOutputValue(value: value) : 0
+        let output = OutputDTO.init(addresses: [trimToAddress!], value: txValue)!
         let transaction = TransactionDTO.init(inputs: [input], outputs: [output])
         
         self.validateTransaction(transaction: transaction!, isSigning: isSigning)
+    }
+    
+    func convertOutputValue(value: Double) -> Int64{
+        var retValue = Int64(0)
+        if self.currentCoin?.coin == CoinType.ETH.key {
+            //Convert value from ether to wei
+            retValue = Int64(value * 1E+18)
+        } else if self.currentCoin?.coin == CoinType.BTC.key {
+            //Convert value from ether to wei
+            retValue = Int64(value * 1E+8)
+        }
+        return retValue
     }
     
     func validateTransaction(transaction: TransactionDTO, isSigning: Bool){

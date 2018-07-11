@@ -22,10 +22,6 @@ extension SendViewController {
     }
     
     func createNewEthTx(_ transaction: TransactionDTO, completion: @escaping (Any?, Error?) -> ()){
-        //Convert value from ether to wei
-        transaction.outputs?.forEach({ (output) in
-            output.value = output.value! * 1E+18
-        })
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.soloSDK?.api?.createNewEthTransaction(transaction) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -37,7 +33,7 @@ extension SendViewController {
             }
             let json = SwiftyJSON.JSON(value)
             if let errors = json["errors"].array {
-                JDStatusBarNotification.show(withStatus: errors[0].string, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+                JDStatusBarNotification.show(withStatus: errors[0]["error"].string, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
                 return
             }
             completion(json, nil)
@@ -55,11 +51,13 @@ extension SendViewController {
                 return
             }
             let json = SwiftyJSON.JSON(value)
+            if let errors = json["errors"].array {
+                JDStatusBarNotification.show(withStatus: errors[0]["error"].string, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+                return
+            }
             if let hash = json["tx"]["hash"].string {
                 self.viewTransactionOnBrowser(hash)
                 print("ETH transaction: ", hash)
-            } else if let errMsg = json["errors"][0]["error"].string {
-                print("ETH send transaction error: ", errMsg)
             }
         }
     }
