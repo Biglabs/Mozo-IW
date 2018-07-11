@@ -6,7 +6,7 @@ import {TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import SoloText from "../widgets/SoloText";
 import StyleSheet from 'react-native-extended-stylesheet';
-import {icCheckCircle} from '../../../res/icons/index';
+import {icCheckCircle} from '../../../res/icons';
 
 export default class CoinListItem extends React.PureComponent {
 

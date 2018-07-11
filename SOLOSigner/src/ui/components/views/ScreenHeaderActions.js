@@ -7,7 +7,7 @@ import SvgUri from 'react-native-svg-uri';
 import StyleSheet from "react-native-extended-stylesheet";
 import SoloText from "../widgets/SoloText";
 import {Actions} from 'react-native-router-flux';
-import {icArrowBack} from '../../../res/icons/index';
+import {icArrowBack} from '../../../res/icons';
 
 export default class ScreenHeaderActions extends React.Component {
     constructor(props) {

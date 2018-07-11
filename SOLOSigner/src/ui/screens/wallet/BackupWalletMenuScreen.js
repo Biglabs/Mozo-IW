@@ -4,7 +4,7 @@ import SvgUri from 'react-native-svg-uri';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {BackupWalletStateIcon, ScreenHeaderActions, Text} from "../../components";
-import {icInformation} from '../../../res/icons/index';
+import {icInformation} from '../../../res/icons';
 
 export default class BackupWalletMenuScreen extends React.Component {
 

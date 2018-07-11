@@ -6,7 +6,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
 import SoloText from "../widgets/SoloText";
 import * as ButtonStyles from '../../../res/button.styles';
-import {icCheckCircle} from '../../../res/icons/index';
+import {icCheckCircle} from '../../../res/icons';
 // noinspection JSUnusedLocalSymbols, exclude color, fontFamily, fontSize, textAlign from ButtonStyles.BorderGrayStyle
 const {color, fontFamily, fontSize, textAlign, ...buttonGrayStyle} = ButtonStyles.BorderGrayStyle;
 

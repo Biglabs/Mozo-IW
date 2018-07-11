@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {ScreenFooterActions, SelectionGroup, Text, CreateWalletOptionItem} from "../../components";
-import {icFlash, icSettings} from '../../../res/icons/index';
+import {icFlash, icSettings} from '../../../res/icons';
 
 export default class CreateWalletScreen extends React.Component {
     constructor(props) {

@@ -3,6 +3,7 @@ package com.biglabs.solo.signer;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import ui.fileselector.RNFileSelectorPackage;
 
 import cl.json.RNSharePackage;
 
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication, Sh
         protected List<ReactPackage> getPackages() {
             return Arrays.asList(
                     new MainReactPackage(),
+                    new RNFileSelectorPackage(),
                     new RNFSPackage(),
                     new RNSharePackage(),
                     new RealmReactPackage(),

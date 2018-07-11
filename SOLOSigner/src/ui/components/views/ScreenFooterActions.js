@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {View} from "react-native";
 import StyleSheet from "react-native-extended-stylesheet";
 import SoloButton from "../widgets/SoloButton";
-import {icArrowLeft, icArrowRight} from '../../../res/icons/index';
+import {icArrowLeft, icArrowRight} from '../../../res/icons';
 
 export default class ScreenFooterActions extends React.Component {
     render() {
