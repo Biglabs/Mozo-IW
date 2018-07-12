@@ -2,14 +2,14 @@ import {Linking, AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Constant from '../helpers/Constants';
 import DataService from './DataService';
-import SchemeDataStore from '../stores/SchemeDataStore';
+import CachingService from './CachingService';
 import Globals from './GlobalService';
 
 let handleEventOpenUrl = (event) => {
     let url = event.url;
     if (url) {
         let jsonData = handleOpenURL(url);
-        SchemeDataStore.getInstance().setSchemeData(jsonData);
+        CachingService.getInstance().setSchemeData(jsonData);
         Globals.checkWalletExisting(); // Open right screen
     }
 }
@@ -17,7 +17,7 @@ let handleEventOpenUrl = (event) => {
 function checkScheme(url) {
     if (url) {
         let jsonData = handleOpenURL(url);
-        SchemeDataStore.getInstance().setSchemeData(jsonData);
+        CachingService.getInstance().setSchemeData(jsonData);
     }
 }
 

@@ -5,7 +5,7 @@ import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
 import {BackupWalletStateIcon, Text} from "../components";
 import LinkingManager from "../../services/LinkingService";
-import SchemeDataStore from '../../stores/SchemeDataStore';
+import CachingService from '../../services/CachingService';
 import {icBackup, icInformation, icNote, icSoloTitle, icSync} from '../../res/icons';
 
 export default class HomeScreen extends React.Component {
@@ -15,11 +15,11 @@ export default class HomeScreen extends React.Component {
     }
 
     manageScheme() {
-        let storage = SchemeDataStore.getInstance();
+        let storage = CachingService.getInstance();
         let schemeData = storage.getSchemeData();
         if (schemeData) {
             LinkingManager.manageScheme(schemeData, this.props.pin);
-            SchemeDataStore.getInstance().setSchemeData(null);
+            CachingService.getInstance().setSchemeData(null);
         }
     }
 
