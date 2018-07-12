@@ -42,10 +42,6 @@ public class Address implements Serializable {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @NotNull
-    @Column(name = "derived_index", nullable = false)
-    private Integer derivedIndex;
-
     @Column(name = "balance", precision=10, scale=2)
     private BigDecimal balance;
 
@@ -66,6 +62,18 @@ public class Address implements Serializable {
 
     @Column(name = "total_sent")
     private Long totalSent;
+
+    @NotNull
+    @Column(name = "account_index", nullable = false)
+    private Integer accountIndex;
+
+    @NotNull
+    @Column(name = "chain_index", nullable = false)
+    private Integer chainIndex;
+
+    @NotNull
+    @Column(name = "address_index", nullable = false)
+    private Integer addressIndex;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -113,19 +121,6 @@ public class Address implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Integer getDerivedIndex() {
-        return derivedIndex;
-    }
-
-    public Address derivedIndex(Integer derivedIndex) {
-        this.derivedIndex = derivedIndex;
-        return this;
-    }
-
-    public void setDerivedIndex(Integer derivedIndex) {
-        this.derivedIndex = derivedIndex;
     }
 
     public BigDecimal getBalance() {
@@ -218,6 +213,45 @@ public class Address implements Serializable {
     public void setTotalSent(Long totalSent) {
         this.totalSent = totalSent;
     }
+
+    public Integer getAccountIndex() {
+        return accountIndex;
+    }
+
+    public Address accountIndex(Integer accountIndex) {
+        this.accountIndex = accountIndex;
+        return this;
+    }
+
+    public void setAccountIndex(Integer accountIndex) {
+        this.accountIndex = accountIndex;
+    }
+
+    public Integer getChainIndex() {
+        return chainIndex;
+    }
+
+    public Address chainIndex(Integer chainIndex) {
+        this.chainIndex = chainIndex;
+        return this;
+    }
+
+    public void setChainIndex(Integer chainIndex) {
+        this.chainIndex = chainIndex;
+    }
+
+    public Integer getAddressIndex() {
+        return addressIndex;
+    }
+
+    public Address addressIndex(Integer addressIndex) {
+        this.addressIndex = addressIndex;
+        return this;
+    }
+
+    public void setAddressIndex(Integer addressIndex) {
+        this.addressIndex = addressIndex;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -247,7 +281,6 @@ public class Address implements Serializable {
             ", coin='" + getCoin() + "'" +
             ", network='" + getNetwork() + "'" +
             ", address='" + getAddress() + "'" +
-            ", derivedIndex='" + getDerivedIndex() + "'" +
             ", balance='" + getBalance() + "'" +
             ", unconfirmedBalance='" + getUnconfirmedBalance() + "'" +
             ", finalBalance='" + getFinalBalance() + "'" +
@@ -255,6 +288,9 @@ public class Address implements Serializable {
             ", nUnconfirmedTx='" + getnUnconfirmedTx() + "'" +
             ", totalReceived='" + getTotalReceived() + "'" +
             ", totalSent='" + getTotalSent() + "'" +
+            ", accountIndex='" + getAccountIndex() + "'" +
+            ", chainIndex='" + getChainIndex() + "'" +
+            ", addressIndex='" + getAddressIndex() + "'" +
             "}";
     }
 }

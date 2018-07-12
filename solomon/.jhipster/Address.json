@@ -26,13 +26,6 @@
             ]
         },
         {
-            "fieldName": "derivedIndex",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "balance",
             "fieldType": "BigDecimal"
         },
@@ -59,13 +52,34 @@
         {
             "fieldName": "totalSent",
             "fieldType": "Long"
+        },
+        {
+            "fieldName": "accountIndex",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "chainIndex",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "addressIndex",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180621103732",
-    "entityTableName": "address",
     "dto": "no",
-    "pagination": "no",
     "service": "serviceImpl",
+    "entityTableName": "address",
     "jpaMetamodelFiltering": false,
+    "pagination": "no",
     "angularJSSuffix": "solo"
 }

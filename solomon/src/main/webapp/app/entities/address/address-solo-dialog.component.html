@@ -54,11 +54,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="solomonApp.address.derivedIndex" for="field_derivedIndex">Derived Index</label>
-            <input type="number" class="form-control" name="derivedIndex" id="field_derivedIndex"
-                [(ngModel)]="address.derivedIndex"  />
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="solomonApp.address.balance" for="field_balance">Balance</label>
             <input type="number" class="form-control" name="balance" id="field_balance"
                 [(ngModel)]="address.balance"  />
@@ -92,6 +87,51 @@
             <label class="form-control-label" jhiTranslate="solomonApp.address.totalSent" for="field_totalSent">Total Sent</label>
             <input type="number" class="form-control" name="totalSent" id="field_totalSent"
                 [(ngModel)]="address.totalSent"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.accountIndex" for="field_accountIndex">Account Index</label>
+            <input type="number" class="form-control" name="accountIndex" id="field_accountIndex"
+                [(ngModel)]="address.accountIndex" required />
+            <div [hidden]="!(editForm.controls.accountIndex?.dirty && editForm.controls.accountIndex?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.accountIndex?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.accountIndex?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.chainIndex" for="field_chainIndex">Chain Index</label>
+            <input type="number" class="form-control" name="chainIndex" id="field_chainIndex"
+                [(ngModel)]="address.chainIndex" required />
+            <div [hidden]="!(editForm.controls.chainIndex?.dirty && editForm.controls.chainIndex?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.chainIndex?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.chainIndex?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="solomonApp.address.addressIndex" for="field_addressIndex">Address Index</label>
+            <input type="number" class="form-control" name="addressIndex" id="field_addressIndex"
+                [(ngModel)]="address.addressIndex" required />
+            <div [hidden]="!(editForm.controls.addressIndex?.dirty && editForm.controls.addressIndex?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.addressIndex?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.addressIndex?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
 
     </div>

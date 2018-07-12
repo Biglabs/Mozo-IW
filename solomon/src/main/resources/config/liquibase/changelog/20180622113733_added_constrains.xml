@@ -96,13 +96,23 @@
         </addColumn>
     </changeSet>
 
-
-
-
-
-
-
-
+    <changeSet author="liquibase-docs" id="alter-bip44-column">
+        <addColumn tableName="address">
+            <column name="account_index" type="integer" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <addColumn tableName="address">
+            <column name="chain_index" type="integer" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <addColumn tableName="address">
+            <column name="address_index" type="integer">
+            </column>
+        </addColumn>
+        <dropColumn tableName="address" columnName="derived_index" />
+    </changeSet>
 
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

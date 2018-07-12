@@ -18,14 +18,16 @@
             "coin": "Coin",
             "network": "Network",
             "address": "Address",
-            "derivedIndex": "Derived Index",
             "balance": "Balance",
             "unconfirmedBalance": "Unconfirmed Balance",
             "finalBalance": "Final Balance",
             "nConfirmedTx": "N Confirmed Tx",
             "nUnconfirmedTx": "N Unconfirmed Tx",
             "totalReceived": "Total Received",
-            "totalSent": "Total Sent"
+            "totalSent": "Total Sent",
+            "accountIndex": "Account Index",
+            "chainIndex": "Chain Index",
+            "addressIndex": "Address Index"
         }
     }
 }

@@ -20,7 +20,6 @@ export class AddressSolo implements BaseEntity {
         public coin?: CoinType,
         public network?: Network,
         public address?: string,
-        public derivedIndex?: number,
         public balance?: number,
         public unconfirmedBalance?: number,
         public finalBalance?: number,
@@ -28,6 +27,9 @@ export class AddressSolo implements BaseEntity {
         public nUnconfirmedTx?: number,
         public totalReceived?: number,
         public totalSent?: number,
+        public accountIndex?: number,
+        public chainIndex?: number,
+        public addressIndex?: number,
     ) {
     }
 }
