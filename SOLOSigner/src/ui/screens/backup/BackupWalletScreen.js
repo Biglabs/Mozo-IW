@@ -20,8 +20,6 @@ export default class BackupWalletScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {isShowError: false, errorMessage: '', errorViewIndex: -1};
-        this.borderError = StyleSheet.value('$errorColor');
-        this.borderNormal = StyleSheet.value('$borderColor');
 
         /* Create backup folder if not exist for both platform */
         RNFileSystem.exists(Constant.BACKUP_FOLDER).then(existing => {
@@ -154,7 +152,8 @@ export default class BackupWalletScreen extends React.Component {
                             Use 8 or more characters with a mix of letters, numbers & symbols
                         </Text>
                         <TextInput
-                            style={[styles.input_password, {borderColor: this.state.errorViewIndex === 0 ? this.borderError : this.borderNormal}]}
+                            style={styles.input_password}
+                            error={this.state.errorViewIndex === 0}
                             placeholder='Encrypt password'
                             multiline={false}
                             numberOfLines={1}
@@ -164,7 +163,7 @@ export default class BackupWalletScreen extends React.Component {
                             onChangeText={text => this.newEncryptPassword = text}/>
 
                         <TextInput
-                            style={[styles.input_password, {borderColor: this.state.errorViewIndex === 1 ? this.borderError : this.borderNormal}]}
+                            error={this.state.errorViewIndex === 1}
                             placeholder='Repeat the encrypt password'
                             multiline={false}
                             numberOfLines={1}
