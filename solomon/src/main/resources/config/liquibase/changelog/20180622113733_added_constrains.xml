@@ -115,5 +115,21 @@
     </changeSet>
 
 
+    <changeSet author="liquibase-docs" id="address-constrains-positive-index">
+        <sql>
+            alter table address add constraint address_positive
+                check (address_index >= 0);
+            alter table address add constraint chain_positive
+                check (chain_index >= 0);
+            alter table address add constraint account_positive
+                check (account_index >= 0);
+        </sql>
+        <rollback>
+            alter table address drop constraint address_positive;
+            alter table address drop constraint chain_positive;
+            alter table address drop constraint account_positive;
+        </rollback>
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
