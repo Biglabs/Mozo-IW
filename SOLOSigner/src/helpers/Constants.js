@@ -60,7 +60,12 @@ const Constants = {
         }
     },
     ERROR_TYPE: {
-        UNKNOWN: {},
+        UNKNOWN: {
+            code: "ERR-000",
+            title: "System error",
+            detail: "",
+            type: "Infrastructure"
+        },
         NONE: {},
         NO_WALLET_INFO: {
             code: "ERR-001",

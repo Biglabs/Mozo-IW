@@ -58,15 +58,26 @@ export default class ConfirmationScreen extends React.Component {
                     } else {
                         this.setState({isShowingLoading: false});
                         console.log(error.message || error.detail);
+                        var returnError = null;
+                        if (error.message) {
+                            returnError = Constant.ERROR_TYPE.UNKNOWN;
+                            returnError.detail = error.message;
+                        }
+                        this.cancelTransaction(returnError);
                     }
                 });
             }, 5);
         });
     }
 
-    cancelTransaction() {
+    cancelTransaction(_error) {
+        var error = _error;
+        if(error == null){
+            // Set default error
+            error = Constant.ERROR_TYPE.CANCEL_REQUEST;
+        }
         Actions.pop();
-        Globals.responseToReceiver({error: Constant.ERROR_TYPE.CANCEL_REQUEST}, this.props.txData);
+        Globals.responseToReceiver({error: error}, this.props.txData);
     }
 
     handleConfirmTimeout() {
@@ -75,7 +86,7 @@ export default class ConfirmationScreen extends React.Component {
             'This transaction has been time out. Please try again.',
             [
                 {text: 'OK', onPress: () => {
-                    this.cancelTransaction();
+                    this.cancelTransaction(Constant.ERROR_TYPE.TIME_OUT_CONFIRM);
                 }},
             ],
             { cancelable: false }
