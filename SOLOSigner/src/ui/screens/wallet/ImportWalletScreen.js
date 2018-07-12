@@ -23,9 +23,16 @@ export default class ImportWalletScreen extends React.Component {
             backupPhrase: phrase,
             isPhraseValid: isValid,
             isShowError: !isValid
-        }, () => {
-            console.log(this.state.backupPhrase);
         });
+    }
+
+    onContinueClick() {
+        if (this.state.isPhraseValid) {
+            Actions.security_pin({
+                isNewPIN: true,
+                importedPhrase: this.state.backupPhrase
+            })
+        }
     }
 
     render() {
@@ -79,12 +86,7 @@ export default class ImportWalletScreen extends React.Component {
                 <ScreenFooterActions
                     onBackPress={() => Actions.pop()}
                     enabledContinue={this.state.isPhraseValid}
-                    onContinuePress={() => {
-                        Actions.security_pin({
-                            isNewPIN: true,
-                            importedPhrase: this.state.backupPhrase
-                        })
-                    }}/>
+                    onContinuePress={() => this.onContinueClick()}/>
             </View>
         )
     }

@@ -17,6 +17,10 @@ const Constants = {
         SIGN: "SIGN",
         ADD_ADDRESS: "ADD_ADDRESS"
     },
+    BACKUP_FILE_TYPE: {
+        PNG: "png",
+        TXT: "txt",
+    },
     COIN_TYPE: {
         BTC: {
             displayName: "BTC",

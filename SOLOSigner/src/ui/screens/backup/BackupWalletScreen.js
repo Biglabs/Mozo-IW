@@ -1,17 +1,15 @@
 import React from "react";
 import {Alert, AsyncStorage, Platform, TouchableOpacity, View} from 'react-native';
-import StyleSheet from "react-native-extended-stylesheet";
-import SvgUri from 'react-native-svg-uri';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
-import RNFileSystem from "react-native-fs";
-import Share from 'react-native-share';
-import {icExportQR, icExportText} from "../../../res/icons";
-import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput} from "../../components";
-import WalletManager from '../../../services/WalletService';
-import PermissionUtils from "../../../helpers/PermissionUtils";
-import Constant from "../../../helpers/Constants";
+import SvgUri from 'react-native-svg-uri';
+import StyleSheet from "react-native-extended-stylesheet";
 import {inject} from "mobx-react";
+
+import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput} from "../../components";
+import {icExportQR, icExportText} from "../../../res/icons";
+import WalletBackupService from '../../../services/WalletBackupService';
+import Constant from "../../../helpers/Constants";
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
@@ -19,93 +17,42 @@ const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%
 export default class BackupWalletScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {isShowError: false, errorMessage: '', errorViewIndex: -1};
-        this.borderError = StyleSheet.value('$errorColor');
-        this.borderNormal = StyleSheet.value('$borderColor');
-
-        /* Create backup folder if not exist for both platform */
-        RNFileSystem.exists(Constant.BACKUP_FOLDER).then(existing => {
-            if (!existing) RNFileSystem.mkdir(Constant.BACKUP_FOLDER);
-        });
+        this.state = {isShowError: false, isReadyToBackup: false, errorMessage: '', errorViewIndex: -1};
     }
 
-    doBackup() {
-        if (this.validatePassword()) {
-            let result = WalletManager.backupWallet(this.props.pin, this.newEncryptPassword);
-            if (result) {
-                this.setState({encryptedData: result});
-            } else {
-                Alert.alert(
-                    'Something went wrong!',
-                    "Cannot backup wallet right now, try again later.",
-                    [{text: 'OK', onPress: () => Actions.pop()},],
-                    {cancelable: false}
-                )
-            }
+    componentWillUnmount() {
+        this.qrCodeData = null;
+        this.qrCodeBase64 = null;
+        this.newEncryptPassword = null;
+    }
 
-            this.newEncryptPassword = null;
-            this.confirmEncryptPassword = null;
+    doExport(fileType: Constant.BACKUP_FILE_TYPE) {
+        if (this.qrCodeData && !this.qrCodeBase64) {
+            this.qrCodeData.toDataURL(data => {
+                this.qrCodeBase64 = data;
+                this.doExport(fileType);
+            });
+            return;
         }
-    }
 
-    doExportImage() {
-        if (this.qrCode) {
-            if (Platform.OS === 'ios') {
-                this.qrCode.toDataURL(data => {
-                    Share.open({url: `data:image/jpg;base64,${data}`})
-                        .then(this.doHandleResult)
-                        .catch(() => {
-                            /* bypass Promise warning*/
-                        });
-                });
-            } else {
-                PermissionUtils.requestStoragePermission().then(granted => {
-                    if (granted) {
-                        this.qrCode.toDataURL(data => {
-                            const today = new Date();
-                            let filePath = `${Constant.BACKUP_FOLDER}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.png`;
-                            RNFileSystem.writeFile(filePath, data, 'base64')
-                                .then(() => {
-                                    let shareOptions = {
-                                        url: `file://${filePath}`,
-                                    };
-                                    Share.open(shareOptions)
-                                        .then(this.doHandleResult);
-                                });
-                        });
+        if (this.qrCodeBase64) {
+            const ignoreError = WalletBackupService.ERROR.USER_DENIED;
+            WalletBackupService.backupWallet(this.props.pin, this.newEncryptPassword, fileType, this.qrCodeBase64)
+                .then(() => {
+                    this.props.backupWalletStateStore.setBackupWalletState(true);
+                })
+                .catch(err => {
+                    if (err.message !== ignoreError) {
+                        Alert.alert(
+                            'Something went wrong!',
+                            "Cannot backup wallet right now, try again later.",
+                            [{text: 'OK', onPress: () => Actions.pop()},],
+                            {cancelable: false}
+                        );
                     }
                 });
-            }
         }
     }
-
-    doExportText() {
-        PermissionUtils.requestStoragePermission().then(granted => {
-            if (granted) {
-                const today = new Date();
-                let filePath = `${Constant.BACKUP_FOLDER}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.txt`;
-                RNFileSystem.writeFile(filePath, this.state.encryptedData)
-                    .then(() => {
-                        let shareOptions = {
-                            url: `file://${filePath}`,
-                        };
-
-                        Share.open(shareOptions)
-                            .then(this.doHandleResult)
-                            .catch(() => {
-                                /* bypass Promise warning*/
-                            });
-                    });
-            }
-        });
-    }
-
-    doHandleResult = (result) => {
-        if (result) {
-            this.props.backupWalletStateStore.setBackupWalletState(true);
-            AsyncStorage.setItem(Constant.FLAG_BACKUP_WALLET, 'true');
-        }
-    };
 
     validatePassword() {
         if (this.newEncryptPassword && this.newEncryptPassword.length > 0) {
@@ -127,12 +74,21 @@ export default class BackupWalletScreen extends React.Component {
             return false;
         }
 
-        return true;
+        this.setState({
+            isReadyToBackup: true,
+            encryptedData: WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword),
+        });
     }
 
     clearError() {
         this.setState({isShowError: false, errorMessage: '', errorViewIndex: -1});
     }
+
+    onQRCodeRendered = (data) => {
+        this.qrCodeData = data;
+        this.confirmEncryptPassword = null;
+        this.state.encryptedData = null;
+    };
 
     render() {
         return (
@@ -140,7 +96,7 @@ export default class BackupWalletScreen extends React.Component {
                 <ScreenHeaderActions title='Backup Wallet'/>
 
                 {
-                    !this.state.encryptedData &&
+                    !this.state.isReadyToBackup &&
                     <View style={styles.view_contain}>
                         <Text
                             style={StyleSheet.value('$warning_text')}>
@@ -154,7 +110,8 @@ export default class BackupWalletScreen extends React.Component {
                             Use 8 or more characters with a mix of letters, numbers & symbols
                         </Text>
                         <TextInput
-                            style={[styles.input_password, {borderColor: this.state.errorViewIndex === 0 ? this.borderError : this.borderNormal}]}
+                            style={styles.input_password}
+                            error={this.state.errorViewIndex === 0}
                             placeholder='Encrypt password'
                             multiline={false}
                             numberOfLines={1}
@@ -164,7 +121,7 @@ export default class BackupWalletScreen extends React.Component {
                             onChangeText={text => this.newEncryptPassword = text}/>
 
                         <TextInput
-                            style={[styles.input_password, {borderColor: this.state.errorViewIndex === 1 ? this.borderError : this.borderNormal}]}
+                            error={this.state.errorViewIndex === 1}
                             placeholder='Repeat the encrypt password'
                             multiline={false}
                             numberOfLines={1}
@@ -172,24 +129,24 @@ export default class BackupWalletScreen extends React.Component {
                             secureTextEntry={true}
                             onFocus={() => this.clearError()}
                             onChangeText={text => this.confirmEncryptPassword = text}
-                            onSubmitEditing={() => this.doBackup()}/>
+                            onSubmitEditing={() => this.validatePassword()}/>
 
                         <Text style={[styles.error_text, {opacity: this.state.isShowError ? 1 : 0}]}>
                             * {this.state.errorMessage}
                         </Text>
 
-                        <ScreenFooterActions onContinuePress={() => this.doBackup()}/>
+                        <ScreenFooterActions onContinuePress={() => this.validatePassword()}/>
                     </View>
                 }
                 {
-                    this.state.encryptedData &&
+                    this.state.isReadyToBackup &&
                     <View style={[styles.view_contain, styles.view_result]}>
                         <Text>Your encrypted wallet:</Text>
                         <View style={styles.image_qr_code}>
                             <QRCode
                                 size={200}
                                 value={this.state.encryptedData}
-                                getRef={(c) => (this.qrCode = c)}/>
+                                getRef={this.onQRCodeRendered}/>
                         </View>
                         <Text style={styles.export_explain_text}>
                             From the destination device, go to
@@ -201,7 +158,7 @@ export default class BackupWalletScreen extends React.Component {
                         <View style={styles.export_container}>
                             <TouchableOpacity
                                 style={styles.export_button}
-                                onPress={() => this.doExportImage()}>
+                                onPress={() => this.doExport(Constant.BACKUP_FILE_TYPE.PNG)}>
                                 <SvgUri
                                     fill={StyleSheet.value('$primaryColor')}
                                     width={32}
@@ -211,7 +168,7 @@ export default class BackupWalletScreen extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.export_button}
-                                onPress={() => this.doExportText()}>
+                                onPress={() => this.doExport(Constant.BACKUP_FILE_TYPE.TXT)}>
                                 <SvgUri
                                     width={32}
                                     height={32}

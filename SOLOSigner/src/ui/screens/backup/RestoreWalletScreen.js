@@ -4,15 +4,16 @@ import StyleSheet from "react-native-extended-stylesheet";
 import {Actions} from "react-native-router-flux";
 import RNFileSelector from 'react-native-file-selector';
 import RNFileSystem from "react-native-fs";
-import WalletManager from '../../../services/WalletService';
+import WalletBackupService from '../../../services/WalletBackupService';
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 import PermissionUtils from "../../../helpers/PermissionUtils";
 import Constant from "../../../helpers/Constants";
+import bip39 from 'bip39';
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {loadedBackupData: false, backupPhrase: ''};
+        this.state = {loadedBackupData: false, errorMessage: '', backupPhraseValidSate: -1};
     }
 
     openFileChooser = () => {
@@ -47,13 +48,6 @@ export default class RestoreWalletScreen extends React.Component {
         this.encryptedData = encryptedData;
     }
 
-    doDecryptData() {
-        if (this.encryptedData && this.encryptPassword) {
-            let result = WalletManager.restoreWallet(this.encryptedData, this.encryptPassword);
-            this.setState({backupPhrase: result})
-        }
-    }
-
     onBackPress() {
         if (this.state.loadedBackupData) {
             this.encryptedData = null;
@@ -62,6 +56,42 @@ export default class RestoreWalletScreen extends React.Component {
         } else {
             Actions.pop();
         }
+    }
+
+    onContinueClick() {
+        if (this.encryptedData && this.checkPassword()) {
+            let result = WalletBackupService.restoreWallet(this.encryptedData, this.encryptPassword);
+            if (bip39.validateMnemonic(result)) {
+                this.state.backupPhraseValidSate = 1;
+                Actions.security_pin({
+                    isNewPIN: true,
+                    importedPhrase: result
+                })
+            } else {
+                this.setState({
+                    errorMessage: 'Restore failed! Invalid encrypt password',
+                    backupPhraseValidSate: 0
+                });
+            }
+        }
+    }
+
+    checkPassword() {
+        if (this.encryptPassword) return true;
+        else {
+            this.setState({
+                errorMessage: 'Encrypt password is required',
+                backupPhraseValidSate: 0
+            });
+            return false;
+        }
+    }
+
+    clearError() {
+        this.setState({
+            errorMessage: '',
+            backupPhraseValidSate: -1
+        })
     }
 
     render() {
@@ -105,21 +135,25 @@ export default class RestoreWalletScreen extends React.Component {
 
                         <TextInput
                             style={styles.input_password}
+                            error={this.state.backupPhraseValidSate === 0}
                             placeholder='Encrypt password'
                             multiline={false}
                             numberOfLines={1}
                             returnKeyType='done'
                             secureTextEntry={true}
+                            onFocus={() => this.clearError()}
                             onChangeText={text => this.encryptPassword = text}/>
 
-                        <Text>backupPhrase: {this.state.backupPhrase}</Text>
+                        <Text style={[styles.error_text, {opacity: this.state.backupPhraseValidSate === 0 ? 1 : 0}]}>
+                            * {this.state.errorMessage}
+                        </Text>
                     </View>
                 }
 
                 <ScreenFooterActions
                     onBackPress={() => this.onBackPress()}
                     enabledContinue={this.state.loadedBackupData}
-                    onContinuePress={() => this.doDecryptData()}/>
+                    onContinuePress={() => this.onContinueClick()}/>
             </View>
         )
     }
@@ -178,5 +212,11 @@ const styles = StyleSheet.create({
         marginTop: 15,
         paddingLeft: 15,
         paddingRight: 15,
+    },
+    error_text: {
+        width: '100%',
+        color: '$errorColor',
+        fontSize: 12,
+        marginTop: 15,
     },
 });
