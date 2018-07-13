@@ -23,15 +23,19 @@ const WalletSchema = {
 
 const AddressSchema = {
     name: 'Address',
-    primaryKey: 'address',
+    primaryKey: 'address_network',
     properties: {
-        coinType: 'string',
+        address_network: 'string',
         address: 'string',
         network: 'string',
-        derivedIndex: 'int',
-        prvKey: 'string'
+        prvKey: 'string',
+        coin: 'string',
+        accountIndex: 'int',
+        chainIndex: 'int',
+        addressIndex: 'int',
     },
 };
+
 const configuration = {schema: [WalletSchema, AddressSchema, AppSchema], path : "solo.signer"};
 
 class DataService {
@@ -89,7 +93,12 @@ class DataService {
     saveWalletInfo(walletInfo) {
         return new Promise((resolve, reject) => {
             try {
+                let wallet = this.getWalletInfo();
                 DataService.realm.write(() => {
+                    // Fix issue: Local data is not cleared totally.
+                    if (wallet) {
+                        DataService.realm.delete(wallet);
+                    }
                     DataService.realm.create('Wallet', walletInfo);
                     resolve(true);
                 });
@@ -112,25 +121,33 @@ class DataService {
         return addresses;
     }
 
-    addAddress(coinType, address, network, derivedIndex, prvKey) {
+    addAddress(address) {
         DataService.realm.write(() => {
-            DataService.realm.create('Address', { coinType : coinType, address : address, network: network, derivedIndex : derivedIndex, prvKey : prvKey });
+            let primaryKey = address.address + "_" + address.network;
+            // Fix issue: Local data is not cleared totally.
+            let adrObj = DataService.realm.objectForPrimaryKey('Address', primaryKey);
+            if (!adrObj) {
+                DataService.realm.create('Address', 
+                { 
+                    address_network : primaryKey,
+                    address : address.address, 
+                    network: address.network, 
+                    prvKey: address.privkey,
+                    coin: address.coin,
+                    accountIndex: address.accountIndex,
+                    chainIndex: address.chainIndex,
+                    addressIndex: address.addressIndex,
+                });
+            }
         });
     }
 
-    getPrivateKeyFromAddress(address, caseInsensitive) {
-        if(!caseInsensitive) {
-            let adrObj = DataService.realm.objectForPrimaryKey('Address', address);
-            if(adrObj && adrObj.prvKey) {
-                return adrObj.prvKey;
-            }
-        } else {
-            let addresses = DataService.realm.objects('Address');
-            for(var i = 0; i < address.length; i++) {
-                let item = addresses[i];
-                if (item.address.toUpperCase() == address.toUpperCase()) {
-                    return item.prvKey;
-                }
+    getPrivateKeyFromAddress(address) {
+        let addresses = DataService.realm.objects('Address');
+        for(var i = 0; i < address.length; i++) {
+            let item = addresses[i];
+            if (item.address.toUpperCase() == address.toUpperCase()) {
+                return item.prvKey;
             }
         }
         return null;

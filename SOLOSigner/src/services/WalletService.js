@@ -4,30 +4,58 @@ import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import encryption from '../helpers/EncryptionUtils';
 import {AsyncStorage} from 'react-native';
-import RESTService from './RESTService';
+import RESTService, { syncAllAddress } from './RESTService';
 import ethUtil from 'ethereumjs-util';
 import Web3 from 'web3';
 
 createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 
-        // "test pizza drift whip rebel empower flame mother service grace sweet kangaroo"; 
         bip39.generateMnemonic(128, null, bip39.wordlists.english);
     // Save PIN and mnemonic
     let encryptedMnemonic = encryption.encrypt(mnemonic, pin);
     manager.updateMnemonicWithPin(encryptedMnemonic, pin);
+    let wallets = generateWallets(mnemonic, coinTypes);
+    return wallets;
+}
+
+generateWallets = function(mnemonic, coinTypes){
     let seed = bip39.mnemonicToSeedHex(mnemonic);
     let wallets = [];
     coinTypes.map(coinType => {
         let rootKey = coinType == Constant.COIN_TYPE.BTC_TEST ? Bitcoin.HDNode.fromSeedHex(seed, Bitcoin.networks.testnet) : Bitcoin.HDNode.fromSeedHex(seed);
-        let wallet = rootKey.derivePath(`m/44'/${coinType.value}'/0'/0`);
+        let path = standardDerivationPath(coinType.value);
+        let wallet = rootKey.derivePath(path);
         wallets.push(wallet);
     });
     return wallets;
 }
 
-getAddressAtIndex = function(wallet, coinType, index) {
+/**
+ * Returns the standard derivation path in bip44 format.
+ * The output of this function can be use to create a key pair.
+ * @param {String} _coinType
+ * @param {Int} _accountIndex
+ * @param {_chain} _chain
+ * @returns {String}
+ */
+standardDerivationPath = function(_coinType, _accountIndex, _chain) {
+    // Default is 0
+    let accountIndex = _accountIndex || 0;
+    // Default is external
+    let chain = _chain || 0;
+    return `m/44'/${_coinType}'/${accountIndex}'/${chain}`;
+}
+
+/**
+ * Returns an account's address based on a specified coin type.
+ * The output will include address and private key.
+ * @param {KeyPair} wallet
+ * @param {String} coinType
+ * @param {Int} addressIndex 
+ */
+generateAddressAtIndex = function(wallet, coinType, addressIndex) {
     try {
-        let userWallet = wallet.derive(index);
+        let userWallet = wallet.derive(addressIndex);
         var address = "";
         var privkey = "";
         var keyPair = userWallet.keyPair;
@@ -52,66 +80,93 @@ getAddressAtIndex = function(wallet, coinType, index) {
             //TODO: Support SOLO and MOZO
         }
         console.log("Address: [" + address + "]");
-        return {address: address, derivedIndex: index, privkey: privkey};
+        return {address: address, addressIndex: addressIndex, privkey: privkey};
     } catch (error) {
         console.error(error);
     }
     return null;
 }
 
-saveAddressToLocal = function(manager, coinType, walletData, pin) {
+saveAddressToLocal = function(manager, address, pin) {
     // Because this is the first time when app is launched, data must be save to local
     // Save address and private key
     // Encrypt private key before saving to DB, password: pin
     let encryption = require('../helpers/EncryptionUtils');
-    let encryptedPrivateKey = encryption.encrypt(walletData.privkey, pin);
-    manager.addAddress(coinType.name, walletData.address, coinType.network, walletData.derivedIndex, encryptedPrivateKey);
+    let encryptedPrivateKey = encryption.encrypt(address.privkey, pin);
+    address.privkey = encryptedPrivateKey;
+    manager.addAddress(address);
     // TODO: Load all addresses of this wallet from server and save to local
 }
 
-registerWalletAndSyncAddress = function(manager, publicKey, walletDataArray, callback) {
+registerWalletAndSyncAddress = function(manager, publicKey, addresses, callback) {
     console.log("Check wallet");
-    RESTService.getExistingWalletFromServer(publicKey).then(walletInfo => {
-        console.log('Wallet is registered.');
-        // Save Wallet Info - WalletId
-        manager.saveWalletInfo(walletInfo).then(result => {
-            AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
-            if (typeof callback === 'function') {
-                callback(null, result);
-            }
-        });
-    }).catch((error) => {
-        // Offline mode: Can not check wallet
-        // Store public key for the next registration
-        AsyncStorage.setItem(Constant.FLAG_PUBLIC_KEY, publicKey);
-        if (error.isTimeOut !== 'undefined' && error.isTimeOut) {
-            console.log('Check fail, timeout', error);
+    RESTService.getExistingWalletFromServer(publicKey, (error, result) => {
+        if(result){
+            console.log('Wallet is registered before.');
+            storeWalletInfo(manager, result, addresses, (error, result) => {
+                if (typeof callback === 'function') {
+                    callback(error, result);
+                }
+            });
         } else {
-            console.log('Register wallet');
-            // Register wallet and save uid
-            RESTService.registerWallet(publicKey).then((walletInfo) => {
-                console.log('Wallet is registered.');
-                // Save Wallet Info - WalletId
-                manager.saveWalletInfo(walletInfo).then(result => {
-                    walletDataArray.map((item) => {
-                        // Synchronize all addresses to server
-                        RESTService.syncAddress(walletInfo.walletId, item.address, item.derivedIndex, item.coinType, item.network);
-                    });
-                    //TODO: Should retry incase network error
-                    AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
-                    if (typeof callback === 'function') {
-                        callback(null, result);
-                    }
-                });
-            }).catch((error) => {
-                console.log('Register fail', error);
+            // Offline mode: Can not check wallet
+            // Store public key for the next registration
+            AsyncStorage.setItem(Constant.FLAG_PUBLIC_KEY, publicKey);
+            if (error.isTimeOut !== 'undefined' && error.isTimeOut) {
+                console.log('Check fail, timeout', error);
                 if (typeof callback === 'function') {
                     callback(error, null);
                 }
-            });
+            } else {
+                console.log('Register new wallet.');
+                // Register wallet and save uid
+                RESTService.registerWallet(publicKey).then((walletInfo) => {
+                    console.log('Wallet is registered.');
+                    storeWalletInfo(manager, walletInfo, addresses, (error, result) => {
+                        if (typeof callback === 'function') {
+                            callback(error, result);
+                        }
+                    });
+                }).catch((error) => {
+                    console.log('Register fail', error);
+                    if (typeof callback === 'function') {
+                        callback(error, null);
+                    }
+                });
+            }
         }
     });
 }
+
+storeWalletInfo = function(manager, walletInfo, addresses, callback){
+    console.log("Store wallet info to local.")
+    try {
+        AsyncStorage.removeItem(Constant.FLAG_PUBLIC_KEY);
+        manager.saveWalletInfo(walletInfo).then(result => {
+            if (typeof callback === 'function') {
+                callback(null, true);
+            }
+            console.log("Sync all local addresses to server.");
+            RESTService.syncAllAddress(walletInfo.walletId, addresses);
+        });
+    } catch (error) {
+        console.log("Store wallet info error: " + error);
+        if (typeof callback === 'function') {
+            callback(error, null);
+        }
+    }
+}
+
+// syncAllAddress = function(walletId, addresses) {
+//     // TODO: Get all addresses from server
+
+//     // TODO: Compare with local addresses
+
+//     // TODO: Resolve conflict (if any)
+
+//     // Sync final addresses to server
+//     RESTService.syncAllAddress(walletId, addresses);
+// }
 
 module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
     let manager = DataService.getInstance();
@@ -124,15 +179,20 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
             coinTypes = Constant.DEFAULT_COINS;
         }
         let wallets = createNewWallet(manager, importedPhrase, pin, coinTypes);
-        let walletDataArray = [];
+        let addresses = [];
         wallets.map((wallet, index) => {
             let coinType = coinTypes[index];
-            let walletData = getAddressAtIndex(wallet, coinType.value, 0);
-            saveAddressToLocal(manager, coinType, walletData, pin);
-            walletDataArray.push({coinType : coinType.name, address : walletData.address, network: coinType.network, derivedIndex : walletData.derivedIndex, prvKey : null });
+            let address = generateAddressAtIndex(wallet, coinType.value, 0);
+            address.accountIndex = 0;
+            address.chainIndex = 0;
+            address.coin = coinType.name;
+            address.network = coinType.network;
+            saveAddressToLocal(manager, address, pin);
+            address.privkey = null;
+            addresses.push(address);
         });
         let publicKey = wallets[0].neutered().toBase58();
-        registerWalletAndSyncAddress(manager, publicKey, walletDataArray, (error, result) => {
+        registerWalletAndSyncAddress(manager, publicKey, addresses, (error, result) => {
             if (typeof callback === 'function') {
                 if (result) {
                     callback(null, result);
@@ -264,9 +324,8 @@ getAllPrivateKeys = function(pin, inputs, coinType){
             if(!address.startsWith("0x")){
                 address = "0x" + address;
             }
-            caseInsensitive = true;
         }
-        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address, true);
+        let encryptedPrivateKey = manager.getPrivateKeyFromAddress(address);
         if (!encryptedPrivateKey) {
             return null;
         }
@@ -322,18 +381,6 @@ module.exports.signTransaction = function(txData, pin, callback){
     }
 }
 
-module.exports.backupWallet = function (pin, encryptPassword) {
-    let mnemonic = this.viewBackupPhrase(pin);
-    if (mnemonic) {
-        return encryption.encrypt(mnemonic, encryptPassword);
-    } 
-    return null;
-};
-
-module.exports.restoreWallet = function (data, password) {
-    return encryption.decrypt(data, password);
-};
-
 module.exports.addNewAddress = function(pin, coinType, index, callback) {
     let manager = DataService.getInstance();
     let appInfo = manager.getAppInfo();
@@ -342,13 +389,14 @@ module.exports.addNewAddress = function(pin, coinType, index, callback) {
         let mnemonic = encryption.decrypt(encryptedMnemonic, pin);
         let seed = bip39.mnemonicToSeedHex(mnemonic);
         let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
-        let wallet = rootKey.derivePath(`m/44'/${coinType.value}'/0'/0`);
-        let walletData = getAddressAtIndex(wallet, coinType.value, index);
+        let path = standardDerivationPath(coinType.value);
+        let wallet = rootKey.derivePath(path);
+        let walletData = generateAddressAtIndex(wallet, coinType.value, index);
         saveAddressToLocal(manager, coinType, walletData, pin);
         let walletInfo = manager.getWalletInfo();
         if(walletInfo){
             walletInfo = { walletId : walletInfo.walletId };
-            RESTService.syncAddress(walletInfo.walletId, walletData.address, walletData.derivedIndex, coinType.name, coinType.network);
+            RESTService.syncAddress(walletInfo.walletId, walletData.address, walletData.addressIndex, coinType.name, coinType.network);
         }
         if (typeof callback === 'function') {
             callback(null, walletData.address);

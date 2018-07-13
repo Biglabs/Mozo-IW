@@ -22,13 +22,5 @@ class CachingService {
     getSchemeData(){
         return this.schemeData;
     }
-
-    setAddresses(addresses) {
-        this.addresses = addresses;
-    }
-
-    getAddresses() {
-        return this.addresses;
-    }
 }
 export default CachingService;

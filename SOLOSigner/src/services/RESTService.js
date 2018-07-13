@@ -89,24 +89,28 @@ module.exports.getAllAddressesFromServer = function(walletId){
     });
 }
 
-module.exports.getExistingWalletFromServer = function(publicKey){
-    return new Promise((resolve, reject) => {
-        try {
-            let hash = Globals.convertToHash(publicKey);
-            sendRequest(URL_GET_WALLET + `${hash}`, false)
-            .then((walletInfo) => {
-                console.log(walletInfo);
-                resolve(walletInfo);
-            })
-            .catch((error) => {
-                console.log(error);
-                reject(error);
-            }); 
-        } catch (error) {
+module.exports.getExistingWalletFromServer = function(publicKey, callback){
+    try {
+        let hash = Globals.convertToHash(publicKey);
+        sendRequest(URL_GET_WALLET + `${hash}`, false)
+        .then((walletInfo) => {
+            console.log(walletInfo);
+            if (typeof callback === 'function') {
+                callback(null, walletInfo);
+            }
+        })
+        .catch((error) => {
             console.log(error);
-            reject(error);
+            if (typeof callback === 'function') {
+                callback(error, null);
+            }
+        }); 
+    } catch (error) {
+        console.log(error);
+        if (typeof callback === 'function') {
+            callback(error, null);
         }
-    });
+    }
 }
 
 module.exports.registerWallet = function(publicKey) {
@@ -131,15 +135,28 @@ module.exports.registerWallet = function(publicKey) {
     });
 }
 
-module.exports.syncAddress = function(walletId, address, derivedIndex, coinType, network) {
+module.exports.syncAddress = function(walletId, address) {
     try {
         sendRequest(URL_SYNC_ADDRESS, {
             address : { 
-                address: address,
-                derivedIndex : derivedIndex,
-                coin: coinType,
-                network: network
+                address: address.address,
+                coin: address.coin,
+                network: address.network,
+                accountIndex: address.accountIndex,
+                chainIndex: address.chainIndex,
+                addressIndex: address.addressIndex,
             },
+            walletId : walletId
+        }, true);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports.syncAllAddress = function(walletId, addresses) {
+    try {
+        sendRequest(URL_SYNC_ADDRESS, {
+            addresses : addresses,
             walletId : walletId
         }, true);
     } catch (error) {
