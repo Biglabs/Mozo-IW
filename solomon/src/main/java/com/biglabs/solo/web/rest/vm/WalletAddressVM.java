@@ -2,12 +2,14 @@ package com.biglabs.solo.web.rest.vm;
 
 import com.biglabs.solo.domain.Address;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
  * Created by antt on 6/21/2018.
  */
 public class WalletAddressVM {
+    @Valid
     @NotNull
     private Address address;
     @NotNull

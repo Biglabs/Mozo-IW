@@ -3,6 +3,7 @@ package com.biglabs.solo.web.rest.errors;
 import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.web.rest.util.HeaderUtil;
 
+import com.google.common.base.Strings;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,7 @@ public class ExceptionTranslator implements ProblemHandling {
     public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
-            .map(f -> new FieldErrorVM(f.getObjectName(), f.getField(), f.getCode()))
+            .map(f -> new FieldErrorVM(f.getObjectName(), f.getField(), Strings.isNullOrEmpty(f.getDefaultMessage())  ? f.getCode() : f.getDefaultMessage()))
             .collect(Collectors.toList());
 
         Problem problem = Problem.builder()

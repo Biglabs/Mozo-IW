@@ -64,17 +64,17 @@ public class Address implements Serializable {
     private Long totalSent;
 
     @NotNull
-    @Min(0)
+    @Min(value = 0, message = "Account index must be greater or equal 0")
     @Column(name = "account_index", nullable = false)
     private Integer accountIndex;
 
     @NotNull
-    @Min(0)
+    @Min(value = 0, message = "Chain index must be greater or equal 0")
     @Column(name = "chain_index", nullable = false)
     private Integer chainIndex;
 
     @NotNull
-    @Min(0)
+    @Min(value = 0, message = "Address index must be greater or equal 0")
     @Column(name = "address_index", nullable = false)
     private Integer addressIndex;
 
