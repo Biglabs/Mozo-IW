@@ -121,6 +121,7 @@ export default class BackupWalletScreen extends React.Component {
                             onChangeText={text => this.newEncryptPassword = text}/>
 
                         <TextInput
+                            style={styles.input_password}
                             error={this.state.errorViewIndex === 1}
                             placeholder='Repeat the encrypt password'
                             multiline={false}
