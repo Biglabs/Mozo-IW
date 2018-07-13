@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the Address entity.
@@ -13,4 +15,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
     Address findAddressByAddress(String address);
+    List<Address> findAllByAddressIn(List<String> addressHashes);
 }

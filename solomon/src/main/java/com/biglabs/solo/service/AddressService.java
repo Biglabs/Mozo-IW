@@ -46,4 +46,5 @@ public interface AddressService {
     List<Address> save(@NotEmpty(message = "Addresses is empty")  List<Address> addresses);
 
     Address findOneByAddress(String address);
+    List<Address> findAllAddressIn(List<String> adrHashes);
 }

@@ -82,4 +82,9 @@ public class AddressServiceImpl implements AddressService{
     public Address findOneByAddress(String address) {
         return null;
     }
+
+    @Override
+    public List<Address> findAllAddressIn(List<String> adrHashes) {
+        return addressRepository.findAllByAddressIn(adrHashes);
+    }
 }

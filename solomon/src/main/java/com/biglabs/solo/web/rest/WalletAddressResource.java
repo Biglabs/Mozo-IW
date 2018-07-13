@@ -77,6 +77,7 @@ public class WalletAddressResource {
     }
 
 
+    @Transactional
     public ResponseEntity<List<WalletAddress>> bulkSavingAddresses(String walletId, List<Address> addresses) throws URISyntaxException {
         log.debug("REST request to save WalletAddress : {}", walletId);
         if (walletId == null) {
@@ -88,13 +89,19 @@ public class WalletAddressResource {
             throw new BadRequestAlertException("Wallet " + walletId + " not exist.", ENTITY_NAME, "nowallet");
         }
 
+        // create or update addresses
+        List<Address> existedAdrs = addressService.findAllAddressIn(addresses.stream().map(adr -> adr.getAddress()).collect(Collectors.toList()));
+        List<Address> newAddress = addresses.stream().filter(adr -> !existedAdrs.contains(adr.getAddress())).collect(Collectors.toList());
+        existedAdrs.addAll(newAddress);
+        List<Address> newSavedAddress = addressService.save(existedAdrs);
 
+        //Link wallet and unlink address
         List<WalletAddress> was = walletAddressRepository.findWalletAddressByWallet_WalletId(walletId);
         List<String> linkedAddress = was.stream().map(walletAddress -> walletAddress.getAddress().getAddress()).collect(Collectors.toList());
-        List<Address> newAddress = addresses.stream().filter(adr -> !linkedAddress.contains(adr.getAddress())).collect(Collectors.toList());
-        List<Address> newSavedAddress = addressService.save(newAddress);
+        List<Address> unlinkAddress = newSavedAddress.stream().filter(adr -> !linkedAddress.contains(adr.getAddress())).collect(Collectors.toList());
 
-        List<WalletAddress> newWAs = newSavedAddress.stream().map(adr -> {
+
+        List<WalletAddress> newWAs = unlinkAddress.stream().map(adr -> {
             WalletAddress walletAddress = new WalletAddress();
             walletAddress.setAddress(adr);
             walletAddress.setWallet(w.get());

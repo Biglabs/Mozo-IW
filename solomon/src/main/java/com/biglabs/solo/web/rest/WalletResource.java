@@ -60,6 +60,10 @@ public class WalletResource {
         if (wallet.getId() != null) {
             throw new BadRequestAlertException("A new wallet cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (walletService.findOneByWalletKey(wallet.getWalletKey()) != null) {
+            throw new BadRequestAlertException("A wallet with same key exist", ENTITY_NAME, "idexists");
+        }
+
         UUID newId = UUID.randomUUID();
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         wallet.setWalletId(DatatypeConverter.printHexBinary(md5.digest(newId.toString().getBytes("UTF-8"))));
