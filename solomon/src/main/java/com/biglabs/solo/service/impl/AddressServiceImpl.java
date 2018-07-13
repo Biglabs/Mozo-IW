@@ -37,6 +37,11 @@ public class AddressServiceImpl implements AddressService{
         return addressRepository.save(address);
     }
 
+    @Override
+    public List<Address> save(List<Address> addresses) {
+        return addressRepository.save(addresses);
+    }
+
     /**
      *  Get all the addresses.
      *
@@ -71,5 +76,10 @@ public class AddressServiceImpl implements AddressService{
     public void delete(Long id) {
         log.debug("Request to delete Address : {}", id);
         addressRepository.delete(id);
+    }
+
+    @Override
+    public Address findOneByAddress(String address) {
+        return null;
     }
 }

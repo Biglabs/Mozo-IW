@@ -1,17 +1,19 @@
 package com.biglabs.solo.web.rest.vm;
 
 import com.biglabs.solo.domain.Address;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by antt on 6/21/2018.
  */
 public class WalletAddressVM {
     @Valid
-    @NotNull
-    private Address address;
+    @NotEmpty
+    private List<Address> addresses;
     @NotNull
     private String walletId;
 
@@ -23,19 +25,20 @@ public class WalletAddressVM {
         this.walletId = walletId;
     }
 
-    public Address getAddress() {
-        return address;
-    }
 
     @Override
     public String toString() {
         return "WalletAddressVM{" +
-            "address=" + address +
+            "addresses=" + addresses +
             ", walletId='" + walletId + '\'' +
             '}';
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }

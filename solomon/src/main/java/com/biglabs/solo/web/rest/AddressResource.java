@@ -49,6 +49,9 @@ public class AddressResource {
         if (address.getId() != null) {
             throw new BadRequestAlertException("A new address cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (addressService.findOneByAddress(address.getAddress()) != null) {
+            throw new BadRequestAlertException("Address " + address.getAddress() + " exists", ENTITY_NAME, "idexists");
+        }
         Address result = addressService.save(address);
         return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

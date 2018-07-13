@@ -15,6 +15,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing WalletAddress.
@@ -54,22 +56,54 @@ public class WalletAddressResource {
      */
     @PostMapping("/wallet-addresses")
     @Timed
-    public ResponseEntity<WalletAddress> linkWalletAddress(@Valid @RequestBody WalletAddressVM walletAddressVM) throws URISyntaxException {
+    public ResponseEntity<List<WalletAddress>> linkWalletAddress(@Valid @RequestBody WalletAddressVM walletAddressVM) throws URISyntaxException {
         log.debug("REST request to save WalletAddress : {}", walletAddressVM);
         if (walletAddressVM.getWalletId() == null) {
             throw new BadRequestAlertException("No wallet provided", ENTITY_NAME, "nowallet");
         }
 
-        Address address = addressService.save(walletAddressVM.getAddress());
-        WalletAddress walletAddress = new WalletAddress();
-        walletAddress.setAddress(address);
-//        walletAddress.setWallet();
-        Optional<Wallet> w = walletService.findOneByWalletId(walletAddressVM.getWalletId());
-        walletAddress.setWallet(w.get());
-        walletAddress.setInUse(true);
-        WalletAddress result = walletAddressRepository.save(walletAddress);
-        return ResponseEntity.created(new URI("/api/wallet-addresses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+        return bulkSavingAddresses(walletAddressVM.getWalletId(), walletAddressVM.getAddresses());
+//        Address address = addressService.save(walletAddressVM.getAddresses());
+//        WalletAddress walletAddress = new WalletAddress();
+//        walletAddress.setAddress(address);
+////        walletAddress.setWallet();
+//        Optional<Wallet> w = walletService.findOneByWalletId(walletAddressVM.getWalletId());
+//        walletAddress.setWallet(w.get());
+//        walletAddress.setInUse(true);
+//        WalletAddress result = walletAddressRepository.save(walletAddress);
+//        return ResponseEntity.created(new URI("/api/wallet-addresses/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+    }
+
+
+    public ResponseEntity<List<WalletAddress>> bulkSavingAddresses(String walletId, List<Address> addresses) throws URISyntaxException {
+        log.debug("REST request to save WalletAddress : {}", walletId);
+        if (walletId == null) {
+            throw new BadRequestAlertException("No wallet provided", ENTITY_NAME, "nowallet");
+        }
+
+        Optional<Wallet> w = walletService.findOneByWalletId(walletId);
+        if (!w.isPresent()) {
+            throw new BadRequestAlertException("Wallet " + walletId + " not exist.", ENTITY_NAME, "nowallet");
+        }
+
+
+        List<WalletAddress> was = walletAddressRepository.findWalletAddressByWallet_WalletId(walletId);
+        List<String> linkedAddress = was.stream().map(walletAddress -> walletAddress.getAddress().getAddress()).collect(Collectors.toList());
+        List<Address> newAddress = addresses.stream().filter(adr -> !linkedAddress.contains(adr.getAddress())).collect(Collectors.toList());
+        List<Address> newSavedAddress = addressService.save(newAddress);
+
+        List<WalletAddress> newWAs = newSavedAddress.stream().map(adr -> {
+            WalletAddress walletAddress = new WalletAddress();
+            walletAddress.setAddress(adr);
+            walletAddress.setWallet(w.get());
+            walletAddress.setInUse(true);
+            return walletAddress;
+        }).collect(Collectors.toList());
+
+        List<WalletAddress> result = walletAddressRepository.save(newWAs);
+        return ResponseEntity.ok()
             .body(result);
     }
 

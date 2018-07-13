@@ -1,11 +1,16 @@
 package com.biglabs.solo.service;
 
 import com.biglabs.solo.domain.Address;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 import java.util.List;
 
 /**
  * Service Interface for managing Address.
  */
+@Validated
 public interface AddressService {
 
     /**
@@ -37,4 +42,8 @@ public interface AddressService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    List<Address> save(@NotEmpty(message = "Addresses is empty")  List<Address> addresses);
+
+    Address findOneByAddress(String address);
 }

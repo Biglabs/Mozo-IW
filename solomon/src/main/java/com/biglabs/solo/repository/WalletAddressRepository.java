@@ -19,4 +19,6 @@ public interface WalletAddressRepository extends JpaRepository<WalletAddress, Lo
 
     @Query("select wa.address from WalletAddress wa where wa.wallet.walletId = ?1")
     List<Address> findAddressesByWalletId(String walletId);
+
+    List<WalletAddress> findWalletAddressByWallet_WalletId(String walletId);
 }
