@@ -1,14 +1,10 @@
 import React from "react";
 import {Platform, TouchableOpacity, View} from 'react-native';
-import StyleSheet from "react-native-extended-stylesheet";
 import {Actions} from "react-native-router-flux";
-import RNFileSelector from 'react-native-file-selector';
-import RNFileSystem from "react-native-fs";
-import WalletManager from '../../../services/WalletService';
+import StyleSheet from "react-native-extended-stylesheet";
+
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
-import PermissionUtils from "../../../helpers/PermissionUtils";
-import Constant from "../../../helpers/Constants";
-import bip39 from 'bip39';
+import WalletBackupService from '../../../services/WalletBackupService';
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
@@ -16,32 +12,11 @@ export default class RestoreWalletScreen extends React.Component {
         this.state = {loadedBackupData: false, errorMessage: '', backupPhraseValidSate: -1};
     }
 
-    openFileChooser = () => {
-        PermissionUtils.requestStoragePermission().then(granted => {
-            if (granted) {
-                let fileSelectorProps = {
-                    title: 'Choose backup file',
-                    filter: Platform.select({ios: [], android: ".*\\.png$|.*\\.txt$"}),
-                    onDone: this.doReadFile
-                };
-
-                RNFileSystem.exists(Constant.BACKUP_FOLDER).then(existing => {
-                    if (existing) fileSelectorProps.path = Constant.BACKUP_FOLDER;
-                    RNFileSelector.Show(fileSelectorProps);
-                });
-            }
-        });
-    };
-
-    doReadFile = path => {
-        if (path && path.toLowerCase().endsWith('png')) {
-            //base64
-        } else if (path && path.toLowerCase().endsWith('txt')) {
-            RNFileSystem.readFile(path, 'utf8').then(data => {
-                this.onReceiveData(data);
-            });
-        }
-    };
+    onChooseFileClick() {
+        WalletBackupService.loadBackupFile(data => {
+            this.onReceiveData(data);
+        })
+    }
 
     onReceiveData(encryptedData) {
         this.setState({loadedBackupData: true});
@@ -60,8 +35,8 @@ export default class RestoreWalletScreen extends React.Component {
 
     onContinueClick() {
         if (this.encryptedData && this.checkPassword()) {
-            let result = WalletManager.restoreWallet(this.encryptedData, this.encryptPassword);
-            if (bip39.validateMnemonic(result)) {
+            let result = WalletBackupService.restoreWallet(this.encryptedData, this.encryptPassword);
+            if (result) {
                 this.state.backupPhraseValidSate = 1;
                 Actions.security_pin({
                     isNewPIN: true,
@@ -113,7 +88,7 @@ export default class RestoreWalletScreen extends React.Component {
                         <Button
                             title='Choose backup file'
                             textStyle={styles.button_choose_file}
-                            onPress={this.openFileChooser}/>
+                            onPress={() => this.onChooseFileClick()}/>
 
                         <View style={styles.separator_container}>
                             <View style={styles.dash}/>
