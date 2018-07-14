@@ -17,6 +17,7 @@ class PortfolioViewController: UIViewController {
     
     internal var feed: AddressFeed?
     var soloSDK: SoloSDK!
+    private var addresses: [AddressDTO] = []
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,10 +63,22 @@ class PortfolioViewController: UIViewController {
             self.tableView.reloadData()
             return
         }
+        self.buildAddressList()
         self.tableView.reloadData()
         if self.feed?.zeroData == true {
             // handle no data
         }
+    }
+    
+    func buildAddressList(){
+        var networks = Set<String>()
+        self.addresses = [AddressDTO]()
+        self.feed?.addressess?.forEach({ (address) in
+            if !networks.contains(address.network!) {
+                networks.insert(address.network!)
+                self.addresses.append(address)
+            }
+        })
     }
     
     func validateHandshake() {
