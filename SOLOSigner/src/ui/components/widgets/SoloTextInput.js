@@ -1,26 +1,20 @@
 'use strict';
 
 import React from 'react';
+import {StyleSheet, TextInput} from 'react-native';
 import PropTypes from 'prop-types';
-import {TextInput} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
-import {BaseBorderStyle} from '../../../res/button.styles';
+
+import {buttons, colorBorder, colorContentText, colorError, colorTitleText, fontRegular} from '../../../res';
 import SelectionGroup from "./SelectionGroup";
 
 export default class SoloTextInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.borderError = StyleSheet.value('$errorColor');
-        this.borderNormal = StyleSheet.value('$borderColor');
-    }
-
     render() {
         let stylesArr = [styles.customFont, this.props.style];
-        stylesArr.push({borderColor: (this.props.error || false) ? this.borderError : this.borderNormal});
+        stylesArr.push({borderColor: (this.props.error || false) ? colorError : colorBorder});
         return (
             <TextInput
                 placeholder="Enter text"
-                placeholderTextColor={StyleSheet.value('$textContentColor')}
+                placeholderTextColor={colorContentText}
                 underlineColorAndroid='transparent'
                 {...this.props}
                 style={stylesArr}/>
@@ -30,10 +24,10 @@ export default class SoloTextInput extends React.Component {
 
 const styles = StyleSheet.create({
     customFont: {
-        ...BaseBorderStyle,
-        fontFamily: '$primaryFont',
+        ...buttons.BaseBorderStyle,
+        fontFamily: fontRegular,
         fontSize: 14,
-        color: '$textTitleColor',
+        color: colorTitleText,
     }
 });
 

@@ -2,11 +2,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
+
+import {colorContentText, colorDisable, colorPrimary, colorTitleText, fontBold, icons} from '../../../res';
 import SoloText from "../widgets/SoloText";
-import StyleSheet from 'react-native-extended-stylesheet';
-import {icCheckCircle} from '../../../res/icons';
 
 export default class CoinListItem extends React.PureComponent {
 
@@ -28,14 +28,15 @@ export default class CoinListItem extends React.PureComponent {
                     <SvgUri width={24} height={24} svgXmlData={this.props.icon}/>
                     <SoloText style={styles.label}>{this.props.label}</SoloText>
 
-                    <SoloText style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</SoloText>
+                    <SoloText
+                        style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</SoloText>
                     {
                         this.props.checked &&
                         <SvgUri
                             width={20}
                             height={20}
-                            svgXmlData={icCheckCircle}
-                            fill={StyleSheet.value('$primaryColor')}
+                            svgXmlData={icons.icCheckCircle}
+                            fill={colorPrimary}
                             style={{
                                 position: 'absolute',
                                 right: 0
@@ -67,13 +68,13 @@ const styles = StyleSheet.create({
 
     },
     label: {
-        color: '$textTitleColor',
-        fontFamily: '$primaryFontBold',
+        color: colorTitleText,
+        fontFamily: fontBold,
         marginLeft: 10,
         paddingBottom: 5,
     },
     text_rate: {
-        color: '$textContentColor',
+        color: colorContentText,
         fontSize: 12,
         position: 'absolute',
         right: 0,
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     dash: {
         width: '100%',
         height: 1,
-        backgroundColor: '$disableColor',
+        backgroundColor: colorDisable,
     },
 });
 

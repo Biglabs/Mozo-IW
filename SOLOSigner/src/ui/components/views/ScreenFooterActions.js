@@ -1,16 +1,23 @@
 'use strict';
 
 import React from 'react';
+import {StyleSheet, View} from "react-native";
 import PropTypes from 'prop-types';
-import {View} from "react-native";
-import StyleSheet from "react-native-extended-stylesheet";
+
+import {
+    colorPrimary,
+    colorTitleText,
+    dimenScreenPaddingBottom,
+    icons,
+    styleButtonBack,
+    styleButtonContinue
+} from '../../../res';
 import SoloButton from "../widgets/SoloButton";
-import {icArrowLeft, icArrowRight} from '../../../res/icons';
 
 export default class ScreenFooterActions extends React.Component {
     render() {
-        let colorBtnBack = (this.props.buttonsColor && this.props.buttonsColor.back) || StyleSheet.value('$textTitleColor');
-        let colorBtnContinue = (this.props.buttonsColor && this.props.buttonsColor.continue) || StyleSheet.value('$primaryColor');
+        let colorBtnBack = (this.props.buttonsColor && this.props.buttonsColor.back) || colorTitleText;
+        let colorBtnContinue = (this.props.buttonsColor && this.props.buttonsColor.continue) || colorPrimary;
         let leftButtonText = this.props.leftButtonText || 'Back';
         let rightButtonText = this.props.rightButtonText || 'Continue';
         return (
@@ -18,9 +25,9 @@ export default class ScreenFooterActions extends React.Component {
                 {
                     this.props.onBackPress &&
                     <SoloButton title={leftButtonText}
-                                style={StyleSheet.value('$back_button')}
+                                style={styleButtonBack}
                                 fontSize={16}
-                                icon={icArrowLeft}
+                                icon={icons.icArrowLeft}
                                 iconColor={colorBtnBack}
                                 onPress={this.props.onBackPress}/>
                 }
@@ -28,10 +35,10 @@ export default class ScreenFooterActions extends React.Component {
                     this.props.onContinuePress &&
                     <SoloButton title={rightButtonText}
                                 titleBold={true}
-                                style={StyleSheet.value('$continue_button')}
+                                style={styleButtonContinue}
                                 enabled={this.props.enabledContinue}
                                 fontSize={16}
-                                icon={icArrowRight}
+                                icon={icons.icArrowRight}
                                 iconColor={colorBtnContinue}
                                 iconPosition='right'
                                 onPress={this.props.onContinuePress}/>
@@ -43,7 +50,7 @@ export default class ScreenFooterActions extends React.Component {
 
 const styles = StyleSheet.create({
     footer_button: {
-        height: '$screen_padding_bottom',
+        height: dimenScreenPaddingBottom,
         position: 'absolute',
         left: 0,
         right: 0,

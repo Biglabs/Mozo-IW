@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import {Text} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {StyleSheet, Text} from 'react-native';
+import {fontRegular} from '../../../res';
 
 export default class SoloText extends React.Component {
     render() {
@@ -16,7 +16,7 @@ export default class SoloText extends React.Component {
 
 const styles = StyleSheet.create({
     customFont: {
-        fontFamily: '$primaryFont',
+        fontFamily: fontRegular,
         fontSize: 14,
         includeFontPadding: false,
     }

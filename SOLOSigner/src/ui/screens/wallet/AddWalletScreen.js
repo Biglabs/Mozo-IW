@@ -1,9 +1,19 @@
 import React, {Component} from "react";
-import {FlatList, Image, TouchableOpacity, View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {CoinItemView, ScreenFooterActions, Text} from "../../components";
 import {inject, observer} from "mobx-react";
+
+import {CoinItemView, ScreenFooterActions, Text} from "../../components";
+import {
+    colorPrimary,
+    colorScreenBackground,
+    dimenScreenPaddingBottom,
+    dimenScreenPaddingHorizontal,
+    fontBold,
+    styleScreenExplainText,
+    styleScreenSubTitleText,
+    styleScreenTitleText,
+} from '../../../res';
 
 @inject("selectedWalletsStore")
 @observer
@@ -13,15 +23,15 @@ export default class AddWalletScreen extends Component {
         return (
             <View style={styles.container}>
 
-                <Text style={StyleSheet.value('$screen_title_text')}>Add Wallet</Text>
+                <Text style={styleScreenTitleText}>Add Wallet</Text>
 
-                <Text style={StyleSheet.value('$screen_sub_title_text')}>
+                <Text style={styleScreenSubTitleText}>
                     Please select the wallet you wish to active
                 </Text>
 
                 <Text style={
                     [
-                        StyleSheet.value('$screen_explain_text'),
+                        styleScreenExplainText,
                         {marginTop: 10, marginBottom: 10}
                     ]}>
                     We require you to active at least one wallet. Please note that additional wallets can be activated
@@ -58,12 +68,12 @@ export default class AddWalletScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'flex-start',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal'
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal
     },
     button_add_more: {
         width: '100%',
@@ -72,14 +82,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     button_add_more_text: {
-        color: '$primaryColor',
-        fontFamily: '$primaryFontBold',
+        color: colorPrimary,
+        fontFamily: fontBold,
         fontSize: 14,
     },
     coin_list: {
         width: '100%',
         marginTop: 5,
         flex: 1,
-        marginBottom: '$screen_padding_bottom',
+        marginBottom: dimenScreenPaddingBottom,
     }
 });

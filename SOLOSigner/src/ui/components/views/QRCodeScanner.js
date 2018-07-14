@@ -1,13 +1,13 @@
 'use strict';
 
 import React from "react";
-import PropTypes from 'prop-types';
-import {TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import StyleSheet from 'react-native-extended-stylesheet';
 import {RNCamera} from 'react-native-camera';
+import PropTypes from 'prop-types';
+
+import {colorPrimary, fontBold, icons} from "../../../res";
 import SoloText from '../widgets/SoloText';
-import {icScanArea} from "../../../res/icons";
 
 export default class QRCodeScanner extends React.Component {
     constructor(props) {
@@ -46,7 +46,7 @@ export default class QRCodeScanner extends React.Component {
                 style={{width: this.scanAreaSize, height: this.scanAreaSize,}}
                 disabled={this.state.isScanning}
                 onPress={this.onPress}>
-                <SvgUri width={this.scanAreaSize} height={this.scanAreaSize} svgXmlData={icScanArea}
+                <SvgUri width={this.scanAreaSize} height={this.scanAreaSize} svgXmlData={icons.icScanArea}
                         style={{
                             position: 'absolute',
                             top: 0,
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     scan_button_text: {
-        color: '$primaryColor',
-        fontFamily: '$primaryFontBold',
+        color: colorPrimary,
+        fontFamily: fontBold,
         padding: 5
     }
 });

@@ -1,14 +1,23 @@
 'use strict';
 
 import React from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
+
 import SoloText from "../widgets/SoloText";
-import * as ButtonStyles from '../../../res/button.styles';
-import {icCheckCircle} from '../../../res/icons';
+import {
+    buttons,
+    colorBorder,
+    colorContentText,
+    colorPrimary,
+    colorScreenBackground,
+    colorTitleText,
+    fontBold,
+    fontRegular,
+    icons
+} from '../../../res';
 // noinspection JSUnusedLocalSymbols, exclude color, fontFamily, fontSize, textAlign from ButtonStyles.BorderGrayStyle
-const {color, fontFamily, fontSize, textAlign, ...buttonGrayStyle} = ButtonStyles.BorderGrayStyle;
+const {color, fontFamily, fontSize, textAlign, ...buttonGrayStyle} = buttons.BorderGrayStyle;
 
 export default class CreateWalletOptionItem extends React.Component {
     constructor(props) {
@@ -30,8 +39,8 @@ export default class CreateWalletOptionItem extends React.Component {
                         {
                             paddingLeft: horizontalPadding,
                             paddingRight: horizontalPadding,
-                            backgroundColor: StyleSheet.value(isSelected ? '$primaryColor' : '$screenBackground'),
-                            borderColor: StyleSheet.value(isSelected ? '$primaryColor' : '$borderColor'),
+                            backgroundColor: isSelected ? colorPrimary : colorScreenBackground,
+                            borderColor: isSelected ? colorPrimary : colorBorder,
                         },
                         this.props.style]}
                     onPress={this.props.onPress}>
@@ -39,7 +48,7 @@ export default class CreateWalletOptionItem extends React.Component {
                         this.props.icon
                         && <SvgUri width={18}
                                    height={18}
-                                   fill={this.props.iconColor || (isSelected ? '#ffffff' : StyleSheet.value('$textTitleColor'))}
+                                   fill={this.props.iconColor || (isSelected ? '#ffffff' : colorTitleText)}
                                    svgXmlData={this.props.icon}
                                    style={{
                                        position: 'absolute',
@@ -50,7 +59,7 @@ export default class CreateWalletOptionItem extends React.Component {
 
                     <SvgUri width={20}
                             height={20}
-                            svgXmlData={icCheckCircle}
+                            svgXmlData={icons.icCheckCircle}
                             style={{
                                 position: 'absolute',
                                 alignSelf: 'flex-end',
@@ -62,14 +71,14 @@ export default class CreateWalletOptionItem extends React.Component {
                     <SoloText style={[
                         styles.button_name,
                         {
-                            color: isSelected ? '#ffffff' : StyleSheet.value('$textTitleColor')
+                            color: isSelected ? '#ffffff' : colorTitleText
                         }
                     ]}>{this.label}</SoloText>
 
                     <SoloText style={[
                         styles.button_content,
                         {
-                            color: isSelected ? '#ffffff' : StyleSheet.value('$textContentColor')
+                            color: isSelected ? '#ffffff' : colorContentText
                         }
                     ]}>{this.content}</SoloText>
                 </TouchableOpacity>
@@ -100,11 +109,11 @@ const styles = StyleSheet.create({
         minHeight: 130
     },
     button_name: {
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         fontSize: 16,
     },
     button_content: {
-        fontFamily: '$primaryFont',
+        fontFamily: fontRegular,
         fontSize: 12,
     },
     shadow: {

@@ -1,23 +1,22 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import {TouchableOpacity, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import SvgUri from 'react-native-svg-uri';
-import StyleSheet from "react-native-extended-stylesheet";
-import SoloText from "../widgets/SoloText";
 import {Actions} from 'react-native-router-flux';
-import {icArrowBack} from '../../../res/icons';
+import PropTypes from 'prop-types';
+
+import {colorPrimary, colorScreenBackground, colorTitleText, fontBold, icons} from '../../../res';
+import SoloText from "../widgets/SoloText";
 
 export default class ScreenHeaderActions extends React.Component {
     constructor(props) {
         super(props);
 
-        const primaryColor = StyleSheet.value('$primaryColor');
-        this.backgroundColor = props.backgroundColor || StyleSheet.value('$screenBackground');
-        this.backIconColor = props.accentColor || primaryColor;
-        this.backTextColor = props.accentColor || StyleSheet.value('$textTitleColor');
-        this.titleColor = props.accentColor || primaryColor;
+        this.backgroundColor = props.backgroundColor || colorScreenBackground;
+        this.backIconColor = props.accentColor || colorPrimary;
+        this.backTextColor = props.accentColor || colorTitleText;
+        this.titleColor = props.accentColor || colorPrimary;
         this.onPressAction = props.onBackPress || this.onBackPress;
     }
 
@@ -34,7 +33,7 @@ export default class ScreenHeaderActions extends React.Component {
                         width={8}
                         height={13}
                         fill={this.backIconColor}
-                        svgXmlData={icArrowBack}
+                        svgXmlData={icons.icArrowBack}
                         style={{
                             marginLeft: 16,
                             marginRight: 6,
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     toolbar: {
         width: '100%',
         height: 64,
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         alignItems: 'flex-end',
         justifyContent: 'flex-start',
         shadowColor: '#7ba3d8',
@@ -76,14 +75,14 @@ const styles = StyleSheet.create({
     },
     button_text: {
         fontSize: 14,
-        color: '$textTitleColor',
+        color: colorTitleText,
         paddingBottom: 3,
     },
     title: {
         flex: 0.6,
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         fontSize: 16,
-        color: '$primaryColor',
+        color: colorPrimary,
         paddingBottom: 12,
         textAlign: 'center',
         textAlignVertical: 'center',

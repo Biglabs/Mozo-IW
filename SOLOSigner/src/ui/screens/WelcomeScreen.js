@@ -1,17 +1,18 @@
 import React from 'react';
-import {Dimensions, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
+
+import {colorPrimary, colorScreenBackground, dimenScreenWidth, icons} from '../../res';
 import {Button, Text} from "../components";
-import {icSoloLogo} from '../../res/icons';
+
+const buttonWidthPercent = dimenScreenWidth >= 500 ? '44%' : '84%';
 
 export default class WelcomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        let {width} = Dimensions.get('window');
-        this.logoWidth = 64 * width / 100;
+        this.logoWidth = 64 * dimenScreenWidth / 100;
         this.logoHeight = 37.8 * this.logoWidth / 100;
     }
 
@@ -20,8 +21,8 @@ export default class WelcomeScreen extends React.Component {
             <View style={styles.container}>
                 <SvgUri width={this.logoWidth}
                         height={this.logoHeight}
-                        fill={StyleSheet.value('$primaryColor')}
-                        svgXmlData={icSoloLogo}
+                        fill={colorPrimary}
+                        svgXmlData={icons.icSoloLogo}
                         style={{
                             flex: .5,
                             justifyContent: 'flex-end',
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '$screenBackground'
+        backgroundColor: colorScreenBackground
     },
     welcome_text: {
         color: '#141a22',
@@ -71,12 +72,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttons: {
-        width: '84%',
+        width: buttonWidthPercent,
         marginBottom: 15,
     },
-    '@media (min-width: 500)': {
-        buttons: {
-            width: '44%',
-        }
-    }
 });

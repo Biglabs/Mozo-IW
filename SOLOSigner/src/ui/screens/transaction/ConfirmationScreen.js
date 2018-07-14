@@ -1,15 +1,26 @@
 import React from "react";
-import {ActivityIndicator, Alert, AppState, TouchableOpacity, View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {ActivityIndicator, Alert, AppState, StyleSheet, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 import CountDown from 'react-native-countdown-component';
 
+import {
+    colorContentText,
+    colorDisable,
+    colorError,
+    colorPrimary,
+    colorScreenBackground,
+    colorTitleText,
+    dimenScreenPaddingBottom,
+    dimenScreenPaddingHorizontal,
+    fontBold,
+    fontRegular,
+    icons
+} from '../../../res';
 import {ScreenHeaderActions, Text} from "../../components";
-import Globals from '../../../services/GlobalService';
 import Constant from '../../../helpers/Constants';
+import Globals from '../../../services/GlobalService';
 import WalletManager from '../../../services/WalletService';
-import {icCheck, icSend} from '../../../res/icons';
 
 export default class ConfirmationScreen extends React.Component {
 
@@ -35,7 +46,7 @@ export default class ConfirmationScreen extends React.Component {
             // Do not add return money
             // BlockCypher will set the change address to the first transaction input/address listed in the transaction. 
             // To redirect this default behavior, you can set an optional change_address field within the TX request object.
-            if(item.addresses[0] != this.fromAddress[0]){
+            if (item.addresses[0] != this.fromAddress[0]) {
                 this.value += item.value;
             }
         });
@@ -72,7 +83,7 @@ export default class ConfirmationScreen extends React.Component {
 
     cancelTransaction(_error) {
         var error = _error;
-        if(error == null){
+        if (error == null) {
             // Set default error
             error = Constant.ERROR_TYPE.CANCEL_REQUEST;
         }
@@ -85,11 +96,13 @@ export default class ConfirmationScreen extends React.Component {
             'Transaction confirmation timeout',
             'This transaction has been time out. Please try again.',
             [
-                {text: 'OK', onPress: () => {
-                    this.cancelTransaction(Constant.ERROR_TYPE.TIME_OUT_CONFIRM);
-                }},
+                {
+                    text: 'OK', onPress: () => {
+                        this.cancelTransaction(Constant.ERROR_TYPE.TIME_OUT_CONFIRM);
+                    }
+                },
             ],
-            { cancelable: false }
+            {cancelable: false}
         );
     }
 
@@ -103,10 +116,10 @@ export default class ConfirmationScreen extends React.Component {
 
     _handleAppStateChange = (nextAppState) => {
         if (nextAppState !== 'active') {
-            console.log('App has come to the background!')
+            console.log('App has come to the background!');
             Actions.pop();
         }
-    }
+    };
 
     render() {
         if (this.state.isShowingLoading)
@@ -120,20 +133,20 @@ export default class ConfirmationScreen extends React.Component {
                 <View style={styles.container}>
                     <ScreenHeaderActions
                         title='Send Confirmation'
-                        backgroundColor={StyleSheet.value('$primaryColor')}
+                        backgroundColor={colorPrimary}
                         accentColor='#ffffff'
                         onBackPress={() => {
                             this.cancelTransaction();
                         }}
-                        />
+                    />
 
                     <View style={styles.content}>
                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
                             <SvgUri
-                                fill={StyleSheet.value('$primaryColor')}
+                                fill={colorPrimary}
                                 width={15}
                                 height={15}
-                                svgXmlData={icSend}/>
+                                svgXmlData={icons.icSend}/>
                             <Text style={styles.text_send}>Send</Text>
                         </View>
                         <Text style={styles.text_value}>
@@ -145,7 +158,8 @@ export default class ConfirmationScreen extends React.Component {
 
                         <Text>
                             <Text style={styles.text_section}>Mining Fee: {this.fees}</Text>
-                            <Text style={[styles.text_section, styles.text_mining_fee_value]}> {this.props.txData.coinType}</Text>
+                            <Text
+                                style={[styles.text_section, styles.text_mining_fee_value]}> {this.props.txData.coinType}</Text>
                         </Text>
 
                         <View style={styles.dash}/>
@@ -180,32 +194,32 @@ export default class ConfirmationScreen extends React.Component {
                         <View style={styles.confirmation_footer}>
                             <CountDown
                                 style={styles.countdown_confirm}
-                                digitBgColor={StyleSheet.value('$primaryColor')}
-                                digitTxtColor={StyleSheet.value('$screenBackground')}
-                                timeTxtColor={StyleSheet.value('$primaryColor')}
+                                digitBgColor={colorPrimary}
+                                digitTxtColor={colorScreenBackground}
+                                timeTxtColor={colorPrimary}
                                 until={this.confirmTimeout}
                                 onFinish={() => this.handleConfirmTimeout()}
                                 size={20}
                                 timeToShow={['M', 'S']}
                             />
                             <TouchableOpacity style={styles.button_confirm}
-                                            onPressIn={() => this.setState({pressedConfirm: true})}
-                                            onPressOut={() => {
-                                                this.setState({pressedConfirm: false});
-                                                this.onConfirmTransaction();
-                                            }}>
+                                              onPressIn={() => this.setState({pressedConfirm: true})}
+                                              onPressOut={() => {
+                                                  this.setState({pressedConfirm: false});
+                                                  this.onConfirmTransaction();
+                                              }}>
                                 <SvgUri
-                                    fill={StyleSheet.value('$primaryColor')}
+                                    fill={colorPrimary}
                                     width={20}
                                     height={20}
-                                    svgXmlData={icCheck}/>
+                                    svgXmlData={icons.icCheck}/>
                                 <Text style={styles.text_confirm}>Confirm</Text>
                             </TouchableOpacity>
                             <Text style={styles.text_reject} onPress={() => {
-                                            this.cancelTransaction();
-                                        }}>Reject</Text>
+                                this.cancelTransaction();
+                            }}>Reject</Text>
                         </View>
-                        
+
                     </View>
                 </View>
             )
@@ -214,7 +228,7 @@ export default class ConfirmationScreen extends React.Component {
 
 const styles = StyleSheet.create({
     loading_container: {
-        backgroundColor: '$primaryColor',
+        backgroundColor: colorPrimary,
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
@@ -222,7 +236,7 @@ const styles = StyleSheet.create({
     },
     container: {
         alignItems: 'flex-start',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -240,21 +254,21 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        padding: '$screen_padding_horizontal'
+        padding: dimenScreenPaddingHorizontal
     },
     dash: {
         height: 1,
-        backgroundColor: '$disableColor',
+        backgroundColor: colorDisable,
         marginTop: 20,
         marginBottom: 15
     },
     text_send: {
-        color: '$textContentColor',
+        color: colorContentText,
         fontSize: 16,
         marginLeft: 12
     },
     text_value: {
-        color: '$primaryColor',
+        color: colorPrimary,
         fontSize: 25
     },
     text_usd: {
@@ -262,35 +276,35 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
     text_section: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         fontSize: 14,
-        fontFamily: '$primaryFontBold'
+        fontFamily: fontBold
     },
     text_mining_fee_value: {
-        fontFamily: '$primaryFont'
+        fontFamily: fontRegular
     },
     text_address: {
         color: '#969696',
         fontSize: 12
     },
     text_confirm: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         fontSize: 16,
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         marginLeft: 6,
     },
     text_reject: {
-        color: '$errorColor',
+        color: colorError,
         fontSize: 14,
         position: 'absolute',
         right: 0,
         bottom: 0,
         paddingBottom: 27,
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
     },
     button_confirm: {
-        height: '$screen_padding_bottom',
+        height: dimenScreenPaddingBottom,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',

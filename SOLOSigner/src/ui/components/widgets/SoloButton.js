@@ -2,34 +2,34 @@
 
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
 import SvgUri from 'react-native-svg-uri';
-import * as ButtonStyles from '../../../res/button.styles';
+
+import {buttons, colorDisable, colorTitleText, dimenScreenPaddingHorizontal, fontBold, fontRegular} from '../../../res';
 
 export default class SoloButton extends React.Component {
     constructor(props) {
         super(props);
         switch (props.type ? props.type : '') {
             case "solid":
-                this.style = styles.solid;
+                this.style = buttons.SolidStyle;
                 break;
             case "border-primary":
-                this.style = styles.border_primary;
+                this.style = buttons.BorderPrimaryStyle;
                 break;
             case "border-gray":
             default:
-                this.style = styles.border_gray;
+                this.style = buttons.BorderGrayStyle;
                 break;
         }
-        this.disableColor = StyleSheet.value('$disableColor');
+        this.disableColor = colorDisable;
         this.hasIcon = (typeof props.icon !== 'undefined') || false;
-        this.iconColor = props.iconColor || StyleSheet.value('$textTitleColor');
+        this.iconColor = props.iconColor || colorTitleText;
         this.iconSize = 20;
         this.paddingVertical = 27;
-        this.paddingHorizontal = StyleSheet.value('$screen_padding_horizontal');
+        this.paddingHorizontal = dimenScreenPaddingHorizontal;
         let spacing = 9;
 
-        this.font = StyleSheet.value(props.titleBold === true ? '$primaryFontBold' : '$primaryFont');
+        this.font = props.titleBold === true ? fontBold : fontRegular;
         this.fontSize = props.fontSize || 16;
         this.textPadding = ((this.iconSize + this.paddingVertical * 2) - this.fontSize) / 2;
         this.textPaddingHorizontal = this.paddingHorizontal + this.iconSize + spacing;
@@ -71,7 +71,8 @@ export default class SoloButton extends React.Component {
     render() {
         let finalTextStyle = [];
         if (this.hasIcon) {
-            finalTextStyle.push(styles.width_icon);
+            finalTextStyle.push(buttons.SolidStyle);
+            finalTextStyle.push({backgroundColor: 'transparent'});
             finalTextStyle.push(this.textStyle);
         } else {
             finalTextStyle.push(this.style);
@@ -108,19 +109,3 @@ export default class SoloButton extends React.Component {
         )
     }
 }
-
-const styles = StyleSheet.create({
-    width_icon: {
-        ...ButtonStyles.SolidStyle,
-        backgroundColor: 'transparent',
-    },
-    solid: {
-        ...ButtonStyles.SolidStyle
-    },
-    border_gray: {
-        ...ButtonStyles.BorderGrayStyle
-    },
-    border_primary: {
-        ...ButtonStyles.BorderPrimaryStyle
-    }
-});

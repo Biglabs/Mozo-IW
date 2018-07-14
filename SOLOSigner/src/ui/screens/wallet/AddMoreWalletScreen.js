@@ -1,12 +1,21 @@
 import React, {Component} from "react";
-import {FlatList, TouchableOpacity, View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
+import {inject} from "mobx-react";
+
 import {CoinItemView, ScreenHeaderActions, Text, TextInput} from "../../components";
 import Constant from '../../../helpers/Constants';
-import {inject} from "mobx-react";
-import {icSearch} from '../../../res/icons';
+import {
+    colorDisable,
+    colorPrimary,
+    colorScreenBackground,
+    dimenCornerRadius,
+    dimenScreenPaddingBottom,
+    dimenScreenPaddingHorizontal,
+    fontBold,
+    icons
+} from '../../../res';
 
 @inject("selectedWalletsStore")
 export default class AddMoreWalletScreen extends Component {
@@ -82,7 +91,7 @@ export default class AddMoreWalletScreen extends Component {
 
     render() {
         let hasWalletSelected = this.state.selectedWallets.length > 0;
-        let buttonAddTextColor = StyleSheet.value(hasWalletSelected ? '$primaryColor' : '$disableColor');
+        let buttonAddTextColor = hasWalletSelected ? colorPrimary : colorDisable;
         return (
             <View style={styles.container}>
                 <ScreenHeaderActions title='Add More Wallet'/>
@@ -104,7 +113,7 @@ export default class AddMoreWalletScreen extends Component {
                     <SvgUri
                         width={24}
                         height={24}
-                        svgXmlData={icSearch}
+                        svgXmlData={icons.icSearch}
                         style={{
                             position: 'absolute',
                             right: 0,
@@ -143,7 +152,7 @@ export default class AddMoreWalletScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start'
@@ -152,10 +161,10 @@ const styles = StyleSheet.create({
         width: '84%',
         height: 45,
         backgroundColor: '#f6f6f6',
-        borderRadius: '$buttonRadius',
-        marginLeft: '$screen_padding_horizontal',
+        borderRadius: dimenCornerRadius,
+        marginLeft: dimenScreenPaddingHorizontal,
         marginTop: 20,
-        marginRight: '$screen_padding_horizontal',
+        marginRight: dimenScreenPaddingHorizontal,
     },
     search_input: {
         width: '100%',
@@ -169,10 +178,10 @@ const styles = StyleSheet.create({
     coin_list: {
         width: '84%',
         flex: 1,
-        marginLeft: '$screen_padding_horizontal',
+        marginLeft: dimenScreenPaddingHorizontal,
         marginTop: 20,
-        marginRight: '$screen_padding_horizontal',
-        marginBottom: '$screen_padding_bottom'
+        marginRight: dimenScreenPaddingHorizontal,
+        marginBottom: dimenScreenPaddingBottom
     },
     button_add: {
         paddingLeft: 30,
@@ -184,8 +193,8 @@ const styles = StyleSheet.create({
         position: 'absolute'
     },
     button_add_text: {
-        color: '$primaryColor',
-        fontFamily: '$primaryFontBold',
+        color: colorPrimary,
+        fontFamily: fontBold,
         fontSize: 16
     }
 });
