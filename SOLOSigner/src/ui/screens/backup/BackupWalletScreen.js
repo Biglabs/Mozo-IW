@@ -1,15 +1,26 @@
 import React from "react";
-import {Alert, AsyncStorage, Platform, TouchableOpacity, View} from 'react-native';
+import {Alert, AsyncStorage, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
 import SvgUri from 'react-native-svg-uri';
-import StyleSheet from "react-native-extended-stylesheet";
 import {inject} from "mobx-react";
 
+import {
+    colorError,
+    colorPrimary,
+    colorScreenBackground,
+    colorTitleText,
+    dimenScreenPaddingHorizontal,
+    dimenScreenPaddingTop,
+    fontBold,
+    icons,
+    styleScreenExplainText,
+    styleScreenSubTitleText,
+    styleWarningText,
+} from "../../../res";
 import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput} from "../../components";
-import {icExportQR, icExportText} from "../../../res/icons";
-import WalletBackupService from '../../../services/WalletBackupService';
 import Constant from "../../../helpers/Constants";
+import WalletBackupService from '../../../services/WalletBackupService';
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
@@ -99,14 +110,14 @@ export default class BackupWalletScreen extends React.Component {
                     !this.state.isReadyToBackup &&
                     <View style={styles.view_contain}>
                         <Text
-                            style={StyleSheet.value('$warning_text')}>
+                            style={styleWarningText}>
                             Your Backup Phrase will be encrypted. The encrypt password cannot be recovered.{'\n'}
                             Be sure to write it down.</Text>
 
-                        <Text style={[StyleSheet.value('$screen_sub_title_text'), styles.text_sub_title]}>Enter a new
+                        <Text style={[styleScreenSubTitleText, styles.text_sub_title]}>Enter a new
                             encrypt password</Text>
 
-                        <Text style={StyleSheet.value('$screen_explain_text')}>
+                        <Text style={styleScreenExplainText}>
                             Use 8 or more characters with a mix of letters, numbers & symbols
                         </Text>
                         <TextInput
@@ -161,10 +172,10 @@ export default class BackupWalletScreen extends React.Component {
                                 style={styles.export_button}
                                 onPress={() => this.doExport(Constant.BACKUP_FILE_TYPE.PNG)}>
                                 <SvgUri
-                                    fill={StyleSheet.value('$primaryColor')}
+                                    fill={colorPrimary}
                                     width={32}
                                     height={32}
-                                    svgXmlData={icExportQR}/>
+                                    svgXmlData={icons.icExportQR}/>
                                 <Text style={styles.export_button_text}>{'\n'}QR Image file</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -173,7 +184,7 @@ export default class BackupWalletScreen extends React.Component {
                                 <SvgUri
                                     width={32}
                                     height={32}
-                                    svgXmlData={icExportText}/>
+                                    svgXmlData={icons.icExportText}/>
                                 <Text style={styles.export_button_text}>{'\n'}Text file</Text>
                             </TouchableOpacity>
                         </View>
@@ -187,7 +198,7 @@ export default class BackupWalletScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'flex-start',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -195,9 +206,9 @@ const styles = StyleSheet.create({
     view_contain: {
         width: '100%',
         flex: 1,
-        paddingTop: '$screen_padding_top',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingTop: dimenScreenPaddingTop,
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
     },
     view_result: {
         alignItems: 'center',
@@ -214,7 +225,7 @@ const styles = StyleSheet.create({
     },
     error_text: {
         width: '100%',
-        color: '$errorColor',
+        color: colorError,
         fontSize: 12,
         marginTop: 15,
     },
@@ -225,7 +236,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderColor: '#b4b4b4',
         borderWidth: 1,
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -238,7 +249,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     export_explain_text_highlight: {
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
     },
     export_button: {
         flex: 0.5,
@@ -246,7 +257,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     export_button_text: {
-        fontFamily: '$primaryFontBold',
-        color: '$textTitleColor'
+        fontFamily: fontBold,
+        color: colorTitleText
     }
 });

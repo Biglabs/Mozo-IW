@@ -235,14 +235,11 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
     }
 }
 
-module.exports.viewBackupPhrase = function(pin) {
-    let manager = DataService.getInstance();
-    let appInfo = manager.getAppInfo();
+module.exports.viewBackupPhrase = function (pin) {
+    let appInfo = DataService.getInstance().getAppInfo();
     if (appInfo) {
-        let encryptedMnemonic = appInfo.mnemonic;
-        let mnemonic = encryption.decrypt(encryptedMnemonic, pin);
-        return mnemonic;
-    } 
+        return encryption.decrypt(appInfo.mnemonic, pin);
+    }
     return null;
 };
 

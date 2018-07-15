@@ -1,12 +1,10 @@
 import React from 'react';
 import {Linking} from 'react-native';
-import {Router, Modal, Scene, Stack} from 'react-native-router-flux';
+import {Router, Modal, Scene} from 'react-native-router-flux';
 import {Provider} from "mobx-react";
+
 import stores from "./stores";
 import LinkingService from "./services/LinkingService";
-
-/* initial common styles */
-import './res/common.styles.js';
 
 /* general screens */
 import SplashScreen from './ui/screens/SplashScreen';

@@ -1,10 +1,23 @@
 import React from "react";
-import {Alert, AsyncStorage, ScrollView, TouchableOpacity, View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {Alert, AsyncStorage, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {Button, ScreenFooterActions, Text} from "../../components";
 import Bip39 from 'bip39';
+
+import {Button, ScreenFooterActions, Text} from "../../components";
 import Constant from "../../../helpers/Constants";
+import {
+    colorBorder,
+    colorDisable,
+    colorPrimary,
+    colorScreenBackground,
+    dimenScreenPaddingBottom,
+    dimenScreenPaddingHorizontal,
+    fontBold,
+    styleScreenExplainText,
+    styleScreenSubTitleText,
+    styleScreenTitleText,
+    styleWarningText
+} from '../../../res';
 
 const phraseLanguage = Bip39.wordlists.english;
 const phraseLength = 12; //[12 ... 24]
@@ -67,9 +80,9 @@ export default class ConfirmBackupPhraseScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={StyleSheet.value('$screen_title_text')}>Backup Phrase</Text>
+                <Text style={styleScreenTitleText}>Backup Phrase</Text>
                 <Text
-                    style={StyleSheet.value(this.state.isConfirmingStep ? '$screen_sub_title_text' : '$screen_explain_text')}>
+                    style={this.state.isConfirmingStep ? styleScreenSubTitleText : styleScreenExplainText}>
                     {
                         this.state.isConfirmingStep
                             ? `Which one is ${this.randomWordIndex}th backup phrase?`
@@ -80,7 +93,7 @@ export default class ConfirmBackupPhraseScreen extends React.Component {
                 {
                     !this.state.isConfirmingStep &&
                     <Text style={[
-                        StyleSheet.value('$warning_text'),
+                        styleWarningText,
                         {marginTop: 10}
                     ]}>
                         If you lose your recovery phase, your wallet cannot be recovered.
@@ -176,11 +189,11 @@ export default class ConfirmBackupPhraseScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal'
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal
     },
     word_display_container: {
         alignItems: 'center',
@@ -192,7 +205,7 @@ const styles = StyleSheet.create({
     phrase_container: {
         borderBottomWidth: 1,
         borderTopWidth: 1,
-        borderColor: '$borderColor',
+        borderColor: colorBorder,
         flexDirection: 'row',
         flexWrap: 'wrap',
         paddingLeft: 50,
@@ -203,21 +216,21 @@ const styles = StyleSheet.create({
     },
     phrase_confirm_container: {
         top: 150,
-        bottom: '$screen_padding_bottom',
+        bottom: dimenScreenPaddingBottom,
     },
     phrase_confirm_answer_container: {
         width: '100%',
         height: 150,
         borderBottomWidth: 1,
         borderTopWidth: 1,
-        borderColor: '$borderColor',
+        borderColor: colorBorder,
         alignItems: 'center',
         justifyContent: 'center',
     },
     phrase_confirm_explain_text: {
         marginTop: 24,
-        marginLeft: '$screen_padding_horizontal',
-        marginRight: '$screen_padding_horizontal',
+        marginLeft: dimenScreenPaddingHorizontal,
+        marginRight: dimenScreenPaddingHorizontal,
     },
     phrase_confirm_words: {
         width: '100%',
@@ -233,8 +246,8 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
     },
     item_word: {
-        color: '$primaryColor',
-        fontFamily: '$primaryFontBold',
+        color: colorPrimary,
+        fontFamily: fontBold,
         fontSize: 14,
         padding: 5,
     },
@@ -256,12 +269,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        left: '$screen_padding_horizontal',
-        right: '$screen_padding_horizontal',
+        left: dimenScreenPaddingHorizontal,
+        right: dimenScreenPaddingHorizontal,
         bottom: 90,
     },
     radio_user_confirm_text: {
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         fontSize: 14
     },
     radios: {
@@ -269,7 +282,7 @@ const styles = StyleSheet.create({
         height: 25,
         borderRadius: 12.5,
         borderWidth: 1,
-        borderColor: '$borderColor',
+        borderColor: colorBorder,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 10,
@@ -278,34 +291,34 @@ const styles = StyleSheet.create({
         width: 10,
         height: 10,
         borderRadius: 5,
-        backgroundColor: '$primaryColor'
+        backgroundColor: colorPrimary
     },
     dash: {
         height: 1,
-        backgroundColor: '$disableColor',
+        backgroundColor: colorDisable,
         position: 'absolute',
-        left: '$screen_padding_horizontal',
-        right: '$screen_padding_horizontal',
-        bottom: '$screen_padding_bottom',
+        left: dimenScreenPaddingHorizontal,
+        right: dimenScreenPaddingHorizontal,
+        bottom: dimenScreenPaddingBottom,
     },
     button_confirm_word_text: {
         color: '#ffffff',
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
     },
     button_skip: {
-        height: '$screen_padding_bottom',
+        height: dimenScreenPaddingBottom,
         position: 'absolute',
         left: 0,
         bottom: 0,
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
         justifyContent: 'center',
         alignItems: 'center',
     },
     button_skip_text: {
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         fontSize: 16,
-        color: '$primaryColor',
+        color: colorPrimary,
         paddingBottom: 10,
     }
 });

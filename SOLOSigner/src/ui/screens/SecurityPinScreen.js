@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {TouchableHighlight, View, ActivityIndicator} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {Alert, ActivityIndicator, StyleSheet, TouchableHighlight, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
+
 import {ScreenFooterActions, Text} from "../components";
 import WalletManager from '../../services/WalletService';
+import {colorPrimary, colorScreenBackground, dimenScreenPaddingBottom, styleScreenTitleText} from '../../res';
 
 const accentColor = '#00fffc';
 const numbersPressedColor = '#003c8d';
@@ -24,8 +25,8 @@ export default class SecurityPinScreen extends Component {
         this.pinCode = Array.apply(null, Array(PIN_LENGTH));
         this.pinCodeConfirm = Array.apply(null, Array(PIN_LENGTH));
         this.state = {
-            pinIndex: -1, 
-            isShowingLoading: false, 
+            pinIndex: -1,
+            isShowingLoading: false,
             title: inputExistingPIN,
             isConfirm: false
         };
@@ -43,12 +44,16 @@ export default class SecurityPinScreen extends Component {
     // }
 
     handleContinuePress() {
-        if(this.props.isNewPIN){
-            if (this.state.isConfirm){
-                if(this.pinCode.toString() === this.pinCodeConfirm.toString()) {
+        if (this.props.isNewPIN) {
+            if (this.state.isConfirm) {
+                if (this.pinCode.toString() === this.pinCodeConfirm.toString()) {
                     this.handleEnterRightPin();
                 } else {
-                    alert('Confirm PIN is not correct!');
+                    Alert.alert(
+                        'Error',
+                        'Confirm PIN does not match!',
+                        [{text: 'OK'},],
+                    );
                     this.clearPin();
                 }
             } else {
@@ -59,7 +64,7 @@ export default class SecurityPinScreen extends Component {
             }
         } else {
             this.handleEnterRightPin();
-        }       
+        }
     }
 
     handleEnterRightPin() {
@@ -69,7 +74,7 @@ export default class SecurityPinScreen extends Component {
                 WalletManager.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
                     //Check error type
                     console.log("HandleEnterRightPin: ", error);
-                    if(error && error.message != "Network request failed") {
+                    if (error && error.message != "Network request failed") {
                         this.clearPin();
                     } else {
                         this.props.isNewPIN = false;
@@ -120,7 +125,7 @@ export default class SecurityPinScreen extends Component {
             return (
                 <View style={styles.container}>
 
-                    <Text style={[StyleSheet.value('$screen_title_text'), styles.title]}>Security Pin</Text>
+                    <Text style={[styleScreenTitleText, styles.title]}>Security Pin</Text>
 
                     <Text style={styles.sub_title}>{this.state.title}</Text>
 
@@ -170,7 +175,7 @@ export default class SecurityPinScreen extends Component {
 
 const styles = StyleSheet.create({
     loading_container: {
-        backgroundColor: '$primaryColor',
+        backgroundColor: colorPrimary,
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
     },
     container: {
         alignItems: 'flex-start',
-        backgroundColor: '$primaryColor',
+        backgroundColor: colorPrimary,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -193,12 +198,12 @@ const styles = StyleSheet.create({
     title: {
         width: '100%',
         textAlign: 'center',
-        color: '$screenBackground'
+        color: colorScreenBackground
     },
     sub_title: {
         width: '100%',
         textAlign: 'center',
-        color: '$screenBackground',
+        color: colorScreenBackground,
         fontSize: 14
     },
     radio_container: {
@@ -232,7 +237,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: '$screen_padding_bottom',
+        marginBottom: dimenScreenPaddingBottom,
     },
     numbers_row: {
         width: '100%',

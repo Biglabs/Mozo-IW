@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
-import {Actions} from 'react-native-router-flux';
+import {StyleSheet, View} from 'react-native';
+
 import {ScreenHeaderActions} from "../../components";
+import {colorScreenBackground} from '../../../res';
 
 export default class PaperWalletScreen extends Component {
     render() {
@@ -19,7 +19,7 @@ export default class PaperWalletScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start'

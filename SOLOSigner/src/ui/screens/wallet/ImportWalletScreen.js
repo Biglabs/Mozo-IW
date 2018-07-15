@@ -1,9 +1,20 @@
 import React from "react";
-import {ScrollView, View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 import bip39 from 'bip39';
+
+import {QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
+import {
+    colorDisable,
+    colorError,
+    colorScreenBackground,
+    colorTitleText,
+    dimenScreenPaddingBottom,
+    dimenScreenPaddingHorizontal,
+    fontBold,
+    styleScreenSubTitleText,
+    styleScreenTitleText,
+} from '../../../res';
 
 export default class ImportWalletScreen extends React.Component {
 
@@ -39,7 +50,7 @@ export default class ImportWalletScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Text style={StyleSheet.value('$screen_title_text')}>Import Wallet</Text>
+                <Text style={styleScreenTitleText}>Import Wallet</Text>
 
                 <ScrollView
                     style={styles.scroll_container}
@@ -48,7 +59,7 @@ export default class ImportWalletScreen extends React.Component {
                     showsVerticalScrollIndicator={false}
                     overScrollMode='never'>
 
-                    <Text style={StyleSheet.value('$screen_sub_title_text')}>
+                    <Text style={styleScreenSubTitleText}>
                         Type in your wallet’s Backup Phrase in the correct sequence below to pair.
                     </Text>
 
@@ -95,17 +106,17 @@ export default class ImportWalletScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'flex-start',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal'
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal
     },
     scroll_container: {
         width: '100%',
         flex: 1,
-        marginBottom: '$screen_padding_bottom',
+        marginBottom: dimenScreenPaddingBottom,
     },
     phrase_input: {
         width: '100%',
@@ -119,7 +130,7 @@ const styles = StyleSheet.create({
     },
     error_text: {
         width: '100%',
-        color: '$errorColor',
+        color: colorError,
         fontSize: 12
     },
     separator_container: {
@@ -131,15 +142,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     separator_text: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         fontSize: 12,
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         margin: 10,
     },
     dash: {
         width: 42,
         height: 1,
-        backgroundColor: '$disableColor',
+        backgroundColor: colorDisable,
         marginTop: 2
     }
 });

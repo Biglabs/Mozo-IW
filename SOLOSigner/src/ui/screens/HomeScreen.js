@@ -1,12 +1,19 @@
 import React from "react";
-import {AsyncStorage, TouchableOpacity, View} from 'react-native';
+import {AsyncStorage, StyleSheet, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
+
+import {
+    colorDisable,
+    colorPrimary,
+    colorScreenBackground,
+    colorTitleText,
+    dimenScreenPaddingHorizontal,
+    icons
+} from '../../res';
 import {BackupWalletStateIcon, Text} from "../components";
 import LinkingManager from "../../services/LinkingService";
 import CachingService from '../../services/CachingService';
-import {icBackup, icInformation, icNote, icSoloTitle, icSync} from '../../res/icons';
 
 export default class HomeScreen extends React.Component {
 
@@ -31,8 +38,8 @@ export default class HomeScreen extends React.Component {
                     <SvgUri
                         width={78}
                         height={36}
-                        fill={StyleSheet.value('$primaryColor')}
-                        svgXmlData={icSoloTitle}
+                        fill={colorPrimary}
+                        svgXmlData={icons.icSoloTitle}
                         style={{
                             marginBottom: 10,
                         }}/>
@@ -44,8 +51,8 @@ export default class HomeScreen extends React.Component {
                     <SvgUri
                         width={24}
                         height={20}
-                        fill={StyleSheet.value('$primaryColor')}
-                        svgXmlData={icBackup}/>
+                        fill={colorPrimary}
+                        svgXmlData={icons.icBackup}/>
                     <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
 
                     <BackupWalletStateIcon/>
@@ -54,7 +61,7 @@ export default class HomeScreen extends React.Component {
                         <SvgUri
                             width={20}
                             height={20}
-                            svgXmlData={icInformation}/>
+                            svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 
@@ -64,15 +71,15 @@ export default class HomeScreen extends React.Component {
                     <SvgUri
                         width={20}
                         height={20}
-                        fill={StyleSheet.value('$primaryColor')}
-                        svgXmlData={icSync}/>
+                        fill={colorPrimary}
+                        svgXmlData={icons.icSync}/>
                     <Text style={styles.buttons_text}>Pair Devices</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
                             width={20}
                             height={20}
-                            svgXmlData={icInformation}/>
+                            svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 
@@ -84,15 +91,15 @@ export default class HomeScreen extends React.Component {
                     <SvgUri
                         width={20}
                         height={20}
-                        fill={StyleSheet.value('$primaryColor')}
-                        svgXmlData={icNote}/>
+                        fill={colorPrimary}
+                        svgXmlData={icons.icNote}/>
                     <Text style={styles.buttons_text}>Paper Wallet</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
                             width={20}
                             height={20}
-                            svgXmlData={icInformation}/>
+                            svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 
@@ -108,7 +115,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start'
@@ -116,7 +123,7 @@ const styles = StyleSheet.create({
     toolbar: {
         width: '100%',
         height: 83,
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         justifyContent: 'flex-end',
         alignItems: 'center',
         shadowColor: '#7ba3d8',
@@ -129,13 +136,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 60,
         flexDirection: 'row',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
     buttons_text: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         fontSize: 14,
         marginLeft: 11,
         paddingBottom: 4,
@@ -145,17 +152,17 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         right: 0,
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
         alignItems: 'center',
         justifyContent: 'center'
     },
     dash: {
         width: '84%',
         height: 1,
-        backgroundColor: '$disableColor',
-        marginLeft: '$screen_padding_horizontal',
-        marginRight: '$screen_padding_horizontal',
+        backgroundColor: colorDisable,
+        marginLeft: dimenScreenPaddingHorizontal,
+        marginRight: dimenScreenPaddingHorizontal,
     },
     content: {
         alignItems: 'center',

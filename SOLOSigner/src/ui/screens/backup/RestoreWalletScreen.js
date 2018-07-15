@@ -1,8 +1,20 @@
 import React from "react";
-import {Platform, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
-import StyleSheet from "react-native-extended-stylesheet";
 
+import {
+    colorDisable,
+    colorError,
+    colorPrimary,
+    colorScreenBackground,
+    colorTitleText,
+    dimenScreenPaddingBottom,
+    dimenScreenPaddingHorizontal,
+    fontBold,
+    styleScreenExplainText,
+    styleScreenSubTitleText,
+    styleScreenTitleText,
+} from '../../../res';
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 import WalletBackupService from '../../../services/WalletBackupService';
 
@@ -72,16 +84,16 @@ export default class RestoreWalletScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={StyleSheet.value('$screen_title_text')}>Restore Wallet</Text>
+                <Text style={styleScreenTitleText}>Restore Wallet</Text>
 
-                <Text style={StyleSheet.value('$screen_sub_title_text')}>
+                <Text style={styleScreenSubTitleText}>
                     Restore your encrypted wallet that you backup before.
                 </Text>
 
                 {
                     !this.state.loadedBackupData &&
                     <View style={styles.contain_container}>
-                        <Text style={[StyleSheet.value('$screen_explain_text'), styles.section_text]}>
+                        <Text style={[styleScreenExplainText, styles.section_text]}>
                             Choose the way you want to restore:
                         </Text>
 
@@ -104,7 +116,7 @@ export default class RestoreWalletScreen extends React.Component {
                 {
                     this.state.loadedBackupData &&
                     <View style={styles.contain_container}>
-                        <Text style={[StyleSheet.value('$screen_explain_text'), styles.section_text]}>
+                        <Text style={[styleScreenExplainText, styles.section_text]}>
                             Enter your encrypt password:
                         </Text>
 
@@ -137,12 +149,12 @@ export default class RestoreWalletScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'flex-start',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal'
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal
     },
     section_text: {
         width: '100%',
@@ -153,13 +165,13 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1,
         flexDirection: 'column',
-        marginBottom: '$screen_padding_bottom',
+        marginBottom: dimenScreenPaddingBottom,
         alignItems: 'center',
     },
     button_choose_file: {
         borderWidth: 0,
-        color: '$primaryColor',
-        fontFamily: '$primaryFontBold',
+        color: colorPrimary,
+        fontFamily: fontBold,
         fontSize: 14,
         paddingTop: 20,
         paddingBottom: 20,
@@ -170,15 +182,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     separator_text: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         fontSize: 12,
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         margin: 10,
     },
     dash: {
         width: 42,
         height: 1,
-        backgroundColor: '$disableColor',
+        backgroundColor: colorDisable,
         marginTop: 2
     },
     input_password: {
@@ -190,7 +202,7 @@ const styles = StyleSheet.create({
     },
     error_text: {
         width: '100%',
-        color: '$errorColor',
+        color: colorError,
         fontSize: 12,
         marginTop: 15,
     },

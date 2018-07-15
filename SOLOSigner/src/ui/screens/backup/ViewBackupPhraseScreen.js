@@ -1,12 +1,21 @@
 import React from "react";
-import {Alert, Image, TouchableOpacity, View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
-import SvgUri from 'react-native-svg-uri';
-import {ScreenFooterActions, ScreenHeaderActions, Text} from "../../components";
-import WalletManager from '../../../services/WalletService';
+import {Alert, Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
-import {icCancel, icWarning} from '../../../res/icons';
+import SvgUri from 'react-native-svg-uri';
+
+import {
+    colorBorder,
+    colorPrimary,
+    colorScreenBackground,
+    colorTitleText,
+    dimenScreenPaddingTop,
+    fontBold,
+    icons,
+    styleWarningText
+} from '../../../res';
+import {ScreenFooterActions, ScreenHeaderActions, Text} from "../../components";
+import WalletManager from '../../../services/WalletService';
 
 export default class ViewBackupPhraseScreen extends React.Component {
 
@@ -16,7 +25,7 @@ export default class ViewBackupPhraseScreen extends React.Component {
             countDownDuration: 5,
             userConfirmed: false,
         };
-        let result = WalletManager.viewBackupPhrase(this.props.pin); 
+        let result = WalletManager.viewBackupPhrase(this.props.pin);
         if (result) {
             this.doViewBackupPhrase(result);
         } else {
@@ -63,9 +72,9 @@ export default class ViewBackupPhraseScreen extends React.Component {
                         <View style={styles.warning_text}>
                             <SvgUri width={20}
                                     height={20}
-                                    svgXmlData={icWarning}
+                                    svgXmlData={icons.icWarning}
                                     style={{marginRight: 6}}/>
-                            <Text style={[StyleSheet.value('$warning_text'), {paddingBottom: 4}]}>WARNING</Text>
+                            <Text style={[styleWarningText, {paddingBottom: 4}]}>WARNING</Text>
                         </View>
 
                         <Text style={styles.explain_text}>
@@ -116,8 +125,8 @@ export default class ViewBackupPhraseScreen extends React.Component {
                             onPress={() => Actions.pop()}>
                             <SvgUri width={18}
                                     height={18}
-                                    fill={StyleSheet.value('$primaryColor')}
-                                    svgXmlData={icCancel}
+                                    fill={colorPrimary}
+                                    svgXmlData={icons.icCancel}
                                     style={{marginRight: 4}}/>
                             <Text style={styles.button_cancel}>Cancel</Text>
                         </TouchableOpacity>
@@ -130,7 +139,7 @@ export default class ViewBackupPhraseScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         alignItems: 'center',
         flexDirection: 'column',
@@ -142,14 +151,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     warning_text: {
-        marginTop: '$screen_padding_top',
+        marginTop: dimenScreenPaddingTop,
         marginBottom: 15,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     explain_text: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         marginLeft: 50,
         marginRight: 50,
         fontSize: 14,
@@ -166,19 +175,19 @@ const styles = StyleSheet.create({
         marginBottom: 40,
         borderColor: '#b4b4b4',
         borderWidth: 1,
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         justifyContent: 'center',
         alignItems: 'center',
     },
     count_down_text: {
         fontSize: 16,
-        color: '$primaryColor',
+        color: colorPrimary,
         position: 'absolute',
         bottom: 30,
     },
     item_word: {
-        color: '$primaryColor',
-        fontFamily: '$primaryFontBold',
+        color: colorPrimary,
+        fontFamily: fontBold,
         fontSize: 14,
         padding: 5,
     },
@@ -187,7 +196,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderBottomWidth: 1,
         borderTopWidth: 1,
-        borderColor: '$borderColor',
+        borderColor: colorBorder,
         flexDirection: 'row',
         flexWrap: 'wrap',
         paddingLeft: 50,
@@ -204,9 +213,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     button_cancel: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         fontSize: 16,
-        fontFamily: '$primaryFontBold',
+        fontFamily: fontBold,
         marginBottom: 2,
     }
 });

@@ -1,10 +1,10 @@
 import React from "react";
-import {AsyncStorage, TouchableOpacity, View} from 'react-native';
+import {AsyncStorage, StyleSheet, TouchableOpacity, View} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import StyleSheet from 'react-native-extended-stylesheet';
 import {Actions} from 'react-native-router-flux';
+
 import {BackupWalletStateIcon, ScreenHeaderActions, Text} from "../../components";
-import {icInformation} from '../../../res/icons';
+import {colorDisable, colorScreenBackground, colorTitleText, dimenScreenPaddingHorizontal, icons} from '../../../res';
 
 export default class BackupWalletMenuScreen extends React.Component {
 
@@ -24,7 +24,7 @@ export default class BackupWalletMenuScreen extends React.Component {
                         <SvgUri
                             width={20}
                             height={20}
-                            svgXmlData={icInformation}/>
+                            svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 
@@ -39,7 +39,7 @@ export default class BackupWalletMenuScreen extends React.Component {
                         <SvgUri
                             width={20}
                             height={20}
-                            svgXmlData={icInformation}/>
+                            svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
 
@@ -52,7 +52,7 @@ export default class BackupWalletMenuScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start'
@@ -61,13 +61,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 60,
         flexDirection: 'row',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
     buttons_text: {
-        color: '$textTitleColor',
+        color: colorTitleText,
         fontSize: 14,
         paddingBottom: 4,
     },
@@ -76,16 +76,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         right: 0,
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
         alignItems: 'center',
         justifyContent: 'center'
     },
     dash: {
         width: '84%',
         height: 1,
-        backgroundColor: '$disableColor',
-        marginLeft: '$screen_padding_horizontal',
-        marginRight: '$screen_padding_horizontal',
+        backgroundColor: colorDisable,
+        marginLeft: dimenScreenPaddingHorizontal,
+        marginRight: dimenScreenPaddingHorizontal,
     },
 });

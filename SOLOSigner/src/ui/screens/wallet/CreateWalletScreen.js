@@ -1,9 +1,9 @@
 import React from "react";
-import {View} from 'react-native';
-import StyleSheet from 'react-native-extended-stylesheet';
+import {StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {ScreenFooterActions, SelectionGroup, Text, CreateWalletOptionItem} from "../../components";
-import {icFlash, icSettings} from '../../../res/icons';
+
+import {CreateWalletOptionItem, ScreenFooterActions, SelectionGroup, Text} from "../../components";
+import {colorScreenBackground, dimenScreenPaddingHorizontal, icons, styleScreenTitleText} from '../../../res';
 
 export default class CreateWalletScreen extends React.Component {
     constructor(props) {
@@ -11,11 +11,22 @@ export default class CreateWalletScreen extends React.Component {
         this.state = {selectedIndex: -1}
     }
 
+    onContinueClick = () => {
+        switch (this.state.selectedIndex) {
+            case 0:
+                Actions.security_pin({isNewPIN: true});
+                break;
+            case 1:
+                Actions.add_wallet();
+                break;
+        }
+    };
+
     render() {
         return (
             <View style={styles.container}>
 
-                <Text style={StyleSheet.value('$screen_title_text')}>Create New Wallet</Text>
+                <Text style={styleScreenTitleText}>Create New Wallet</Text>
 
                 <SelectionGroup
                     onSelectionChanged={(index) => {
@@ -25,28 +36,19 @@ export default class CreateWalletScreen extends React.Component {
                     }}>
                     <CreateWalletOptionItem label="Express"
                                             content="Select this option if you’d like to access your new SOLO Wallet quickly. Please note that you’ll always be able to customize at a later time."
-                                            icon={icFlash}
+                                            icon={icons.icFlash}
                                             style={styles.buttons}/>
 
                     <CreateWalletOptionItem title="Custom"
                                             content="Select this option if you’d like to customize your wallet. You’ll be able to select your wallet Tokens and Currencies, set up a security PIN, and back up your wallet."
-                                            icon={icSettings}
+                                            icon={icons.icSettings}
                                             style={styles.buttons}/>
                 </SelectionGroup>
 
                 <ScreenFooterActions
                     onBackPress={() => Actions.pop()}
                     enabledContinue={this.state.selectedIndex >= 0}
-                    onContinuePress={() => {
-                        switch (this.state.selectedIndex) {
-                            case 0:
-                                Actions.security_pin({isNewPIN : true});
-                                break;
-                            case 1:
-                                Actions.add_wallet();
-                                break;
-                        }
-                    }}/>
+                    onContinuePress={this.onContinueClick}/>
             </View>
         )
     }
@@ -55,12 +57,12 @@ export default class CreateWalletScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'flex-start',
-        backgroundColor: '$screenBackground',
+        backgroundColor: colorScreenBackground,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        paddingLeft: '$screen_padding_horizontal',
-        paddingRight: '$screen_padding_horizontal',
+        paddingLeft: dimenScreenPaddingHorizontal,
+        paddingRight: dimenScreenPaddingHorizontal,
     },
     buttons: {
         width: '100%'
