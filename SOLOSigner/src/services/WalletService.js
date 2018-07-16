@@ -377,30 +377,3 @@ module.exports.signTransaction = function(txData, pin, callback){
         }
     }
 }
-
-module.exports.addNewAddress = function(pin, coinType, index, callback) {
-    let manager = DataService.getInstance();
-    let appInfo = manager.getAppInfo();
-    if (appInfo) {
-        let encryptedMnemonic = appInfo.mnemonic;
-        let mnemonic = encryption.decrypt(encryptedMnemonic, pin);
-        let seed = bip39.mnemonicToSeedHex(mnemonic);
-        let rootKey = Bitcoin.HDNode.fromSeedHex(seed);
-        let path = standardDerivationPath(coinType.value);
-        let wallet = rootKey.derivePath(path);
-        let walletData = generateAddressAtIndex(wallet, coinType.value, index);
-        saveAddressToLocal(manager, coinType, walletData, pin);
-        let walletInfo = manager.getWalletInfo();
-        if(walletInfo){
-            walletInfo = { walletId : walletInfo.walletId };
-            RESTService.syncAddress(walletInfo.walletId, walletData.address, walletData.addressIndex, coinType.name, coinType.network);
-        }
-        if (typeof callback === 'function') {
-            callback(null, walletData.address);
-        }
-    } else {
-        if (typeof callback === 'function') {
-            callback(new Error("Inputted PIN is not correct"), null);
-        }
-    }
-}
