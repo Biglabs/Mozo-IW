@@ -15,6 +15,8 @@ class SoloWalletViewController: UIViewController {
     let tabBarCtr = UITabBarController()
     var currentCoin: AddressDTO!
     var soloSDK: SoloSDK!
+    /// All addresses of a specific network
+    var addresses: [AddressDTO]!
     
     override func viewDidLoad() {
         super.viewDidLoad()

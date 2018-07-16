@@ -17,7 +17,7 @@ class PortfolioViewController: UIViewController {
     
     internal var feed: AddressFeed?
     var soloSDK: SoloSDK!
-    private var addresses: [AddressDTO] = []
+    internal var addresses: [AddressDTO] = []
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +73,7 @@ class PortfolioViewController: UIViewController {
     func buildAddressList(){
         var networks = Set<String>()
         self.addresses = [AddressDTO]()
-        self.feed?.addressess?.forEach({ (address) in
+        self.feed?.addresses?.forEach({ (address) in
             if !networks.contains(address.network!) {
                 networks.insert(address.network!)
                 self.addresses.append(address)
@@ -157,15 +157,12 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let numAddr = self.feed?.addressess?.count {
-            return numAddr
-        }
-        return 0
+        return self.addresses.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "CoinTableViewCell", for: indexPath) as! CoinTableViewCell
-        if let coin = self.feed?.addressess?.getElement(indexPath.row) {
+        if let coin = self.addresses.getElement(indexPath.row) {
             cell.bindData(coin)
         }
         //            cell.delegate = self
@@ -174,9 +171,10 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
-        if let coin = self.feed?.addressess?.getElement(indexPath.row) {
+        if let coin = self.addresses.getElement(indexPath.row) {
             let soloWalletVC = SoloWalletViewController()
             soloWalletVC.currentCoin = coin
+            soloWalletVC.addresses = self.feed?.addresses?.filter({  $0.network == coin.network })
             soloWalletVC.soloSDK = self.soloSDK
             Utils.getTopViewController().present(soloWalletVC, animated: true)
         }

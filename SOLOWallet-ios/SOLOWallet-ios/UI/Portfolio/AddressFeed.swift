@@ -11,7 +11,7 @@ import SoloSDK
 import SwiftyJSON
 
 public class AddressFeed: ContentFeed {
-    public private(set) var addressess: [AddressDTO]?
+    public private(set) var addresses: [AddressDTO]?
     private var soloSDK: SoloSDK!
     
     public init(_ id: String, soloSDK: SoloSDK) {
@@ -21,11 +21,11 @@ public class AddressFeed: ContentFeed {
     
     override public func reset(){
         super.reset()
-        self.addressess = nil
+        self.addresses = nil
     }
     
     override public func getContent() -> Any? {
-        return self.addressess
+        return self.addresses
     }
     
     public override func loadContent(contentAndErrorCompletion: @escaping (Any?, Error?) -> ()){
@@ -48,10 +48,10 @@ public class AddressFeed: ContentFeed {
                     items = arr.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
                 }
                 if items.count > 0 {
-                    self.addressess = items
+                    self.addresses = items
                 }
                 DispatchQueue.main.async {
-                    contentAndErrorCompletion(self.addressess, nil)
+                    contentAndErrorCompletion(self.addresses, nil)
                     
                 }
             }

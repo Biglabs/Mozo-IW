@@ -16,6 +16,9 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
     public var coin: String?
     public var balance: Double?
     public var network: String?
+    public var accountIndex: Int?
+    public var chainIndex: Int?
+    public var addressIndex: Int?
     public var transactions: [TransactionHistoryDTO]?
     
     // 1 coin = usd
@@ -36,6 +39,9 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
         self.coin = json["coin"].string
         self.balance = json["balance"].double
         self.network = json["network"].string
+        self.accountIndex = json["accountIndex"].int
+        self.chainIndex = json["chainIndex"].int
+        self.addressIndex = json["addressIndex"].int
         self.transactions = json["transactions"].array?.filter({ TransactionHistoryDTO(json: $0) != nil }).map({ TransactionHistoryDTO(json: $0)! })
     }
     
