@@ -10,7 +10,7 @@ import SwiftyJSON
 
 public class InputDTO : ResponseObjectSerializable {
     /// An array of public addresses associated with the output of the previous transaction.
-    public var addresses:[String]?
+    public var addresses: [String]?
     
     /// The previous transaction hash where this input was an output. Not present for coinbase transactions.
     public var prev_hash: String?

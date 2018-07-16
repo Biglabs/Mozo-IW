@@ -15,7 +15,8 @@ public class OutputDTO : ResponseObjectSerializable {
     /// Raw hexadecimal encoding of the encumbrance script for this output.
     public var script: String?
     
-    /// Value in this transaction output, in satoshis.
+    /// BTC: Value in this transaction output, in satoshis.
+    /// ETH: Value in this transaction output, in wei.
     public var value: Int64?
     
     /// The type of script that encumbers the output corresponding to this input.

@@ -67,7 +67,10 @@ public class TransactionDTO: ResponseObjectSerializable {
     /// Number of subsequent blocks, including the block the transaction is in. Unconfirmed transactions have 0 confirmations.
     public var confirmations: Int64?
     
+    /// TXInput Array, limited to 20 by default.
     public var inputs: [InputDTO]?
+    
+    /// TXOutput Array, limited to 20 by default.
     public var outputs: [OutputDTO]?
     
     /// Optional If creating a transaction, can optionally set a higher default gas limit (useful if your recepient is a contract). If not set, default is 21000 gas for external accounts and 80000 for contract accounts.
