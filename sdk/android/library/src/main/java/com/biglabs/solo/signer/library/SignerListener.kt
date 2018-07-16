@@ -1,6 +1,6 @@
 package com.biglabs.solo.signer.library
 
-import com.biglabs.solo.signer.library.models.Wallet
+import com.biglabs.solo.signer.library.models.ui.Wallet
 
 interface SignerListener {
 

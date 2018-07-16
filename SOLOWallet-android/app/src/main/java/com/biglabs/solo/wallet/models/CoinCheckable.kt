@@ -1,8 +1,8 @@
 package com.biglabs.solo.wallet.models
 
-import com.biglabs.solo.signer.library.Coin
+import com.biglabs.solo.signer.library.utils.CoinEnum
 
-class CoinCheckable(val coin: Coin, var walletIndex: Int = -1) : Comparable<CoinCheckable> {
+class CoinCheckable(val coin: CoinEnum, var walletIndex: Int = -1) : Comparable<CoinCheckable> {
     var checked = false
 
     override fun compareTo(other: CoinCheckable): Int {

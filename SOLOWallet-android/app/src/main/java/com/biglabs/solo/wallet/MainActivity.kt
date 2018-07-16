@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.RadioButton
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.SignerListener
-import com.biglabs.solo.signer.library.models.Wallet
+import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.wallet.dialogs.WalletChooserDialog
 import com.biglabs.solo.wallet.fragments.ExchangeFragment
 import com.biglabs.solo.wallet.fragments.ReceiveFragment
@@ -22,12 +22,10 @@ import com.biglabs.solo.wallet.fragments.WalletFragment
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
-import com.biglabs.solo.wallet.utils.WalletProvider
 import com.biglabs.solo.wallet.utils.translucentStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.greenrobot.eventbus.EventBus
-
 
 class MainActivity : AppCompatActivity(), SignerListener {
     private var selectedTabId = -1
@@ -104,7 +102,7 @@ class MainActivity : AppCompatActivity(), SignerListener {
         wallet?.coin()?.let {
             button_choose_wallet.visibility = View.VISIBLE
 
-            current_wallet_name.text = it.key
+            current_wallet_name.text = it.displayName
             current_wallet_icon.setImageResource(it.icon)
         }
     }

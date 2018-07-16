@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.biglabs.solo.signer.library.Signer
-import com.biglabs.solo.signer.library.models.Wallet
+import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
@@ -73,7 +73,14 @@ class SendFragment : Fragment() {
                 if (valueInNumber == null || valueInNumber == 0f || input_receive_address.length() == 0) {
                     toast("Invalid value")
                 } else {
-                    Signer.getInstance().confirmTransaction(context!!, address, input_receive_address.text.toString(), wallet?.coin()?.key!!, value, message_input.text.toString())
+                    Signer.getInstance().confirmTransaction(
+                            context!!,
+                            address,
+                            input_receive_address.text.toString(),
+                            wallet?.coin()?.key!!,
+                            wallet?.coin()?.network!!,
+                            value, message_input.text.toString()
+                    )
                 }
             } else {
                 toast("Please choose an account!")
