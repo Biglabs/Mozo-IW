@@ -131,5 +131,16 @@
         </rollback>
     </changeSet>
 
+    <changeSet author="antt" id="address-add-ver-col">
+        <addColumn tableName="address">
+            <column name="version" type="long" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <addUniqueConstraint columnNames="address, jhi_network"
+                             constraintName="UC_ADDRESS_COL"
+                             tableName="address" />
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
