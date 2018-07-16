@@ -60,8 +60,8 @@ public class WalletResource {
         if (wallet.getId() != null) {
             throw new BadRequestAlertException("A new wallet cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if (walletService.findOneByWalletKey(wallet.getWalletKey()) != null) {
-            throw new BadRequestAlertException("A wallet with same key exist", ENTITY_NAME, "idexists");
+        if (walletService.findOneByWalletKey(wallet.getWalletKey()).isPresent()) {
+            throw new BadRequestAlertException("A wallet with same key exist: " + wallet.getWalletKey(), ENTITY_NAME, "idexists");
         }
 
         UUID newId = UUID.randomUUID();
@@ -145,7 +145,7 @@ public class WalletResource {
     @Timed
     public List<Address> getAddresses(@PathVariable String walletId) {
         log.debug("REST request to get Wallet : {}", walletId);
-        List<Address> addresses = walletAddressRepository.findAddressesByWalletId(walletId);
+        List<Address> addresses = walletAddressRepository.findAddressesByWallet_WalletId(walletId);
         return addresses;
     }
 

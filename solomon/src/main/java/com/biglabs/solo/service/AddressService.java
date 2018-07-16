@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Service Interface for managing Address.
  */
-@Validated
+
 public interface AddressService {
 
     /**
@@ -43,7 +43,7 @@ public interface AddressService {
      */
     void delete(Long id);
 
-    List<Address> save(@NotEmpty(message = "Addresses is empty")  List<Address> addresses);
+    List<Address> save(List<Address> addresses);
 
     Address findOneByAddress(String address);
     List<Address> findAllAddressIn(List<String> adrHashes);

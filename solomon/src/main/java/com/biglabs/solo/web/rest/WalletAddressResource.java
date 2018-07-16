@@ -11,11 +11,16 @@ import com.biglabs.solo.domain.WalletAddress;
 import com.biglabs.solo.repository.WalletAddressRepository;
 import com.biglabs.solo.web.rest.errors.BadRequestAlertException;
 import com.biglabs.solo.web.rest.util.HeaderUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,6 +45,8 @@ public class WalletAddressResource {
     private final WalletAddressRepository walletAddressRepository;
     private final AddressService addressService;
     private final WalletService walletService;
+    @Autowired
+    private ObjectMapper jacksonObjectMapper;
 
     public WalletAddressResource(WalletAddressRepository walletAddressRepository, AddressService addressService, WalletService walletService) {
         this.walletAddressRepository = walletAddressRepository;
@@ -56,7 +63,7 @@ public class WalletAddressResource {
      */
     @PostMapping("/wallet-addresses")
     @Timed
-    public ResponseEntity<List<WalletAddress>> linkWalletAddress(@Valid @RequestBody WalletAddressVM walletAddressVM) throws URISyntaxException {
+    public ResponseEntity<List<WalletAddress>> linkWalletAddress(@Valid @RequestBody WalletAddressVM walletAddressVM) throws URISyntaxException, JsonProcessingException {
         log.debug("REST request to save WalletAddress : {}", walletAddressVM);
         if (walletAddressVM.getWalletId() == null) {
             throw new BadRequestAlertException("No wallet provided", ENTITY_NAME, "nowallet");
@@ -77,9 +84,13 @@ public class WalletAddressResource {
     }
 
 
+    @Validated
     @Transactional
-    public ResponseEntity<List<WalletAddress>> bulkSavingAddresses(String walletId, List<Address> addresses) throws URISyntaxException {
+    public ResponseEntity<List<WalletAddress>> bulkSavingAddresses(String walletId, @NotEmpty(message = "Addresses is empty") List<Address> addresses) throws URISyntaxException, JsonProcessingException {
         log.debug("REST request to save WalletAddress : {}", walletId);
+        log.debug("=== Addresses <<<");
+        log.debug(jacksonObjectMapper.writeValueAsString(addresses));
+        log.debug("=== Addresses >>>");
         if (walletId == null) {
             throw new BadRequestAlertException("No wallet provided", ENTITY_NAME, "nowallet");
         }
@@ -88,18 +99,24 @@ public class WalletAddressResource {
         if (!w.isPresent()) {
             throw new BadRequestAlertException("Wallet " + walletId + " not exist.", ENTITY_NAME, "nowallet");
         }
+        log.debug("Wallet {}", jacksonObjectMapper.writeValueAsString(w.get()));
 
         // create or update addresses
         List<Address> existedAdrs = addressService.findAllAddressIn(addresses.stream().map(adr -> adr.getAddress()).collect(Collectors.toList()));
-        List<Address> newAddress = addresses.stream().filter(adr -> !existedAdrs.contains(adr.getAddress())).collect(Collectors.toList());
-        existedAdrs.addAll(newAddress);
-        List<Address> newSavedAddress = addressService.save(existedAdrs);
+        List<String> addressNetwork = existedAdrs.stream().map(adr -> addressIdentity(adr)).collect(Collectors.toList());
+        List<Address> newAddress = addresses.stream()
+            .filter(adr -> !addressNetwork.contains(addressIdentity(adr)))
+            .collect(Collectors.toList());
+
+        List<Address> newSavedAddress = addressService.save(newAddress);
+        existedAdrs.addAll(newSavedAddress);
 
         //Link wallet and unlink address
         List<WalletAddress> was = walletAddressRepository.findWalletAddressByWallet_WalletId(walletId);
-        List<String> linkedAddress = was.stream().map(walletAddress -> walletAddress.getAddress().getAddress()).collect(Collectors.toList());
-        List<Address> unlinkAddress = newSavedAddress.stream().filter(adr -> !linkedAddress.contains(adr.getAddress())).collect(Collectors.toList());
+        List<String> linkedAddress = was.stream().map(wadr -> addressIdentity(wadr.getAddress())).collect(Collectors.toList());
+        List<Address> unlinkAddress = existedAdrs.stream().filter(adr -> !linkedAddress.contains(addressIdentity(adr))).collect(Collectors.toList());
 
+        unlinkAddress.forEach(address -> log.debug("Unlink address {}, {}", address.getId(), address.getAddress()));
 
         List<WalletAddress> newWAs = unlinkAddress.stream().map(adr -> {
             WalletAddress walletAddress = new WalletAddress();
@@ -109,9 +126,14 @@ public class WalletAddressResource {
             return walletAddress;
         }).collect(Collectors.toList());
 
-        List<WalletAddress> result = walletAddressRepository.save(newWAs);
+        newWAs = walletAddressRepository.save(newWAs);
+        was.addAll(newWAs);
         return ResponseEntity.ok()
-            .body(result);
+            .body(was);
+    }
+
+    private String addressIdentity(Address adr) {
+        return String.join("-", adr.getAddress(), adr.getNetwork().toString());
     }
 
     /**

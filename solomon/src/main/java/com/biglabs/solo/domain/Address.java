@@ -78,6 +78,9 @@ public class Address implements Serializable {
     @Column(name = "address_index", nullable = false)
     private Integer addressIndex;
 
+    @Version
+    private Long version;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -256,6 +259,15 @@ public class Address implements Serializable {
         this.addressIndex = addressIndex;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     @Override
     public boolean equals(Object o) {
