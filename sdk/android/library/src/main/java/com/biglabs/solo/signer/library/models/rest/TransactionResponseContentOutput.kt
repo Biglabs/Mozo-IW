@@ -11,8 +11,8 @@ internal class TransactionResponseContentOutput {
     @SerializedName("script")     
     var script: String? = null
 
-    /** BTC: Value in this transaction output, in satoshis.
-        ETH: Value in this transaction output, in wei. */
+    /** BTC: Value in this transaction output, in satoshis. 10^8
+        ETH: Value in this transaction output, in wei. 10^18 */
     @SerializedName("value")
     var value: Long? = null
 
