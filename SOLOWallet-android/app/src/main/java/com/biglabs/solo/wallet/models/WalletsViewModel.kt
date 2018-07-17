@@ -3,7 +3,7 @@ package com.biglabs.solo.wallet.models
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.biglabs.solo.signer.library.models.Wallet
+import com.biglabs.solo.signer.library.models.ui.Wallet
 
 class WalletsViewModel : ViewModel() {
     private val walletsLiveData = MutableLiveData<List<Wallet>>()

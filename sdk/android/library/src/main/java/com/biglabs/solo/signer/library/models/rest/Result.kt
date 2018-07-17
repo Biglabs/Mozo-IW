@@ -1,8 +1,8 @@
-package com.biglabs.solo.signer.library.models
+package com.biglabs.solo.signer.library.models.rest
 
 import com.google.gson.annotations.SerializedName
 
-class Result {
+internal class Result {
     @SerializedName("jsonrpc")
     var jsonRpc: String? = null
 

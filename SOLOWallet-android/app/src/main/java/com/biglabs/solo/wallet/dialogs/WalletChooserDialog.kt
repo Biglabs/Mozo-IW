@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatDialogFragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.view.*
-import com.biglabs.solo.signer.library.models.Wallet
+import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.adapters.WalletsRecyclerAdapter
 import com.biglabs.solo.wallet.models.CoinCheckable

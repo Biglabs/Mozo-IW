@@ -1,11 +1,11 @@
-package com.biglabs.solo.signer.library.models.new
+package com.biglabs.solo.signer.library.models.rest
 
 import com.google.gson.annotations.SerializedName
 
-class OutputDTO {
+internal class TransactionResponseContentOutput {
     /** Addresses that correspond to this output; typically this will only have a single address, and you can think of this output as having “sent” value to the address contained herein. */
     @SerializedName("addresses")
-    var addresses: [String]? = null
+    var addresses: Array<String>? = null
 
     /** Raw hexadecimal encoding of the encumbrance script for this output. */
     @SerializedName("script")     
@@ -14,7 +14,7 @@ class OutputDTO {
     /** BTC: Value in this transaction output, in satoshis.
         ETH: Value in this transaction output, in wei. */
     @SerializedName("value")
-    var value: long? = null
+    var value: Long? = null
 
     /** The type of script that encumbers the output corresponding to this input. */
     @SerializedName("script_type")

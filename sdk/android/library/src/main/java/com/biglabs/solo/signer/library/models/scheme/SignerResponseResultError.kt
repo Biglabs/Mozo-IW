@@ -1,8 +1,9 @@
-package com.biglabs.solo.signer.library.models.new
+package com.biglabs.solo.signer.library.models.scheme
 
 import com.google.gson.annotations.SerializedName
 
-class ErrorDTO {
+internal class SignerResponseResultError {
+
     @SerializedName("code")
     var code: String? = null
 
@@ -14,4 +15,5 @@ class ErrorDTO {
 
     @SerializedName("type")
     var type: String? = null
+
 }

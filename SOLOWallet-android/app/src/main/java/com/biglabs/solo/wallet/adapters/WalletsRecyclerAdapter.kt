@@ -34,7 +34,7 @@ class WalletsRecyclerAdapter(private val coins: List<CoinCheckable>, private val
         @SuppressLint("ResourceType")
         fun bind(coin: CoinCheckable) {
             item_coin_icon.setImageResource(coin.coin.icon)
-            item_coin_name.text = coin.coin.key
+            item_coin_name.text = coin.coin.displayName
 
             item_coin_activate_icon.visibility = if (coin.checked) View.VISIBLE else View.GONE
             item_coin_activate_text.visibility = if (coin.checked) View.VISIBLE else View.GONE

@@ -1,8 +1,8 @@
-package com.biglabs.solo.signer.library.models
+package com.biglabs.solo.signer.library.models.rest
 
 import com.google.gson.Gson
 
-class GetBalanceRequest(address: String) {
+internal class GetBalanceRequest(address: String) {
     private val jsonrpc = "2.0"
     private val id: Int = 1
     private val method: String = "eth_getBalance"
