@@ -2,6 +2,8 @@ package com.biglabs.solo.signer.library
 
 import com.biglabs.solo.signer.library.models.rest.GetBalanceRequest
 import com.biglabs.solo.signer.library.models.rest.Result
+import com.biglabs.solo.signer.library.models.rest.TransactionResponse
+import com.biglabs.solo.signer.library.models.rest.TransactionResponseContent
 import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.signer.library.utils.Constants
 import okhttp3.OkHttpClient
@@ -35,6 +37,9 @@ internal interface SoloService {
 
     @GET("wallets/{walletID}/addresses")
     fun getWalletAddress(@Path("walletID") walletID: String): Call<List<Wallet>>
+
+    @POST("{coin}/test/txs")
+    fun createTx(@Path("coin") coin: String, @Body body: TransactionResponseContent): Call<TransactionResponse>
 
     @POST("./")
     fun getBalance(@Body request: GetBalanceRequest): Call<Result>

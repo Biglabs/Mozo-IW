@@ -3,6 +3,15 @@ package com.biglabs.solo.signer.library.models.rest
 import com.google.gson.annotations.SerializedName
 
 internal class TransactionResponseContentInput {
+
+    constructor() {
+
+    }
+
+    constructor(address: String) {
+        this.addresses = arrayOf(address)
+    }
+
     /** An array of public addresses associated with the output of the previous transaction. */
     @SerializedName("addresses")
     var addresses: Array<String>? = null

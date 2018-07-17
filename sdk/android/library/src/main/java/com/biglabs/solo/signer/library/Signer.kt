@@ -8,9 +8,12 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
 import com.biglabs.solo.signer.library.models.rest.GetBalanceRequest
+import com.biglabs.solo.signer.library.models.rest.TransactionResponse
+import com.biglabs.solo.signer.library.models.rest.TransactionResponseContent
 import com.biglabs.solo.signer.library.models.scheme.SignerRequest
 import com.biglabs.solo.signer.library.models.scheme.SignerResponse
 import com.biglabs.solo.signer.library.models.ui.Wallet
+import com.biglabs.solo.signer.library.utils.CoinEnum
 import com.biglabs.solo.signer.library.utils.SchemeUtils
 import com.biglabs.solo.signer.library.utils.logAsError
 import org.json.JSONObject
@@ -101,16 +104,26 @@ class Signer private constructor(private val walletScheme: String) {
     }
 
     fun confirmTransaction(context: Context, fromAddress: String, toAddress: String, coinType: String, network: String, value: String, msg: String) {
-        try {
-            val params = JSONObject()
-                    .put("from", fromAddress)
-                    .put("to", toAddress)
-                    .put("value", value)
-                    .put("txData", msg)
 
-            openDeepLink(context, ACTION_SIGN, coinType, network, params = params)
-        } catch (ignored: Exception) {
-        }
+        val v: Double = value.toDoubleOrNull() ?: 0.0
+
+        val valueInLong: Long = (when (coinType) {
+            CoinEnum.BTC.key -> v * 1E+8
+            CoinEnum.ETH.key -> v * 1E+18
+            else -> v
+        }).toLong()
+
+        val params = TransactionResponseContent(fromAddress, toAddress, valueInLong)
+        params.toString().logAsError("createTx param")
+        this.mSoloService.createTx(coinType.toLowerCase(), params).enqueue(object : Callback<TransactionResponse> {
+            override fun onResponse(call: Call<TransactionResponse>?, response: Response<TransactionResponse>?) {
+                response?.body()?.toString()?.logAsError("createTx response")
+//                this@Signer.mSignerListener?.onReceiveSignedTransaction(it.result?.transactionData!!)
+            }
+
+            override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
+            }
+        })
     }
 
     fun sendTransaction(transactionData: String) {

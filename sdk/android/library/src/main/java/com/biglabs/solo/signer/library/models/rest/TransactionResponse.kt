@@ -1,5 +1,6 @@
 package com.biglabs.solo.signer.library.models.rest
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 internal class TransactionResponse {
@@ -19,8 +20,12 @@ internal class TransactionResponse {
     @SerializedName("pubkeys")
     var pubkeys: Array<String>? = null
 
-    /** Optional Array of errors in the form “error”:“description-of-error”. 
+    /** Optional Array of errors in the form “error”:“description-of-error”.
     This is only returned if there was an error in any stage of transaction generation, and is usually accompanied by a HTTP 400 code. */
     @SerializedName("errors")
     var errors: Array<String>? = null
+
+    override fun toString(): String {
+        return Gson().toJson(this)
+    }
 }
