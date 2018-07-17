@@ -40,7 +40,7 @@ extension SendViewController {
         }
     }
     
-    func sendETH(_ signedTx: String){
+    func sendETH(_ signedTx: String, completion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.soloSDK?.api?.sendEthTransaction(signedTx) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -50,15 +50,7 @@ extension SendViewController {
                 }
                 return
             }
-            let json = SwiftyJSON.JSON(value)
-            if let errors = json["errors"].array {
-                JDStatusBarNotification.show(withStatus: errors[0]["error"].string, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
-                return
-            }
-            if let hash = json["tx"]["hash"].string {
-                self.viewTransactionOnBrowser(hash)
-                print("ETH transaction: ", hash)
-            }
+            completion(value, nil)
         }
     }
 }

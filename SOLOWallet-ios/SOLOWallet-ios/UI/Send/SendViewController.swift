@@ -244,18 +244,40 @@ class SendViewController: AbstractViewController {
         case .success(let signedTransaction):
             self.sendAlertController(signedTransaction)
         case .failure(let error):
-            let alert = UIAlertController(title: error.title, message: error.detail, preferredStyle: .alert)
-            alert.addAction(.init(title: "OK", style: .default, handler: nil))
-            Utils.getTopViewController().present(alert, animated: true, completion: nil)
+            self.displayErrorAlert(error: error)
         }
+    }
+    
+    func displayErrorAlert(error: ErrorDTO) {
+        let alert = UIAlertController(title: error.title ?? "Error", message: error.detail, preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: nil))
+        Utils.getTopViewController().present(alert, animated: true, completion: nil)
     }
     
     private func sendFund(_ signedTx: String) {
         self.resetValue()
         if self.currentCoin?.coin == CoinType.ETH.key {
-            self.sendETH(signedTx)
+            self.sendETH(signedTx){value, error in
+                self.handleSendTxResponse(json: value!)
+            }
         } else if self.currentCoin?.coin == CoinType.BTC.key {
-            self.sendBTC(signedTx)
+            self.sendBTC(signedTx){value, error in
+                self.handleSendTxResponse(json: value!)
+            }
+        }
+    }
+    
+    func handleSendTxResponse(json: Any){
+        let interTx = IntermediaryTransactionDTO.init(json: json as! JSON)!
+        if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
+            let error = ErrorDTO()
+            error?.detail = interTx.errors?.first
+            self.displayErrorAlert(error: error!)
+            return;
+        }
+        if let hash = interTx.tx?.hash {
+            self.viewTransactionOnBrowser(hash)
+            print("ETH transaction: ", hash)
         }
     }
     
