@@ -8,6 +8,15 @@ import RESTService, { syncAllAddress } from './RESTService';
 import ethUtil from 'ethereumjs-util';
 import Web3 from 'web3';
 
+/**
+ * Return a list of keypair (wallet) following a list of coin type.
+ * A mnemonic string will be used in this process and stored to local db in encryption for backup purpose.
+ * @param {DataService} manager
+ * @param {String} importedPhrase
+ * @param {String} pin
+ * @param {Array} coinTypes
+ * @return {Array}
+ */
 createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 
         bip39.generateMnemonic(128, null, bip39.wordlists.english);
@@ -18,6 +27,12 @@ createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
     return wallets;
 }
 
+/**
+ * Generate a list of keypair (wallet) according to each derivation path.
+ * @param {String} mnemonic
+ * @param {Array} coinTypes
+ * @return {Array}
+ */
 generateWallets = function(mnemonic, coinTypes){
     let seed = bip39.mnemonicToSeedHex(mnemonic);
     let wallets = [];
@@ -87,6 +102,12 @@ generateAddressAtIndex = function(wallet, coinType, addressIndex) {
     return null;
 }
 
+/**
+ * Save an address to local DB with the encrypted private key.
+ * @param {DataService} manager
+ * @param {Address} address
+ * @param {String} pin
+ */
 saveAddressToLocal = function(manager, address, pin) {
     // Because this is the first time when app is launched, data must be save to local
     // Save address and private key
@@ -98,6 +119,14 @@ saveAddressToLocal = function(manager, address, pin) {
     // TODO: Load all addresses of this wallet from server and save to local
 }
 
+/**
+ * Check wallet is registered with server. If wallet is registered, we store the wallet info to local. 
+ * If not, call API to register wallet.
+ * @param {DataService} manager
+ * @param {String} publicKey
+ * @param {Array} addresses
+ * @param {Callback} callback
+ */
 registerWalletAndSyncAddress = function(manager, publicKey, addresses, callback) {
     console.log("Check wallet");
     RESTService.getExistingWalletFromServer(publicKey, (error, result) => {
@@ -138,6 +167,13 @@ registerWalletAndSyncAddress = function(manager, publicKey, addresses, callback)
     });
 }
 
+/**
+ * Store wallet info to local DB, then synchronize all local addresses to server.
+ * @param {DataService} manager
+ * @param {String} publicKey
+ * @param {Array} addresses
+ * @param {Callback} callback
+ */
 storeWalletInfo = function(manager, walletInfo, addresses, callback){
     console.log("Store wallet info to local.")
     try {
@@ -168,6 +204,14 @@ storeWalletInfo = function(manager, walletInfo, addresses, callback){
 //     RESTService.syncAllAddress(walletId, addresses);
 // }
 
+/**
+ * Create a new wallet, addresses or import a wallet depending on current state.
+ * @param {Bool} isNewPin
+ * @param {String} pin
+ * @param {String} importedPhrase
+ * @param {Array} coinTypes
+ * @param {Callback} callback
+ */
 module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
     let manager = DataService.getInstance();
     // Store isDbExisting true
@@ -243,13 +287,18 @@ module.exports.viewBackupPhrase = function (pin) {
     return null;
 };
 
-// Serialize returns the ECDSA signature in the more strict DER format.  Note
-// that the serialized bytes returned do not include the appended hash type
-// used in Bitcoin signature scripts.
-//
-// encoding/asn1 is broken so we hand roll this output:
-//
-// 0x30 <length> 0x02 <length r> r 0x02 <length s> s
+/**
+ * Serialize returns the ECDSA signature in the more strict DER format.  Note
+ * that the serialized bytes returned do not include the appended hash type
+ * used in Bitcoin signature scripts.
+ * 
+ * encoding/asn1 is broken so we hand roll this output:
+ * 0x30 <length> 0x02 <length r> r 0x02 <length s> s
+ * @param {Array} v
+ * @param {Array} r
+ * @param {Array} s
+ * @return {String}
+ */
 serialize = function (v, r, s) {
     let rB = canonicalizeInt(r);
     let sB = canonicalizeInt(s);
@@ -259,12 +308,16 @@ serialize = function (v, r, s) {
     return prefix.concat(rStr, sStr).toString('hex');
 }
 
-// canonicalizeInt returns the bytes for the passed big integer adjusted as
-// necessary to ensure that a big-endian encoded integer can't possibly be
-// misinterpreted as a negative number.  This can happen when the most
-// significant bit is set, so it is padded by a leading zero byte in this case.
-// Also, the returned bytes will have at least a single byte when the passed
-// value is 0.  This is required for DER encoding.
+/**
+ * canonicalizeInt returns the bytes for the passed big integer adjusted as
+ * necessary to ensure that a big-endian encoded integer can't possibly be
+ * misinterpreted as a negative number.  This can happen when the most
+ * significant bit is set, so it is padded by a leading zero byte in this case.
+ * Also, the returned bytes will have at least a single byte when the passed
+ * value is 0.  This is required for DER encoding.
+ * @param {Array} buffer
+ * @return {Array}
+ */
 canonicalizeInt = function (buffer) {
 	var bytes = buffer;
 	if (bytes.length == 0) {
