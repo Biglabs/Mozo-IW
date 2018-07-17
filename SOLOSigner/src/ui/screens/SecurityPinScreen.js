@@ -73,7 +73,7 @@ export default class SecurityPinScreen extends Component {
                 let pin = JSON.stringify(this.pinCode);
                 WalletManager.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
                     //Check error type
-                    console.log("HandleEnterRightPin: ", error.message || result);
+                    console.log("HandleEnterRightPin: ", error);
                     this.props.isNewPIN = false;
                     // Open Home Screen
                     let pin = JSON.stringify(this.pinCode);
