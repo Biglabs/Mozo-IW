@@ -47,7 +47,7 @@ export default class SecurityPinScreen extends Component {
         if (this.props.isNewPIN) {
             if (this.state.isConfirm) {
                 if (this.pinCode.toString() === this.pinCodeConfirm.toString()) {
-                    this.handleEnterRightPin();
+                    this.handleEnterCorrectPin();
                 } else {
                     Alert.alert(
                         'Error',
