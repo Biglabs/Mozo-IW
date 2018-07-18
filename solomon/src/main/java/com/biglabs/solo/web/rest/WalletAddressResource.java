@@ -136,90 +136,90 @@ public class WalletAddressResource {
         return String.join("-", adr.getAddress(), adr.getNetwork().toString());
     }
 
-    /**
-     * POST  /wallet-addresses : Create a new walletAddress.
-     *
-     * @param walletAddress the walletAddress to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new walletAddress, or with status 400 (Bad Request) if the walletAddress has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-//    @PostMapping("/wallet-addresses")
-    @Timed
-    public ResponseEntity<WalletAddress> createWalletAddress(@Valid @RequestBody WalletAddress walletAddress) throws URISyntaxException {
-        log.debug("REST request to save WalletAddress : {}", walletAddress);
-        if (walletAddress.getId() != null) {
-            throw new BadRequestAlertException("A new walletAddress cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Address newAddress = addressService.save(walletAddress.getAddress());
-        walletAddress.setAddress(newAddress);
-        Optional<Wallet> w = walletService.findOneByWalletId(walletAddress.getWallet().getWalletId());
-        walletAddress.setWallet(w.get());
-        walletAddress.setInUse(true);
-        WalletAddress result = walletAddressRepository.save(walletAddress);
-        return ResponseEntity.created(new URI("/api/wallet-addresses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
+//    /**
+//     * POST  /wallet-addresses : Create a new walletAddress.
+//     *
+//     * @param walletAddress the walletAddress to create
+//     * @return the ResponseEntity with status 201 (Created) and with body the new walletAddress, or with status 400 (Bad Request) if the walletAddress has already an ID
+//     * @throws URISyntaxException if the Location URI syntax is incorrect
+//     */
+////    @PostMapping("/wallet-addresses")
+//    @Timed
+//    public ResponseEntity<WalletAddress> createWalletAddress(@Valid @RequestBody WalletAddress walletAddress) throws URISyntaxException {
+//        log.debug("REST request to save WalletAddress : {}", walletAddress);
+//        if (walletAddress.getId() != null) {
+//            throw new BadRequestAlertException("A new walletAddress cannot already have an ID", ENTITY_NAME, "idexists");
+//        }
+//        Address newAddress = addressService.save(walletAddress.getAddress());
+//        walletAddress.setAddress(newAddress);
+//        Optional<Wallet> w = walletService.findOneByWalletId(walletAddress.getWallet().getWalletId());
+//        walletAddress.setWallet(w.get());
+//        walletAddress.setInUse(true);
+//        WalletAddress result = walletAddressRepository.save(walletAddress);
+//        return ResponseEntity.created(new URI("/api/wallet-addresses/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
 
-    /**
-     * PUT  /wallet-addresses : Updates an existing walletAddress.
-     *
-     * @param walletAddress the walletAddress to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated walletAddress,
-     * or with status 400 (Bad Request) if the walletAddress is not valid,
-     * or with status 500 (Internal Server Error) if the walletAddress couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/wallet-addresses")
-    @Timed
-    public ResponseEntity<WalletAddress> updateWalletAddress(@Valid @RequestBody WalletAddress walletAddress) throws URISyntaxException {
-        log.debug("REST request to update WalletAddress : {}", walletAddress);
-        if (walletAddress.getId() == null) {
-            return createWalletAddress(walletAddress);
-        }
-        WalletAddress result = walletAddressRepository.save(walletAddress);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, walletAddress.getId().toString()))
-            .body(result);
-    }
+//    /**
+//     * PUT  /wallet-addresses : Updates an existing walletAddress.
+//     *
+//     * @param walletAddress the walletAddress to update
+//     * @return the ResponseEntity with status 200 (OK) and with body the updated walletAddress,
+//     * or with status 400 (Bad Request) if the walletAddress is not valid,
+//     * or with status 500 (Internal Server Error) if the walletAddress couldn't be updated
+//     * @throws URISyntaxException if the Location URI syntax is incorrect
+//     */
+//    @PutMapping("/wallet-addresses")
+//    @Timed
+//    public ResponseEntity<WalletAddress> updateWalletAddress(@Valid @RequestBody WalletAddress walletAddress) throws URISyntaxException {
+//        log.debug("REST request to update WalletAddress : {}", walletAddress);
+//        if (walletAddress.getId() == null) {
+//            return createWalletAddress(walletAddress);
+//        }
+//        WalletAddress result = walletAddressRepository.save(walletAddress);
+//        return ResponseEntity.ok()
+//            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, walletAddress.getId().toString()))
+//            .body(result);
+//    }
 
-    /**
-     * GET  /wallet-addresses : get all the walletAddresses.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of walletAddresses in body
-     */
-    @GetMapping("/wallet-addresses")
-    @Timed
-    public List<WalletAddress> getAllWalletAddresses() {
-        log.debug("REST request to get all WalletAddresses");
-        return walletAddressRepository.findAll();
-        }
-
-    /**
-     * GET  /wallet-addresses/:id : get the "id" walletAddress.
-     *
-     * @param id the id of the walletAddress to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the walletAddress, or with status 404 (Not Found)
-     */
-    @GetMapping("/wallet-addresses/{id}")
-    @Timed
-    public ResponseEntity<WalletAddress> getWalletAddress(@PathVariable Long id) {
-        log.debug("REST request to get WalletAddress : {}", id);
-        WalletAddress walletAddress = walletAddressRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(walletAddress));
-    }
-
-    /**
-     * DELETE  /wallet-addresses/:id : delete the "id" walletAddress.
-     *
-     * @param id the id of the walletAddress to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @DeleteMapping("/wallet-addresses/{id}")
-    @Timed
-    public ResponseEntity<Void> deleteWalletAddress(@PathVariable Long id) {
-        log.debug("REST request to delete WalletAddress : {}", id);
-        walletAddressRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
+//    /**
+//     * GET  /wallet-addresses : get all the walletAddresses.
+//     *
+//     * @return the ResponseEntity with status 200 (OK) and the list of walletAddresses in body
+//     */
+//    @GetMapping("/wallet-addresses")
+//    @Timed
+//    public List<WalletAddress> getAllWalletAddresses() {
+//        log.debug("REST request to get all WalletAddresses");
+//        return walletAddressRepository.findAll();
+//        }
+//
+//    /**
+//     * GET  /wallet-addresses/:id : get the "id" walletAddress.
+//     *
+//     * @param id the id of the walletAddress to retrieve
+//     * @return the ResponseEntity with status 200 (OK) and with body the walletAddress, or with status 404 (Not Found)
+//     */
+//    @GetMapping("/wallet-addresses/{id}")
+//    @Timed
+//    public ResponseEntity<WalletAddress> getWalletAddress(@PathVariable Long id) {
+//        log.debug("REST request to get WalletAddress : {}", id);
+//        WalletAddress walletAddress = walletAddressRepository.findOne(id);
+//        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(walletAddress));
+//    }
+//
+//    /**
+//     * DELETE  /wallet-addresses/:id : delete the "id" walletAddress.
+//     *
+//     * @param id the id of the walletAddress to delete
+//     * @return the ResponseEntity with status 200 (OK)
+//     */
+//    @DeleteMapping("/wallet-addresses/{id}")
+//    @Timed
+//    public ResponseEntity<Void> deleteWalletAddress(@PathVariable Long id) {
+//        log.debug("REST request to delete WalletAddress : {}", id);
+//        walletAddressRepository.delete(id);
+//        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+//    }
 }

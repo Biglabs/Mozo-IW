@@ -16,5 +16,5 @@ public class BTCMainnetClient extends  BTCClient {
         this.blockCypherProperties = bcyProps;
         this.restTemplate = restTemplate;
     }
-
+    //TODO: implement btc main-net client
 }

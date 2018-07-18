@@ -5,8 +5,12 @@ import com.biglabs.solo.blockcypher.model.BCYAddress;
 import com.biglabs.solo.blockcypher.model.BlockCypherError;
 import com.biglabs.solo.blockcypher.model.Error;
 import com.biglabs.solo.blockcypher.model.blockchain.BtcBlockchain;
+import com.biglabs.solo.blockcypher.model.transaction.TX_ACTION;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
+import com.biglabs.solo.blockcypher.model.transaction.TxHistory;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.domain.Address;
+import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
 import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -17,8 +21,11 @@ import org.springframework.web.client.*;
 //import org.springframework.http.client.support
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by antt on 6/28/2018.
@@ -79,6 +86,7 @@ public class BTCClient {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
     }
+
     public BCYAddress getAddressLatestTx(String addresses) throws BlockCypherException {
         String url = MessageFormat.format(addressEP + "/{0}/full", String.join(";", addresses));
         try {
@@ -89,6 +97,77 @@ public class BTCClient {
                     put("txlimit", 1);
                 }});
             return ret.getBody();
+        } catch (HttpStatusCodeException ex) {
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+        }
+    }
+
+    /***
+     * Create transaction history from source address and transaction
+     * Action field is:
+     * - SENT: if src address not in the inputs
+     * - RECEIVED: if action is not SENT
+     * AddressTo is the first address in outputs excluding the {@code srcAddr}
+     * @param srcAddr
+     * @param tx
+     * @param siblingAddrs
+     * @return
+     */
+    private TxHistory fromTx(String srcAddr, Transaction tx, List<String> siblingAddrs) {
+        TxHistory txHistory = new TxHistory();
+        txHistory.txHash = tx.getHash();
+        txHistory.blockHeight = tx.getBlockHeight();
+        txHistory.fees = tx.getFees();
+        txHistory.amount = tx.getTotal();
+        txHistory.confirmations = tx.getConfirmations();
+
+        List<String> inputAddrs = tx.getInputs().stream()
+            .flatMap(input -> input.getAddresses().stream())
+            .collect(Collectors.toList());
+        List<String> outputAddrs = tx.getOutputs().stream()
+            .flatMap(output -> output.getAddresses().stream())
+            .collect(Collectors.toList());
+        //TODO: amount may be wrong if siblingAddrs is not up to date
+        if (inputAddrs.contains(srcAddr)) {
+            txHistory.action  = TX_ACTION.SENT;
+            txHistory.amount = tx.getOutputs().stream()
+                .filter(output -> !siblingAddrs.contains(output.getAddresses().get(0)))
+                .map(output -> output.getValue())
+                .reduce((output, output2) -> output.add(output2)).get();
+
+            List<String> filterAddr = outputAddrs.stream()
+                .filter(s -> !s.equalsIgnoreCase(srcAddr))
+                .collect(Collectors.toList());
+            txHistory.addressTo = filterAddr.size() > 0 ? filterAddr.get(0) : "";
+        } else {
+            if (!outputAddrs.contains(srcAddr)) {
+                String msg = String.format("Transaction %s do not contain address %s", tx.getHash(), srcAddr);
+                throw new InternalServerErrorException(msg);
+            }
+            txHistory.action = TX_ACTION.RECEIVED;
+            txHistory.amount = tx.getOutputs().stream()
+                .filter(output -> siblingAddrs.contains(output.getAddresses().get(0)))
+                .map(output -> output.getValue())
+                .reduce((output, output2) -> output.add(output2)).get();
+        }
+
+        txHistory.time = Instant.parse(tx.getReceived()).getEpochSecond();
+        txHistory.message = "";
+        return txHistory;
+    }
+
+    public List<TxHistory> getAddressTxHistory(String addresses, List<String> siblingAddrs) throws BlockCypherException {
+        String url = MessageFormat.format(addressEP + "/{0}/full", String.join(";", addresses));
+        try {
+            ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(url,
+                BCYAddress.class,
+                new HashMap<String, Object>() {{
+                    put("limit", 10);
+                }});
+            BCYAddress bcyAddress = ret.getBody();
+            List<Transaction> txs = bcyAddress.getTxs();
+            logger.debug("Number of tx {}", txs.size());
+            return txs.stream().map(tx -> fromTx(addresses, tx, siblingAddrs)).collect(Collectors.toList());
         } catch (HttpStatusCodeException ex) {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }

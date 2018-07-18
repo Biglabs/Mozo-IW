@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -21,4 +22,5 @@ public interface WalletAddressRepository extends JpaRepository<WalletAddress, Lo
     List<Address> findAddressesByWallet_WalletId(String walletId);
 
     List<WalletAddress> findWalletAddressByWallet_WalletId(String walletId);
+    Optional<WalletAddress> findFirstByAddress_Address(String address);
 }

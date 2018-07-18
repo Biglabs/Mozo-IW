@@ -6,7 +6,12 @@ import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.blockcypher.model.BCYAddress;
 import com.biglabs.solo.blockcypher.model.blockchain.BtcBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
+import com.biglabs.solo.blockcypher.model.transaction.TxHistory;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.domain.Address;
+import com.biglabs.solo.domain.WalletAddress;
+import com.biglabs.solo.repository.WalletAddressRepository;
+import com.biglabs.solo.web.rest.errors.BadRequestAlertException;
 import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
@@ -17,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * BitcoinResource controller
@@ -27,9 +35,10 @@ public class BtcTestnetResource {
 
     private final Logger log = LoggerFactory.getLogger(BtcTestnetResource.class);
     private final BTCTestnetClient btcClient;
-
-    public BtcTestnetResource(BTCTestnetClient btcClient) {
+    private final WalletAddressRepository waRepo;
+    public BtcTestnetResource(BTCTestnetClient btcClient, WalletAddressRepository war) {
         this.btcClient = btcClient;
+        this.waRepo = war;
     }
 
     /**
@@ -48,6 +57,24 @@ public class BtcTestnetResource {
     @GetMapping("/addrs/{address}/balance")
     public BCYAddress getBalance(@PathVariable String address) throws BlockCypherException {
         return btcClient.balance(address);
+    }
+
+    /**
+     * GET  /addrs/{srcAddress}/txhistory : get all the transaction history of an address.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of transaction history in body
+     */
+    @GetMapping("/addrs/{srcAddress}/txhistory")
+    @Timed
+    public List<TxHistory> getTxHistory(@PathVariable String srcAddress) throws BlockCypherException {
+        log.debug("REST request to get transaction history of an address");
+        Optional<WalletAddress> wa = waRepo.findFirstByAddress_Address(srcAddress);
+        if (!wa.isPresent()) {
+            throw new BadRequestAlertException("Address does not link to any wallet", "WalletAddress", "addressnotlinked");
+        }
+        List<WalletAddress> was = waRepo.findWalletAddressByWallet_WalletId(wa.get().getWallet().getWalletId());
+        List<String> adrs = was.stream().map(e -> e.getAddress().getAddress()).collect(Collectors.toList());
+        return btcClient.getAddressTxHistory(srcAddress, adrs);
     }
 
     @PostMapping("/txs")

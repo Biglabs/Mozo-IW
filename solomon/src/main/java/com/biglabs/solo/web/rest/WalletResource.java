@@ -95,17 +95,17 @@ public class WalletResource {
             .body(result);
     }
 
-    /**
-     * GET  /wallets : get all the wallets.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of wallets in body
-     */
-    @GetMapping("/wallets")
-    @Timed
-    public List<Wallet> getAllWallets() {
-        log.debug("REST request to get all Wallets");
-        return walletService.findAll();
-        }
+//    /**
+//     * GET  /wallets : get all the wallets.
+//     *
+//     * @return the ResponseEntity with status 200 (OK) and the list of wallets in body
+//     */
+//    @GetMapping("/wallets")
+//    @Timed
+//    public List<Wallet> getAllWallets() {
+//        log.debug("REST request to get all Wallets");
+//        return walletService.findAll();
+//    }
 
     /**
      * GET  /wallets/:id : get the "id" wallet.
@@ -148,18 +148,18 @@ public class WalletResource {
         List<Address> addresses = walletAddressRepository.findAddressesByWallet_WalletId(walletId);
         return addresses;
     }
-
-    /**
-     * DELETE  /wallets/:id : delete the "id" wallet.
-     *
-     * @param id the id of the wallet to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @DeleteMapping("/wallets/{id}")
-    @Timed
-    public ResponseEntity<Void> deleteWallet(@PathVariable Long id) {
-        log.debug("REST request to delete Wallet : {}", id);
-        walletService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
+//
+//    /**
+//     * DELETE  /wallets/:id : delete the "id" wallet.
+//     *
+//     * @param id the id of the wallet to delete
+//     * @return the ResponseEntity with status 200 (OK)
+//     */
+//    @DeleteMapping("/wallets/{id}")
+//    @Timed
+//    public ResponseEntity<Void> deleteWallet(@PathVariable Long id) {
+//        log.debug("REST request to delete Wallet : {}", id);
+//        walletService.delete(id);
+//        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+//    }
 }
