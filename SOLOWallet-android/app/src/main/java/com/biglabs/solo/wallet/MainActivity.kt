@@ -119,11 +119,11 @@ class MainActivity : AppCompatActivity(), SignerListener {
         EventBus.getDefault().post(WalletInfoEventMessage(balance))
     }
 
-    override fun onReceiveSignedTransaction(rawTx: String) {
-        EventBus.getDefault().post(WalletTransactionEventMessage(rawTx))
+    override fun onReceiveSignTransactionResult(isSuccess: Boolean) {
+        EventBus.getDefault().post(WalletTransactionEventMessage(isSuccess))
     }
 
-    override fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String) {
-        EventBus.getDefault().post(WalletTransactionEventMessage(isSuccess, txHash))
+    override fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String?) {
+        EventBus.getDefault().post(WalletTransactionEventMessage(true, isSuccess, txHash))
     }
 }

@@ -10,7 +10,7 @@ interface SignerListener {
 
     fun onReceiveBalance(balance: String)
 
-    fun onReceiveSignedTransaction(rawTx: String)
+    fun onReceiveSignTransactionResult(isSuccess: Boolean)
 
-    fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String)
+    fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String?)
 }

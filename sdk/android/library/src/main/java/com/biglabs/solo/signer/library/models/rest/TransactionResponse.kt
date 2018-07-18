@@ -4,6 +4,17 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 internal class TransactionResponse {
+    companion object {
+        @JvmStatic
+        fun parse(json: String): TransactionResponse? {
+            return try {
+                Gson().fromJson(json, TransactionResponse::class.java)
+            } catch (_: Exception) {
+                null
+            }
+        }
+    }
+
     /** A temporary TX, usually returned fully filled. */
     @SerializedName("tx")
     var tx: TransactionResponseContent? = null

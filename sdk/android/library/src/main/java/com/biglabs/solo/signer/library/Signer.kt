@@ -16,7 +16,6 @@ import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.signer.library.utils.CoinEnum
 import com.biglabs.solo.signer.library.utils.SchemeUtils
 import com.biglabs.solo.signer.library.utils.logAsError
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,18 +26,23 @@ class Signer private constructor(private val walletScheme: String) {
     private val mSoloService: SoloService = SoloService.create()
     private var mSignerListener: SignerListener? = null
     private var mPreferences: SharedPreferences? = null
-    private var myWalletID: String? = null
 
-    private fun openDeepLink(context: Context, action: String, coinType: String? = null, network: String? = null, params: JSONObject? = null) {
+    private var myWalletID: String? = null
+    private var mLastTxSignedData: TransactionResponse? = null
+    private var mLastTxCoinType: String? = null
+    private var mLastTxMsg: String? = null
+
+    private fun openDeepLink(context: Context, action: String, coinType: String? = null, network: String? = null, params: Any? = null) {
         val signerLink = SchemeUtils.prepareSignerLink(
                 SignerRequest(
                         action,
                         walletScheme,
                         coinType,
                         network,
-                        params.toString()
+                        params
                 )
         )
+        signerLink.toString().logAsError("openDeepLink")
         val isOpenSuccess = SchemeUtils.openLink(context, signerLink)
         if (!isOpenSuccess) {
             Toast.makeText(context, "Could not found SOLO Signer app!", Toast.LENGTH_LONG).show()
@@ -103,7 +107,8 @@ class Signer private constructor(private val walletScheme: String) {
 //        })
     }
 
-    fun confirmTransaction(context: Context, fromAddress: String, toAddress: String, coinType: String, network: String, value: String, msg: String) {
+    fun createTransaction(context: Context, fromAddress: String, toAddress: String, coinType: String, network: String, value: String, msg: String) {
+        clearTempData()
 
         val v: Double = value.toDoubleOrNull() ?: 0.0
 
@@ -115,29 +120,36 @@ class Signer private constructor(private val walletScheme: String) {
 
         val params = TransactionResponseContent(fromAddress, toAddress, valueInLong)
         params.toString().logAsError("createTx param")
+
         this.mSoloService.createTx(coinType.toLowerCase(), params).enqueue(object : Callback<TransactionResponse> {
             override fun onResponse(call: Call<TransactionResponse>?, response: Response<TransactionResponse>?) {
                 response?.body()?.toString()?.logAsError("createTx response")
-//                this@Signer.mSignerListener?.onReceiveSignedTransaction(it.result?.transactionData!!)
+
+                this@Signer.mLastTxCoinType = coinType
+                this@Signer.mLastTxMsg = msg
+                openDeepLink(context, ACTION_SIGN, coinType, network, response?.body())
             }
 
             override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
+                t?.message?.logAsError("createTX failed")
             }
         })
     }
 
-    fun sendTransaction(transactionData: String) {
-//        val transaction = SendTransactionRequest(transactionData)
-//        this.mRopstenService.sendTransaction(transaction).enqueue(object : Callback<Result> {
-//            override fun onResponse(call: Call<Result>, response: Response<Result>) {
-//                val result = if (response.body() != null) response.body()?.result!! else ""
-//                this@Signer.mSignerListener?.onReceiveSentTransaction(response.isSuccessful, result)
-//            }
-//
-//            override fun onFailure(call: Call<Result>, t: Throwable) {
-//                this@Signer.mSignerListener?.onReceiveSentTransaction(false, null!!)
-//            }
-//        })
+    fun sendTransaction() {
+        this.mLastTxSignedData?.let {
+            it.toString().logAsError("mLastTxSignedData")
+            this.mSoloService.sendTx(this.mLastTxCoinType?.toLowerCase()!!, it).enqueue(object : Callback<TransactionResponse> {
+                override fun onResponse(call: Call<TransactionResponse>?, response: Response<TransactionResponse>?) {
+                    this@Signer.mSignerListener?.onReceiveSentTransaction(response?.isSuccessful == true, response?.body()?.tx?.hash)
+                    clearTempData()
+                }
+
+                override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
+
+                }
+            })
+        }
     }
 
     fun handleScheme(intent: Intent) {
@@ -152,13 +164,20 @@ class Signer private constructor(private val walletScheme: String) {
                         this.mSignerListener?.onSyncCompleted()
                     }
                     ACTION_SIGN -> {
-                        this.mSignerListener?.onReceiveSignedTransaction(it.result?.transactionData!!)
+                        this.mLastTxSignedData = it.result?.signedTransactionObject()
+                        this.mSignerListener?.onReceiveSignTransactionResult(this.mLastTxSignedData != null)
                     }
                     else -> {
                     }
                 }
             }
         }
+    }
+
+    private fun clearTempData() {
+        this@Signer.mLastTxSignedData = null
+        this@Signer.mLastTxCoinType = null
+        this@Signer.mLastTxMsg = null
     }
 
     companion object {

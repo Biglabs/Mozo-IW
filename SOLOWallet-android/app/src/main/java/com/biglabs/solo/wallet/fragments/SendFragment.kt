@@ -26,8 +26,8 @@ import org.greenrobot.eventbus.ThreadMode
 class SendFragment : Fragment() {
 
     var value = "0.005"
-    private var transactionData: String? = null
     private var wallet: Wallet? = null
+    private var isTxSigned = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +73,7 @@ class SendFragment : Fragment() {
                 if (valueInNumber == null || valueInNumber == 0f || input_receive_address.length() == 0) {
                     toast("Invalid value")
                 } else {
-                    Signer.getInstance().confirmTransaction(
+                    Signer.getInstance().createTransaction(
                             context!!,
                             address,
                             input_receive_address.text.toString(),
@@ -88,9 +88,9 @@ class SendFragment : Fragment() {
         }
 
         buttonSubmit.setOnClickListener {
-            if (transactionData != null) {
-                Signer.getInstance().sendTransaction(transactionData!!)
-                transactionData = null
+            if (isTxSigned) {
+                Signer.getInstance().sendTransaction()
+                isTxSigned = false
                 updateUI()
             }
         }
@@ -117,17 +117,16 @@ class SendFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveTransactionInfo(transaction: WalletTransactionEventMessage) {
-        if (transaction.isSuccess != null && transaction.isSuccess!!) {
-            text_output.text = "send transaction: ${if (transaction.isSuccess!!) "successfully" else "failed"} \n txHash: ${transaction.txHash}"
+        if (transaction.isSent) {
+            text_output.text = "send transaction: ${if (transaction.isSent) "successfully" else "failed"} \n txHash: ${transaction.txHash}"
         } else {
-            transactionData = transaction.rawTx
-            text_output.text = "signed transaction: $transaction.rawTx"
+            isTxSigned = transaction.isSigned
             updateUI()
         }
     }
 
     fun updateUI() {
-        buttonSubmit.visibility = if (transactionData == null) View.GONE else View.VISIBLE
+        buttonSubmit.visibility = if (isTxSigned) View.VISIBLE else View.GONE
     }
 
     companion object {
