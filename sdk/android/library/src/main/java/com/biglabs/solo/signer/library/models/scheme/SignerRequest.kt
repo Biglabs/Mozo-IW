@@ -8,7 +8,7 @@ internal class SignerRequest(
         @SerializedName("receiver") var receiver: String,
         @SerializedName("coinType") var coinType: String? = null,
         @SerializedName("network") var network: String? = null,
-        @SerializedName("params") var params: String? = null) {
+        @SerializedName("params") var params: Any? = null) {
 
     override fun toString(): String {
         return Gson().toJson(this)
