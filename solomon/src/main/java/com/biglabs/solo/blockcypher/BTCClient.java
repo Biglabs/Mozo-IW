@@ -18,8 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.*;
+import org.springframework.web.util.UriComponentsBuilder;
 //import org.springframework.http.client.support
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.HashMap;
@@ -118,7 +120,6 @@ public class BTCClient {
         txHistory.txHash = tx.getHash();
         txHistory.blockHeight = tx.getBlockHeight();
         txHistory.fees = tx.getFees();
-        txHistory.amount = tx.getTotal();
         txHistory.confirmations = tx.getConfirmations();
 
         List<String> inputAddrs = tx.getInputs().stream()
@@ -127,17 +128,11 @@ public class BTCClient {
         List<String> outputAddrs = tx.getOutputs().stream()
             .flatMap(output -> output.getAddresses().stream())
             .collect(Collectors.toList());
-        //TODO: amount may be wrong if siblingAddrs is not up to date
         if (inputAddrs.contains(srcAddr)) {
             txHistory.action  = TX_ACTION.SENT;
-            txHistory.amount = tx.getOutputs().stream()
-                .filter(output -> !siblingAddrs.contains(output.getAddresses().get(0)))
-                .map(output -> output.getValue())
-                .reduce((output, output2) -> output.add(output2)).get();
-
             List<String> filterAddr = outputAddrs.stream()
-                .filter(s -> !s.equalsIgnoreCase(srcAddr))
-                .collect(Collectors.toList());
+                                                .filter(s -> !s.equalsIgnoreCase(srcAddr))
+                                                .collect(Collectors.toList());
             txHistory.addressTo = filterAddr.size() > 0 ? filterAddr.get(0) : "";
         } else {
             if (!outputAddrs.contains(srcAddr)) {
@@ -145,25 +140,47 @@ public class BTCClient {
                 throw new InternalServerErrorException(msg);
             }
             txHistory.action = TX_ACTION.RECEIVED;
-            txHistory.amount = tx.getOutputs().stream()
-                .filter(output -> siblingAddrs.contains(output.getAddresses().get(0)))
-                .map(output -> output.getValue())
-                .reduce((output, output2) -> output.add(output2)).get();
         }
+
+        calculateAmount(tx, siblingAddrs, txHistory);
 
         txHistory.time = Instant.parse(tx.getReceived()).getEpochSecond();
         txHistory.message = "";
         return txHistory;
     }
 
-    public List<TxHistory> getAddressTxHistory(String addresses, List<String> siblingAddrs) throws BlockCypherException {
+    //TODO: amount may be wrong if siblingAddrs is not up to date
+    private void calculateAmount(Transaction tx, List<String> siblingAddrs, TxHistory txHistory) {
+        switch (txHistory.action) {
+            case SENT:
+                txHistory.amount = tx.getOutputs().stream()
+                    .filter(output -> !siblingAddrs.contains(output.getAddresses().get(0)))
+                    .map(output -> output.getValue())
+                    .reduce((output, output2) -> output.add(output2)).get();
+
+
+                break;
+            case RECEIVED:
+                txHistory.amount = tx.getOutputs().stream()
+                    .filter(output -> siblingAddrs.contains(output.getAddresses().get(0)))
+                    .map(output -> output.getValue())
+                    .reduce((output, output2) -> output.add(output2)).get();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public List<TxHistory> getAddressTxHistory(String addresses, List<String> siblingAddrs, BigDecimal beforeHeight) throws BlockCypherException {
         String url = MessageFormat.format(addressEP + "/{0}/full", String.join(";", addresses));
         try {
-            ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(url,
-                BCYAddress.class,
-                new HashMap<String, Object>() {{
-                    put("limit", 10);
-                }});
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
+                .queryParam("limit", 20)
+                .queryParam( "token", bycContext.getToken());
+            if (beforeHeight != null) {
+                builder.queryParam("before", beforeHeight);
+            }
+            ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(builder.toUriString(), BCYAddress.class);
             BCYAddress bcyAddress = ret.getBody();
             List<Transaction> txs = bcyAddress.getTxs();
             logger.debug("Number of tx {}", txs.size());

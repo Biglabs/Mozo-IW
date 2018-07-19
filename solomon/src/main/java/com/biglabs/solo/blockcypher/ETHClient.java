@@ -6,9 +6,13 @@ import com.biglabs.solo.blockcypher.model.BlockCypherError;
 import com.biglabs.solo.blockcypher.model.Error;
 import com.biglabs.solo.blockcypher.model.blockchain.BtcBlockchain;
 import com.biglabs.solo.blockcypher.model.blockchain.EthBlockchain;
+import com.biglabs.solo.blockcypher.model.transaction.TX_ACTION;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
+import com.biglabs.solo.blockcypher.model.transaction.TxHistory;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.blockcypher.model.transaction.summary.TransactionSummary;
 import com.biglabs.solo.domain.enumeration.Network;
+import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
 import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -18,12 +22,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static  com.biglabs.solo.blockcypher.BlockCypherProperties.*;
 
@@ -151,6 +160,57 @@ public class ETHClient {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
 
+    }
+
+
+    /***
+     * Create transaction history from source address and transaction
+     * Action field is:
+     * - SENT: if src address not in the inputs
+     * - RECEIVED: if action is not SENT
+     * AddressTo is the first address in outputs excluding the {@code srcAddr}
+     * @param srcAddr
+     * @param tx
+     * @param siblingAddrs
+     * @return
+     */
+    private TxHistory fromTx(String srcAddr, TransactionSummary tx, List<String> siblingAddrs) {
+        TxHistory txHistory = new TxHistory();
+        txHistory.txHash = tx.getTxHash();
+        txHistory.blockHeight = tx.getBlockHeight();
+        txHistory.fees = null;
+        txHistory.amount = tx.getValue();
+        txHistory.confirmations = tx.getConfirmations();
+        if (tx.getTxInputN() >= 0) {
+            txHistory.action = TX_ACTION.SENT;
+            txHistory.addressTo = null;
+        } else {
+            txHistory.action = TX_ACTION.RECEIVED;
+        }
+
+        //TODO: time is the confirmation time not the tx submitted time
+        txHistory.time = Instant.parse(tx.getConfirmed()).getEpochSecond();
+        txHistory.message = "";
+        return txHistory;
+    }
+
+    public List<TxHistory> getAddressTxHistory(String addresses, List<String> siblingAddrs, BigDecimal beforeHeight) throws BlockCypherException {
+        String url = MessageFormat.format(addressEP + "/{0}", String.join(";", addresses));
+        try {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
+                .queryParam("limit", 20)
+                .queryParam( "token", bycContext.getToken());
+            if (beforeHeight != null) {
+                builder.queryParam("before", beforeHeight);
+            }
+            ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(builder.toUriString(), BCYAddress.class);
+            BCYAddress bcyAddress = ret.getBody();
+            List<Transaction> txs = bcyAddress.getTxs();
+            logger.debug("Number of tx {}", bcyAddress.getTxrefs().size());
+            return bcyAddress.getTxrefs().stream().map(tx -> fromTx(addresses, tx, siblingAddrs)).collect(Collectors.toList());
+        } catch (HttpStatusCodeException ex) {
+            throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
+        }
     }
 
     public static BlockCypherException getBlockCypherException(HttpStatusCodeException ex, String errMessage, HttpStatus status, String body) {

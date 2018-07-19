@@ -14,12 +14,15 @@ import com.biglabs.solo.repository.WalletAddressRepository;
 import com.biglabs.solo.web.rest.errors.BadRequestAlertException;
 import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -60,21 +63,22 @@ public class BtcTestnetResource {
     }
 
     /**
-     * GET  /addrs/{srcAddress}/txhistory : get all the transaction history of an address.
+     * GET  /addrs/{address}/txhistory : get all the transaction history of an address.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of transaction history in body
      */
-    @GetMapping("/addrs/{srcAddress}/txhistory")
+    @GetMapping("/addrs/{address}/txhistory")
     @Timed
-    public List<TxHistory> getTxHistory(@PathVariable String srcAddress) throws BlockCypherException {
+    public List<TxHistory> getTxHistory(@PathVariable String address,
+                                        @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight) throws BlockCypherException {
         log.debug("REST request to get transaction history of an address");
-        Optional<WalletAddress> wa = waRepo.findFirstByAddress_Address(srcAddress);
+        Optional<WalletAddress> wa = waRepo.findFirstByAddress_Address(address);
         if (!wa.isPresent()) {
             throw new BadRequestAlertException("Address does not link to any wallet", "WalletAddress", "addressnotlinked");
         }
         List<WalletAddress> was = waRepo.findWalletAddressByWallet_WalletId(wa.get().getWallet().getWalletId());
         List<String> adrs = was.stream().map(e -> e.getAddress().getAddress()).collect(Collectors.toList());
-        return btcClient.getAddressTxHistory(srcAddress, adrs);
+        return btcClient.getAddressTxHistory(address, adrs, beforeHeight);
     }
 
     @PostMapping("/txs")
