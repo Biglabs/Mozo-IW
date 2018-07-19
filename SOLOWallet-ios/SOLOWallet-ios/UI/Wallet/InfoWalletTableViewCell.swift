@@ -48,27 +48,12 @@ public class InfoWalletTableViewCell: UITableViewCell {
             }
         }
         if let code = coin.address {
-            self.qrcodeImageView.image = self.generateQRCode(from: code)
+            self.qrcodeImageView.image = Utils.generateQRCode(from: code)
         }
     }
     
     @objc func refreshButtonTapped() {
         self.delegate?.request(SDKAction.getBalance.rawValue)
-    }
-    
-    func generateQRCode(from string: String) -> UIImage? {
-        let data = string.data(using: String.Encoding.ascii)
-        
-        if let filter = CIFilter(name: "CIQRCodeGenerator") {
-            filter.setValue(data, forKey: "inputMessage")
-            let transform = CGAffineTransform(scaleX: 3, y: 3)
-            
-            if let output = filter.outputImage?.transformed(by: transform) {
-                return UIImage(ciImage: output)
-            }
-        }
-        
-        return UIImage.init(named: "ic_qr_code")
     }
     
     public override func setSelected(_ selected: Bool, animated: Bool) {

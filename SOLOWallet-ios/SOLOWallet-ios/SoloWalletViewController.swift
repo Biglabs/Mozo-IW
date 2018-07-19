@@ -190,7 +190,7 @@ class SoloWalletViewController: UIViewController {
         guard let address = self.currentCoin.address else {
             return
         }
-        self.soloSDK?.api?.getEthTransactionHistories(address) { (value, error) in
+        self.soloSDK?.api?.getEthTransactionHistories(address, blockHeight: blockHeight) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {

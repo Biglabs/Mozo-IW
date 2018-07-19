@@ -12,9 +12,23 @@ import JDStatusBarNotification
 let notificationDismissAfter: TimeInterval = 5
 
 public class Utils {
+    public static func generateQRCode(from string: String) -> UIImage? {
+        let data = string.data(using: String.Encoding.ascii)
+        
+        if let filter = CIFilter(name: "CIQRCodeGenerator") {
+            filter.setValue(data, forKey: "inputMessage")
+            let transform = CGAffineTransform(scaleX: 3, y: 3)
+            
+            if let output = filter.outputImage?.transformed(by: transform) {
+                return UIImage(ciImage: output)
+            }
+        }
+        
+        return UIImage.init(named: "ic_qr_code")
+    }
     
     public static func convertInt64ToStringWithFormat(_ dateInt64: Int64, format: String) -> String{
-        let date = Date(timeIntervalSince1970:Double(dateInt64) / 1000.0)
+        let date = Date(timeIntervalSince1970:Double(dateInt64))
         return Utils.convertDateToStringWithFormat(date, format: format)
     }
     

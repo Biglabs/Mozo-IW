@@ -35,8 +35,11 @@ public extension RESTService {
     /// - Parameters:
     ///   - transaction: the address
     ///   - completionHandler: handle after completed
-    public func getEthTransactionHistories(_ address: String, completionHandler: completion = nil) {
-        let url = Configuration.BASE_URL + "/api/eth/test/addrs/\(address)/txhistory"
+    public func getEthTransactionHistories(_ address: String, blockHeight: Int64?, completionHandler: completion = nil) {
+        var url = Configuration.BASE_URL + "/api/eth/test/addrs/\(address)/txhistory"
+        if blockHeight != nil {
+            url += "?beforeHeight=" + String(blockHeight ?? 0)
+        }
         return self.execute(.get, url: url, completionHandler: completionHandler)
     }
 }
