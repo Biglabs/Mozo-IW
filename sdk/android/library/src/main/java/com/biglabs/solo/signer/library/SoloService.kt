@@ -1,13 +1,11 @@
 package com.biglabs.solo.signer.library
 
-import com.biglabs.solo.signer.library.models.rest.GetBalanceRequest
-import com.biglabs.solo.signer.library.models.rest.Result
+import com.biglabs.solo.signer.library.models.rest.BalanceResponse
 import com.biglabs.solo.signer.library.models.rest.TransactionResponse
 import com.biglabs.solo.signer.library.models.rest.TransactionResponseContent
 import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.signer.library.utils.Constants
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -45,6 +43,6 @@ internal interface SoloService {
     @POST("{coin}/test/txs/send-signed-tx")
     fun sendTx(@Path("coin") coin: String, @Body body: TransactionResponse): Call<TransactionResponse>
 
-    @POST("./")
-    fun getBalance(@Body request: GetBalanceRequest): Call<Result>
+    @GET("{coin}/test/addrs/{address}/balance")
+    fun getBalance(@Path("coin") coin: String, @Path("address") address: String): Call<BalanceResponse>
 }

@@ -111,8 +111,8 @@ class MainActivity : AppCompatActivity(), SignerListener {
         Signer.getInstance().getWallets(this)
     }
 
-    override fun onReceiveWallets(wallets: List<Wallet>?) {
-        walletsViewModel.updateWallets(wallets!!)
+    override fun onReceiveWallets(wallets: List<Wallet>) {
+        walletsViewModel.updateWallets(wallets)
     }
 
     override fun onReceiveBalance(balance: String) {
@@ -125,5 +125,18 @@ class MainActivity : AppCompatActivity(), SignerListener {
 
     override fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String?) {
         EventBus.getDefault().post(WalletTransactionEventMessage(true, isSuccess, txHash))
+    }
+
+    override fun onError(action: String, message: String?) {
+        when (action) {
+            Signer.ACTION_GET_WALLETS,
+            Signer.ACTION_GET_BALANCE -> {
+                EventBus.getDefault().post(WalletInfoEventMessage(action, message))
+            }
+            Signer.ACTION_CONFIRM_TX,
+            Signer.ACTION_SEND_TX -> {
+                EventBus.getDefault().post(WalletTransactionEventMessage(action, message))
+            }
+        }
     }
 }

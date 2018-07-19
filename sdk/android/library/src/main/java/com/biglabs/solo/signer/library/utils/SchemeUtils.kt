@@ -10,7 +10,7 @@ internal class SchemeUtils {
 
         fun prepareSignerLink(data: SignerRequest): Uri {
             return Uri.parse(
-                    StringBuilder(Constants.SIGNER_SCHEME)
+                    StringBuilder(Constants.SCHEME_SIGNER_APP)
                             .append("://")
                             .append(data.toString())
                             .toString()
@@ -20,7 +20,7 @@ internal class SchemeUtils {
         fun prepareWalletReceiveScheme(applicationId: String): String {
             return StringBuilder(applicationId)
                     .append(".")
-                    .append(Constants.WALLET_SCHEME_SUFFIX)
+                    .append(Constants.SCHEME_WALLET_SUFFIX)
                     .toString()
         }
 

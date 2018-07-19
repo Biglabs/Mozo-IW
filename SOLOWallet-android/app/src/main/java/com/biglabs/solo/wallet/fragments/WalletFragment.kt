@@ -44,22 +44,7 @@ class WalletFragment : Fragment() {
         val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
         walletsViewModel.getCurrentWallet().observe(this, Observer { updateUI(it) })
 
-        button_copy_address.setOnClickListener {
-            wallet?.address?.copyToClipboard("Wallet Address", context!!)
-            toast(R.string.msg_copy_address)
-        }
-
-        button_get_balance.setOnClickListener {
-            wallet?.let {
-                Signer.getInstance().getBalance(it.address!!)
-            }
-        }
-
-        image_address_qr_code.setOnClickListener {
-            wallet?.address?.let{
-                QRCodeDialog.newInstance(it).show(childFragmentManager, "ShowQRCode")
-            }
-        }
+        initializeEvents()
     }
 
     override fun onStart() {
@@ -67,13 +52,59 @@ class WalletFragment : Fragment() {
         EventBus.getDefault().register(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (this.wallet == null) {
+            button_retry.performClick()
+        }
+    }
+
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
     }
 
+    private fun initializeEvents() {
+        button_copy_address.setOnClickListener {
+            wallet?.address?.copyToClipboard("Wallet Address", context!!)
+            toast(R.string.msg_copy_address)
+        }
+
+        button_get_balance.setOnClickListener {
+            wallet?.let {
+                Signer.getInstance().getBalance(it.coin()?.key!!, it.address!!)
+            }
+        }
+
+        image_address_qr_code.setOnClickListener {
+            wallet?.address?.let {
+                QRCodeDialog.newInstance(it).show(childFragmentManager, "ShowQRCode")
+            }
+        }
+
+        button_retry.setOnClickListener {
+            Signer.getInstance().getWallets(activity!!)
+        }
+    }
+
+    @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveBalance(walletInfo: WalletInfoEventMessage) {
+        if (walletInfo.error != null) {
+
+            when (walletInfo.error!!.action) {
+                Signer.ACTION_UNKNOWN -> {
+                    progressBar.visibility = View.GONE
+                    container_error.visibility = View.VISIBLE
+                }
+            }
+
+            walletInfo.error!!.message?.let {
+                toast(it)
+            }
+
+        }
+
         text_address_balance.text = walletInfo.balance
     }
 
@@ -84,6 +115,7 @@ class WalletFragment : Fragment() {
 
             text_address.text = it.address
             text_address_coin_type.text = it.coin()?.key
+            text_my_wallet.text = getString(R.string.text_my_wallet, it.coin()?.key?.toUpperCase())
 
             try {
                 val barcodeEncoder = BarcodeEncoder()
@@ -93,20 +125,15 @@ class WalletFragment : Fragment() {
 
             }
 
-            Signer.getInstance().getBalance(it.address!!)
+            progressBar.visibility = View.GONE
+            container_error.visibility = View.GONE
+            contain_container.visibility = View.VISIBLE
+
+            Signer.getInstance().getBalance(it.coin()?.key!!, it.address!!)
         }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BlankFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
                 WalletFragment().apply {

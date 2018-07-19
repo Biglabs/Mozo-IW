@@ -6,11 +6,13 @@ interface SignerListener {
 
     fun onSyncCompleted()
 
-    fun onReceiveWallets(wallets: List<Wallet>?)
+    fun onReceiveWallets(wallets: List<Wallet>)
 
     fun onReceiveBalance(balance: String)
 
     fun onReceiveSignTransactionResult(isSuccess: Boolean)
 
     fun onReceiveSentTransaction(isSuccess: Boolean, txHash: String?)
+
+    fun onError(action: String, message: String?)
 }

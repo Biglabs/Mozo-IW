@@ -7,13 +7,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
-import com.biglabs.solo.signer.library.models.rest.GetBalanceRequest
+import com.biglabs.solo.signer.library.models.rest.BalanceResponse
 import com.biglabs.solo.signer.library.models.rest.TransactionResponse
 import com.biglabs.solo.signer.library.models.rest.TransactionResponseContent
 import com.biglabs.solo.signer.library.models.scheme.SignerRequest
 import com.biglabs.solo.signer.library.models.scheme.SignerResponse
 import com.biglabs.solo.signer.library.models.ui.Wallet
-import com.biglabs.solo.signer.library.utils.CoinEnum
+import com.biglabs.solo.signer.library.utils.CoinUtils
 import com.biglabs.solo.signer.library.utils.Constants
 import com.biglabs.solo.signer.library.utils.SchemeUtils
 import com.biglabs.solo.signer.library.utils.logAsError
@@ -59,7 +59,7 @@ class Signer private constructor(private val walletScheme: String) {
                     .setMessage("At the first launch, we need to initialize data from Signer application")
                     .setPositiveButton("Open Signer App") { dialog, _ ->
                         dialog.dismiss()
-                        openDeepLink(context, ACTION_GET_WALLET)
+                        openDeepLink(context, Constants.SCHEME_ACTION_GET_WALLET)
                     }
                     .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                         dialog.dismiss()
@@ -78,11 +78,11 @@ class Signer private constructor(private val walletScheme: String) {
         if (myWalletID != null) {
             this.mSoloService.getWalletAddress(myWalletID!!).enqueue(object : Callback<List<Wallet>> {
                 override fun onResponse(call: Call<List<Wallet>>, response: Response<List<Wallet>>) {
-                    this@Signer.mSignerListener?.onReceiveWallets(response.body())
+                    this@Signer.mSignerListener?.onReceiveWallets(response.body() ?: listOf())
                 }
 
                 override fun onFailure(call: Call<List<Wallet>>?, t: Throwable?) {
-                    this@Signer.mSignerListener?.onReceiveWallets(null)
+                    this@Signer.mSignerListener?.onError(ACTION_GET_WALLETS, t?.message)
                 }
             })
         } else {
@@ -90,34 +90,29 @@ class Signer private constructor(private val walletScheme: String) {
         }
     }
 
-    fun getBalance(address: String) {
-        val params = GetBalanceRequest(address)
-//        this.mRopstenService.getBalance(params).enqueue(object : Callback<Result> {
-//            override fun onResponse(call: Call<Result>, response: Response<Result>) {
-//                if (this@Signer.mSignerListener != null && response.body() != null) {
-//                    val result = if (response.body()!!.result != null) response.body()!!.result else "0"
-//                    val bigInteger = BigDecimal(BigInteger(result!!.replace("0x", ""), 16))
-//                    val balanceInEther = bigInteger.divide(BigDecimal("1000000000000000000"))
-//                    this@Signer.mSignerListener!!.onReceiveBalance(balanceInEther.toString())
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<Result>, t: Throwable) {
-//                this@Signer.mSignerListener!!.onReceiveBalance(t.message!!)
-//            }
-//        })
+    fun getBalance(coinType: String, address: String) {
+        address.logAsError("getBalance: $coinType")
+        this.mSoloService.getBalance(coinType.toLowerCase(), address).enqueue(object : Callback<BalanceResponse> {
+            override fun onResponse(call: Call<BalanceResponse>?, response: Response<BalanceResponse>?) {
+                if (response?.body() != null) {
+                    val balance = (CoinUtils.convertToUIUnit(coinType, response.body()!!.finalBalance))
+                    this@Signer.mSignerListener!!.onReceiveBalance(balance.toString())
+                } else {
+                    this@Signer.mSignerListener?.onError(ACTION_GET_BALANCE, response?.message())
+                }
+            }
+
+            override fun onFailure(call: Call<BalanceResponse>?, t: Throwable?) {
+                this@Signer.mSignerListener?.onError(ACTION_UNKNOWN, t?.message)
+            }
+        })
     }
 
     fun createTransaction(context: Context, fromAddress: String, toAddress: String, gasLimit: String, coinType: String, network: String, value: String, msg: String) {
         clearTempData()
 
         val v: Double = value.toDoubleOrNull() ?: 0.0
-
-        val valueInLong: Long = (when (coinType) {
-            CoinEnum.BTC.key -> v * 1E+8
-            CoinEnum.ETH.key -> v * 1E+18
-            else -> v
-        }).toLong()
+        val valueInLong: Long = CoinUtils.convertToServerUnit(coinType, v).toLong()
 
         val params = TransactionResponseContent(fromAddress, toAddress, valueInLong)
         params.gasLimit = gasLimit.toLongOrNull() ?: Constants.GAS_LIMIT_EXTERNAL_ACCOUNT
@@ -129,11 +124,11 @@ class Signer private constructor(private val walletScheme: String) {
 
                 this@Signer.mLastTxCoinType = coinType
                 this@Signer.mLastTxMsg = msg
-                openDeepLink(context, ACTION_SIGN, coinType, network, response?.body())
+                openDeepLink(context, Constants.SCHEME_ACTION_SIGN_TX, coinType, network, response?.body())
             }
 
             override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
-                t?.message?.logAsError("createTX failed\n")
+                this@Signer.mSignerListener?.onError(ACTION_CONFIRM_TX, t?.message)
             }
         })
     }
@@ -148,7 +143,7 @@ class Signer private constructor(private val walletScheme: String) {
                 }
 
                 override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
-
+                    this@Signer.mSignerListener?.onError(ACTION_SEND_TX, t?.message)
                 }
             })
         }
@@ -160,12 +155,12 @@ class Signer private constructor(private val walletScheme: String) {
             val response = SignerResponse.parse(data)
             response?.let {
                 when (it.action) {
-                    ACTION_GET_WALLET -> {
+                    Constants.SCHEME_ACTION_GET_WALLET -> {
                         this.myWalletID = it.result?.walletId!!
                         mPreferences?.edit()?.putString(KEY_WALLET_ID, this.myWalletID)?.apply()
                         this.mSignerListener?.onSyncCompleted()
                     }
-                    ACTION_SIGN -> {
+                    Constants.SCHEME_ACTION_SIGN_TX -> {
                         this.mLastTxSignedData = it.result?.signedTransactionObject()
                         this.mSignerListener?.onReceiveSignTransactionResult(this.mLastTxSignedData != null)
                     }
@@ -183,9 +178,11 @@ class Signer private constructor(private val walletScheme: String) {
     }
 
     companion object {
-        private const val ACTION_NONE = "NONE"
-        private const val ACTION_GET_WALLET = "GET_WALLET"
-        private const val ACTION_SIGN = "SIGN"
+        const val ACTION_UNKNOWN = "ACTION_UNKNOWN"
+        const val ACTION_GET_WALLETS = "ACTION_GET_WALLETS"
+        const val ACTION_GET_BALANCE = "ACTION_GET_BALANCE"
+        const val ACTION_CONFIRM_TX = "ACTION_CONFIRM_TX"
+        const val ACTION_SEND_TX = "ACTION_SEND_TX"
 
         private const val KEY_WALLET_ID = "KEY_WALLET_ID"
 
