@@ -29,4 +29,14 @@ public extension RESTService {
         let url = Configuration.BASE_URL + "/api/eth/test/txs/send-signed-tx"
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
     }
+    
+    /// Call API to get all transaction histories from an address.
+    ///
+    /// - Parameters:
+    ///   - transaction: the address
+    ///   - completionHandler: handle after completed
+    public func getEthTransactionHistories(_ address: String, completionHandler: completion = nil) {
+        let url = Configuration.BASE_URL + "/api/eth/test/addrs/\(address)/txhistory"
+        return self.execute(.get, url: url, completionHandler: completionHandler)
+    }
 }

@@ -22,15 +22,9 @@ class SoloWalletViewController: UIViewController {
         super.viewDidLoad()
         
         self.createTabBarController()
-        if self.currentCoin.coin == CoinType.ETH.key {
-            //call getUSD() after have balance value
-            self.getETHBalance()
-        } else if self.currentCoin.coin == CoinType.BTC.key {
-            self.getBTCBalance()
-        } else {
-            self.getUSD()
-        }
         
+        self.getBalance()
+        self.getTransactionHistories(blockHeight: nil)
     }
     
     func createTabBarController() {
@@ -74,6 +68,8 @@ class SoloWalletViewController: UIViewController {
         self.view.addSubview(self.tabBarCtr.view)
     }
     
+    // MARK: Update UI
+    
     func displayBalance( jsonStr : Any){
         let json = SwiftyJSON.JSON(jsonStr)
         var amount = 0.0
@@ -85,6 +81,23 @@ class SoloWalletViewController: UIViewController {
 
         self.currentCoin?.balance = amount
         
+        self.resetCurrentCoinForAllChildren()
+        
+        self.getUSD()
+    }
+    
+    func displayTH(jsonStr : Any){
+        let json = SwiftyJSON.JSON(jsonStr)
+        if let array = json.array {
+            let moreTxs = array.filter({ TransactionHistoryDTO(json: $0) != nil }).map({ TransactionHistoryDTO(json: $0)! })
+            self.currentCoin.transactions = (self.currentCoin.transactions ?? []) + moreTxs
+            if (self.currentCoin.transactions?.count)! > 0 {
+                self.resetCurrentCoinForAllChildren()
+            }
+        }
+    }
+    
+    func resetCurrentCoinForAllChildren(){
         if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
             if let walletVC = navWalletController.topViewController as? WalletViewController {
                 walletVC.currentCoin = self.currentCoin
@@ -96,7 +109,19 @@ class SoloWalletViewController: UIViewController {
                 sendVC.currentCoin = self.currentCoin
             }
         }
-        self.getUSD()
+    }
+    
+    // MARK: Call APIs to get balance
+    
+    func getBalance(){
+        switch self.currentCoin.coin {
+        case CoinType.ETH.key:
+            self.getETHBalance()
+        case CoinType.BTC.key:
+            self.getBTCBalance()
+        default:
+            self.getUSD()
+        }
     }
     
     func getBTCBalance(){
@@ -115,7 +140,6 @@ class SoloWalletViewController: UIViewController {
         }
     }
     
-    // call infura for demo only
     func getETHBalance() {
         guard let address = self.currentCoin.address else {
             return
@@ -130,6 +154,51 @@ class SoloWalletViewController: UIViewController {
                 return
             }
             self.displayBalance(jsonStr: value)
+        }
+    }
+    
+    // MARK: Call APIs to get transaction history
+    
+    func getTransactionHistories(blockHeight: Int64?){
+        switch self.currentCoin.coin {
+        case CoinType.ETH.key:
+            self.getEthTransactionHistories(blockHeight: blockHeight)
+        case CoinType.BTC.key:
+            self.getBtcTransactionHistories(blockHeight: blockHeight)
+        default:
+            break
+        }
+    }
+    
+    func getBtcTransactionHistories(blockHeight: Int64?){
+        guard let address = self.currentCoin.address else {
+            return
+        }
+        self.soloSDK?.api?.getBtcTransactionHistories(address, blockHeight: blockHeight) { (value, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let connectionError = error {
+                    Utils.showError(connectionError)
+                }
+                return
+            }
+            self.displayTH(jsonStr: value)
+        }
+    }
+    
+    func getEthTransactionHistories(blockHeight: Int64?){
+        guard let address = self.currentCoin.address else {
+            return
+        }
+        self.soloSDK?.api?.getEthTransactionHistories(address) { (value, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let connectionError = error {
+                    Utils.showError(connectionError)
+                }
+                return
+            }
+            self.displayTH(jsonStr: value)
         }
     }
     
@@ -159,17 +228,7 @@ class SoloWalletViewController: UIViewController {
             if let price = json["data"]["quotes"]["USD"]["price"].double {
                 self.currentCoin?.usd = price
                 
-                if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
-                    if let walletVC = navWalletController.topViewController as? WalletViewController {
-                        walletVC.currentCoin = self.currentCoin
-                    }
-                }
-                
-                if let navSendController = self.tabBarCtr.viewControllers?.getElement(3) as? UINavigationController {
-                    if let sendVC = navSendController.topViewController as? SendViewController {
-                        sendVC.currentCoin = self.currentCoin
-                    }
-                }
+                self.resetCurrentCoinForAllChildren()
             }
         }
     }
@@ -177,15 +236,18 @@ class SoloWalletViewController: UIViewController {
 
 extension SoloWalletViewController: SoloWalletDelegate {
     func request(_ action: String) {
-        if action == SDKAction.getBalance.rawValue {
-            if self.currentCoin.coin == CoinType.ETH.key {
-                self.getETHBalance()
-            } else if self.currentCoin.coin == CoinType.BTC.key {
-                self.getBTCBalance()
-            }
-        } else if action == EventType.Dismiss.rawValue {
+        switch action {
+        case SDKAction.getBalance.rawValue:
+            self.getBalance()
+        case EventType.Dismiss.rawValue:
             self.dismiss(animated: true)
+        default:
+            break
         }
+    }
+    
+    func loadMoreTxHistory(_ blockHeight: Int64){
+        self.getTransactionHistories(blockHeight: blockHeight)
     }
     
     func updateValue(_ key: String, value: String) {}

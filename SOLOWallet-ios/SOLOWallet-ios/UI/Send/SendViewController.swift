@@ -207,7 +207,7 @@ class SendViewController: AbstractViewController {
             //Convert value from ether to wei
             retValue = Int64(value * 1E+18)
         } else if self.currentCoin?.coin == CoinType.BTC.key {
-            //Convert value from ether to wei
+            //Convert value from ether to satoshis
             retValue = Int64(value * 1E+8)
         }
         return retValue
@@ -313,6 +313,7 @@ class SendViewController: AbstractViewController {
 }
 
 extension SendViewController: SoloWalletDelegate {
+    func loadMoreTxHistory(_ blockHeight: Int64) {}
     func request(_ action: String) {}
     
     func updateValue(_ key: String, value: String) {

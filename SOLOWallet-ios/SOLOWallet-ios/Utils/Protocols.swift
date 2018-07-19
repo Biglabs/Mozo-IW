@@ -15,5 +15,6 @@ public protocol ResponseObjectSerializable: class {
 
 public protocol SoloWalletDelegate: class {
     func request(_ action: String)
+    func loadMoreTxHistory(_ blockHeight: Int64)
     func updateValue(_ key: String, value: String)
 }

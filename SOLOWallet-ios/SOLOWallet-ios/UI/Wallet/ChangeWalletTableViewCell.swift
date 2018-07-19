@@ -23,13 +23,23 @@ public class ChangeWalletTableViewCell: UITableViewCell {
         self.addressLabel.textColor = ThemeManager.shared.font
         self.copyButton.tintColor = ThemeManager.shared.disable
         self.copyButton.setImage(UIImage.init(named: "ic_copy_content"), for: .normal)
+        self.copyButton.addTarget(self, action: #selector(self.copyButtonTapped), for: .touchUpInside)
         self.changeAddressButton.tintColor = ThemeManager.shared.main
         self.changeAddressIcon.tintColor = ThemeManager.shared.disable
         self.changeAddressIcon.setImage(UIImage.init(named: "ic_sort_down"), for: .normal)
+        self.changeAddressButton.addTarget(self, action: #selector(self.changeButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func copyButtonTapped() {
+        UIPasteboard.general.string = self.addressLabel.text
+    }
+    
+    @objc func changeButtonTapped() {
+        
     }
     
     public func bindData(_ coin: AddressDTO){
-        self.nameLabel.text = "Coin name"
+        self.nameLabel.text = coin.coin! + " Address"
         if let address = coin.address {
             self.addressLabel.text = String(address)
         }

@@ -73,6 +73,7 @@ public enum SDKAction: String {
     case getWallet = "GET_WALLET"
     case addAddress = "ADD_ADDRESS"
     case getBalance = "GET_BALANCE"
+    case getTxHistories = "GET_TX_HISTORIES"
 }
 
 public enum EventType: String {

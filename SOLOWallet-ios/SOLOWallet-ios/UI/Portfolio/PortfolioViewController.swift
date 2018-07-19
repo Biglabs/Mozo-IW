@@ -182,6 +182,8 @@ extension PortfolioViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension PortfolioViewController: SoloWalletDelegate {
+    func loadMoreTxHistory(_ blockHeight: Int64) {}
+    
     func request(_ action: String) {
         if action == EventType.Success.rawValue {
             self.buildPortfolioView()

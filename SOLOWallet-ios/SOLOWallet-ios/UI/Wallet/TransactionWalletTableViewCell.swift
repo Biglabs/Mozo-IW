@@ -33,31 +33,25 @@ public class TransactionWalletTableViewCell: UITableViewCell {
         self.borderBottom.backgroundColor = ThemeManager.shared.border
     }
     
-    public func bindData(_ transaction: TransactionHistoryDTO, coinName: String, address: String){
+    public func bindData(_ transaction: TransactionHistoryDTO, address: AddressDTO){
         if let time = transaction.time {
             self.dayLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "dd")
             self.monthLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "MMM")
         }
-
-        // If type = ETH
-        var from = ""
-        var to = ""
-        var value = 0.0
+        
+        self.typeLabel.text = transaction.action?.lowercased().capitalizingFirstLetter()
+        
+        var value = Double(transaction.amount!)
         // If type = BTC
-        if coinName == CoinType.ETH.key {
-            
-        } else if coinName == CoinType.BTC.key {
-            
+        if address.coin == CoinType.ETH.key {
+            value /= 1e+18
+        } else if address.coin == CoinType.BTC.key {
+            value /= 1e+8
         }
+        self.valueLabel.text = "\(value) \(address.coin ?? "")"
+        self.valueHighlightLabel.text = "\(value) \(address.coin ?? "")"
         
-        if from == address {
-            self.typeLabel.text = "Sent"
-        } else if to == address {
-            self.typeLabel.text = "Received"
-        }
-        
-        self.valueLabel.text = "\(value) \(coinName)"
-        self.valueHighlightLabel.text = "\(value) \(coinName)"
+        self.usdLabel.text = "\(value*(address.usd ?? 0)) USD"
     }
     
     public override func setSelected(_ selected: Bool, animated: Bool) {

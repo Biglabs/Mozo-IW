@@ -47,6 +47,10 @@ public extension String {
         let replaced =  self.replacingOccurrences(of: originalString, with: newString)
         return replaced
     }
+    
+    public func capitalizingFirstLetter() -> String {
+        return prefix(1).uppercased() + dropFirst()
+    }
 }
 
 public extension Data {

@@ -12,6 +12,7 @@ import SwiftyJSON
 class WalletViewController: AbstractViewController {
     var tableView: UITableView?
     private let refreshControl = UIRefreshControl()
+    private var isLoadingMoreTH = false
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,7 @@ class WalletViewController: AbstractViewController {
     
     override func updateAddress(_ sender: Any? = nil) {
         self.tableView?.reloadData()
+        self.isLoadingMoreTH = false
     }
     
     @objc func refresh(_ sender: Any? = nil) {
@@ -108,8 +110,8 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = self.tableView?.dequeueReusableCell(withIdentifier: "TransactionWalletTableViewCell", for: indexPath) as! TransactionWalletTableViewCell
-            if let trans = self.currentCoin?.transactions?[indexPath.row], let name = self.currentCoin?.coin, let address = self.currentCoin?.address {
-                cell.bindData(trans, coinName: name, address: address)
+            if let trans = self.currentCoin?.transactions?[indexPath.row] {
+                cell.bindData(trans, address: self.currentCoin!)
             }
             //            cell.delegate = self
             return cell
@@ -121,9 +123,29 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension WalletViewController: UIScrollViewDelegate {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        //Bottom Refresh
+        if scrollView == self.tableView {
+            if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height) {
+                if !self.isLoadingMoreTH {
+                    let blockHeight = (self.currentCoin?.transactions?.last?.blockHeight)!
+                    print("Load more transaction histories with block height \(String(describing: blockHeight))")
+                    self.isLoadingMoreTH = true
+                    self.delegate?.loadMoreTxHistory(blockHeight)
+                }
+            }
+        }
+    }
+}
+
 extension WalletViewController: SoloWalletDelegate {
     func request(_ action: String) {
         self.delegate?.request(action)
+    }
+    
+    func loadMoreTxHistory(_ blockHeight: Int64) {
+        self.delegate?.loadMoreTxHistory(blockHeight)
     }
     
     func updateValue(_ key: String, value: String) {}
