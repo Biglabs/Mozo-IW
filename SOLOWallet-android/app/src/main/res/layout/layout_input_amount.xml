@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/bg_input_box">
+
+    <TextView
+        android:id="@+id/input_amount_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_input_box_header"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:paddingEnd="17dp"
+        android:paddingStart="35dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="BTC" />
+
+    <ImageView
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="14.5dp"
+        android:contentDescription="@string/text_hint_enter_amount"
+        android:src="@drawable/ic_swap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/input_amount_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:textColor="#c1c1c1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/input_amount_unit"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="US$7,500.52" />
+
+    <EditText
+        android:id="@+id/input_amount"
+        style="@style/SoloStyle.EditText"
+        android:layout_width="0dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/text_hint_enter_amount"
+        android:imeOptions="actionNext"
+        android:inputType="numberDecimal"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/input_amount_unit"
+        app:layout_constraintRight_toLeftOf="@+id/input_amount_rate"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

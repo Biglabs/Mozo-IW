@@ -12,16 +12,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.models.ui.Wallet
+import com.biglabs.solo.signer.library.utils.Constants
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
 import com.biglabs.solo.wallet.utils.toast
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_nav_send.*
+import kotlinx.android.synthetic.main.layout_input_amount.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
 
 class SendFragment : Fragment() {
 
@@ -46,13 +47,13 @@ class SendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
-        walletsViewModel.getCurrentWallet().observe(this, Observer { this.wallet = it })
+        walletsViewModel.getCurrentWallet().observe(this, Observer { updateUI(it) })
 
         input_amount.setText(value)
         input_amount.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 value = p0?.toString()!!
-                updateUI()
+                updateTxUI()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -62,36 +63,37 @@ class SendFragment : Fragment() {
             }
         })
 
+        input_gas_limit.setText(Constants.GAS_LIMIT_EXTERNAL_ACCOUNT.toString())
+
         button_scan_address.setOnClickListener {
             IntentIntegrator.forSupportFragment(this).initiateScan()
         }
 
         buttonSend.setOnClickListener {
-            val address = wallet?.address
-            if (address != null) {
-                val valueInNumber = value.toFloatOrNull()
-                if (valueInNumber == null || valueInNumber == 0f || input_receive_address.length() == 0) {
-                    toast("Invalid value")
-                } else {
-                    Signer.getInstance().createTransaction(
-                            context!!,
-                            address,
-                            input_receive_address.text.toString(),
-                            wallet?.coin()?.key!!,
-                            wallet?.coin()?.network!!,
-                            value, message_input.text.toString()
-                    )
-                }
-            } else {
-                toast("Please choose an account!")
-            }
-        }
-
-        buttonSubmit.setOnClickListener {
             if (isTxSigned) {
                 Signer.getInstance().sendTransaction()
                 isTxSigned = false
-                updateUI()
+                updateTxUI()
+            } else {
+                val address = wallet?.address
+                if (address != null) {
+                    val valueInNumber = value.toFloatOrNull()
+                    if (valueInNumber == null || valueInNumber == 0f || input_receive_address.length() == 0) {
+                        toast("Invalid value")
+                    } else {
+                        Signer.getInstance().createTransaction(
+                                context!!,
+                                address,
+                                input_receive_address.text.toString(),
+                                input_gas_limit.text.toString(),
+                                wallet?.coin()?.key!!,
+                                wallet?.coin()?.network!!,
+                                value, message_input.text.toString()
+                        )
+                    }
+                } else {
+                    toast("Please choose an account!")
+                }
             }
         }
     }
@@ -121,12 +123,19 @@ class SendFragment : Fragment() {
             text_output.text = "send transaction: ${if (transaction.isSent) "successfully" else "failed"} \n txHash: ${transaction.txHash}"
         } else {
             isTxSigned = transaction.isSigned
-            updateUI()
+            updateTxUI()
         }
     }
 
-    fun updateUI() {
-        buttonSubmit.visibility = if (isTxSigned) View.VISIBLE else View.GONE
+    private fun updateUI(wallet: Wallet?) {
+        wallet?.let {
+            this.wallet = it
+            input_amount_unit.text = it.coin()?.key
+        }
+    }
+
+    private fun updateTxUI() {
+        buttonSend.setText(if (isTxSigned) R.string.common_text_send else R.string.text_button_confirm_transaction)
     }
 
     companion object {

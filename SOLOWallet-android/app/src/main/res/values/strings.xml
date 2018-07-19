@@ -11,9 +11,14 @@
 
     <string name="msg_copy_address">Address copied!</string>
 
+    <string name="text_button_confirm_transaction">Confirm Transaction</string>
+    <string name="text_button_generate">Generate</string>
+
     <string name="text_change_address">Change Address</string>
     <string name="text_hint_enter_receiving_address">Enter Receiving Address</string>
     <string name="text_hint_enter_amount">Enter Amount</string>
+    <string name="text_hint_gas_limit">Gas Limit</string>
+    <string name="text_hint_insert_data">Insert Data</string>
     <string name="text_show_qr_code">Show QR Code</string>
 
     <string name="wallet_address_type">%s address</string>

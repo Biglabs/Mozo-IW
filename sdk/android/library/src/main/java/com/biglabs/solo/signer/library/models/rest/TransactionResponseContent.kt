@@ -16,7 +16,7 @@ internal class TransactionResponseContent {
 
     /** Height of the block that contains this transaction. If this is an unconfirmed transaction, it will equal -1. */
     @SerializedName("block_height")
-    var block_height: Long? = null
+    var blockHeight: Long? = null
 
     /** BTC: The hash of the transaction. While reasonably unique, using hashes as identifiers may be unsafe.
     ETH: The hash of the transaction. */
@@ -47,21 +47,21 @@ internal class TransactionResponseContent {
 
     /** ETH only: The amount of gas used by this transaction. */
     @SerializedName("gas_used")
-    var gas_used: Long? = null
+    var gasUsed: Long? = null
 
     /** ETH only: The price of gas—in wei—in this transaction. */
     @SerializedName("gas_price")
-    var gas_price: Long? = null
+    var gasPrice: Long? = null
 
     /** Optional If creating a transaction, can optionally set a higher default gas limit (useful if your recepient is a contract).
     If not set, default is 21000 gas for external accounts and 80000 for contract accounts. */
     @SerializedName("gas_limit")
-    var gas_limit: Long? = null
+    var gasLimit: Long? = null
 
     /** BTC: Address of the peer that sent BlockCypher’s servers this transaction.
     ETH: Address of the peer that sent BlockCypher’s servers this transaction. May be empty. */
     @SerializedName("relayed_by")
-    var relayed_by: String? = null
+    var relayedBy: String? = null
 
     /** Time this transaction was received by BlockCypher’s servers. */
     @SerializedName("received")
@@ -74,19 +74,19 @@ internal class TransactionResponseContent {
 
     /** BTC only: Time when transaction can be valid. Can be interpreted in two ways: if less than 500 million, refers to block height. If more, refers to Unix epoch time. */
     @SerializedName("lock_time")
-    var lock_time: Long? = null
+    var lockTime: Long? = null
 
     /** true if this is an attempted double spend; false otherwise. */
     @SerializedName("double_spend")
-    var double_spend = false
+    var doubleSpend = false
 
     /** Total number of inputs in the transaction. */
     @SerializedName("vin_sz")
-    var vin_sz: Long? = null
+    var vinSz: Long? = null
 
     /** Total number of outputs in the transaction. */
     @SerializedName("vout_sz")
-    var vout_sz: Long? = null
+    var voutSz: Long? = null
 
     /** Number of subsequent blocks, including the block the transaction is in. Unconfirmed transactions have 0 confirmations. */
     @SerializedName("confirmations")

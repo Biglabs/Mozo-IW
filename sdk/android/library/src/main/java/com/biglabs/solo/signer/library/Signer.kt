@@ -14,6 +14,7 @@ import com.biglabs.solo.signer.library.models.scheme.SignerRequest
 import com.biglabs.solo.signer.library.models.scheme.SignerResponse
 import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.signer.library.utils.CoinEnum
+import com.biglabs.solo.signer.library.utils.Constants
 import com.biglabs.solo.signer.library.utils.SchemeUtils
 import com.biglabs.solo.signer.library.utils.logAsError
 import retrofit2.Call
@@ -107,7 +108,7 @@ class Signer private constructor(private val walletScheme: String) {
 //        })
     }
 
-    fun createTransaction(context: Context, fromAddress: String, toAddress: String, coinType: String, network: String, value: String, msg: String) {
+    fun createTransaction(context: Context, fromAddress: String, toAddress: String, gasLimit: String, coinType: String, network: String, value: String, msg: String) {
         clearTempData()
 
         val v: Double = value.toDoubleOrNull() ?: 0.0
@@ -119,11 +120,12 @@ class Signer private constructor(private val walletScheme: String) {
         }).toLong()
 
         val params = TransactionResponseContent(fromAddress, toAddress, valueInLong)
-        params.toString().logAsError("createTx param")
+        params.gasLimit = gasLimit.toLongOrNull() ?: Constants.GAS_LIMIT_EXTERNAL_ACCOUNT
+        params.toString().logAsError("createTx param\n")
 
         this.mSoloService.createTx(coinType.toLowerCase(), params).enqueue(object : Callback<TransactionResponse> {
             override fun onResponse(call: Call<TransactionResponse>?, response: Response<TransactionResponse>?) {
-                response?.body()?.toString()?.logAsError("createTx response")
+                response?.body()?.toString()?.logAsError("createTx response\n")
 
                 this@Signer.mLastTxCoinType = coinType
                 this@Signer.mLastTxMsg = msg
@@ -131,14 +133,14 @@ class Signer private constructor(private val walletScheme: String) {
             }
 
             override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
-                t?.message?.logAsError("createTX failed")
+                t?.message?.logAsError("createTX failed\n")
             }
         })
     }
 
     fun sendTransaction() {
         this.mLastTxSignedData?.let {
-            it.toString().logAsError("mLastTxSignedData")
+            it.toString().logAsError("mLastTxSignedData\n")
             this.mSoloService.sendTx(this.mLastTxCoinType?.toLowerCase()!!, it).enqueue(object : Callback<TransactionResponse> {
                 override fun onResponse(call: Call<TransactionResponse>?, response: Response<TransactionResponse>?) {
                     this@Signer.mSignerListener?.onReceiveSentTransaction(response?.isSuccessful == true, response?.body()?.tx?.hash)

@@ -18,19 +18,19 @@ internal class TransactionResponseContentInput {
 
     /** The previous transaction hash where this input was an output. Not present for coinbase transactions. */
     @SerializedName("prev_hash")
-    var prev_hash: String? = null
+    var prevHash: String? = null
 
     /** The index of the output being spent within the previous transaction. Not present for coinbase transactions. */
     @SerializedName("output_index")
-    var output_index: Long? = null
+    var outputIndex: Long? = null
 
     /** The value of the output being spent within the previous transaction. Not present for coinbase transactions. */
     @SerializedName("output_value")
-    var output_value: Long? = null
+    var outputValue: Long? = null
 
     /** The type of script that encumbers the output corresponding to this input. */
     @SerializedName("script_type")
-    var script_type: String? = null
+    var scriptType: String? = null
 
     /** Raw hexadecimal encoding of the script. */
     @SerializedName("script")

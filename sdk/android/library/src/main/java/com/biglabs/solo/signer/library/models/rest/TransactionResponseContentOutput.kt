@@ -26,17 +26,17 @@ internal class TransactionResponseContentOutput {
 
     /** The type of script that encumbers the output corresponding to this input. */
     @SerializedName("script_type")
-    var script_type: String? = null
+    var scriptType: String? = null
 
     /** Optional The transaction hash that spent this output. Only returned for outputs that have been spent. The spending transaction may be unconfirmed. */
     @SerializedName("spent_by")
-    var spent_by: String? = null
+    var spentBy: String? = null
 
     /** Optional A hex-encoded representation of an OP_RETURN data output, without any other script instructions. Only returned for outputs whose script_type is null-data. */
     @SerializedName("data_hex")
-    var data_hex: String? = null
+    var dataHex: String? = null
 
     /** Optional An ASCII representation of an OP_RETURN data output, without any other script instructions. Only returned for outputs whose script_type is null-data and if its data falls into the visible ASCII range. */
     @SerializedName("data_string")
-    var data_string: String? = null
+    var dataString: String? = null
 }
