@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -21,6 +22,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		2093A2502101B78500965D30 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2093A24E2101B58900965D30 /* FileBrowser.framework */; };
+		2093A2512101B78500965D30 /* FileBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2093A24E2101B58900965D30 /* FileBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -34,8 +37,6 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* SOLOSignerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SOLOSignerTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-		30AD2BA520F603C90046659C /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30AD2BA220F603940046659C /* FileBrowser.framework */; };
-		30AD2BA620F603C90046659C /* FileBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 30AD2BA220F603940046659C /* FileBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		65F4F2E5B5FA49DBA921EA85 /* libRNRandomBytes-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 392125327F3C445F83E3790C /* libRNRandomBytes-tvOS.a */; };
 		6804C65A4DD248CE8A1617D0 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA16FEB777442F0BDC61BB1 /* libRNSVG.a */; };
@@ -208,27 +209,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNFileSelector;
-		};
-		30AD2BA120F603940046659C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 30AD2B9C20F603940046659C /* FileBrowser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 344169541C67812400B93D28;
-			remoteInfo = FileBrowser;
-		};
-		30AD2BA320F603940046659C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 30AD2B9C20F603940046659C /* FileBrowser.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3441695E1C67812400B93D28;
-			remoteInfo = FileBrowserTests;
-		};
-		30AD2BA720F603C90046659C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 30AD2B9C20F603940046659C /* FileBrowser.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 344169531C67812400B93D28;
-			remoteInfo = FileBrowser;
 		};
 		30AFFC3720CBBD9B00C6AF0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -422,13 +402,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		30AD2BA920F603C90046659C /* Embed Frameworks */ = {
+		2093A24D2101B54800965D30 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				30AD2BA620F603C90046659C /* FileBrowser.framework in Embed Frameworks */,
+				2093A2512101B78500965D30 /* FileBrowser.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,11 +435,11 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SOLOSigner/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SOLOSigner/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		2093A24E2101B58900965D30 /* FileBrowser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FileBrowser.framework; path = "../../../Library/Developer/Xcode/DerivedData/SOLOSigner-dvoejnjkbpqhysatzsmminzljdoe/Build/Products/Debug-iphoneos/FileBrowser.framework"; sourceTree = "<group>"; };
 		2AADB30E643941AE93FF02AE /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* SOLOSigner-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOSigner-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* SOLOSigner-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SOLOSigner-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		30AD2B9C20F603940046659C /* FileBrowser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FileBrowser.xcodeproj; path = "../node_modules/react-native-file-selector/ios/FileBrowser/FileBrowser.xcodeproj"; sourceTree = "<group>"; };
 		392125327F3C445F83E3790C /* libRNRandomBytes-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNRandomBytes-tvOS.a"; sourceTree = "<group>"; };
 		521D4C11D8634B79A943E2FF /* libRealmReact.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRealmReact.a; sourceTree = "<group>"; };
 		591065DDF5A34B0DBBE0338C /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
@@ -516,7 +496,7 @@
 				A251E70A326E48859AFF5F2D /* libRNRandomBytes.a in Frameworks */,
 				6A27C75523AB4BB1B2E8E4AA /* libRealmReact.a in Frameworks */,
 				7447CB9B29FE4C8C9A24A9A0 /* libc++.tbd in Frameworks */,
-				30AD2BA520F603C90046659C /* FileBrowser.framework in Frameworks */,
+				2093A2502101B78500965D30 /* FileBrowser.framework in Frameworks */,
 				FFD4F5331018436A9A8DB67E /* libz.tbd in Frameworks */,
 				73C8AA5A93D1444E94C93933 /* libRNShare.a in Frameworks */,
 				97C5D52DF4B0482CB84F8CA0 /* libRNFS.a in Frameworks */,
@@ -672,6 +652,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2093A24E2101B58900965D30 /* FileBrowser.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				B8DCEEC2B3BA4F16AF694457 /* libc++.tbd */,
 				F01E04DF312F43B38311A20D /* libz.tbd */,
@@ -683,15 +664,6 @@
 			isa = PBXGroup;
 			children = (
 				30AD2B9B20F5FFFB0046659C /* libRNFileSelector.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		30AD2B9D20F603940046659C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				30AD2BA220F603940046659C /* FileBrowser.framework */,
-				30AD2BA420F603940046659C /* FileBrowserTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -776,7 +748,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				30AD2B9C20F603940046659C /* FileBrowser.xcodeproj */,
 				C61B8DE320CF5DE8003614A3 /* RNCamera.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -890,12 +861,11 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				30AD2BA920F603C90046659C /* Embed Frameworks */,
+				2093A24D2101B54800965D30 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				30AD2BA820F603C90046659C /* PBXTargetDependency */,
 			);
 			name = SOLOSigner;
 			productName = "Hello World";
@@ -988,10 +958,6 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 30AD2B9D20F603940046659C /* Products */;
-					ProjectRef = 30AD2B9C20F603940046659C /* FileBrowser.xcodeproj */;
-				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1218,20 +1184,6 @@
 			fileType = archive.ar;
 			path = libRNFileSelector.a;
 			remoteRef = 30AD2B9A20F5FFFB0046659C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		30AD2BA220F603940046659C /* FileBrowser.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FileBrowser.framework;
-			remoteRef = 30AD2BA120F603940046659C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		30AD2BA420F603940046659C /* FileBrowserTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FileBrowserTests.xctest;
-			remoteRef = 30AD2BA320F603940046659C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		30AFFC3820CBBD9B00C6AF0C /* libRNRandomBytes.a */ = {
@@ -1539,11 +1491,6 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* SOLOSigner-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
-		};
-		30AD2BA820F603C90046659C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FileBrowser;
-			targetProxy = 30AD2BA720F603C90046659C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
