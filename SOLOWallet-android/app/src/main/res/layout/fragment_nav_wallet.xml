@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="My first wallet"
-            android:textColor="@color/textColorContent"
+            android:textColor="@color/textColorSecondary"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="middle"
             android:singleLine="true"
-            android:textColor="@color/textColorContent"
+            android:textColor="@color/textColorSecondary"
             android:textSize="10sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_address_name"
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
                 android:textAllCaps="true"
-                android:textColor="@color/textColorContent"
+                android:textColor="@color/textColorSecondary"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="@+id/text_address_balance"
@@ -178,7 +178,7 @@
                 android:drawablePadding="5dp"
                 android:focusable="true"
                 android:text="00.000 USD"
-                android:textColor="@color/textColorContent"
+                android:textColor="@color/textColorSecondary"
                 android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="@+id/text_address_balance"
                 app:layout_constraintTop_toBottomOf="@+id/text_address_balance" />
@@ -197,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_show_qr_code"
-                android:textColor="@color/textColorContent"
+                android:textColor="@color/textColorSecondary"
                 android:textSize="10sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/text_currency_rate"
                 app:layout_constraintLeft_toRightOf="@+id/image_address_qr_code"
@@ -212,5 +212,18 @@
             android:text="@string/text_transaction_history"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/wallet_info_box" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tx_history_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="54dp"
+            android:gravity="center"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wallet_info_box"
+            tools:listitem="@layout/item_list_transaction_history" />
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

@@ -16,7 +16,7 @@ class Wallet {
     @SerializedName("address")
     var address: String? = null
 
-    fun coin(c: CoinEnum? = null): CoinEnum? {
+    fun coin(c: CoinEnum? = null): CoinEnum {
         c?.let {
             this.coin = c.key
         }

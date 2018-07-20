@@ -9,7 +9,8 @@
     <color name="colorSmallAction">#d1d7dd</color>
 
     <color name="textColorPrimary">#141a22</color>
-    <color name="textColorContent">#747474</color>
+    <color name="textColorSecondary">#747474</color>
+    <color name="textColorTertiary">#666666</color>
 
     <color name="windowBackground">#ffffff</color>
 </resources>

@@ -11,6 +11,8 @@
 
         <item name="android:editTextStyle">@style/SoloStyle.EditText</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorTertiary">@color/textColorTertiary</item>
         <item name="android:textViewStyle">@style/SoloStyle..TextView</item>
         <item name="android:buttonStyle">@style/SoloStyle.Button</item>
     </style>
