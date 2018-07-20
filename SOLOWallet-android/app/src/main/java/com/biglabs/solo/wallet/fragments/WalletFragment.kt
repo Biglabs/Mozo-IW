@@ -130,9 +130,6 @@ class WalletFragment : Fragment() {
                 progressBar.visibility = View.GONE
                 container_error.visibility = View.VISIBLE
             }
-            Signer.ACTION_GET_TX_HISTORY -> {
-                refresh_layout.isRefreshing = false
-            }
         }
 
         error.message?.let {
