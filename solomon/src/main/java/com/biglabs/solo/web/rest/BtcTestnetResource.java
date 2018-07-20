@@ -44,15 +44,15 @@ public class BtcTestnetResource {
         this.waRepo = war;
     }
 
-    /**
-    * GET getAddressDetails
-    */
-    @GetMapping("/addrs/{addresses}/latest")
-    public BCYAddress[] getAddressDetail(@PathVariable String addresses) throws BlockCypherException {
-        String[] parsedAddress = addresses.split(";");
-        return btcClient.getLatestTx4MultiAddress(parsedAddress);
-//        return "getAddressDetails";
-    }
+//    /**
+//    * GET getAddressDetails
+//    */
+//    @GetMapping("/addrs/{addresses}/latest")
+//    public BCYAddress[] getAddressDetail(@PathVariable String addresses) throws BlockCypherException {
+//        String[] parsedAddress = addresses.split(";");
+//        return btcClient.getLatestTx4MultiAddress(parsedAddress);
+////        return "getAddressDetails";
+//    }
 
     /**
     * GET getBalance

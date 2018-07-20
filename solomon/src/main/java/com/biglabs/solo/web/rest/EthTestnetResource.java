@@ -42,15 +42,15 @@ public class EthTestnetResource {
         this.waRepo = waRepo;
     }
 
-    /**
-    * GET getAddressDetails
-    */
-    @GetMapping("/addrs/{addresses}/latest")
-    public BCYAddress[] getAddressDetail(@PathVariable String addresses) throws BlockCypherException {
-        String[] parsedAddress = addresses.split(";");
-        return ethClient.getLatestTx4MultiAddress(parsedAddress);
-//        return "getAddressDetails";
-    }
+//    /**
+//    * GET getAddressDetails
+//    */
+//    @GetMapping("/addrs/{addresses}/latest")
+//    public BCYAddress[] getAddressDetail(@PathVariable String addresses) throws BlockCypherException {
+//        String[] parsedAddress = addresses.split(";");
+//        return ethClient.getLatestTx4MultiAddress(parsedAddress);
+////        return "getAddressDetails";
+//    }
 
     /**
     * GET getBalance

@@ -183,8 +183,13 @@ public class BTCClient {
             ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(builder.toUriString(), BCYAddress.class);
             BCYAddress bcyAddress = ret.getBody();
             List<Transaction> txs = bcyAddress.getTxs();
+            //antt: blockcypher always include unconfirmed txs in the results regardless of request params
+            //      blockcypher is not to update with btc testnet
+            //      use https://test-insight.bitpay.com/ to check different
             logger.debug("Number of tx {}", txs.size());
-            return txs.stream().map(tx -> fromTx(addresses, tx, siblingAddrs)).collect(Collectors.toList());
+            return txs.stream()
+                        .filter(transaction -> beforeHeight != null ? transaction.getBlockHeight() > 0 : true )
+                        .map(tx -> fromTx(addresses, tx, siblingAddrs)).collect(Collectors.toList());
         } catch (HttpStatusCodeException ex) {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
