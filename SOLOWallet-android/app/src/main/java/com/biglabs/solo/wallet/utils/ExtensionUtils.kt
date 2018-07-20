@@ -17,6 +17,8 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.widget.toast
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 private fun setWindowFlag(window: Window, bits: Int, on: Boolean) {
     val winParams = window.attributes
@@ -83,4 +85,12 @@ fun Fragment.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT): T
 fun String.copyToClipboard(label: String, context: Context) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     clipboard.primaryClip = ClipData.newPlainText(label, this)
+}
+
+fun BigDecimal.trailingZeros(scale: Int): BigDecimal {
+    return setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
+}
+
+fun BigDecimal.displayString(scale: Int = 6): String {
+    return trailingZeros(scale).toPlainString()
 }

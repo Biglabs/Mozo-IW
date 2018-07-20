@@ -99,8 +99,8 @@ class Signer private constructor(private val walletScheme: String) {
         this.mSoloService.getBalance(coinType.toLowerCase(), wallet.address!!).enqueue(object : Callback<BalanceResponse> {
             override fun onResponse(call: Call<BalanceResponse>?, response: Response<BalanceResponse>?) {
                 if (response?.body() != null) {
-                    val balance = (CoinUtils.convertToUIUnit(coinType, response.body()!!.finalBalance))
-                    this@Signer.mSignerListener?.onReceiveBalance(balance.toString())
+                    val balance = CoinUtils.convertToUIUnit(coinType, response.body()!!.balance)
+                    this@Signer.mSignerListener?.onReceiveBalance(balance)
                 } else {
                     this@Signer.mSignerListener?.onError(ACTION_GET_BALANCE, response?.message())
                 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.ErrorMessage
 import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
 import com.biglabs.solo.wallet.utils.copyToClipboard
+import com.biglabs.solo.wallet.utils.displayString
 import com.biglabs.solo.wallet.utils.toast
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -50,6 +52,8 @@ class WalletFragment : Fragment() {
         walletsViewModel.getCurrentWallet().observe(this, Observer { updateUI(it) })
 
         initializeEvents()
+
+        tx_history_recycler.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
     override fun onStart() {
@@ -90,16 +94,25 @@ class WalletFragment : Fragment() {
         button_retry.setOnClickListener {
             Signer.getInstance().getWallets(activity!!)
         }
+
+        refresh_layout.setOnRefreshListener {
+            wallet?.let {
+                Signer.getInstance().getTransactionHistory(it)
+            }
+        }
     }
 
     @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveWalletInfo(walletInfo: WalletInfoEventMessage) {
-        text_address_balance.text = walletInfo.balance
+        text_address_balance.text = walletInfo.balance?.displayString(12)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveTransactionHistory(histories: List<TransactionHistory>) {
+        refresh_layout.isRefreshing = false
+
+        this.histories.clear()
         this.histories.addAll(histories)
         adapter?.notifyDataSetChanged()
     }
@@ -110,6 +123,9 @@ class WalletFragment : Fragment() {
             Signer.ACTION_GET_WALLETS -> {
                 progressBar.visibility = View.GONE
                 container_error.visibility = View.VISIBLE
+            }
+            Signer.ACTION_GET_TX_HISTORY -> {
+                refresh_layout.isRefreshing = false
             }
         }
 
@@ -141,7 +157,12 @@ class WalletFragment : Fragment() {
             adapter = TransactionHistoriesRecyclerAdapter(it.coin().key, histories)
             tx_history_recycler.adapter = adapter
 
+            text_address_balance.text = "0"
             Signer.getInstance().getBalance(it)
+
+            refresh_layout.isRefreshing = true
+            this.histories.clear()
+            adapter?.notifyDataSetChanged()
             Signer.getInstance().getTransactionHistory(it)
         }
     }

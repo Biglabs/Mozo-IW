@@ -16,7 +16,7 @@ class TransactionHistory {
     var fees: Int = 0
 
     @SerializedName("amount")
-    var amount: Long = 0L
+    var amount: Double = 0.0
 
     @SerializedName("time")
     var time: Long = 0L
