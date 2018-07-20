@@ -12,5 +12,7 @@ class Constants {
 
         const val GAS_LIMIT_EXTERNAL_ACCOUNT = 21000L
         const val GAS_LIMIT_CONTRACT_ACCOUNT = 80000L
+
+        const val MINIMUM_TX_CONFIRMATION = 6
     }
 }

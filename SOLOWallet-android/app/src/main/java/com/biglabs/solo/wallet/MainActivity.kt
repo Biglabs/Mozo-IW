@@ -28,6 +28,7 @@ import com.biglabs.solo.wallet.utils.translucentStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.greenrobot.eventbus.EventBus
+import java.math.BigDecimal
 
 class MainActivity : AppCompatActivity(), SignerListener {
     private var selectedTabId = -1
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity(), SignerListener {
         walletsViewModel.updateWallets(wallets)
     }
 
-    override fun onReceiveBalance(balance: String) {
+    override fun onReceiveBalance(balance: BigDecimal) {
         EventBus.getDefault().post(WalletInfoEventMessage(balance))
     }
 

@@ -1,5 +1,6 @@
 package com.biglabs.solo.signer.library.models.ui
 
+import com.biglabs.solo.signer.library.utils.Constants
 import com.google.gson.annotations.SerializedName
 
 class TransactionHistory {
@@ -16,7 +17,7 @@ class TransactionHistory {
     var fees: Int = 0
 
     @SerializedName("amount")
-    var amount: Long = 0L
+    var amount: Double = 0.0
 
     @SerializedName("time")
     var time: Long = 0L
@@ -25,9 +26,10 @@ class TransactionHistory {
     var addressTo: String? = null
 
     @SerializedName("confirmations")
-    var confirmations: Int = 0
+    private var confirmations: Int = 0
 
     @SerializedName("message")
     var message: String? = null
 
+    var isConfirm = confirmations >= Constants.MINIMUM_TX_CONFIRMATION
 }
