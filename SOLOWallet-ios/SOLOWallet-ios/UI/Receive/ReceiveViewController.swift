@@ -7,10 +7,15 @@
 //
 
 import UIKit
+import SoloSDK
+import SwiftyJSON
 
 class ReceiveViewController: AbstractViewController {
     var tableView: UITableView?
     private let refreshControl = UIRefreshControl()
+    private var coverView: UIView!
+    private var popupView: UIView!
+    private var imgView: UIImageView!
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +36,8 @@ class ReceiveViewController: AbstractViewController {
         self.tableView?.delegate = self
         self.view.addSubview(self.tableView!)
         
+        self.initPopupView()
+        
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
             self.tableView?.refreshControl = refreshControl
@@ -40,6 +47,44 @@ class ReceiveViewController: AbstractViewController {
         self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
     }
     
+    func initPopupView() {
+        let displayWidth: CGFloat = self.view.frame.width
+        let displayHeight: CGFloat = self.view.frame.height
+        let viewFrame = CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight)
+        
+        // cover view
+        self.coverView = UIView(frame: viewFrame)
+        self.coverView.backgroundColor = .black
+        self.coverView.alpha = 0.5
+        self.view.addSubview(coverView)
+        self.coverView.isHidden = true
+        
+        // popup view
+        let popupFrame = CGRect(x: 0, y: 0, width: 300, height: 350)
+        self.popupView = UIView(frame: popupFrame)
+        self.popupView.backgroundColor = .white
+        self.popupView.center = self.view.center
+        self.view.addSubview(self.popupView)
+        self.popupView.isHidden = true
+
+        // Image view
+        let imgFrame = CGRect(x: 0, y: 0, width: 300, height: 300)
+        self.imgView = UIImageView(frame: imgFrame)
+        self.popupView.addSubview(imgView)
+        
+        // OK button
+        let okayButtonFrame = CGRect(x: 100, y: 305, width: 100, height: 44)
+        let okayButton = UIButton(frame: okayButtonFrame)
+        okayButton.layer.cornerRadius = 5
+        okayButton.backgroundColor = ThemeManager.shared.main
+        okayButton.tintColor = .white
+        okayButton.setTitle("OK", for: .normal)
+        
+        // here we are adding the button its superView
+        self.popupView.addSubview(okayButton)
+        okayButton.addTarget(self, action: #selector(self.closeQRScreen), for:.touchUpInside)
+    }
+    
     @objc func refresh(_ sender: Any? = nil) {
         self.delegate?.request(SDKAction.getBalance.rawValue)
         if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
@@ -47,8 +92,48 @@ class ReceiveViewController: AbstractViewController {
         }
     }
     
-    func displayQR(){
+    func displayQR(transaction: TransactionDTO){
+        self.popupView.isHidden = false
+        self.coverView.isHidden = false
+        let json = JSON(transaction.toJSON())
+        self.imgView.image = Utils.generateQRCode(from: json.rawString()!)
+    }
+    
+    func makeTx() -> TransactionDTO{
+        let tx = TransactionDTO()!
+        let length = self.tableView?.numberOfRows(inSection: 0) ?? 0
+        for i in 0..<length {
+            let output = OutputDTO()!
+            // Section 0 -> Output Address
+            let indexPathAddr = IndexPath(row: i, section: 0)
+            if let cellAddr = self.tableView?.cellForRow(at: indexPathAddr) {
+                let temp = cellAddr as! ChangeWalletTableViewCell
+                output.addresses = [temp.addressLabel.text ?? ""]
+            }
+            // Section 1 -> Output value
+            let indexPathValue = IndexPath(row: i, section: 1)
+            if let cellValue = self.tableView?.cellForRow(at: indexPathValue) {
+                let temp = cellValue as! ReceiveTransactionValueCell
+                var value = 0.0
+                if !(temp.inputCoinTextField.text?.isEmpty)! {
+                    value = Double(temp.inputCoinTextField.text!)!
+                }
+                let txValue = value > 0.0 ? Utils.convertCoinValue(coinType: self.currentCoin?.coin, value: value) : 0
+                output.value = txValue
+            }
+            if let outputs = tx.outputs, outputs.count > 0 {
+                tx.outputs?.append(output)
+            } else {
+                tx.outputs = [output]
+            }
+        }
         
+        return tx
+    }
+    
+    @objc func closeQRScreen(){
+        self.popupView.isHidden = true
+        self.coverView.isHidden = true
     }
     
     func addNewRow(){
@@ -58,7 +143,8 @@ class ReceiveViewController: AbstractViewController {
     func handleRequest(_ action: String){
         switch action {
         case SDKAction.generateReceiveQR.rawValue:
-            self.displayQR()
+            let tx = self.makeTx()
+            self.displayQR(transaction: tx)
         case SDKAction.addMore.rawValue:
             self.addNewRow()
         default:
