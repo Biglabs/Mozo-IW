@@ -112,8 +112,8 @@ class Signer private constructor(private val walletScheme: String) {
         })
     }
 
-    fun getTransactionHistory(wallet: Wallet, beforeHeight: Int = 0) {
-        this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.address!!, beforeHeight).enqueue(object : Callback<List<TransactionHistory>> {
+    fun getTransactionHistory(wallet: Wallet, lastItemBlockHeight: Int = 0) {
+        this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.address!!, lastItemBlockHeight).enqueue(object : Callback<List<TransactionHistory>> {
             override fun onResponse(call: Call<List<TransactionHistory>>?, response: Response<List<TransactionHistory>>?) {
                 if (response?.body() != null) {
                     this@Signer.mSignerListener?.onReceiveTransactionHistory(response.body()!!)

@@ -6,13 +6,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.models.ui.TransactionHistory
 import com.biglabs.solo.signer.library.models.ui.Wallet
+import com.biglabs.solo.signer.library.utils.Constants
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.adapters.TransactionHistoriesRecyclerAdapter
 import com.biglabs.solo.wallet.dialogs.QRCodeDialog
@@ -36,6 +36,7 @@ class WalletFragment : Fragment() {
     private var histories = arrayListOf<TransactionHistory>()
     private var currentWalletLivaData: LiveData<Wallet>? = null
     private var isLoadMore = false
+    private var isCanLoadMore = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,13 +57,14 @@ class WalletFragment : Fragment() {
         initializeEvents()
 
         tx_history_recycler.run {
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             addOnScrollListener(object : RecyclerEndlessScrollListener(layoutManager) {
                 override fun onLoadMore() {
+                    if (isLoadMore || !isCanLoadMore) return
                     wallet?.let {
                         isLoadMore = true
-                        Signer.getInstance()
-                                .getTransactionHistory(it, histories.last().blockHeight ?: 0)
+                        val lastBlockHeight = if (histories.isEmpty()) 0 else histories.last().blockHeight
+                                ?: 0
+                        Signer.getInstance().getTransactionHistory(it, lastBlockHeight)
                     }
                 }
             })
@@ -125,9 +127,11 @@ class WalletFragment : Fragment() {
         if (!isLoadMore) {
             this.histories.clear()
         }
-        this.histories.addAll(histories)
-        adapter?.notifyDataSetChanged()
         isLoadMore = false
+        isCanLoadMore = histories.size >= Constants.API_ITEM_PER_PAGE
+
+        this.histories.addAll(histories)
+        adapter?.notifyData(isCanLoadMore)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -137,6 +141,8 @@ class WalletFragment : Fragment() {
         when (error.action) {
             Signer.ACTION_GET_TX_HISTORY -> {
                 refresh_layout.isRefreshing = false
+                isLoadMore = false
+                adapter?.notifyData(false)
             }
             Signer.ACTION_UNKNOWN -> {
                 container_error.visibility = View.VISIBLE
@@ -172,7 +178,6 @@ class WalletFragment : Fragment() {
             adapter = TransactionHistoriesRecyclerAdapter(it.coin.key, histories)
             tx_history_recycler.adapter = adapter
 
-            refresh_layout.isRefreshing = true
             this.histories.clear()
             adapter?.notifyDataSetChanged()
 

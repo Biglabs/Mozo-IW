@@ -18,25 +18,44 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_transaction_history.*
 import java.util.*
 
-class TransactionHistoriesRecyclerAdapter(private val coinType: String, private val histories: List<TransactionHistory>) : RecyclerView.Adapter<TransactionHistoriesRecyclerAdapter.TransactionHistoryViewHolder>() {
+class TransactionHistoriesRecyclerAdapter(private val coinType: String, private val histories: List<TransactionHistory>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val calendar = Calendar.getInstance()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TransactionHistoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_list_transaction_history, parent, false))
-
-    override fun getItemCount() = histories.size
-
-    override fun onBindViewHolder(holder: TransactionHistoryViewHolder, position: Int) {
-        holder.bind(histories[position])
+    companion object {
+        private const val TYPE_ITEM = 1
+        private const val TYPE_LOADING = 2
     }
 
+    private val calendar = Calendar.getInstance()
+    private var isCanLoadMore = true
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            if (viewType == TYPE_ITEM)
+                TransactionHistoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_list_transaction_history, parent, false))
+            else LoadingViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_list_loading, parent, false))
+
+    override fun getItemCount() = histories.size + (if (isCanLoadMore) 1 else 0)
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position >= 0 && position < histories.size) TYPE_ITEM else TYPE_LOADING
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is TransactionHistoryViewHolder) {
+            holder.bind(histories[position])
+        }
+    }
+
+    fun notifyData(isCanLoadMore: Boolean = true) {
+        this.isCanLoadMore = isCanLoadMore
+        notifyDataSetChanged()
+    }
 
     inner class TransactionHistoryViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         private val unconfirmedColor = ContextCompat.getColor(containerView!!.context, R.color.colorError)
 
         fun bind(history: TransactionHistory) {
-            calendar.timeInMillis = history.time
+            calendar.timeInMillis = history.time * 1000
 
             text_history_time_day.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
             text_history_time_month.text = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault())
@@ -48,6 +67,9 @@ class TransactionHistoriesRecyclerAdapter(private val coinType: String, private 
 
             val amount = CoinUtils.convertToUIUnit(coinType, history.amount).displayString()
             text_history_transfer_amount.text = String.format(Locale.US, "%s %s", amount, coinType.toUpperCase())
+            text_history_transfer_amount.isSelected = "RECEIVED".equals(history.action, true)
         }
     }
+
+    inner class LoadingViewHolder(val view: View?) : RecyclerView.ViewHolder(view)
 }

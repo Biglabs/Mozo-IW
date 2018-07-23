@@ -45,7 +45,7 @@ abstract class RecyclerEndlessScrollListener : RecyclerView.OnScrollListener {
     override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
         val totalItemCount = recyclerView!!.layoutManager.itemCount
-        if (totalItemCount == lastVisibleItemPosition + visibleThreshold) {
+        if (totalItemCount <= lastVisibleItemPosition + visibleThreshold) {
             onLoadMore()
         }
     }
