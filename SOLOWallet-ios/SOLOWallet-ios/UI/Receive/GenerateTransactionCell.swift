@@ -18,10 +18,11 @@ public class GenerateTransactionCell: UITableViewCell {
         super.awakeFromNib()
         self.addMoreButton.tintColor = ThemeManager.shared.main
         self.addMoreButton.addTarget(self, action: #selector(self.addMoreButtonTapped), for: .touchUpInside)
+        self.addMoreButton.isHidden = true
         
         self.generateButton.layer.cornerRadius = 5
         self.generateButton.backgroundColor = ThemeManager.shared.main
-        self.generateButton.tintColor = UIColor.white
+        self.generateButton.tintColor = .white
         self.generateButton.addTarget(self, action: #selector(self.generateButtonTapped(_:)), for: .touchUpInside)
     }
     

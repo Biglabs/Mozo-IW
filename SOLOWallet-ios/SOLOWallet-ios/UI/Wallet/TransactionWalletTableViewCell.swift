@@ -22,8 +22,8 @@ public class TransactionWalletTableViewCell: UITableViewCell {
     public override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.dayLabel.textColor = UIColor.white
-        self.monthLabel.textColor = UIColor.white
+        self.dayLabel.textColor = .white
+        self.monthLabel.textColor = .white
         self.timeView.layer.cornerRadius = 5
         self.timeView.backgroundColor = ThemeManager.shared.main
         self.typeLabel.textColor = ThemeManager.shared.font
@@ -39,15 +39,17 @@ public class TransactionWalletTableViewCell: UITableViewCell {
             self.monthLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "MMM")
         }
         
+        if transaction.action == "SENT" {
+            self.valueHighlightLabel.textColor = ThemeManager.shared.main
+        }
+        
         self.typeLabel.text = transaction.action?.lowercased().capitalizingFirstLetter()
         
-        var value = Double(transaction.amount!)
-        // If type = BTC
-        if address.coin == CoinType.ETH.key {
-            value /= 1e+18
-        } else if address.coin == CoinType.BTC.key {
-            value /= 1e+8
+        if transaction.confirmations! <  6 {
+            self.typeLabel.addTextWithColor(text: " - Unconfirmed", color: .red)
         }
+        
+        let value = Utils.convertOutputValue(coinType: address.coin, value: transaction.amount!)
         self.valueLabel.text = "\(value) \(address.coin ?? "")"
         self.valueHighlightLabel.text = "\(value) \(address.coin ?? "")"
         

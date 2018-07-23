@@ -74,9 +74,8 @@ class SoloWalletViewController: UIViewController {
         let json = SwiftyJSON.JSON(jsonStr)
         var amount = 0.0
         
-        if let result = json["balance"].double {
-            amount = result
-            amount = amount / (self.currentCoin.coin == CoinType.BTC.key ? 1E+8 : 1E+18)
+        if let result = json["balance"].number {
+            amount = Utils.convertOutputValue(coinType: self.currentCoin.coin, value: result)
         } else {return}
 
         self.currentCoin?.balance = amount
@@ -86,14 +85,15 @@ class SoloWalletViewController: UIViewController {
         self.getUSD()
     }
     
-    func displayTH(jsonStr : Any){
+    func displayTH(jsonStr : Any, beginning: Bool){
         let json = SwiftyJSON.JSON(jsonStr)
         if let array = json.array {
+            let txs = beginning ? [] : (self.currentCoin.transactions ?? [])
             let moreTxs = array.filter({ TransactionHistoryDTO(json: $0) != nil }).map({ TransactionHistoryDTO(json: $0)! })
-            self.currentCoin.transactions = (self.currentCoin.transactions ?? []) + moreTxs
+            self.currentCoin.transactions = txs + moreTxs
             if (self.currentCoin.transactions?.count)! > 0 {
                 self.resetCurrentCoinForAllChildren()
-            }
+            } 
         }
     }
     
@@ -182,7 +182,8 @@ class SoloWalletViewController: UIViewController {
                 }
                 return
             }
-            self.displayTH(jsonStr: value)
+            let beginning = blockHeight == nil
+            self.displayTH(jsonStr: value, beginning: beginning)
         }
     }
     
@@ -198,7 +199,8 @@ class SoloWalletViewController: UIViewController {
                 }
                 return
             }
-            self.displayTH(jsonStr: value)
+            let beginning = blockHeight == nil
+            self.displayTH(jsonStr: value, beginning: beginning)
         }
     }
     
@@ -239,6 +241,8 @@ extension SoloWalletViewController: SoloWalletDelegate {
         switch action {
         case SDKAction.getBalance.rawValue:
             self.getBalance()
+        case SDKAction.refreshTxHistory.rawValue:
+            self.getTransactionHistories(blockHeight: nil)
         case EventType.Dismiss.rawValue:
             self.dismiss(animated: true)
         default:

@@ -73,6 +73,7 @@ public enum SDKAction: String {
     case getWallet = "GET_WALLET"
     case addAddress = "ADD_ADDRESS"
     case getBalance = "GET_BALANCE"
+    case refreshTxHistory = "REFRESH_TX_HISTORY"
     case generateReceiveQR = "GENERATE_RECEIVE_QR"
     case addMore = "ADD_MORE"
 }

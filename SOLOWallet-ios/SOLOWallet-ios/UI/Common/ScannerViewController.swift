@@ -18,7 +18,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         super.viewDidLoad()
         
         self.createBackBarButton()
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = .black
         self.title = "Scanning QR Code"
         captureSession = AVCaptureSession()
         

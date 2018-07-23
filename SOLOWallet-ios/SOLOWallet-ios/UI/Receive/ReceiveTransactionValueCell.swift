@@ -27,11 +27,11 @@ public class ReceiveTransactionValueCell: UITableViewCell {
         self.coinBackgroundView.backgroundColor = ThemeManager.shared.title
         self.coinBackgroundView.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
         self.inputCoinIconLabel.backgroundColor = ThemeManager.shared.title
-        self.inputCoinIconLabel.textColor = UIColor.white
+        self.inputCoinIconLabel.textColor = .white
         self.inputCoinIconLabel.addTextWithImage(text: "", image: UIImage.init(named: "ic_sort_ascending")!, imageBehindText: true, keepPreviousText: false)
         self.inputCoinIconLabel.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
         self.inputCoinNameLabel?.backgroundColor = ThemeManager.shared.title
-        self.inputCoinNameLabel?.textColor = UIColor.white
+        self.inputCoinNameLabel?.textColor = .white
         self.inputCoinTextField.textColor = ThemeManager.shared.font
         self.inputCoinTextField.keyboardType = UIKeyboardType.decimalPad
         self.inputCoinTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)

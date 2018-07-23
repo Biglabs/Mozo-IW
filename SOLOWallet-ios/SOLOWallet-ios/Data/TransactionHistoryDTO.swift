@@ -12,10 +12,10 @@ import SwiftyJSON
 public class TransactionHistoryDTO: ResponseObjectSerializable {
     public var action: String?
     public var addressTo: String?
-    public var amount: Int64?
+    public var amount: NSNumber?
     public var blockHeight: Int64?
     public var confirmations: Int64?
-    public var fees: Int64?
+    public var fees: NSNumber?
     public var message: String?
     public var time: Int64?
     public var txHash: String?
@@ -23,10 +23,10 @@ public class TransactionHistoryDTO: ResponseObjectSerializable {
     public required init?(json: SwiftyJSON.JSON) {
         self.action = json["action"].string
         self.addressTo = json["addressTo"].string
-        self.amount = json["amount"].int64
+        self.amount = json["amount"].number
         self.blockHeight = json["blockHeight"].int64
         self.confirmations = json["confirmations"].int64
-        self.fees = json["fees"].int64
+        self.fees = json["fees"].number
         self.message = json["message"].string
         self.time = json["time"].int64
         self.txHash = json["txHash"].string
@@ -58,10 +58,10 @@ public class TransactionHistoryDTO: ResponseObjectSerializable {
             json["message"] = message
         }
         if let txHash = self.txHash {
-            json["txHash"] =  txHash
+            json["txHash"] = txHash
         }
         if let time = self.time {
-            json["time"] =  NSNumber(value: time)
+            json["time"] = NSNumber(value: time)
         }
         return json
     }

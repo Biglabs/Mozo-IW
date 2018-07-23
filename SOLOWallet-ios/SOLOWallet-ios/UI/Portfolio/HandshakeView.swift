@@ -37,7 +37,7 @@ public class HandshakeView: UIView {
         
         self.requestButton.backgroundColor = ThemeManager.shared.main
         self.requestButton.layer.cornerRadius = 5
-        self.requestButton.tintColor = UIColor.white
+        self.requestButton.tintColor = .white
         self.requestButton.addTarget(self, action: #selector(self.requestButtonTapped), for: .touchUpInside)
     }
     
