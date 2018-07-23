@@ -48,7 +48,7 @@ enum class CoinEnum(val displayName: String, val key: String, val network: Strin
     );
 
     companion object {
-        internal fun find(key: String?, network: String?): CoinEnum? {
+        internal fun find(key: String?, network: String?): CoinEnum {
             return try {
                 values().single { c ->
                     c.key.equals(key, true) && c.network.equals(network, true)

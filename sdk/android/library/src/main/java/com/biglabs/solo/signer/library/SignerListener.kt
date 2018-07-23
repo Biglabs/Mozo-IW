@@ -1,6 +1,8 @@
 package com.biglabs.solo.signer.library
 
+import com.biglabs.solo.signer.library.models.ui.TransactionHistory
 import com.biglabs.solo.signer.library.models.ui.Wallet
+import java.math.BigDecimal
 
 interface SignerListener {
 
@@ -8,7 +10,9 @@ interface SignerListener {
 
     fun onReceiveWallets(wallets: List<Wallet>)
 
-    fun onReceiveBalance(balance: String)
+    fun onReceiveBalance(balance: BigDecimal)
+
+    fun onReceiveTransactionHistory(histories: List<TransactionHistory>)
 
     fun onReceiveSignTransactionResult(isSuccess: Boolean)
 

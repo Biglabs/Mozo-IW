@@ -1,14 +1,11 @@
 package com.biglabs.solo.wallet.models.events
 
+import java.math.BigDecimal
+
 class WalletInfoEventMessage {
-    var balance: String? = null
-    var error: ErrorMessage? = null
+    var balance: BigDecimal? = null
 
-    constructor(balance: String) {
+    constructor(balance: BigDecimal) {
         this.balance = balance
-    }
-
-    constructor(action: String, errorMessage: String?) {
-        this.error = ErrorMessage(action, errorMessage)
     }
 }

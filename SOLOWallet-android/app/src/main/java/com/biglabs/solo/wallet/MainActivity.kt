@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.RadioButton
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.SignerListener
+import com.biglabs.solo.signer.library.models.ui.TransactionHistory
 import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.wallet.dialogs.WalletChooserDialog
 import com.biglabs.solo.wallet.fragments.ExchangeFragment
@@ -20,12 +21,14 @@ import com.biglabs.solo.wallet.fragments.ReceiveFragment
 import com.biglabs.solo.wallet.fragments.SendFragment
 import com.biglabs.solo.wallet.fragments.WalletFragment
 import com.biglabs.solo.wallet.models.WalletsViewModel
+import com.biglabs.solo.wallet.models.events.ErrorMessage
 import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
 import com.biglabs.solo.wallet.utils.translucentStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.greenrobot.eventbus.EventBus
+import java.math.BigDecimal
 
 class MainActivity : AppCompatActivity(), SignerListener {
     private var selectedTabId = -1
@@ -115,8 +118,12 @@ class MainActivity : AppCompatActivity(), SignerListener {
         walletsViewModel.updateWallets(wallets)
     }
 
-    override fun onReceiveBalance(balance: String) {
+    override fun onReceiveBalance(balance: BigDecimal) {
         EventBus.getDefault().post(WalletInfoEventMessage(balance))
+    }
+
+    override fun onReceiveTransactionHistory(histories: List<TransactionHistory>) {
+        EventBus.getDefault().post(histories)
     }
 
     override fun onReceiveSignTransactionResult(isSuccess: Boolean) {
@@ -128,15 +135,6 @@ class MainActivity : AppCompatActivity(), SignerListener {
     }
 
     override fun onError(action: String, message: String?) {
-        when (action) {
-            Signer.ACTION_GET_WALLETS,
-            Signer.ACTION_GET_BALANCE -> {
-                EventBus.getDefault().post(WalletInfoEventMessage(action, message))
-            }
-            Signer.ACTION_CONFIRM_TX,
-            Signer.ACTION_SEND_TX -> {
-                EventBus.getDefault().post(WalletTransactionEventMessage(action, message))
-            }
-        }
+        EventBus.getDefault().post(ErrorMessage(action, message))
     }
 }

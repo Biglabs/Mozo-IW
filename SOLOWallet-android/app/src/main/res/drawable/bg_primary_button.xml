@@ -9,11 +9,6 @@
         </shape>
     </item>
 
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="@dimen/corners_radius" />
-            <solid android:color="?android:colorPrimary" />
-        </shape>
-    </item>
+    <item android:drawable="@drawable/bg_rounded_primary_color" />
 
 </ripple>

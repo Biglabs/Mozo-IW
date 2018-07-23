@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="42dp">
+
+    <FrameLayout
+        android:id="@android:id/candidatesArea"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bg_rounded_primary_color"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_history_time_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:ignore="SmallSp"
+            tools:text="15" />
+
+        <TextView
+            android:id="@+id/text_history_time_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="8sp"
+            tools:ignore="SmallSp"
+            tools:text="Jan" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/text_history_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/textColorSecondary"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@android:id/candidatesArea"
+        app:layout_constraintTop_toTopOf="@android:id/candidatesArea"
+        tools:text="Received" />
+
+    <TextView
+        android:id="@+id/text_history_transfer_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@android:id/candidatesArea"
+        tools:text="0.5 BTC" />
+
+    <TextView
+        android:id="@+id/text_history_transfer_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColorTertiary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@android:id/candidatesArea"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="3,500 USD" />
+
+</android.support.constraint.ConstraintLayout>

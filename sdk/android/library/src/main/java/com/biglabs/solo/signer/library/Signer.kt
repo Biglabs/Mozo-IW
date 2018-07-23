@@ -12,6 +12,7 @@ import com.biglabs.solo.signer.library.models.rest.TransactionResponse
 import com.biglabs.solo.signer.library.models.rest.TransactionResponseContent
 import com.biglabs.solo.signer.library.models.scheme.SignerRequest
 import com.biglabs.solo.signer.library.models.scheme.SignerResponse
+import com.biglabs.solo.signer.library.models.ui.TransactionHistory
 import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.signer.library.utils.CoinUtils
 import com.biglabs.solo.signer.library.utils.Constants
@@ -90,19 +91,38 @@ class Signer private constructor(private val walletScheme: String) {
         }
     }
 
-    fun getBalance(coinType: String, address: String) {
-        address.logAsError("getBalance: $coinType")
-        this.mSoloService.getBalance(coinType.toLowerCase(), address).enqueue(object : Callback<BalanceResponse> {
+    fun getBalance(wallet: Wallet) {
+
+        val coinType = wallet.coin().key
+
+        wallet.address?.logAsError("getBalance: $coinType")
+        this.mSoloService.getBalance(coinType.toLowerCase(), wallet.address!!).enqueue(object : Callback<BalanceResponse> {
             override fun onResponse(call: Call<BalanceResponse>?, response: Response<BalanceResponse>?) {
                 if (response?.body() != null) {
-                    val balance = (CoinUtils.convertToUIUnit(coinType, response.body()!!.finalBalance))
-                    this@Signer.mSignerListener!!.onReceiveBalance(balance.toString())
+                    val balance = CoinUtils.convertToUIUnit(coinType, response.body()!!.balance)
+                    this@Signer.mSignerListener?.onReceiveBalance(balance)
                 } else {
                     this@Signer.mSignerListener?.onError(ACTION_GET_BALANCE, response?.message())
                 }
             }
 
             override fun onFailure(call: Call<BalanceResponse>?, t: Throwable?) {
+                this@Signer.mSignerListener?.onError(ACTION_UNKNOWN, t?.message)
+            }
+        })
+    }
+
+    fun getTransactionHistory(wallet: Wallet) {
+        this.mSoloService.getTxHistory(wallet.coin().key.toLowerCase(), wallet.address!!).enqueue(object : Callback<List<TransactionHistory>> {
+            override fun onResponse(call: Call<List<TransactionHistory>>?, response: Response<List<TransactionHistory>>?) {
+                if(response?.body() !=null){
+                    this@Signer.mSignerListener?.onReceiveTransactionHistory(response.body()!!)
+                }else{
+                    this@Signer.mSignerListener?.onError(ACTION_GET_TX_HISTORY, response?.message())
+                }
+            }
+
+            override fun onFailure(call: Call<List<TransactionHistory>>?, t: Throwable?) {
                 this@Signer.mSignerListener?.onError(ACTION_UNKNOWN, t?.message)
             }
         })
@@ -181,6 +201,7 @@ class Signer private constructor(private val walletScheme: String) {
         const val ACTION_UNKNOWN = "ACTION_UNKNOWN"
         const val ACTION_GET_WALLETS = "ACTION_GET_WALLETS"
         const val ACTION_GET_BALANCE = "ACTION_GET_BALANCE"
+        const val ACTION_GET_TX_HISTORY = "ACTION_GET_TX_HISTORY"
         const val ACTION_CONFIRM_TX = "ACTION_CONFIRM_TX"
         const val ACTION_SEND_TX = "ACTION_SEND_TX"
 
