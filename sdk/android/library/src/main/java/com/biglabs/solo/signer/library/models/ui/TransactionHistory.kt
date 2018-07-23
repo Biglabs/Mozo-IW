@@ -31,5 +31,6 @@ class TransactionHistory {
     @SerializedName("message")
     var message: String? = null
 
-    var isConfirm = confirmations >= Constants.MINIMUM_TX_CONFIRMATION
+    var isConfirm: Boolean = false
+        get() = confirmations >= Constants.MINIMUM_TX_CONFIRMATION
 }

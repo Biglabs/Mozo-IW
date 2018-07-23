@@ -62,8 +62,8 @@ class WalletChooserDialog : AppCompatDialogFragment(), RecyclerItemClickListener
     }
 
     private fun onCurrentWalletChanged(it: Wallet?) {
-        it?.coin()?.let {
-            val coinCheckable = CoinCheckable(it)
+        it?.let {
+            val coinCheckable = CoinCheckable(it.coin)
             if (this.coins.contains(coinCheckable)) {
                 val selectedIndex = this.coins.indexOf(coinCheckable)
                 this.coins[selectedIndex].checked = true
@@ -82,11 +82,9 @@ class WalletChooserDialog : AppCompatDialogFragment(), RecyclerItemClickListener
         this.wallets = it!!
 
         wallets.mapIndexed { index, wallet ->
-            wallet.coin()?.let {
-                val coinCheckable = CoinCheckable(it, index)
-                if (!this.coins.contains(coinCheckable)) {
-                    this.coins.add(coinCheckable)
-                }
+            val coinCheckable = CoinCheckable(wallet.coin, index)
+            if (!this.coins.contains(coinCheckable)) {
+                this.coins.add(coinCheckable)
             }
         }
 

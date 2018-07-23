@@ -41,7 +41,7 @@ class ReceiveFragment : Fragment() {
     private fun updateUI(wallet: Wallet?) {
         wallet?.let {
             text_address.text = it.address
-            input_amount_unit.text = it.coin()?.key
+            input_amount_unit.text = it.coin.key
         }
     }
 

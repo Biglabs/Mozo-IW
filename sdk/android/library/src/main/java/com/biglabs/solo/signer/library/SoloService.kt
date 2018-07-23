@@ -6,14 +6,12 @@ import com.biglabs.solo.signer.library.models.rest.TransactionResponseContent
 import com.biglabs.solo.signer.library.models.ui.TransactionHistory
 import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.signer.library.utils.Constants
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 internal interface SoloService {
 
@@ -42,7 +40,7 @@ internal interface SoloService {
     fun getBalance(@Path("coin") coin: String, @Path("address") address: String): Call<BalanceResponse>
 
     @GET("{coin}/test/addrs/{address}/txhistory")
-    fun getTxHistory(@Path("coin") coin: String, @Path("address") address: String): Call<List<TransactionHistory>>
+    fun getTxHistory(@Path("coin") coin: String, @Path("address") address: String, @Query("beforeHeight") beforeHeight: Int = 0): Call<List<TransactionHistory>>
 
     @POST("{coin}/test/txs")
     fun createTx(@Path("coin") coin: String, @Body body: TransactionResponseContent): Call<TransactionResponse>

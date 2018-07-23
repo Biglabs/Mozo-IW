@@ -91,6 +91,6 @@ fun BigDecimal.trailingZeros(scale: Int): BigDecimal {
     return setScale(scale, RoundingMode.HALF_UP).stripTrailingZeros()
 }
 
-fun BigDecimal.displayString(scale: Int = 6): String {
-    return trailingZeros(scale).toPlainString()
+fun BigDecimal?.displayString(scale: Int = 6): String {
+    return if (this == null) "0" else trailingZeros(scale).toPlainString()
 }

@@ -9,6 +9,10 @@ class WalletsViewModel : ViewModel() {
     private val walletsLiveData = MutableLiveData<List<Wallet>>()
     private val currentWalletLiveData = MutableLiveData<Wallet>()
 
+    fun getWallets(): LiveData<List<Wallet>> {
+        return walletsLiveData
+    }
+
     fun updateWallets(wallets: List<Wallet>) {
         walletsLiveData.value = wallets
         if (wallets.isNotEmpty()) {
@@ -16,15 +20,11 @@ class WalletsViewModel : ViewModel() {
         }
     }
 
-    fun updateCurrentWallet(wallet: Wallet) {
-        currentWalletLiveData.value = wallet
-    }
-
-    fun getWallets(): LiveData<List<Wallet>> {
-        return walletsLiveData
-    }
-
     fun getCurrentWallet(): LiveData<Wallet> {
         return currentWalletLiveData
+    }
+
+    fun updateCurrentWallet(wallet: Wallet) {
+        currentWalletLiveData.value = wallet
     }
 }

@@ -22,7 +22,6 @@ import com.biglabs.solo.wallet.fragments.SendFragment
 import com.biglabs.solo.wallet.fragments.WalletFragment
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.ErrorMessage
-import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
 import com.biglabs.solo.wallet.utils.translucentStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,9 +45,6 @@ class MainActivity : AppCompatActivity(), SignerListener {
 
         walletsViewModel = ViewModelProviders.of(this).get(WalletsViewModel::class.java)
         walletsViewModel.getCurrentWallet().observe(this, Observer { onCurrentWalletChanged(it) })
-
-        /* mock data */
-//        walletsViewModel.updateWallets(WalletProvider.getWallet())
 
         loadCurrentTabFragment()
     }
@@ -102,11 +98,11 @@ class MainActivity : AppCompatActivity(), SignerListener {
 
     @SuppressLint("ResourceType")
     private fun onCurrentWalletChanged(wallet: Wallet?) {
-        wallet?.coin()?.let {
+        wallet?.let {
             button_choose_wallet.visibility = View.VISIBLE
 
-            current_wallet_name.text = it.displayName
-            current_wallet_icon.setImageResource(it.icon)
+            current_wallet_name.text = it.coin.displayName
+            current_wallet_icon.setImageResource(it.coin.icon)
         }
     }
 
@@ -119,7 +115,11 @@ class MainActivity : AppCompatActivity(), SignerListener {
     }
 
     override fun onReceiveBalance(balance: BigDecimal) {
-        EventBus.getDefault().post(WalletInfoEventMessage(balance))
+        val wallet = walletsViewModel.getCurrentWallet().value
+        wallet?.let {
+            it.balance = balance
+            walletsViewModel.updateCurrentWallet(it)
+        }
     }
 
     override fun onReceiveTransactionHistory(histories: List<TransactionHistory>) {

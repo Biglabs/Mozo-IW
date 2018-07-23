@@ -1,6 +1,7 @@
 package com.biglabs.solo.wallet.fragments
 
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -17,7 +18,7 @@ import com.biglabs.solo.wallet.adapters.TransactionHistoriesRecyclerAdapter
 import com.biglabs.solo.wallet.dialogs.QRCodeDialog
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.ErrorMessage
-import com.biglabs.solo.wallet.models.events.WalletInfoEventMessage
+import com.biglabs.solo.wallet.utils.RecyclerEndlessScrollListener
 import com.biglabs.solo.wallet.utils.copyToClipboard
 import com.biglabs.solo.wallet.utils.displayString
 import com.biglabs.solo.wallet.utils.toast
@@ -28,12 +29,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-
 class WalletFragment : Fragment() {
 
     private var wallet: Wallet? = null
     private var adapter: TransactionHistoriesRecyclerAdapter? = null
     private var histories = arrayListOf<TransactionHistory>()
+    private var currentWalletLivaData: LiveData<Wallet>? = null
+    private var isLoadMore = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +51,22 @@ class WalletFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
-        walletsViewModel.getCurrentWallet().observe(this, Observer { updateUI(it) })
+        currentWalletLivaData = walletsViewModel.getCurrentWallet()
 
         initializeEvents()
 
-        tx_history_recycler.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        tx_history_recycler.run {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addOnScrollListener(object : RecyclerEndlessScrollListener(layoutManager) {
+                override fun onLoadMore() {
+                    wallet?.let {
+                        isLoadMore = true
+                        Signer.getInstance()
+                                .getTransactionHistory(it, histories.last().blockHeight ?: 0)
+                    }
+                }
+            })
+        }
     }
 
     override fun onStart() {
@@ -63,12 +76,12 @@ class WalletFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (this.wallet == null) {
-            button_retry.performClick()
-        } else {
-            Signer.getInstance().getBalance(wallet!!)
-            Signer.getInstance().getTransactionHistory(wallet!!)
-        }
+        currentWalletLivaData?.observe(this, Observer { updateUI(it) })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        currentWalletLivaData?.removeObservers(this)
     }
 
     override fun onStop() {
@@ -105,30 +118,29 @@ class WalletFragment : Fragment() {
         }
     }
 
-    @Suppress("unused")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onReceiveWalletInfo(walletInfo: WalletInfoEventMessage) {
-        text_address_balance.text = walletInfo.balance?.displayString(12)
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveTransactionHistory(histories: List<TransactionHistory>) {
         refresh_layout.isRefreshing = false
 
-        this.histories.clear()
+        if (!isLoadMore) {
+            this.histories.clear()
+        }
         this.histories.addAll(histories)
         adapter?.notifyDataSetChanged()
+        isLoadMore = false
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onReceiveError(error: ErrorMessage) {
+        progressBar.visibility = View.GONE
+
         when (error.action) {
             Signer.ACTION_GET_TX_HISTORY -> {
                 refresh_layout.isRefreshing = false
             }
-            else -> {
-                progressBar.visibility = View.GONE
+            Signer.ACTION_UNKNOWN -> {
                 container_error.visibility = View.VISIBLE
+                contain_container.visibility = View.GONE
             }
         }
 
@@ -139,12 +151,12 @@ class WalletFragment : Fragment() {
 
     private fun updateUI(wallet: Wallet?) {
         wallet?.let {
-
             this.wallet = it
 
             text_address.text = it.address
-            text_address_coin_type.text = it.coin().key
-            text_my_wallet.text = getString(R.string.text_my_wallet, it.coin().key.toUpperCase())
+            text_address_coin_type.text = it.coin.key
+            text_address_balance.text = it.balance.displayString(12)
+            text_my_wallet.text = getString(R.string.text_my_wallet, it.coin.key.toUpperCase())
 
             try {
                 val barcodeEncoder = BarcodeEncoder()
@@ -157,14 +169,17 @@ class WalletFragment : Fragment() {
             container_error.visibility = View.GONE
             contain_container.visibility = View.VISIBLE
 
-            adapter = TransactionHistoriesRecyclerAdapter(it.coin().key, histories)
+            adapter = TransactionHistoriesRecyclerAdapter(it.coin.key, histories)
             tx_history_recycler.adapter = adapter
-
-            text_address_balance.text = "0"
 
             refresh_layout.isRefreshing = true
             this.histories.clear()
             adapter?.notifyDataSetChanged()
+
+            if (it.balance == null) {
+                Signer.getInstance().getBalance(it)
+            }
+            Signer.getInstance().getTransactionHistory(it)
         }
     }
 

@@ -1,10 +1,12 @@
 package com.biglabs.solo.wallet.adapters
 
-import android.graphics.Color
+import android.graphics.Typeface
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,14 +33,17 @@ class TransactionHistoriesRecyclerAdapter(private val coinType: String, private 
 
     inner class TransactionHistoryViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
+        private val unconfirmedColor = ContextCompat.getColor(containerView!!.context, R.color.colorError)
+
         fun bind(history: TransactionHistory) {
             calendar.timeInMillis = history.time
 
             text_history_time_day.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
             text_history_time_month.text = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault())
 
-            val status = SpannableString(history.action + if (history.isConfirm) "" else " - unconfirmed")
-            status.setSpan(ForegroundColorSpan(Color.RED), history.action!!.length, status.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val status = SpannableString(history.action?.toLowerCase()?.capitalize() + if (history.isConfirm) "" else " - unconfirmed")
+            status.setSpan(ForegroundColorSpan(unconfirmedColor), history.action!!.length, status.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            status.setSpan(StyleSpan(Typeface.BOLD), 0, history.action!!.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             text_history_status.text = status
 
             val amount = CoinUtils.convertToUIUnit(coinType, history.amount).displayString()

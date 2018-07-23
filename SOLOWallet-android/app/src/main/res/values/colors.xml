@@ -7,6 +7,7 @@
     <color name="colorButtonHighLight">#80f4f9ff</color>
     <color name="colorSeparator">#b4b4b4</color>
     <color name="colorSmallAction">#d1d7dd</color>
+    <color name="colorError">#f05454</color>
 
     <color name="textColorPrimary">#141a22</color>
     <color name="textColorSecondary">#747474</color>

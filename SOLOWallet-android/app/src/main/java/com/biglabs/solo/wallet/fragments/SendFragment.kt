@@ -16,6 +16,7 @@ import com.biglabs.solo.signer.library.utils.Constants
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.models.WalletsViewModel
 import com.biglabs.solo.wallet.models.events.WalletTransactionEventMessage
+import com.biglabs.solo.wallet.utils.displayString
 import com.biglabs.solo.wallet.utils.toast
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_nav_send.*
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.layout_input_amount.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 class SendFragment : Fragment() {
 
@@ -86,8 +88,8 @@ class SendFragment : Fragment() {
                                 address,
                                 input_receive_address.text.toString(),
                                 input_gas_limit.text.toString(),
-                                wallet?.coin()?.key!!,
-                                wallet?.coin()?.network!!,
+                                wallet?.coin?.key!!,
+                                wallet?.coin?.network!!,
                                 value, message_input.text.toString()
                         )
                     }
@@ -130,7 +132,12 @@ class SendFragment : Fragment() {
     private fun updateUI(wallet: Wallet?) {
         wallet?.let {
             this.wallet = it
-            input_amount_unit.text = it.coin()?.key
+            input_amount_unit.text = it.coin.key
+            input_amount_spendable.text = String.format(Locale.US, "%s %s", it.balance.displayString(12), it.coin.key.toUpperCase())
+
+            if (it.balance == null) {
+                Signer.getInstance().getBalance(it)
+            }
         }
     }
 

@@ -56,6 +56,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_receive_address" />
 
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/text_spendable"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/input_amount_container" />
+
+    <TextView
+        android:id="@+id/input_amount_spendable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/textColorTertiary"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@android:id/text1"
+        app:layout_constraintStart_toEndOf="@android:id/text1"
+        tools:text="2.03 BTC" />
+
     <EditText
         android:id="@+id/input_gas_limit"
         style="@style/SoloStyle.EditText"
@@ -65,7 +86,7 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_amount_container" />
+        app:layout_constraintTop_toBottomOf="@+id/input_amount_spendable" />
 
     <EditText
         android:id="@+id/message_input"
