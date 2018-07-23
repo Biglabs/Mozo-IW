@@ -68,11 +68,11 @@ class SendViewController: AbstractViewController {
         self.coinBackgroundView.backgroundColor = ThemeManager.shared.title
         self.coinBackgroundView.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
         self.inputCoinIconLabel.backgroundColor = ThemeManager.shared.title
-        self.inputCoinIconLabel.textColor = UIColor.white
+        self.inputCoinIconLabel.textColor = .white
         self.inputCoinIconLabel.addTextWithImage(text: "", image: UIImage.init(named: "ic_sort_ascending")!, imageBehindText: true, keepPreviousText: false)
         self.inputCoinIconLabel.roundCorners(corners: [.topLeft, .bottomLeft], radius: 5)
         self.inputCoinNameLabel?.backgroundColor = ThemeManager.shared.title
-        self.inputCoinNameLabel?.textColor = UIColor.white
+        self.inputCoinNameLabel?.textColor = .white
         self.inputCoinTextField.textColor = ThemeManager.shared.font
         self.inputCoinTextField.keyboardType = UIKeyboardType.decimalPad
         self.inputCoinTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
@@ -97,7 +97,7 @@ class SendViewController: AbstractViewController {
         
         self.signButton.layer.cornerRadius = 5
         self.signButton.backgroundColor = ThemeManager.shared.main
-        self.signButton.tintColor = UIColor.white
+        self.signButton.tintColor = .white
         self.signButton.addTarget(self, action: #selector(self.signButtonTapped(_:)), for: .touchUpInside)
         
         self.bindData()
@@ -116,7 +116,6 @@ class SendViewController: AbstractViewController {
         var balance = 0.0
         if let value = textField.text, value != "" {
             balance = Double(value)!
-            
         }
         if let usd = self.currentCoin?.usd {
             self.inputUSDLabel?.text = "US$\(Utils.roundDouble(usd*balance))"
@@ -194,25 +193,13 @@ class SendViewController: AbstractViewController {
         if !(self.inputCoinTextField.text?.isEmpty)! {
             value = Double(self.inputCoinTextField.text!)!
         }
-        let txValue = value > 0.0 ? convertOutputValue(value: value) : 0
+        let txValue = value > 0.0 ? Utils.convertCoinValue(coinType: self.currentCoin?.coin, value: value) : 0
         let output = OutputDTO.init(addresses: [trimToAddress!], value: txValue)!
         let transaction = TransactionDTO.init(inputs: [input], outputs: [output])
         
         self.validateTransaction(transaction: transaction!, isSigning: isSigning)
     }
-    
-    func convertOutputValue(value: Double) -> Int64{
-        var retValue = Int64(0)
-        if self.currentCoin?.coin == CoinType.ETH.key {
-            //Convert value from ether to wei
-            retValue = Int64(value * 1E+18)
-        } else if self.currentCoin?.coin == CoinType.BTC.key {
-            //Convert value from ether to satoshis
-            retValue = Int64(value * 1E+8)
-        }
-        return retValue
-    }
-    
+        
     func validateTransaction(transaction: TransactionDTO, isSigning: Bool){
         if self.currentCoin?.coin == CoinType.ETH.key {
             self.createNewEthTx(transaction){value, error in
@@ -233,7 +220,8 @@ class SendViewController: AbstractViewController {
                     self.handleSignResult(result:result)
                 }
             } else {
-                let fee = Double((interTx.tx?.fees)!) / (self.currentCoin?.coin == CoinType.BTC.key ? 1E+8 : 1E+18)
+                let value = (interTx.tx?.fees)!
+                let fee = Utils.convertOutputValue(coinType: self.currentCoin?.coin, value: value)
                 self.gasTextField?.text = String(format: "%f", fee)
             }
         }
@@ -258,17 +246,18 @@ class SendViewController: AbstractViewController {
         self.resetValue()
         if self.currentCoin?.coin == CoinType.ETH.key {
             self.sendETH(signedTx){value, error in
-                self.handleSendTxResponse(json: value!)
+                self.handleSendTxResponse(value: value!)
             }
         } else if self.currentCoin?.coin == CoinType.BTC.key {
             self.sendBTC(signedTx){value, error in
-                self.handleSendTxResponse(json: value!)
+                self.handleSendTxResponse(value: value!)
             }
         }
     }
     
-    func handleSendTxResponse(json: Any){
-        let interTx = IntermediaryTransactionDTO.init(json: json as! JSON)!
+    func handleSendTxResponse(value: Any){
+        let json = SwiftyJSON.JSON(value)
+        let interTx = IntermediaryTransactionDTO.init(json: json)!
         if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
             let error = ErrorDTO()
             error?.detail = interTx.errors?.first
@@ -310,6 +299,20 @@ class SendViewController: AbstractViewController {
         alertController.addAction(OKAction)
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    func updateResultQRScan(value: String){
+        if value.hasPrefix("{") {
+            // Transaction
+            let json = SwiftyJSON.JSON.init(parseJSON: value)
+            let tx = TransactionDTO.init(json: json)
+            self.addressTextField.text = tx?.outputs?.first?.addresses?.first
+            let value = Utils.convertOutputValue(coinType: self.currentCoin?.coin, value: (tx?.outputs?.first?.value)!)
+            self.inputCoinTextField.text = String(format: "%f", value)
+        } else {
+            // Address only
+            self.addressTextField.text = value
+        }
+    }
 }
 
 extension SendViewController: SoloWalletDelegate {
@@ -317,6 +320,6 @@ extension SendViewController: SoloWalletDelegate {
     func request(_ action: String) {}
     
     func updateValue(_ key: String, value: String) {
-        self.addressTextField.text = value
+        self.updateResultQRScan(value: value)
     }
 }
