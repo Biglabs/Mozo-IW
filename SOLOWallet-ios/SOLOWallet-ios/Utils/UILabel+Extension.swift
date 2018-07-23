@@ -58,6 +58,24 @@ extension UILabel {
         }
     }
     
+    /**
+     This function adding text with different color on label after current text.
+     
+     - parameter text: The text to add
+     - parameter color: The color of the text
+     */
+    func addTextWithColor(text: String, color: UIColor) {
+        let lStrLabelText: NSMutableAttributedString
+        let finalText = (self.text ?? "") + text
+        let finalStr = NSAttributedString(string: finalText)
+        lStrLabelText = NSMutableAttributedString(attributedString: finalStr)
+        let range = NSRange(location: (self.text?.count)!, length: text.count)
+        
+        lStrLabelText.addAttribute(NSAttributedStringKey.foregroundColor, value: color, range: range)
+        
+        self.attributedText = lStrLabelText
+    }
+    
     func removeImage() {
         let text = self.text
         self.attributedText = nil
