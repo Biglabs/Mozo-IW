@@ -23,11 +23,11 @@ public class TransactionDTO: ResponseObjectSerializable {
     
     /// BTC: The total number of satoshis exchanged in this transaction.
     /// ETH: The total number of wei exchanged in this transaction.
-    public var total: Int64?
+    public var total: NSNumber?
     
     /// BTC: The total number of fees—in satoshis—collected by miners in this transaction.
     /// ETH: The total number of fees—in wei—collected by miners in this transaction. Equal to gas_price * gas_used.
-    public var fees: Int64?
+    public var fees: NSNumber?
     
     /// The size of the transaction in bytes.
     public var size: Int64?
@@ -85,8 +85,8 @@ public class TransactionDTO: ResponseObjectSerializable {
         self.block_height = json["block_height"].int64
         self.hash = json["hash"].string
         self.addresses = json["addresses"].array?.filter({ $0.string != nil }).map({ $0.string! })
-        self.total = json["total"].int64
-        self.fees = json["fees"].int64
+        self.total = json["total"].number
+        self.fees = json["fees"].number
         self.size = json["size"].int64
         self.preference = json["preference"].string
         self.gas_used = json["gas_used"].int64
@@ -109,16 +109,16 @@ public class TransactionDTO: ResponseObjectSerializable {
     public func toJSON() -> Dictionary<String, Any> {
         var json = Dictionary<String, Any>()
         if let block_height = self.block_height {
-            json["block_height"] =  NSNumber(value: block_height)
+            json["block_height"] = NSNumber(value: block_height)
         }
         if let hash = self.hash {
-            json["hash"] =  hash
+            json["hash"] = hash
         }
         if let addresses = self.addresses {
-            json["addresses"] =  addresses
+            json["addresses"] = addresses
         }
         if let total = self.total {
-            json["total"] =  NSNumber(value: total)
+            json["total"] = total
         }
         if let fees = self.fees {
             json["fees"] = fees

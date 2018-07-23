@@ -19,7 +19,7 @@ public class InputDTO : ResponseObjectSerializable {
     public var output_index: Int64?
     
     /// The value of the output being spent within the previous transaction. Not present for coinbase transactions.
-    public var output_value: Int64?
+    public var output_value: NSNumber?
     
     /// The type of script that encumbers the output corresponding to this input.
     public var script_type: String?
@@ -38,7 +38,7 @@ public class InputDTO : ResponseObjectSerializable {
         self.addresses = json["addresses"].array?.filter({ $0.string != nil }).map({ $0.string! })
         self.prev_hash = json["prev_hash"].string
         self.output_index = json["output_index"].int64
-        self.output_value = json["output_value"].int64
+        self.output_value = json["output_value"].number
         self.script_type = json["script_type"].string
         self.script = json["script"].string
         self.sequence = json["sequence"].int64

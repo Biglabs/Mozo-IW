@@ -17,7 +17,7 @@ public class OutputDTO : ResponseObjectSerializable {
     
     /// BTC: Value in this transaction output, in satoshis.
     /// ETH: Value in this transaction output, in wei.
-    public var value: Int64?
+    public var value: NSNumber?
     
     /// The type of script that encumbers the output corresponding to this input.
     public var script_type: String?
@@ -31,14 +31,14 @@ public class OutputDTO : ResponseObjectSerializable {
     /// Optional An ASCII representation of an OP_RETURN data output, without any other script instructions. Only returned for outputs whose script_type is null-data and if its data falls into the visible ASCII range.
     public var data_string: String?
     
-    public required init?(addresses: [String]?, value: Int64?) {
+    public required init?(addresses: [String]?, value: NSNumber?) {
         self.addresses = addresses
         self.value = value
     }
     
     public required init?(json: SwiftyJSON.JSON) {
         self.addresses = json["addresses"].array?.filter({ $0.string != nil }).map({ $0.string! })
-        self.value = json["value"].int64
+        self.value = json["value"].number
         self.spent_by = json["spent_by"].string
         self.script_type = json["prev_hash"].string
         self.script = json["prev_hash"].string
