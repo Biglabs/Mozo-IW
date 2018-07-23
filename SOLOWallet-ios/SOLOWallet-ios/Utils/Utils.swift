@@ -12,6 +12,30 @@ import JDStatusBarNotification
 let notificationDismissAfter: TimeInterval = 5
 
 public class Utils {
+    public static func convertCoinValue(coinType: String?, value: Double) -> NSNumber{
+        var retValue = NSNumber(value: 0)
+        if coinType == CoinType.ETH.key {
+            //Convert value from ether to wei
+            retValue = NSNumber(value: value * 1E+18)
+        } else if coinType == CoinType.BTC.key {
+            //Convert value from ether to satoshis
+            retValue = NSNumber(value: value * 1E+8)
+        }
+        return retValue
+    }
+    
+    public static func convertOutputValue(coinType: String?, value: NSNumber) -> Double{
+        var retValue = Double(0)
+        if coinType == CoinType.ETH.key {
+            //Convert value from ether to wei
+            retValue = Double(value) / 1E+18
+        } else if coinType == CoinType.BTC.key {
+            //Convert value from ether to satoshis
+            retValue = Double(value) / 1E+8
+        }
+        return retValue
+    }
+    
     public static func generateQRCode(from string: String) -> UIImage? {
         let data = string.data(using: String.Encoding.ascii)
         
