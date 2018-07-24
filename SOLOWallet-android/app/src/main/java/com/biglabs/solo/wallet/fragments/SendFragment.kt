@@ -24,11 +24,11 @@ import kotlinx.android.synthetic.main.layout_input_amount.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.math.BigDecimal
 import java.util.*
 
 class SendFragment : Fragment() {
 
-    var value = "0.005"
     private var wallet: Wallet? = null
     private var isTxSigned = false
 
@@ -51,10 +51,8 @@ class SendFragment : Fragment() {
         val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
         walletsViewModel.getCurrentWallet().observe(this, Observer { updateUI(it) })
 
-        input_amount.setText(value)
         input_amount.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                value = p0?.toString()!!
                 updateTxUI()
             }
 
@@ -79,10 +77,8 @@ class SendFragment : Fragment() {
             } else {
                 val address = wallet?.address
                 if (address != null) {
-                    val valueInNumber = value.toFloatOrNull()
-                    if (valueInNumber == null || valueInNumber == 0f || input_receive_address.length() == 0) {
-                        toast("Invalid value")
-                    } else {
+                    val amount = input_amount.text.toString().toBigDecimalOrNull()
+                    if (amount != null && amount.compareTo(BigDecimal.ZERO) == 1 && input_receive_address.length() > 0) {
                         Signer.getInstance().createTransaction(
                                 context!!,
                                 address,
@@ -90,8 +86,11 @@ class SendFragment : Fragment() {
                                 input_gas_limit.text.toString(),
                                 wallet?.coin?.key!!,
                                 wallet?.coin?.network!!,
-                                value, message_input.text.toString()
+                                input_amount.text.toString(),
+                                message_input.text.toString()
                         )
+                    } else {
+                        toast("Invalid value")
                     }
                 } else {
                     toast("Please choose an account!")

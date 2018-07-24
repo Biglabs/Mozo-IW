@@ -15,15 +15,18 @@ import kotlinx.android.synthetic.main.dialog_qr_code.*
 class QRCodeDialog : AppCompatDialogFragment() {
 
     private var address: String? = null
+    private var qrCodeData: String? = null
 
     companion object {
         private const val KEY_ADDRESS: String = "KEY_ADDRESS"
+        private const val KEY_QR_CODE_DATA: String = "KEY_QR_CODE_DATA"
 
         @JvmStatic
-        fun newInstance(address: String) = QRCodeDialog().apply {
+        fun newInstance(address: String, qrCodeData: String? = null) = QRCodeDialog().apply {
             arguments = Bundle().apply {
                 // put params here
                 putString(KEY_ADDRESS, address)
+                putString(KEY_QR_CODE_DATA, qrCodeData)
             }
         }
     }
@@ -32,6 +35,7 @@ class QRCodeDialog : AppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             this.address = it.getString(KEY_ADDRESS)
+            this.qrCodeData = it.getString(KEY_QR_CODE_DATA)
         }
     }
 
@@ -44,7 +48,7 @@ class QRCodeDialog : AppCompatDialogFragment() {
         dialog_qr_code_address.text = address
         EncodeQR {
             dialog_qr_code_image.setImageBitmap(it)
-        }.execute(address)
+        }.execute(qrCodeData ?: address)
 
         view.setOnClickListener { dismiss() }
     }
