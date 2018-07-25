@@ -10,9 +10,12 @@ import UIKit
 
 public class CoinTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var container: UIView!
     @IBOutlet weak var iconImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var border: UIView!
+    @IBOutlet weak var leadConstraint: NSLayoutConstraint!
+    
     
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,6 +28,9 @@ public class CoinTableViewCell: UITableViewCell {
         if let name = address.coin {
             self.iconImage.image = UIImage.init(named: "ic_\(name)")
             self.nameLabel.text = address.network ?? name
+        }
+        if address.isChild {
+            self.leadConstraint.constant += 20
         }
     }
     

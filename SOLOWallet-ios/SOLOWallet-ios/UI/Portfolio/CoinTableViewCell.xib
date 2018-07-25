@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="579" height="54.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rMr-gM-mmj">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rMr-gM-mmj" userLabel="container">
                         <rect key="frame" x="20" y="10" width="539" height="44.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pLo-vF-Qy3">
@@ -71,7 +71,9 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="border" destination="uFQ-ID-RaE" id="n7Y-fs-i3t"/>
+                <outlet property="container" destination="rMr-gM-mmj" id="b6h-4K-WLo"/>
                 <outlet property="iconImage" destination="pLo-vF-Qy3" id="a12-L5-cll"/>
+                <outlet property="leadConstraint" destination="dIM-Lm-BeE" id="MqF-6J-ibA"/>
                 <outlet property="nameLabel" destination="Ipq-CD-eF5" id="zxU-fy-sdC"/>
             </connections>
             <point key="canvasLocation" x="-255.5" y="-305.5"/>

@@ -77,6 +77,14 @@ class PortfolioViewController: UIViewController {
             if !networks.contains(address.network!) {
                 networks.insert(address.network!)
                 self.addresses.append(address)
+                if address.coin == CoinType.ETH.key {
+                    let child = AddressDTO()!
+                    child.address = address.address
+                    child.coin = CoinType.MOZO.key
+                    child.network = address.network?.replace(address.coin!, withString: child.coin!)
+                    child.isChild = true
+                    self.addresses.append(child)
+                }
             }
         })
     }
