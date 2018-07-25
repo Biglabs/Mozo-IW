@@ -26,7 +26,7 @@ class PortfolioViewController: UIViewController {
     }
     
     func buildPortfolioView() {
-        self.title = "Portfolio"
+        self.title = "WALLET LIST"
         self.createLogoBarButton()
         
         //effect relax
