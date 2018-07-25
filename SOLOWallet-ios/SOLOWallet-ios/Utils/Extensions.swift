@@ -17,6 +17,10 @@ public extension Bool {
 }
 
 public extension String {
+    public func isValidReceiveFormat() -> Bool{
+        let regex = try? NSRegularExpression(pattern: "^[a-zA-Z]+:[a-zA-Z0-9]+\\?[a-zA-Z]+=[0-9.]*$", options: .caseInsensitive)
+        return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
+    }
     
     public func isValidName() -> Bool {
         let regex = try? NSRegularExpression(pattern: "^[a-zA-Z0-9_-]*$", options: .caseInsensitive)
