@@ -113,7 +113,7 @@ class Signer private constructor(private val walletScheme: String) {
     }
 
     fun getTransactionHistory(wallet: Wallet, lastItemBlockHeight: Int = 0) {
-        this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.address!!, lastItemBlockHeight).enqueue(object : Callback<List<TransactionHistory>> {
+        val callback = object : Callback<List<TransactionHistory>> {
             override fun onResponse(call: Call<List<TransactionHistory>>?, response: Response<List<TransactionHistory>>?) {
                 if (response?.body() != null) {
                     this@Signer.mSignerListener?.onReceiveTransactionHistory(response.body()!!)
@@ -125,7 +125,12 @@ class Signer private constructor(private val walletScheme: String) {
             override fun onFailure(call: Call<List<TransactionHistory>>?, t: Throwable?) {
                 this@Signer.mSignerListener?.onError(ACTION_UNKNOWN, t?.message)
             }
-        })
+        }
+        if (lastItemBlockHeight > 0) {
+            this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.address!!, lastItemBlockHeight).enqueue(callback)
+        } else {
+            this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.address!!).enqueue(callback)
+        }
     }
 
     fun createTransaction(context: Context, fromAddress: String, toAddress: String, gasLimit: String, coinType: String, network: String, value: String, msg: String) {
