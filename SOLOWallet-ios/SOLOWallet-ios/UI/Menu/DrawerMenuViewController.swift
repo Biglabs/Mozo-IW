@@ -17,7 +17,7 @@ class DrawerMenuViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = "Menu"
-        self.navigationController?.navigationBar.frame = CGRect.init(x: 0, y: 0, width: self.view.bounds.width, height: 44)
+        self.navigationController?.navigationBar.frame = .init(x: 0, y: 0, width: self.view.bounds.width, height: 44)
         self.view.backgroundColor = ThemeManager.shared.background
         
         let height = self.navigationController?.navigationBar.frame.size.height ?? 0 + UIApplication.shared.statusBarFrame.height
@@ -26,8 +26,8 @@ class DrawerMenuViewController: UIViewController {
         self.tableView.backgroundColor = .white
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
-        self.tableView.separatorInset = UIEdgeInsets.zero
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        self.tableView.separatorInset = .zero
+        self.tableView.separatorStyle = .none
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.view.addSubview(self.tableView)
