@@ -32,6 +32,13 @@ public enum CoinType {
         case .ETH: return "ic_ETH"
         }
     }
+    
+    public var scanName : String {
+        switch self {
+        case .BTC: return "bitcoin"
+        case .ETH: return "ethereum"
+        }
+    }
 }
 
 public enum SoloTab {

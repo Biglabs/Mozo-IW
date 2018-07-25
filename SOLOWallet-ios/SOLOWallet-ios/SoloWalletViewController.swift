@@ -55,7 +55,7 @@ class SoloWalletViewController: UIViewController {
         controllerArray.append(exchangeVC)
         
         //Tab 4: Send
-        let storyboard = UIStoryboard(name: "SendViewController", bundle: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let sendVC = storyboard.instantiateViewController(withIdentifier: "SendVC") as! SendViewController
         sendVC.tabBarItem = UITabBarItem.init(title: SoloTab.Send.value, image: UIImage.init(named: SoloTab.Send.icon), tag: 3)
         sendVC.currentCoin = self.currentCoin
