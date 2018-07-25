@@ -95,8 +95,12 @@ class ReceiveViewController: AbstractViewController {
     func displayQR(transaction: TransactionDTO){
         self.popupView.isHidden = false
         self.coverView.isHidden = false
-        let json = JSON(transaction.toJSON())
-        self.imgView.image = Utils.generateQRCode(from: json.rawString()!)
+        if let trans = transaction.outputs?.first {
+            var tx = (self.currentCoin?.coin?.lowercased())! + ":" + (trans.addresses?.first)!
+            let value = Utils.convertOutputValue(coinType: self.currentCoin?.coin, value: trans.value!)
+            tx += "?amount=" + String(value)
+            self.imgView.image = Utils.generateQRCode(from: tx)
+        }
     }
     
     func makeTx() -> TransactionDTO{

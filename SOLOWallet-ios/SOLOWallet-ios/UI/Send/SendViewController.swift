@@ -301,13 +301,18 @@ class SendViewController: AbstractViewController {
     }
     
     func updateResultQRScan(value: String){
-        if value.hasPrefix("{") {
+        if value.isValidReceiveFormat() {
+            let url = URL(string: value)
+            if url?.scheme != CoinType.BTC.scanName && url?.scheme != CoinType.ETH.scanName {
+                // Display error
+                return
+            }
+            let urlComponents = URLComponents(string: value)!
+            let address = urlComponents.path
+            let amount = urlComponents.queryItems?.first(where: { $0.name == "amount" })?.value
             // Transaction
-            let json = SwiftyJSON.JSON.init(parseJSON: value)
-            let tx = TransactionDTO.init(json: json)
-            self.addressTextField.text = tx?.outputs?.first?.addresses?.first
-            let value = Utils.convertOutputValue(coinType: self.currentCoin?.coin, value: (tx?.outputs?.first?.value)!)
-            self.inputCoinTextField.text = String(format: "%f", value)
+            self.addressTextField.text = address
+            self.inputCoinTextField.text = amount
         } else {
             // Address only
             self.addressTextField.text = value
