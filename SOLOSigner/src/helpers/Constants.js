@@ -50,6 +50,13 @@ const Constants = {
             network: "ETH_TEST",
             icon: icCoinEth
         },
+        ETH_ROPSTEN: {
+            displayName: "ETH ROPSTEN",
+            name: "ETH",
+            value: 60,
+            network: "ETH_ROPSTEN",
+            icon: icCoinEth
+        },
         SOLO: {
             displayName: "SOLO",
             name: "SOLO",
@@ -105,7 +112,7 @@ const Constants = {
     BACKUP_FOLDER: `${defaultPath}/SoloSigner`,
 };
 
-const DEFAULT_COINS = [Constants.COIN_TYPE.BTC, Constants.COIN_TYPE.BTC_TEST, Constants.COIN_TYPE.ETH, Constants.COIN_TYPE.ETH_TEST];
+const DEFAULT_COINS = [Constants.COIN_TYPE.BTC, Constants.COIN_TYPE.BTC_TEST, Constants.COIN_TYPE.ETH, Constants.COIN_TYPE.ETH_TEST, Constants.COIN_TYPE.ETH_ROPSTEN];
 
 Constants.DEFAULT_COINS = DEFAULT_COINS;
 
