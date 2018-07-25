@@ -40,7 +40,10 @@ internal interface SoloService {
     fun getBalance(@Path("coin") coin: String, @Path("address") address: String): Call<BalanceResponse>
 
     @GET("{coin}/test/addrs/{address}/txhistory")
-    fun getTxHistory(@Path("coin") coin: String, @Path("address") address: String, @Query("beforeHeight") beforeHeight: Int = 0): Call<List<TransactionHistory>>
+    fun getTxHistory(@Path("coin") coin: String, @Path("address") address: String): Call<List<TransactionHistory>>
+
+    @GET("{coin}/test/addrs/{address}/txhistory")
+    fun getTxHistory(@Path("coin") coin: String, @Path("address") address: String, @Query("beforeHeight") beforeHeight: Int): Call<List<TransactionHistory>>
 
     @POST("{coin}/test/txs")
     fun createTx(@Path("coin") coin: String, @Body body: TransactionResponseContent): Call<TransactionResponse>
