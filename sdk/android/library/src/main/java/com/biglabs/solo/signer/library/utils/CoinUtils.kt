@@ -5,7 +5,7 @@ import java.math.BigDecimal
 class CoinUtils {
 
     companion object {
-        private val requestAmountRegex = Regex("^[a-zA-Z]+:[a-zA-Z0-9]+\\?[a-zA-Z]+=[0-9.]*$")
+        private val requestSplitRegex = "^\\w+\\W+|(\\?\\w+=)".toRegex()
 
         private fun btcToSatoshi(btc: Double) = btc * 1E+8
         private fun satoshiToBtc(satoshi: Double) = BigDecimal(satoshi / 1E+8)
@@ -40,9 +40,15 @@ class CoinUtils {
             return builder.toString()
         }
 
-        fun parsePaymentRequest(request: String) {
-
-            requestAmountRegex.matches(request)
+        fun parsePaymentRequest(request: String): List<String> {
+            return request.split(requestSplitRegex).filter { !it.isEmpty() }.run {
+                when {
+                    this.size > 2 -> this.subList(0, 2)
+                    this.size == 1 -> this.plus("")
+                    this.isEmpty() -> arrayListOf("", "")
+                    else -> this
+                }
+            }
         }
     }
 }
