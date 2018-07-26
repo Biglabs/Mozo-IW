@@ -73,7 +73,6 @@ export default class AddWalletScreen extends Component {
         let selectedWallets = this.props.selectedWalletsStore.wallets;
         return (
             <View style={styles.container}>
-
                 <Text style={styleScreenTitleText}>Add Wallet</Text>
 
                 <Text style={styleScreenSubTitleText}>

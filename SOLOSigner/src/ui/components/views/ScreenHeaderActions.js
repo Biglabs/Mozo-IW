@@ -1,13 +1,16 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View, Platform} from "react-native";
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 import PropTypes from 'prop-types';
 
 import {colorPrimary, colorScreenBackground, colorTitleText, fontBold, icons} from '../../../res';
 import SoloText from "../widgets/SoloText";
+
+// use for display svg on web
+import SVGInline from "react-svg-inline";
 
 export default class ScreenHeaderActions extends React.Component {
     constructor(props) {
@@ -24,12 +27,45 @@ export default class ScreenHeaderActions extends React.Component {
         Actions.pop();
     };
 
+
+    renderIcSearch() {
+        //check platform
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return (
+                <SVGInline 
+                    width="8" 
+                    height="13" 
+                    fill={this.backIconColor}
+                    svg={icons.icArrowBack}
+                    style={{
+                        marginLeft: 16,
+                        marginRight: 6,
+                    }}    
+                />
+            );
+        } 
+        return (
+            <SvgUri
+                width={8}
+                height={13}
+                fill={this.backIconColor}
+                svgXmlData={icons.icArrowBack}
+                style={{
+                    marginLeft: 16,
+                    marginRight: 6,
+                }}
+            />
+        );
+    }
+
+
     render() {
         return (
             <View {...this.props} style={[styles.toolbar, {backgroundColor: this.backgroundColor}, this.props.style]}>
 
                 <TouchableOpacity style={styles.button} onPress={this.onPressAction}>
-                    <SvgUri
+                    {this.renderIcSearch()}
+                    {/* <SvgUri
                         width={8}
                         height={13}
                         fill={this.backIconColor}
@@ -37,7 +73,7 @@ export default class ScreenHeaderActions extends React.Component {
                         style={{
                             marginLeft: 16,
                             marginRight: 6,
-                        }}/>
+                        }}/> */}
                     <SoloText style={[styles.button_text, {color: this.backTextColor}]}>Back</SoloText>
                 </TouchableOpacity>
 

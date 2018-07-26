@@ -1,10 +1,13 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Platform} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import SvgUri from 'react-native-svg-uri';
 
 import {colorPrimary, colorScreenBackground, dimenScreenWidth, icons} from '../../res';
 import {Button, Text} from "../components";
+
+// use for display svg on web
+import SVGInline from "react-svg-inline";
 
 const buttonWidthPercent = dimenScreenWidth >= 500 ? '44%' : '84%';
 
@@ -16,10 +19,59 @@ export default class WelcomeScreen extends React.Component {
         this.logoHeight = 37.8 * this.logoWidth / 100;
     }
 
+
+    displayIcSoloLogo(){
+        //check platform
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return (
+                <View>
+                    <SVGInline
+                        width={this.logoWidth.toString()}
+                        height={this.logoHeight.toString()}
+                        fill={colorPrimary.toString()}
+                        svg={icons.icSoloLogo}
+                        style={{
+                            flex: .5,
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                        }}
+                    /> 
+                </View>
+            );
+        }else {
+            return (
+                <SvgUri 
+                    width={this.logoWidth}
+                    height={this.logoHeight}
+                    fill={colorPrimary}
+                    svgXmlData={icons.icSoloLogo}
+                    style={{
+                        flex: .5,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                    }}
+                />
+            );
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <SvgUri width={this.logoWidth}
+
+                {/* <SVGInline
+                    width="{this.logoWidth}"
+                    height="{this.logoHeight}"
+                    fill={colorPrimary}
+                    svg={icons.icSoloLogo}
+                    style={{
+                        flex: .5,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center'
+                    }}
+                /> */}
+
+                {/* <SvgUri width={this.logoWidth}
                         height={this.logoHeight}
                         fill={colorPrimary}
                         svgXmlData={icons.icSoloLogo}
@@ -27,7 +79,8 @@ export default class WelcomeScreen extends React.Component {
                             flex: .5,
                             justifyContent: 'flex-end',
                             alignItems: 'center',
-                        }}/>
+                        }}/> */}
+                {this.displayIcSoloLogo()}
 
                 <Text style={styles.welcome_text}>Welcome to SOLO Signer</Text>
 

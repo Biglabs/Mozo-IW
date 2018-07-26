@@ -1,5 +1,5 @@
 import React from "react";
-import {AsyncStorage, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {AsyncStorage, StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 
@@ -14,6 +14,9 @@ import {
 import {BackupWalletStateIcon, Text} from "../components";
 import LinkingManager from "../../services/LinkingService";
 import CachingService from '../../services/CachingService';
+
+// use for display svg on web
+import SVGInline from "react-svg-inline";
 
 export default class HomeScreen extends React.Component {
 
@@ -30,10 +33,25 @@ export default class HomeScreen extends React.Component {
         }
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
 
+    displayIcSoloTitle(){
+        //check platform
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return (
+                <View style={styles.toolbar}>
+                    <SVGInline
+                        width="78"
+                        height="36"
+                        fill={colorPrimary}
+                        svg={icons.icSoloTitle}
+                        style={{
+                            marginBottom: 10,
+                        }}
+                    /> 
+                </View>
+            );
+        }else {
+            return (
                 <View style={styles.toolbar}>
                     <SvgUri
                         width={78}
@@ -44,7 +62,37 @@ export default class HomeScreen extends React.Component {
                             marginBottom: 10,
                         }}/>
                 </View>
+            );
+        }
+    }
 
+    displayBackupWallet (){
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return (
+                <TouchableOpacity
+                    style={[styles.buttons, {marginTop: 20}]}
+                    onPress={() => Actions.backup_wallet_menu({pin: this.props.pin})}>
+                    <SVGInline
+                        width="24"
+                        height="20"
+                        fill={colorPrimary}
+                        svg={icons.icBackup}
+                    /> 
+                    <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
+
+                    <BackupWalletStateIcon/>
+
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SVGInline
+                            width="20"
+                            height="20"
+                            svg={icons.icInformation}
+                        />
+                    </TouchableOpacity>
+                </TouchableOpacity>
+            );
+        } else {
+            return (
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
                     onPress={() => Actions.backup_wallet_menu({pin: this.props.pin})}>
@@ -64,9 +112,31 @@ export default class HomeScreen extends React.Component {
                             svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
+            );
+        }
+    }
 
-                <View style={styles.dash}/>
+    displayPairDevices(){
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return(
+                <TouchableOpacity style={styles.buttons}>
+                    <SVGInline
+                        width="20"
+                        height="20"
+                        fill={colorPrimary}
+                        svg={icons.icSync}/>
+                    <Text style={styles.buttons_text}>Pair Devices</Text>
 
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SVGInline
+                            width="20"
+                            height="20"
+                            svg={icons.icInformation}/>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+            );
+        } else {
+            return(
                 <TouchableOpacity style={styles.buttons}>
                     <SvgUri
                         width={20}
@@ -82,9 +152,33 @@ export default class HomeScreen extends React.Component {
                             svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
+            );
+        }
+    }
 
-                <View style={styles.dash}/>
+    displayPaperWallet() {
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return (
+                <TouchableOpacity
+                    style={styles.buttons}
+                    onPress={() => Actions.paper_wallet()}>
+                    <SVGInline
+                        width="20"
+                        height="20"
+                        fill={colorPrimary}
+                        svg={icons.icNote}/>
+                    <Text style={styles.buttons_text}>Paper Wallet</Text>
 
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SVGInline
+                            width="20"
+                            height="20"
+                            svg={icons.icInformation}/>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+            );
+        } else {
+            return (
                 <TouchableOpacity
                     style={styles.buttons}
                     onPress={() => Actions.paper_wallet()}>
@@ -102,6 +196,85 @@ export default class HomeScreen extends React.Component {
                             svgXmlData={icons.icInformation}/>
                     </TouchableOpacity>
                 </TouchableOpacity>
+            );
+        }
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                {/* <View style={styles.toolbar}>
+                    <SvgUri
+                        width={78}
+                        height={36}
+                        fill={colorPrimary}
+                        svgXmlData={icons.icSoloTitle}
+                        style={{
+                            marginBottom: 10,
+                        }}/>
+                </View> */}
+                {this.displayIcSoloTitle()}
+
+                {/* <TouchableOpacity
+                    style={[styles.buttons, {marginTop: 20}]}
+                    onPress={() => Actions.backup_wallet_menu({pin: this.props.pin})}>
+                    <SvgUri
+                        width={24}
+                        height={20}
+                        fill={colorPrimary}
+                        svgXmlData={icons.icBackup}/>
+                    <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
+
+                    <BackupWalletStateIcon/>
+
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SvgUri
+                            width={20}
+                            height={20}
+                            svgXmlData={icons.icInformation}/>
+                    </TouchableOpacity>
+                </TouchableOpacity> */}
+                {this.displayBackupWallet()}
+                
+                <View style={styles.dash}/>
+
+                {/* <TouchableOpacity style={styles.buttons}>
+                    <SvgUri
+                        width={20}
+                        height={20}
+                        fill={colorPrimary}
+                        svgXmlData={icons.icSync}/>
+                    <Text style={styles.buttons_text}>Pair Devices</Text>
+
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SvgUri
+                            width={20}
+                            height={20}
+                            svgXmlData={icons.icInformation}/>
+                    </TouchableOpacity>
+                </TouchableOpacity> */}
+                {this.displayPairDevices()}
+
+                <View style={styles.dash}/>
+
+                {/* <TouchableOpacity
+                    style={styles.buttons}
+                    onPress={() => Actions.paper_wallet()}>
+                    <SvgUri
+                        width={20}
+                        height={20}
+                        fill={colorPrimary}
+                        svgXmlData={icons.icNote}/>
+                    <Text style={styles.buttons_text}>Paper Wallet</Text>
+
+                    <TouchableOpacity style={styles.buttons_icon}>
+                        <SvgUri
+                            width={20}
+                            height={20}
+                            svgXmlData={icons.icInformation}/>
+                    </TouchableOpacity>
+                </TouchableOpacity> */}
+                {this.displayPaperWallet()}
 
                 <View style={styles.dash}/>
 
