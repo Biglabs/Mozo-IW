@@ -215,6 +215,7 @@ storeWalletInfo = function(manager, walletInfo, addresses, callback){
 module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
     let manager = DataService.getInstance();
     // Store isDbExisting true
+    // TODO: @apply desktop: save flag Constant.FLAG_DB_EXISTING
     AsyncStorage.setItem(Constant.FLAG_DB_EXISTING, 'true');
     if (isNewPin) {
         // TODO: Set timer here for the next time when user have to re-enter PIN
@@ -235,6 +236,7 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
             address.privkey = null;
             addresses.push(address);
         });
+        console.log("addAddress: " + addAddress);
         let publicKey = wallets[0].neutered().toBase58();
         registerWalletAndSyncAddress(manager, publicKey, addresses, (error, result) => {
             if (typeof callback === 'function') {

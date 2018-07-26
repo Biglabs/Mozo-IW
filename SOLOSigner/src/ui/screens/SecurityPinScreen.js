@@ -3,7 +3,11 @@ import {Alert, ActivityIndicator, StyleSheet, TouchableHighlight, View} from 're
 import {Actions} from 'react-native-router-flux';
 
 import {ScreenFooterActions, Text} from "../components";
-import WalletManager from '../../services/WalletService';
+// import WalletManager from '../../services/WalletService';
+import * as services from "../../services/index.js";
+
+
+
 import {colorPrimary, colorScreenBackground, dimenScreenPaddingBottom, styleScreenTitleText} from '../../res';
 
 const accentColor = '#00fffc';
@@ -68,9 +72,10 @@ export default class SecurityPinScreen extends Component {
     }
 
     handleEnterCorrectPin() {
+        let me = this;
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
-                let pin = JSON.stringify(this.pinCode);
+                /* let pin = JSON.stringify(this.pinCode);
                 WalletManager.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
                     //Check error type
                     console.log("handleEnterCorrectPin, error: ", error);
@@ -78,8 +83,27 @@ export default class SecurityPinScreen extends Component {
                     // Open Home Screen
                     let pin = JSON.stringify(this.pinCode);
                     Actions.home({pin: pin});
+                }); */
+                /** Code for testing */
+                let pin = JSON.stringify(this.pinCode);
+                services.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
+                    //Check error type
+                    console.log("handleEnterCorrectPin, error: ", error);
+                    this.props.isNewPIN = false;
+                    // Open Home Screen
+                    let pin = JSON.stringify(this.pinCode);
+                    Actions.home({pin: pin});
                 });
-            }, 5);
+
+                /* me.setState({
+                    isShowingLoading: false
+                }); */
+                //console.log( "From wallet services: " + test());
+                //console.log("handleEnterCorrectPin: " + square(11)); // 121
+                //console.log("handleEnterCorrectPin: " + diag(4, 3)); // 5
+                /** End Code for testing */
+            //}, 5); // old code
+            }, 1); // test code
         });
     }
 

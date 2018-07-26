@@ -3,6 +3,20 @@ package com.biglabs.solo.signer;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.tradle.react.UdpSocketsModule;
+import io.realm.react.RealmReactPackage;
+import io.realm.react.RealmReactPackage;
+import com.tradle.react.UdpSocketsModule;
+import com.peel.react.TcpSocketsModule;
+import com.horcrux.svg.SvgPackage;
+import cl.json.RNSharePackage;
+import com.bitgo.randombytes.RandomBytesPackage;
+import co.airbitz.fastcrypto.RNFastCryptoPackage;
+import com.bitgo.randombytes.RandomBytesPackage;
+import com.peel.react.rnos.RNOSModule;
+import com.rnfs.RNFSPackage;
+import ui.fileselector.RNFileSelectorPackage;
+import org.reactnative.camera.RNCameraPackage;
 import ui.fileselector.RNFileSelectorPackage;
 
 import cl.json.RNSharePackage;
@@ -36,6 +50,20 @@ public class MainApplication extends Application implements ReactApplication, Sh
         protected List<ReactPackage> getPackages() {
             return Arrays.asList(
                     new MainReactPackage(),
+            new UdpSocketsModule(),
+            new RealmReactPackage(),
+            new RealmReactPackage(),
+            new UdpSocketsModule(),
+            new TcpSocketsModule(),
+            new SvgPackage(),
+            new RNSharePackage(),
+            new RandomBytesPackage(),
+            new RNFastCryptoPackage(),
+            new RandomBytesPackage(),
+            new RNOSModule(),
+            new RNFSPackage(),
+            new RNFileSelectorPackage(),
+            new RNCameraPackage(),
                     new RNFileSelectorPackage(),
                     new RNFSPackage(),
                     new RNSharePackage(),

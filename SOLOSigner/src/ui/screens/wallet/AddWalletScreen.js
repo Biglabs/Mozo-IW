@@ -18,11 +18,11 @@ import {
 @inject("selectedWalletsStore")
 @observer
 export default class AddWalletScreen extends Component {
+
     render() {
         let selectedWallets = this.props.selectedWalletsStore.wallets;
         return (
             <View style={styles.container}>
-
                 <Text style={styleScreenTitleText}>Add Wallet</Text>
 
                 <Text style={styleScreenSubTitleText}>

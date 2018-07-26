@@ -1,10 +1,10 @@
 import React from 'react';
-import {Linking} from 'react-native';
+//import {Linking} from 'react-native';
 import {Router, Modal, Scene} from 'react-native-router-flux';
 import {Provider} from "mobx-react";
 
 import stores from "./stores";
-import LinkingService from "./services/LinkingService";
+//import LinkingService from "./services/LinkingService";
 
 /* general screens */
 import SplashScreen from './ui/screens/SplashScreen';
@@ -16,23 +16,23 @@ import SecurityPinScreen from './ui/screens/SecurityPinScreen';
 import AddWalletScreen from './ui/screens/wallet/AddWalletScreen';
 import AddMoreWalletScreen from './ui/screens/wallet/AddMoreWalletScreen';
 import CreateWalletScreen from './ui/screens/wallet/CreateWalletScreen';
-import ImportWalletScreen from './ui/screens/wallet/ImportWalletScreen';
+// import ImportWalletScreen from './ui/screens/wallet/ImportWalletScreen';
 import BackupWalletMenuScreen from './ui/screens/wallet/BackupWalletMenuScreen';
-import PaperWalletScreen from './ui/screens/wallet/PaperWalletScreen';
+// import PaperWalletScreen from './ui/screens/wallet/PaperWalletScreen';
 
 /* backup screens */
-import BackupWalletScreen from './ui/screens/backup/BackupWalletScreen';
-import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
+// import BackupWalletScreen from './ui/screens/backup/BackupWalletScreen';
+// import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
 import ConfirmBackupPhrase from './ui/screens/backup/ConfirmBackupPhraseScreen';
-import ViewBackupPhrase from './ui/screens/backup/ViewBackupPhraseScreen';
+// import ViewBackupPhrase from './ui/screens/backup/ViewBackupPhraseScreen';
 
 /* transaction screens */
-import ConfirmationScreen from './ui/screens/transaction/ConfirmationScreen';
+/* import ConfirmationScreen from './ui/screens/transaction/ConfirmationScreen';
 
 Linking.getInitialURL().then((url) => {
     LinkingService.checkScheme(url);
 });
-Linking.addEventListener('url', LinkingService.handleEventOpenUrl);
+Linking.addEventListener('url', LinkingService.handleEventOpenUrl); */
 
 export default () => {
     return (
@@ -49,18 +49,18 @@ export default () => {
                     <Scene key="add_wallet" component={AddWalletScreen} hideNavBar/>
                     <Scene key="add_more_wallet" component={AddMoreWalletScreen} hideNavBar/>
                     <Scene key="create_wallet" component={CreateWalletScreen} hideNavBar/>
-                    <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/>
-                    <Scene key="restore_wallet" component={RestoreWalletScreen} hideNavBar/>
+                    {/* <Scene key="import_wallet" component={ImportWalletScreen} hideNavBar/> */}
+                    {/* <Scene key="restore_wallet" component={RestoreWalletScreen} hideNavBar/> */}
                     <Scene key="backup_wallet_menu" component={BackupWalletMenuScreen} hideNavBar/>
-                    <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
+                    {/* <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/> */}
 
                     {/* backup screens */}
-                    <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
+                    {/* <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/> */}
                     <Scene key="confirm_backup_phrase" component={ConfirmBackupPhrase} hideNavBar/>
-                    <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/>
+                    {/* <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/> */}
 
                     {/* transaction screens */}
-                    <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
+                    {/* <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/> */}
                 </Modal>
             </Router>
         </Provider>

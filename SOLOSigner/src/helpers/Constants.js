@@ -1,11 +1,11 @@
 import {Platform} from "react-native";
-import RNFileSystem from "react-native-fs";
+//import RNFileSystem from "react-native-fs";
 import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons';
 
-const defaultPath = Platform.select({
+/* const defaultPath = Platform.select({
     ios: RNFileSystem.DocumentDirectoryPath,
     android: `${RNFileSystem.ExternalStorageDirectoryPath}/Documents`
-});
+}); */
 
 const Constants = {
     SATOSHI_UNIT: 100000000,
@@ -102,7 +102,7 @@ const Constants = {
     FLAG_ADDRESS_SYNC: '@addressSync:key',
     FLAG_BACKUP_WALLET: '@backupWallet:key',
     FLAG_CONFIRM_TIME_OUT: '@confirmTimeout:key',
-    BACKUP_FOLDER: `${defaultPath}/SoloSigner`,
+    //BACKUP_FOLDER: `${defaultPath}/SoloSigner`,
 };
 
 const DEFAULT_COINS = [Constants.COIN_TYPE.BTC, Constants.COIN_TYPE.BTC_TEST, Constants.COIN_TYPE.ETH, Constants.COIN_TYPE.ETH_TEST];
