@@ -3,7 +3,10 @@ package com.biglabs.solo.signer.library.utils
 import java.math.BigDecimal
 
 class CoinUtils {
+
     companion object {
+        private val requestAmountRegex = Regex("^[a-zA-Z]+:[a-zA-Z0-9]+\\?[a-zA-Z]+=[0-9.]*$")
+
         private fun btcToSatoshi(btc: Double) = btc * 1E+8
         private fun satoshiToBtc(satoshi: Double) = BigDecimal(satoshi / 1E+8)
 
@@ -23,5 +26,23 @@ class CoinUtils {
                     CoinEnum.ETH.key -> weiToEth(value)
                     else -> BigDecimal(value)
                 }
+
+        fun preparePaymentRequest(address: String, coin: CoinEnum, amount: String?): String {
+            val builder = StringBuilder(coin.fullName)
+            builder.append(":")
+            builder.append(address)
+
+            val amt = amount?.toBigDecimalOrNull()
+            if (amt != null && amt.compareTo(BigDecimal.ZERO) == 1) {
+                builder.append("?amount=")
+                builder.append(amount)
+            }
+            return builder.toString()
+        }
+
+        fun parsePaymentRequest(request: String) {
+
+            requestAmountRegex.matches(request)
+        }
     }
 }

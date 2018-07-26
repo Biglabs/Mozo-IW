@@ -38,6 +38,8 @@ class WalletFragment : Fragment() {
     private var isLoadMore = false
     private var isCanLoadMore = true
 
+    private val currentWalletObserver = Observer<Wallet> { updateUI(it) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -78,12 +80,13 @@ class WalletFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        currentWalletLivaData?.observe(this, Observer { updateUI(it) })
+        currentWalletLivaData?.observe(this, currentWalletObserver)
+        // TODO: check is not first launch todo something
     }
 
     override fun onPause() {
         super.onPause()
-        currentWalletLivaData?.removeObservers(this)
+        currentWalletLivaData?.removeObserver { currentWalletObserver }
     }
 
     override fun onStop() {
