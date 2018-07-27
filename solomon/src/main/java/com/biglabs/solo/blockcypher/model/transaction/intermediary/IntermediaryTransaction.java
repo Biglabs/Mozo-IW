@@ -72,10 +72,11 @@ public class IntermediaryTransaction {
 
     private Transaction tx;
     @NotEmpty
-    private List<String> tosign;
+    private List<String> tosign = new ArrayList<>();
 
     @NotEmpty
     private List<String> signatures = new ArrayList<String>();
+    @NotEmpty
     private List<String> pubkeys = new ArrayList<String>();
 
     public IntermediaryTransaction() {
@@ -93,9 +94,18 @@ public class IntermediaryTransaction {
         return tosign;
     }
 
+    public void setTosign(List<String> tosign) {
+        this.tosign = tosign;
+    }
+
     public Transaction getTx() {
         return tx;
     }
+
+    public void setTx(Transaction tx) {
+        this.tx = tx;
+    }
+
     public List<String> getSignatures() {
         return signatures;
     }

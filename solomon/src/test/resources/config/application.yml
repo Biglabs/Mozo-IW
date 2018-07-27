@@ -111,6 +111,8 @@ jhipster:
 # ===================================================================
 
 application:
+    web3j:
+        infuraRopstenUrl: https://ropsten.infura.io/iG52lGijPGJaYTLUtOoY
 
 blockcypher:
     token: fb87b92b0df94d72a90984c28945f029

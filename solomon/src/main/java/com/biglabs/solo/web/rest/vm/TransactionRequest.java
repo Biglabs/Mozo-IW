@@ -1,6 +1,9 @@
 package com.biglabs.solo.web.rest.vm;
 
 
+import com.biglabs.solo.blockcypher.model.transaction.input.Input;
+import com.biglabs.solo.blockcypher.model.transaction.output.Output;
+import jnr.ffi.annotations.Out;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -34,6 +37,14 @@ public class TransactionRequest {
         this.outputs = outputs;
     }
 
+    public BigDecimal getFees() {
+        return fees;
+    }
+
+    public void setFees(BigDecimal fees) {
+        this.fees = fees;
+    }
+
     public static class TxInput {
         @NotEmpty
         private List<String> addresses = new ArrayList<String>();
@@ -46,6 +57,11 @@ public class TransactionRequest {
             this.addresses = addresses;
         }
 
+        public Input toInput() {
+            Input ret = new Input();
+            ret.setAddresses(this.getAddresses());
+            return ret;
+        }
     }
 
     public static class TxOutput {
@@ -68,6 +84,13 @@ public class TransactionRequest {
 
         public void setAddresses(List<String> addresses) {
             this.addresses = addresses;
+        }
+
+        public Output toOutput() {
+            Output ret = new Output();
+            ret.setAddresses(this.addresses);
+            ret.setValue(this.value);
+            return ret;
         }
     }
 }
