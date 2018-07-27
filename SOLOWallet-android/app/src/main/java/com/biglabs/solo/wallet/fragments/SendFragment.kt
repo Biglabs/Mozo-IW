@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.models.ui.Wallet
+import com.biglabs.solo.signer.library.utils.CoinUtils
 import com.biglabs.solo.signer.library.utils.Constants
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.models.WalletsViewModel
@@ -39,11 +40,8 @@ class SendFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav_send, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_nav_send, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,7 +110,9 @@ class SendFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result?.contents != null) {
-            input_receive_address.setText(result.contents)
+            val parsed = CoinUtils.parsePaymentRequest(result.contents)
+            input_receive_address.setText(parsed[0])
+            input_amount.setText(parsed[1])
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
