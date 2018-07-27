@@ -5,7 +5,8 @@
             "BTC_MAIN": "BTC_MAIN",
             "BTC_TEST": "BTC_TEST",
             "ETH_MAIN": "ETH_MAIN",
-            "ETH_TEST": "ETH_TEST"
+            "ETH_TEST": "ETH_TEST",
+            "ETH_ROPSTEN": "ETH_ROPSTEN"
         }
     }
 }

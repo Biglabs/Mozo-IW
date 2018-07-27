@@ -11,7 +11,8 @@ export const enum Network {
     'BTC_MAIN',
     'BTC_TEST',
     'ETH_MAIN',
-    'ETH_TEST'
+    'ETH_TEST',
+    'ETH_ROPSTEN'
 }
 
 export class AddressSolo implements BaseEntity {

@@ -13,7 +13,7 @@
         {
             "fieldName": "network",
             "fieldType": "Network",
-            "fieldValues": "BTC_MAIN,BTC_TEST,ETH_MAIN,ETH_TEST",
+            "fieldValues": "BTC_MAIN,BTC_TEST,ETH_MAIN,ETH_TEST,ETH_ROPSTEN",
             "fieldValidateRules": [
                 "required"
             ]
@@ -73,15 +73,6 @@
         },
         {
             "fieldName": "addressIndex",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required",
-                "min"
-            ],
-            "fieldValidateRulesMin": 0
-        },
-        {
-            "fieldName": "aaaaa",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "required",
