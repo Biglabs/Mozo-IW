@@ -222,7 +222,7 @@ public class BTCClient {
     }
 
     public IntermediaryTransaction sendSignedTransaction(IntermediaryTransaction signedTx) throws BlockCypherException {
-        String url = MessageFormat.format(transactionEP + "/send?token={0}", "618c6ab8511347f78f97f3d687c86b22");
+        String url = MessageFormat.format(transactionEP + "/send?token={0}", bycContext.getToken());
         logger.debug("Create new tx to:  " + url);
         try {
             ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, signedTx, IntermediaryTransaction.class);
@@ -249,9 +249,9 @@ public class BTCClient {
         ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
-            logger.debug("========= Body <<<");
-            logger.debug(body);
-            logger.debug("========= Body >>>");
+//            logger.debug("========= Body <<<");
+//            logger.debug(body);
+//            logger.debug("========= Body >>>");
             BlockCypherError error = om.readValue(body, BlockCypherError.class);
             if(error == null || error.getErrors().isEmpty()) {
                 Error er = om.readValue(body, Error.class);

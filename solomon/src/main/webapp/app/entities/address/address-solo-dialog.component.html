@@ -34,6 +34,7 @@
                 <option value="BTC_TEST">{{'solomonApp.Network.BTC_TEST' | translate}}</option>
                 <option value="ETH_MAIN">{{'solomonApp.Network.ETH_MAIN' | translate}}</option>
                 <option value="ETH_TEST">{{'solomonApp.Network.ETH_TEST' | translate}}</option>
+                <option value="ETH_ROPSTEN">{{'solomonApp.Network.ETH_ROPSTEN' | translate}}</option>
             </select>
             <div [hidden]="!(editForm.controls.network?.dirty && editForm.controls.network?.invalid)">
                 <small class="form-text text-danger"
@@ -91,11 +92,15 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="solomonApp.address.accountIndex" for="field_accountIndex">Account Index</label>
             <input type="number" class="form-control" name="accountIndex" id="field_accountIndex"
-                [(ngModel)]="address.accountIndex" required />
+                [(ngModel)]="address.accountIndex" required min="0" />
             <div [hidden]="!(editForm.controls.accountIndex?.dirty && editForm.controls.accountIndex?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.accountIndex?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.accountIndex?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.accountIndex?.errors?.number" jhiTranslate="entity.validation.number">
@@ -106,11 +111,15 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="solomonApp.address.chainIndex" for="field_chainIndex">Chain Index</label>
             <input type="number" class="form-control" name="chainIndex" id="field_chainIndex"
-                [(ngModel)]="address.chainIndex" required />
+                [(ngModel)]="address.chainIndex" required min="0" />
             <div [hidden]="!(editForm.controls.chainIndex?.dirty && editForm.controls.chainIndex?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.chainIndex?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.chainIndex?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.chainIndex?.errors?.number" jhiTranslate="entity.validation.number">
@@ -121,11 +130,15 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="solomonApp.address.addressIndex" for="field_addressIndex">Address Index</label>
             <input type="number" class="form-control" name="addressIndex" id="field_addressIndex"
-                [(ngModel)]="address.addressIndex" required />
+                [(ngModel)]="address.addressIndex" required min="0" />
             <div [hidden]="!(editForm.controls.addressIndex?.dirty && editForm.controls.addressIndex?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.addressIndex?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.addressIndex?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.addressIndex?.errors?.number" jhiTranslate="entity.validation.number">

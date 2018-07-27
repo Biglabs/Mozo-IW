@@ -139,7 +139,7 @@ public class ETHClient {
     }
 
     public IntermediaryTransaction sendSignedTransaction(IntermediaryTransaction signedTx) throws BlockCypherException {
-        String url = MessageFormat.format(transactionEP + "/send?token={0}", "618c6ab8511347f78f97f3d687c86b22");
+        String url = MessageFormat.format(transactionEP + "/send?token={0}", bycContext.getToken());
         System.out.println("Create new tx to:  " + url);
         try {
             ResponseEntity<IntermediaryTransaction> res = restTemplate.postForEntity(url, signedTx, IntermediaryTransaction.class);
