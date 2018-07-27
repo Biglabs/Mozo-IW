@@ -97,16 +97,16 @@ export default class RestoreWalletScreen extends React.Component {
                             Choose the way you want to restore:
                         </Text>
 
-                        <Button
-                            title='Choose backup file'
-                            textStyle={styles.button_choose_file}
-                            onPress={() => this.onChooseFileClick()}/>
+                        {/*<Button*/}
+                            {/*title='Choose backup file'*/}
+                            {/*textStyle={styles.button_choose_file}*/}
+                            {/*onPress={() => this.onChooseFileClick()}/>*/}
 
-                        <View style={styles.separator_container}>
-                            <View style={styles.dash}/>
-                            <Text style={styles.separator_text}>OR</Text>
-                            <View style={styles.dash}/>
-                        </View>
+                        {/*<View style={styles.separator_container}>*/}
+                            {/*<View style={styles.dash}/>*/}
+                            {/*<Text style={styles.separator_text}>OR</Text>*/}
+                            {/*<View style={styles.dash}/>*/}
+                        {/*</View>*/}
 
                         <QRCodeScanner
                             cameraSize={180}
