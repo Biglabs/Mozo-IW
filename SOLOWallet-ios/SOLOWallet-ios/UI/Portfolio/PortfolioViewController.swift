@@ -197,16 +197,7 @@ extension PortfolioViewController: SoloWalletDelegate {
             self.buildPortfolioView()
         }
     }
-    
+    func updateCurrentAddress(_ address: AddressDTO) {}
+    func updateAllAddresses(_ addresses: [AddressDTO]) {}
     func updateValue(_ key: String, value: String) {}
-}
-
-extension MMDrawerController {
-    var portfolioVC: PortfolioViewController! {
-        return (self.centerViewController as? UINavigationController)?.rootViewController as? PortfolioViewController
-    }
-    
-    var drawerVC: DrawerMenuViewController! {
-        return (self.leftDrawerViewController as? UINavigationController)?.rootViewController as? DrawerMenuViewController
-    }
 }

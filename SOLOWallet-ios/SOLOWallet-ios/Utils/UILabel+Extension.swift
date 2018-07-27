@@ -25,8 +25,11 @@ extension UILabel {
         // 1pt = 1.32px
         let lFontSize = round(self.font.pointSize * 1.32)
         let lRatio = image.size.width / image.size.height
-        
-        lAttachment.bounds = CGRect(x: 0, y: ((self.font.capHeight - lFontSize) / 2).rounded(), width: lRatio * lFontSize, height: lFontSize)
+        if imageBehindText {
+            lAttachment.bounds = CGRect(x: 0, y: 3, width: 6, height: 6)
+        } else {
+            lAttachment.bounds = CGRect(x: 0, y: ((self.font.capHeight - lFontSize) / 2).rounded(), width: lRatio * lFontSize, height: lFontSize)
+        }
         
         let lAttachmentString = NSAttributedString(attachment: lAttachment)
         

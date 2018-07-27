@@ -215,7 +215,8 @@ extension ReceiveViewController: SoloWalletDelegate {
     func request(_ action: String) {
         self.handleRequest(action)
     }
-    
+    func updateCurrentAddress(_ address: AddressDTO) {}
+    func updateAllAddresses(_ addresses: [AddressDTO]) {}
     func loadMoreTxHistory(_ blockHeight: Int64) {}
     
     func updateValue(_ key: String, value: String) {}

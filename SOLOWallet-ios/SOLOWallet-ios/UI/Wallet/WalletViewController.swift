@@ -141,6 +141,9 @@ extension WalletViewController: UIScrollViewDelegate {
 }
 
 extension WalletViewController: SoloWalletDelegate {
+    func updateCurrentAddress(_ address: AddressDTO) {}
+    func updateAllAddresses(_ addresses: [AddressDTO]) {}
+    
     func request(_ action: String) {
         self.delegate?.request(action)
     }

@@ -15,12 +15,14 @@ public class CoinTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var border: UIView!
     @IBOutlet weak var leadConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var activateView: UIView!
+    @IBOutlet weak var activateLabel: UILabel!
     
     public override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.nameLabel.textColor = ThemeManager.shared.font
+        self.nameLabel.textColor = ThemeManager.shared.title
+        self.activateLabel.textColor = ThemeManager.shared.title
         self.border.backgroundColor = ThemeManager.shared.border
     }
     
@@ -32,6 +34,7 @@ public class CoinTableViewCell: UITableViewCell {
         if address.isChild {
             self.leadConstraint.constant += 20
         }
+        self.activateView.isHidden = !address.isCurrentAddress
     }
     
     public override func setSelected(_ selected: Bool, animated: Bool) {

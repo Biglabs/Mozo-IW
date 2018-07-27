@@ -9,22 +9,159 @@
 import UIKit
 import SoloSDK
 import SwiftyJSON
+import MMDrawerController
 
 class SoloWalletViewController: UIViewController {
     
     let tabBarCtr = UITabBarController()
+    internal var feed: AddressFeed?
     var currentCoin: AddressDTO!
     var soloSDK: SoloSDK!
-    /// All addresses of a specific network
+    /// All addresses
     var addresses: [AddressDTO]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.createTabBarController()
+        self.buildCoverView()
+    }
+    
+    func buildCoverView() {
+        self.view.backgroundColor = .white
+        //effect relax
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(self.doubleTap))
+        doubleTap.numberOfTapsRequired = 2
+        self.view.addGestureRecognizer(doubleTap)
         
+        let twoFingerDoubleTap = UITapGestureRecognizer(target: self, action: #selector(self.twoFingerDoubleTap))
+        twoFingerDoubleTap.numberOfTapsRequired = 2
+        twoFingerDoubleTap.numberOfTouchesRequired = 2
+        self.view.addGestureRecognizer(twoFingerDoubleTap)
+        
+        self.validateHandshake()
+    }
+    
+    func validateHandshake() {
+        if UserDefaults.standard.string(forKey: Configuration.WALLLET_ID) == nil {
+            let displayWidth: CGFloat = self.view.frame.width
+            let displayHeight: CGFloat = self.view.frame.height
+            let handShakeView = HandshakeView()
+            handShakeView.soloSDK = self.soloSDK
+            handShakeView.frame = CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight)
+            self.view.addSubview(handShakeView)
+        } else {
+            self.initialize()
+        }
+    }
+    
+    func initialize() {
+        guard let walletId = UserDefaults.standard.string(forKey: Configuration.WALLLET_ID) else {
+            return
+        }
+        self.feed = AddressFeed.init(walletId, soloSDK: self.soloSDK)
+        self.refreshAddress()
+    }
+    
+    @objc func refreshAddress(_ sender: Any? = nil) {
+        self.feed?.refresh(){ content, error in
+            self.completion(error: error)
+        }
+        if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
+    }
+    
+    func fetchAddresses(){
+        self.feed?.fetchContent() { content, error in
+            self.completion(error: error)
+        }
+    }
+    
+    private func completion(error: Error?){
+        guard error == nil else {
+            // handle error screen
+            
+            return
+        }
+        if self.feed?.zeroData == true {
+            // handle no data
+            return
+        }
+        
+        self.currentCoin = self.feed?.addresses?[1]
         self.getBalance()
         self.getTransactionHistories(blockHeight: nil)
+
+        self.createTitleView()
+        self.createSoloBarButton()
+        self.createMenuBarButton()
+        self.createTabBarController()
+    }
+    
+    func createTitleView() {
+        if let name = self.currentCoin?.coin {
+            let titleLabel = UILabel.init()
+            titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+            titleLabel.textColor = ThemeManager.shared.title
+            titleLabel.addTextWithImage(text: " \(name) ", image: UIImage.init(named: "ic_\(name)")!, imageBehindText: false, keepPreviousText: false)
+            let downIcon = UIImage.init(named: "ic_sort_down")!
+            titleLabel.addTextWithImage(text: "", image: downIcon, imageBehindText: true, keepPreviousText: true)
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapTitle))
+            tap.numberOfTapsRequired = 1
+            titleLabel.isUserInteractionEnabled = true
+            titleLabel.addGestureRecognizer(tap)
+            
+            self.navigationItem.titleView = titleLabel
+        }
+    }
+    
+    @objc open func tapTitle(_ sender: Any? = nil) {
+        self.showWalletList()
+    }
+    
+    func showWalletList(){
+        let walletController = WalletListViewController()
+        walletController.addresses = self.buildAddressList()
+        walletController.currentCoin = self.currentCoin
+        walletController.delegate = self
+        
+        let nav = UINavigationController.init(rootViewController: walletController)
+        nav.modalPresentationStyle = .overCurrentContext
+        nav.modalTransitionStyle = .crossDissolve
+        
+        Utils.getTopViewController().present(nav, animated: true)
+    }
+    
+    func buildAddressList() -> [AddressDTO]{
+        var networks = Set<String>()
+        var filterAddresses = [AddressDTO]()
+        self.feed?.addresses?.forEach({ (address) in
+            if !networks.contains(address.network!) {
+                networks.insert(address.network!)
+                filterAddresses.append(address)
+                if address.coin == CoinType.ETH.key {
+                    let child = AddressDTO()!
+                    child.address = address.address
+                    child.coin = CoinType.MOZO.key
+                    child.network = address.network?.replace(address.coin!, withString: child.coin!)
+                    child.isChild = true
+                    filterAddresses.append(child)
+                }
+            }
+        })
+        return filterAddresses
+    }
+    
+    func createSoloBarButton() {
+        let logoBarButton = UIBarButtonItem.init(title: "Solo", style: .plain, target: self, action: nil)
+        logoBarButton.tintColor = ThemeManager.shared.main
+        self.navigationItem.leftBarButtonItem = logoBarButton
+    }
+    
+    func createMenuBarButton() {
+        let menuBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_menu"), style: .plain, target: self, action: #selector(self.rightDrawerButtonPress))
+        self.navigationItem.rightBarButtonItem = menuBarButton
     }
     
     func createTabBarController() {
@@ -68,6 +205,20 @@ class SoloWalletViewController: UIViewController {
         self.view.addSubview(self.tabBarCtr.view)
     }
     
+    // MARK: Animation
+    
+    @objc open func rightDrawerButtonPress(_ sender: Any? = nil) {
+        self.mm_drawerController.toggle(MMDrawerSide.right, animated: true, completion: nil)
+    }
+    
+    @objc open func doubleTap(_ sender: Any? = nil) {
+        self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
+    }
+    
+    @objc open func twoFingerDoubleTap(_ sender: Any? = nil) {
+        self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
+    }
+    
     // MARK: Update UI
     
     func displayBalance( jsonStr : Any){
@@ -97,16 +248,19 @@ class SoloWalletViewController: UIViewController {
         }
     }
     
-    func resetCurrentCoinForAllChildren(){
-        if let navWalletController = self.tabBarCtr.viewControllers?.getElement(0) as? UINavigationController {
-            if let walletVC = navWalletController.topViewController as? WalletViewController {
-                walletVC.currentCoin = self.currentCoin
-            }
+    func updateCurrentCoin(_ newCoin: AddressDTO){
+        self.currentCoin = newCoin
+        self.createTitleView()
+        self.resetCurrentCoinForAllChildren()
+        if (self.currentCoin.transactions == nil) || self.currentCoin.transactions?.count == 0 {
+            self.getTransactionHistories(blockHeight: nil)
         }
-        
-        if let navSendController = self.tabBarCtr.viewControllers?.getElement(3) as? UINavigationController {
-            if let sendVC = navSendController.topViewController as? SendViewController {
-                sendVC.currentCoin = self.currentCoin
+    }
+    
+    func resetCurrentCoinForAllChildren(){
+        for viewController in self.tabBarCtr.viewControllers! {
+            if let navController = viewController as? UINavigationController, let controller = navController.topViewController as? AbstractViewController {
+                controller.currentCoin = self.currentCoin
             }
         }
     }
@@ -237,6 +391,14 @@ class SoloWalletViewController: UIViewController {
 }
 
 extension SoloWalletViewController: SoloWalletDelegate {
+    func updateCurrentAddress(_ address: AddressDTO) {
+        self.updateCurrentCoin(address)
+    }
+    
+    func updateAllAddresses(_ addresses: [AddressDTO]) {
+        
+    }
+    
     func request(_ action: String) {
         switch action {
         case SDKAction.getBalance.rawValue:
@@ -255,4 +417,14 @@ extension SoloWalletViewController: SoloWalletDelegate {
     }
     
     func updateValue(_ key: String, value: String) {}
+}
+
+extension MMDrawerController {
+    var soloVC: SoloWalletViewController! {
+        return (self.centerViewController as? UINavigationController)?.rootViewController as? SoloWalletViewController
+    }
+    
+    var drawerVC: DrawerMenuViewController! {
+        return (self.leftDrawerViewController as? UINavigationController)?.rootViewController as? DrawerMenuViewController
+    }
 }

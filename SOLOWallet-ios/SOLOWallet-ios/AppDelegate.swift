@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         /// Instantiate the SoloSDK with the scheme registered for this app
         self.soloSDK = SoloSDK(bundleId: bundleId)
         
-        let centerViewController = PortfolioViewController()
+        let centerViewController = SoloWalletViewController()
         centerViewController.soloSDK = self.soloSDK
         let rightViewController = DrawerMenuViewController()
         

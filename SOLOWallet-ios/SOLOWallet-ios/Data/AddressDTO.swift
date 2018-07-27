@@ -20,6 +20,7 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
     public var chainIndex: Int?
     public var addressIndex: Int?
     public var isChild: Bool = false
+    public var isCurrentAddress: Bool = false
     public var transactions: [TransactionHistoryDTO]?
     
     // 1 coin = usd
