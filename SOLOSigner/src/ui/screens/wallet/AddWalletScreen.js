@@ -5,6 +5,7 @@ import {inject, observer} from "mobx-react";
 
 import {CoinItemView, ScreenFooterActions, Text} from "../../components";
 import WalletManager from '../../../services/WalletService';
+import Globals from '../../../services/GlobalService';
 
 import {
     colorPrimary,
@@ -24,7 +25,7 @@ export default class AddWalletScreen extends Component {
         if (this.props.txData && this.props.pin) {
             console.log("Executing communication action.");
             WalletManager.updateAddresses(selectedWallets);
-            Action.pop();
+            Actions.pop();
             Globals.responseToReceiver({success: true}, this.props.txData);
         } else {
             console.log("Executing create new wallet flow.");

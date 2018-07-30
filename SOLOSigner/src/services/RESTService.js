@@ -13,7 +13,7 @@ const URL_BTC_TX_REF = 'http://api.blockcypher.com/v1/btc/test3/addrs/';
 const HTTP_METHOD = {
     GET: "GET",
     POST: "POST",
-    PUT: "PUT"
+    PUT: "PUT",
 };
 
 function sendRequest(url, params, method){
@@ -30,7 +30,7 @@ function sendRequest(url, params, method){
             
             fetch(url, {
                 method: method,
-                body: isPost ? body : null,
+                body: method != HTTP_METHOD.GET ? body : null,
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
@@ -139,49 +139,21 @@ module.exports.registerWallet = function(publicKey) {
     });
 }
 
-module.exports.syncAddress = function(walletId, address) {
-    try {
-        sendRequest(URL_SYNC_ADDRESS, {
-            address : { 
-                address: address.address,
-                coin: address.coin,
-                network: address.network,
-                accountIndex: address.accountIndex,
-                chainIndex: address.chainIndex,
-                addressIndex: address.addressIndex,
-            },
-            walletId : walletId
-        }, HTTP_METHOD.POST);
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 /**
- * Upload all addresses to server.
+ * Upload all current local addresses including all their properties (except private key) 
  * @param {Array} addresses
+ * @param {String} walletId
  */
-module.exports.syncAllAddress = function(walletId, addresses) {
+module.exports.uploadAllAddresses = function(addresses, walletId){
+    
     try {
-        sendRequest(URL_SYNC_ADDRESS, {
-            addresses : addresses,
-            walletId : walletId
-        }, HTTP_METHOD.POST);
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-/**
- * Update all addresses with properties to server.
- * @param {Array} addresses
- */
-module.exports.updateAddresses = function(walletId, addresses) {
-    try {
-        sendRequest(URL_SYNC_ADDRESS, {
-            addresses : addresses,
-            walletId : walletId
-        }, HTTP_METHOD.PUT);
+        var walletAddressUpdateVM = [];
+        addresses.map((address) => {
+            var item = { address: address, walletId: walletId, inUse: address.inUse};
+            walletAddressUpdateVM.push(item);
+        });
+        console.log("Update addresses to server.");
+        sendRequest(URL_SYNC_ADDRESS, walletAddressUpdateVM, HTTP_METHOD.POST);
     } catch (error) {
         console.log(error);
     }

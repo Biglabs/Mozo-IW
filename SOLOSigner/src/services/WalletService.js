@@ -183,7 +183,7 @@ storeWalletInfo = function(manager, walletInfo, addresses, callback){
                 callback(null, true);
             }
             console.log("Sync all local addresses to server.");
-            RESTService.syncAllAddress(walletInfo.walletId, addresses);
+            RESTService.uploadAllAddresses(addresses, walletInfo.walletId);
         });
     } catch (error) {
         console.log("Store wallet info error: " + error);
@@ -296,14 +296,19 @@ module.exports.updateAddresses = function(coinTypes) {
     });
     manager.activeAddressesByNetworks(networks);
     let addresses = manager.getAllAddresses();
-    //getAllAddressesNotUse();
+    var updateAddresses = [];
     addresses.map((address) => {
-        address.prvKey = null;
+        var updateAddress = {};
+        for(var k in address) {
+            updateAddress[k]=address[k];
+        }
+        updateAddress.prvKey = null;
+        updateAddresses.push(updateAddress);
     });
     let walletInfo = manager.getWalletInfo();
     if(walletInfo){
-        console.log("Update not use addresses to server.");
-        RESTService.syncAllAddress(walletInfo.walletId, addresses);
+        let walletId = walletInfo.walletId;
+        RESTService.uploadAllAddresses(updateAddresses, walletId);
     }
 }
 

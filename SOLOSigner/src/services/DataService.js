@@ -130,12 +130,12 @@ class DataService {
     activeAddressesByNetworks(networks){
         let addresses = this.getAllAddresses();
         DataService.realm.write(() => {
-            for(var i = 0; i < address.length; i++) {
+            for(var i = 0; i < addresses.length; i++) {
                 let address = addresses[i];
                 if (networks.indexOf(address.network) > -1){
-                    address.isUse = true;
+                    address.inUse = true;
                 } else {
-                    address.isUse = false;
+                    address.inUse = false;
                 }
             }
         });
