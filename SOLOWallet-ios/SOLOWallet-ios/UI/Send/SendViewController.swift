@@ -202,11 +202,11 @@ class SendViewController: AbstractViewController {
         
     func validateTransaction(transaction: TransactionDTO, isSigning: Bool){
         if self.currentCoin?.coin == CoinType.ETH.key {
-            self.createNewEthTx(transaction){value, error in
+            self.createNewEthTx(transaction, network: (self.currentCoin?.network)!){value, error in
                 self.handleValidationResult(value: value, isSigning: isSigning)
             }
         } else if self.currentCoin?.coin == CoinType.BTC.key {
-            self.createNewBtcTx(transaction){value, error in
+            self.createNewBtcTx(transaction, network: (self.currentCoin?.network)!){value, error in
                 self.handleValidationResult(value: value, isSigning: isSigning)
             }
         }
@@ -245,11 +245,11 @@ class SendViewController: AbstractViewController {
     private func sendFund(_ signedTx: String) {
         self.resetValue()
         if self.currentCoin?.coin == CoinType.ETH.key {
-            self.sendETH(signedTx){value, error in
+            self.sendETH(signedTx, network: (self.currentCoin?.network)!){value, error in
                 self.handleSendTxResponse(value: value!)
             }
         } else if self.currentCoin?.coin == CoinType.BTC.key {
-            self.sendBTC(signedTx){value, error in
+            self.sendBTC(signedTx, network: (self.currentCoin?.network)!){value, error in
                 self.handleSendTxResponse(value: value!)
             }
         }
@@ -321,6 +321,12 @@ class SendViewController: AbstractViewController {
 }
 
 extension SendViewController: SoloWalletDelegate {
+    func updateCurrentAddress(_ address: AddressDTO) {
+    }
+    
+    func updateAllAddresses(_ addresses: [AddressDTO]) {
+    }
+    
     func loadMoreTxHistory(_ blockHeight: Int64) {}
     func request(_ action: String) {}
     

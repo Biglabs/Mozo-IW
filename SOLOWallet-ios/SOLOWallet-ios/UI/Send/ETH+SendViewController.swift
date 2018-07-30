@@ -21,9 +21,9 @@ extension SendViewController {
         return true
     }
     
-    func createNewEthTx(_ transaction: TransactionDTO, completion: @escaping (Any?, Error?) -> ()){
+    func createNewEthTx(_ transaction: TransactionDTO, network: String, completion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.api?.createNewEthTransaction(transaction) { value, error in
+        self.soloSDK?.api?.createNewEthTransaction(transaction, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
@@ -40,9 +40,9 @@ extension SendViewController {
         }
     }
     
-    func sendETH(_ signedTx: String, completion: @escaping (Any?, Error?) -> ()){
+    func sendETH(_ signedTx: String, network: String, completion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.api?.sendEthTransaction(signedTx) { value, error in
+        self.soloSDK?.api?.sendEthTransaction(signedTx, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {

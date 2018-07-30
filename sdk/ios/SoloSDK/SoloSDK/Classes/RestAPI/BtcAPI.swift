@@ -9,8 +9,9 @@ import Foundation
 
 public extension RESTService {
     // call block cypher for test only
-    public func getBtcBalance(_ address: String, completionHandler: completion = nil) {
-        let url = Configuration.BASE_URL + "/api/btc/test/addrs/\(address)/balance"
+    public func getBtcBalance(_ address: String, network: String, completionHandler: completion = nil) {
+        let networkPath = self.convertNetworkToPath(network: network)
+        let url = Configuration.BASE_URL + "/api/\(networkPath)/addrs/\(address)/balance"
         print(url)
         return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
     }
@@ -20,24 +21,28 @@ public extension RESTService {
     /// - Parameters:
     ///   - transaction: the original transaction
     ///   - completionHandler: handle after completed
-    public func createNewBtcTransaction(_ transaction: TransactionDTO, completionHandler: completion = nil) {
-        let url = Configuration.BASE_URL + "/api/btc/test/txs"
+    public func createNewBtcTransaction(_ transaction: TransactionDTO, network: String, completionHandler: completion = nil) {
+        let networkPath = self.convertNetworkToPath(network: network)
+        let url = Configuration.BASE_URL + "/api/\(networkPath)/txs"
         let param = transaction.toJSON()
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
     }
     
-    public func sendBtcTransaction(_ param: String, completionHandler: completion = nil) {
-        let url = Configuration.BASE_URL + "/api/btc/test/txs/send-signed-tx"
+    public func sendBtcTransaction(_ param: String, network: String, completionHandler: completion = nil) {
+        let networkPath = self.convertNetworkToPath(network: network)
+        let url = Configuration.BASE_URL + "/api/\(networkPath)/txs/send-signed-tx"
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
     }
     
     /// Call API to get all transaction histories from an address.
     ///
     /// - Parameters:
-    ///   - transaction: the address
+    ///   - address: the address
+    ///   - network: the network
     ///   - completionHandler: handle after completed
-    public func getBtcTransactionHistories(_ address: String, blockHeight: Int64?, completionHandler: completion = nil) {
-        var url = Configuration.BASE_URL + "/api/btc/test/addrs/\(address)/txhistory"
+    public func getBtcTransactionHistories(_ address: String, network: String, blockHeight: Int64?, completionHandler: completion = nil) {
+        let networkPath = self.convertNetworkToPath(network: network)
+        var url = Configuration.BASE_URL + "/api/\(networkPath)/addrs/\(address)/txhistory"
         if blockHeight != nil {
             url += "?beforeHeight=" + String(blockHeight ?? 0)
         }

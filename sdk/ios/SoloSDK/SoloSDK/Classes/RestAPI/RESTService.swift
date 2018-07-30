@@ -141,6 +141,12 @@ public final class RESTService {
         }
     }
     
+    public func convertNetworkToPath(network: String) -> String{
+        var path = network.lowercased()
+        path = path.replacingOccurrences(of: "_", with: "/")
+        return path
+    }
+    
     private func mappingConnectionError(_ response: HTTPURLResponse?, error: Error?) -> ConnectionError?{
         var connectionError: ConnectionError?
 

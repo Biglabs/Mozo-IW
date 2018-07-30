@@ -39,13 +39,27 @@ class WalletListViewController: AbstractViewController {
         
         self.createTableView()
         self.createFooter()
-        self.createAddMoreBarButton()
+        self.createManageBarButton()
     }
     
-    func createAddMoreBarButton() {
-        let barButton = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: nil)
+    func createManageBarButton() {
+        let barButton = UIBarButtonItem.init(title: "Manage", style: .plain, target: self, action: #selector(self.manageWallet(_:)))
         barButton.tintColor = ThemeManager.shared.main
         self.navigationItem.rightBarButtonItem = barButton
+    }
+    
+    @objc func manageWallet(_ sender: Any? = nil) {
+        self.soloSDK.singner?.manageWallet(){ result in
+            switch result {
+            case .success:
+                // refresh address
+                self.refresh()
+            case .failure(let error):
+                let alert = UIAlertController(title: error.title, message: error.detail, preferredStyle: .alert)
+                alert.addAction(.init(title: "OK", style: .default, handler: nil))
+                Utils.getTopViewController().present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     @objc func tap(gestureRecognizer: UITapGestureRecognizer) {
@@ -57,7 +71,10 @@ class WalletListViewController: AbstractViewController {
     }
     
     @objc func refresh(_ sender: Any? = nil) {
-        
+        self.delegate?.request(SDKAction.refreshAddress.rawValue)
+        if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
     }
     
     func createTableView() {

@@ -16,9 +16,9 @@ extension SendViewController {
         return true
     }
     
-    func createNewBtcTx(_ transaction: TransactionDTO, completion: @escaping (Any?, Error?) -> ()){
+    func createNewBtcTx(_ transaction: TransactionDTO, network: String, completion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.api?.createNewBtcTransaction(transaction) { value, error in
+        self.soloSDK?.api?.createNewBtcTransaction(transaction, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
@@ -35,9 +35,9 @@ extension SendViewController {
         }
     }
     
-    func sendBTC(_ signedTx: String, completion: @escaping (Any?, Error?) -> ()){
+    func sendBTC(_ signedTx: String, network: String, completion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.api?.sendBtcTransaction(signedTx) { value, error in
+        self.soloSDK?.api?.sendBtcTransaction(signedTx, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {

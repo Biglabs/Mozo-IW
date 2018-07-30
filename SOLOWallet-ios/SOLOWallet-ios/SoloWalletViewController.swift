@@ -221,6 +221,12 @@ class SoloWalletViewController: UIViewController {
     
     // MARK: Update UI
     
+    func updateWalletList(){
+        let walletController = Utils.getTopViewController() as! WalletListViewController
+        walletController.addresses = self.buildAddressList()
+        walletController.currentCoin = self.currentCoin
+    }
+    
     func displayBalance( jsonStr : Any){
         let json = SwiftyJSON.JSON(jsonStr)
         var amount = 0.0
@@ -282,7 +288,7 @@ class SoloWalletViewController: UIViewController {
         guard let address = self.currentCoin.address else {
             return
         }
-        self.soloSDK?.api?.getBtcBalance(address) { (value, error) in
+        self.soloSDK?.api?.getBtcBalance(address, network: self.currentCoin.network!) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
@@ -299,7 +305,7 @@ class SoloWalletViewController: UIViewController {
             return
         }
         
-        self.soloSDK?.api?.getEthBalance(address) { (value, error) in
+        self.soloSDK?.api?.getEthBalance(address, network: self.currentCoin.network!) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
@@ -328,7 +334,7 @@ class SoloWalletViewController: UIViewController {
         guard let address = self.currentCoin.address else {
             return
         }
-        self.soloSDK?.api?.getBtcTransactionHistories(address, blockHeight: blockHeight) { (value, error) in
+        self.soloSDK?.api?.getBtcTransactionHistories(address, network: self.currentCoin.network!, blockHeight: blockHeight) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
@@ -345,7 +351,7 @@ class SoloWalletViewController: UIViewController {
         guard let address = self.currentCoin.address else {
             return
         }
-        self.soloSDK?.api?.getEthTransactionHistories(address, blockHeight: blockHeight) { (value, error) in
+        self.soloSDK?.api?.getEthTransactionHistories(address, network: self.currentCoin.network!, blockHeight: blockHeight) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {
@@ -403,6 +409,11 @@ extension SoloWalletViewController: SoloWalletDelegate {
         switch action {
         case SDKAction.getBalance.rawValue:
             self.getBalance()
+        case SDKAction.refreshAddress.rawValue:
+            self.feed?.fetchContent(){ content, error in
+                self.completion(error: error)
+                self.updateWalletList()
+            }
         case SDKAction.refreshTxHistory.rawValue:
             self.getTransactionHistories(blockHeight: nil)
         case EventType.Dismiss.rawValue:

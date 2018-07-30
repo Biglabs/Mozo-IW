@@ -63,11 +63,13 @@ public class CommunicationDTO: ResponseObjectSerializable {
 }
 
 public class ResultDTO: ResponseObjectSerializable {
+    public var success: Bool?
     public var error: ErrorDTO?
     public var walletId: String?
     public var signedTransaction: String?
     
     public required init?(json: SwiftyJSON.JSON) {
+        self.success = json["success"].bool
         self.error = ErrorDTO(json: json["error"])
         self.walletId = json["walletId"].string
         self.signedTransaction = json["signedTransaction"].string
