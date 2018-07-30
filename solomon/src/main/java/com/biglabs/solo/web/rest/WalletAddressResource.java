@@ -2,8 +2,10 @@ package com.biglabs.solo.web.rest;
 
 import com.biglabs.solo.domain.Address;
 import com.biglabs.solo.domain.Wallet;
+import com.biglabs.solo.domain.enumeration.Network;
 import com.biglabs.solo.service.AddressService;
 import com.biglabs.solo.service.WalletService;
+import com.biglabs.solo.web.rest.vm.WalletAddressUpdateVM;
 import com.biglabs.solo.web.rest.vm.WalletAddressVM;
 import com.codahale.metrics.annotation.Timed;
 import com.biglabs.solo.domain.WalletAddress;
@@ -27,6 +29,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -161,27 +164,54 @@ public class WalletAddressResource {
 //            .body(result);
 //    }
 
-//    /**
-//     * PUT  /wallet-addresses : Updates an existing walletAddress.
-//     *
-//     * @param walletAddress the walletAddress to update
-//     * @return the ResponseEntity with status 200 (OK) and with body the updated walletAddress,
-//     * or with status 400 (Bad Request) if the walletAddress is not valid,
-//     * or with status 500 (Internal Server Error) if the walletAddress couldn't be updated
-//     * @throws URISyntaxException if the Location URI syntax is incorrect
-//     */
-//    @PutMapping("/wallet-addresses")
-//    @Timed
-//    public ResponseEntity<WalletAddress> updateWalletAddress(@Valid @RequestBody WalletAddress walletAddress) throws URISyntaxException {
-//        log.debug("REST request to update WalletAddress : {}", walletAddress);
-//        if (walletAddress.getId() == null) {
-//            return createWalletAddress(walletAddress);
-//        }
-//        WalletAddress result = walletAddressRepository.save(walletAddress);
-//        return ResponseEntity.ok()
-//            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, walletAddress.getId().toString()))
-//            .body(result);
-//    }
+    /**
+     * PUT  /wallet-addresses : Updates an existing walletAddress.
+     *
+     * @param waUpdate the walletAddress to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated walletAddress,
+     * or with status 400 (Bad Request) if the walletAddress is not valid,
+     * or with status 500 (Internal Server Error) if the walletAddress couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/wallet-addresses")
+    @Timed
+    @Transactional
+    public ResponseEntity<WalletAddress> updateWalletAddress(@Valid @RequestBody WalletAddressUpdateVM waUpdate) throws URISyntaxException {
+        log.debug("REST request to update WalletAddress : {}", waUpdate);
+
+
+        Optional<Wallet> w = walletService.findOneByWalletId(waUpdate.getWalletId());
+        if (!w.isPresent()) {
+            throw new BadRequestAlertException("Wallet " + waUpdate.getWalletId() + " not exist.", ENTITY_NAME, "nowallet");
+        }
+
+        // create or update addresses
+        WalletAddressUpdateVM.AddressUpdate au = waUpdate.getAddress();
+        Optional<Address> dbAddress = addressService.findAddressByAddressAndNetwork(au.getAddress(), au.getNetwork());
+
+        if (!dbAddress.isPresent()) {
+            throw new BadRequestAlertException("Address " + waUpdate.getAddress() + " not exist.", ENTITY_NAME, "nowallet");
+        }
+
+
+
+        //Link wallet and unlink address
+        Optional<WalletAddress> was = walletAddressRepository.findFirstByWallet_WalletIdAndAddress_AddressAndAddress_Network(waUpdate.getWalletId(), au.getAddress(), au.getNetwork());
+
+        WalletAddress toupdate = was.orElse(new WalletAddress());
+        toupdate.setWallet(w.get());
+        toupdate.setAddress(dbAddress.get());
+        if (waUpdate.getInUsed() != null) {
+            toupdate.setInUse(waUpdate.getInUsed());
+        }
+
+
+        toupdate = walletAddressRepository.save(toupdate);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, toupdate.getId().toString()))
+            .body(toupdate);
+    }
 
 //    /**
 //     * GET  /wallet-addresses : get all the walletAddresses.

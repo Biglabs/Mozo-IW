@@ -1,5 +1,6 @@
 package com.biglabs.solo.service.impl;
 
+import com.biglabs.solo.domain.enumeration.Network;
 import com.biglabs.solo.service.AddressService;
 import com.biglabs.solo.domain.Address;
 import com.biglabs.solo.repository.AddressRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Address.
@@ -86,5 +88,10 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public List<Address> findAllAddressIn(List<String> adrHashes) {
         return addressRepository.findAllByAddressIn(adrHashes);
+    }
+
+    @Override
+    public Optional<Address> findAddressByAddressAndNetwork(String address, Network network) {
+        return addressRepository.findAddressByAddressAndNetwork(address, network);
     }
 }
