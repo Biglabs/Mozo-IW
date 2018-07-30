@@ -30,7 +30,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ipq-CD-eF5">
-                                <rect key="frame" x="44" y="0.0" width="300" height="44"/>
+                                <rect key="frame" x="44" y="0.0" width="355" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="aqv-Fi-R8p"/>
                                 </constraints>
@@ -84,8 +84,8 @@
                             <constraint firstItem="Ipq-CD-eF5" firstAttribute="leading" secondItem="pLo-vF-Qy3" secondAttribute="trailing" id="NYt-DF-0KE"/>
                             <constraint firstItem="uFQ-ID-RaE" firstAttribute="leading" secondItem="rMr-gM-mmj" secondAttribute="leading" id="ObM-YO-htd"/>
                             <constraint firstItem="pLo-vF-Qy3" firstAttribute="leading" secondItem="rMr-gM-mmj" secondAttribute="leading" id="chn-pz-ta8"/>
-                            <constraint firstItem="SsX-qN-x6a" firstAttribute="leading" secondItem="Ipq-CD-eF5" secondAttribute="trailing" constant="100" id="i3w-Af-qJW"/>
-                            <constraint firstAttribute="trailing" secondItem="Ipq-CD-eF5" secondAttribute="trailing" constant="195" id="k6o-Po-7K3"/>
+                            <constraint firstItem="SsX-qN-x6a" firstAttribute="leading" secondItem="Ipq-CD-eF5" secondAttribute="trailing" constant="45" id="i3w-Af-qJW"/>
+                            <constraint firstAttribute="trailing" secondItem="Ipq-CD-eF5" secondAttribute="trailing" constant="140" id="k6o-Po-7K3"/>
                             <constraint firstItem="SsX-qN-x6a" firstAttribute="bottom" secondItem="Ipq-CD-eF5" secondAttribute="bottom" id="ou6-DZ-fX9"/>
                             <constraint firstItem="pLo-vF-Qy3" firstAttribute="top" secondItem="rMr-gM-mmj" secondAttribute="top" id="u2Y-ak-1mh"/>
                         </constraints>

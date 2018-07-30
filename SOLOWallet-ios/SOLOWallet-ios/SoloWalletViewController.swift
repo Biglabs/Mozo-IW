@@ -124,6 +124,7 @@ class SoloWalletViewController: UIViewController {
         let walletController = WalletListViewController()
         walletController.addresses = self.buildAddressList()
         walletController.currentCoin = self.currentCoin
+        walletController.soloSDK = self.soloSDK
         walletController.delegate = self
         
         let nav = UINavigationController.init(rootViewController: walletController)

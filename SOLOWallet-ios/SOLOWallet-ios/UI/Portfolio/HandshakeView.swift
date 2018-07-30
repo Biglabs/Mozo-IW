@@ -59,7 +59,7 @@ public class HandshakeView: UIView {
                 //refresh
                 guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
                     let drawerController = appDelegate.drawerController else {return}
-//                drawerController.portfolioVC.createTableView()
+                drawerController.soloVC.initialize()
             case .failure(let error):
                 let alert = UIAlertController(title: error.title, message: error.detail, preferredStyle: .alert)
                 alert.addAction(.init(title: "OK", style: .default, handler: nil))
