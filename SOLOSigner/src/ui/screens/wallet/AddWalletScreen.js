@@ -4,6 +4,8 @@ import {Actions} from 'react-native-router-flux';
 import {inject, observer} from "mobx-react";
 
 import {CoinItemView, ScreenFooterActions, Text} from "../../components";
+import WalletManager from '../../../services/WalletService';
+
 import {
     colorPrimary,
     colorScreenBackground,
@@ -18,6 +20,29 @@ import {
 @inject("selectedWalletsStore")
 @observer
 export default class AddWalletScreen extends Component {
+    handleContinuePress(selectedWallets) {
+        if (this.props.txData && this.props.pin) {
+            console.log("Executing communication action.");
+            WalletManager.updateAddresses(selectedWallets);
+            Action.pop();
+            Globals.responseToReceiver({success: true}, this.props.txData);
+        } else {
+            console.log("Executing create new wallet flow.");
+            Actions.confirm_backup_phrase({coinTypes: selectedWallets});
+        }
+    }
+
+    handleBackPress() {
+        Actions.pop();
+        if (this.props.txData && this.props.pin) {
+            console.log("Executing communication action.");
+            let error = Constant.ERROR_TYPE.CANCEL_REQUEST;
+            Globals.responseToReceiver({error: error}, this.props.txData);
+        } else {
+            console.log("Executing create new wallet flow.");
+        }
+    }
+
     render() {
         let selectedWallets = this.props.selectedWalletsStore.wallets;
         return (
@@ -56,9 +81,9 @@ export default class AddWalletScreen extends Component {
 
                 <ScreenFooterActions
                     enabledContinue={selectedWallets.length > 0}
-                    onBackPress={() => Actions.pop()}
+                    onBackPress={() => this.handleBackPress()}
                     onContinuePress={() => {
-                        Actions.confirm_backup_phrase({coinTypes: selectedWallets});
+                        this.handleContinuePress(selectedWallets);
                     }}/>
             </View>
         )

@@ -28,6 +28,7 @@ const AddressSchema = {
         address_network: 'string',
         address: 'string',
         network: 'string',
+        inUse: 'bool',
         prvKey: 'string',
         coin: 'string',
         accountIndex: 'int',
@@ -121,6 +122,25 @@ class DataService {
         return addresses;
     }
 
+    /**
+     * Update all addresses to set property inUse by network.
+     * Then return all addresses which are not in use.
+     * @param {Array} networks
+     */
+    activeAddressesByNetworks(networks){
+        let addresses = this.getAllAddresses();
+        DataService.realm.write(() => {
+            for(var i = 0; i < address.length; i++) {
+                let address = addresses[i];
+                if (networks.indexOf(address.network) > -1){
+                    address.isUse = true;
+                } else {
+                    address.isUse = false;
+                }
+            }
+        });
+    }
+
     addAddress(address) {
         DataService.realm.write(() => {
             let primaryKey = address.address + "_" + address.network;
@@ -131,7 +151,8 @@ class DataService {
                 { 
                     address_network : primaryKey,
                     address : address.address, 
-                    network: address.network, 
+                    network: address.network,
+                    inUse: address.inUse, 
                     prvKey: address.privkey,
                     coin: address.coin,
                     accountIndex: address.accountIndex,

@@ -4,7 +4,7 @@ import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import encryption from '../helpers/EncryptionUtils';
 import {AsyncStorage} from 'react-native';
-import RESTService, { syncAllAddress } from './RESTService';
+import RESTService from './RESTService';
 import ethUtil from 'ethereumjs-util';
 import Web3 from 'web3';
 
@@ -92,7 +92,7 @@ generateAddressAtIndex = function(wallet, coinType, addressIndex) {
             address = ethUtil.addHexPrefix(checksumAddress);
             privkey = ethUtil.addHexPrefix(privkey);
         } else {
-            //TODO: Support SOLO and MOZO
+            //TODO: Support SOLO
         }
         console.log("Address: [" + address + "]");
         return {address: address, addressIndex: addressIndex, privkey: privkey};
@@ -192,18 +192,7 @@ storeWalletInfo = function(manager, walletInfo, addresses, callback){
         }
     }
 }
-
-// syncAllAddress = function(walletId, addresses) {
-//     // TODO: Get all addresses from server
-
-//     // TODO: Compare with local addresses
-
-//     // TODO: Resolve conflict (if any)
-
-//     // Sync final addresses to server
-//     RESTService.syncAllAddress(walletId, addresses);
-// }
-
+ 
 /**
  * Create a new wallet, addresses or import a wallet depending on current state.
  * @param {Bool} isNewPin
@@ -222,19 +211,8 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         if (isDefault) {
             coinTypes = Constant.DEFAULT_COINS;
         }
-        let wallets = createNewWallet(manager, importedPhrase, pin, coinTypes);
-        let addresses = [];
-        wallets.map((wallet, index) => {
-            let coinType = coinTypes[index];
-            let address = generateAddressAtIndex(wallet, coinType.value, 0);
-            address.accountIndex = 0;
-            address.chainIndex = 0;
-            address.coin = coinType.name;
-            address.network = coinType.network;
-            saveAddressToLocal(manager, address, pin);
-            address.privkey = null;
-            addresses.push(address);
-        });
+        let wallets = createNewWallet(manager, importedPhrase, pin, Constant.DEFAULT_COINS);
+        let addresses = createAddressList(manager, wallets, pin, coinTypes);
         let publicKey = wallets[0].neutered().toBase58();
         registerWalletAndSyncAddress(manager, publicKey, addresses, (error, result) => {
             if (typeof callback === 'function') {
@@ -276,6 +254,56 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
                 callback(new Error("Inputted PIN is not correct"), null);
             }
         }
+    }
+}
+
+/**
+ * Create all addresses of each wallet. Addresses will be updated to local.
+ * @param {String} pin
+ * @param {Array} coinTypes
+ */
+createAddressList = function(manager, wallets, pin, coinTypes){
+    let defaultTypes = Constant.DEFAULT_COINS;
+    let addresses = [];
+    wallets.map((wallet, index) => {
+        let coinType = defaultTypes[index];
+        let address = generateAddressAtIndex(wallet, coinType.value, 0);
+        address.accountIndex = 0;
+        address.chainIndex = 0;
+        address.coin = coinType.name;
+        address.network = coinType.network;
+        address.inUse = true;
+        if (coinTypes.indexOf(coinType) == -1){
+            address.inUse = false;
+        }
+        saveAddressToLocal(manager, address, pin);
+        address.privkey = null;
+        addresses.push(address);
+    });
+    return addresses;
+}
+
+/**
+ * Update all addresses with new coin type list then update them at local and server. 
+ * @param {String} pin
+ * @param {Array} coinTypes
+ */
+module.exports.updateAddresses = function(coinTypes) {
+    let manager = DataService.getInstance();
+    var networks = [];
+    coinTypes.map((coinType) => {
+        networks.push(coinType.network);
+    });
+    manager.activeAddressesByNetworks(networks);
+    let addresses = manager.getAllAddresses();
+    //getAllAddressesNotUse();
+    addresses.map((address) => {
+        address.prvKey = null;
+    });
+    let walletInfo = manager.getWalletInfo();
+    if(walletInfo){
+        console.log("Update not use addresses to server.");
+        RESTService.syncAllAddress(walletInfo.walletId, addresses);
     }
 }
 
@@ -348,6 +376,7 @@ signTxMessage = function(tosign, privateKey, net){
             let buffer = ethUtil.toBuffer(privateKey);
             let tosignBuffer = new Buffer(tosign, 'hex');
             let msgSign = ethUtil.ecsign(tosignBuffer, buffer);
+            publicKey = ethUtil.privateToPublic(buffer);
             sign = serialize(msgSign.v, msgSign.r, msgSign.s);
             console.log('Sign: ' + sign);
         } else { //BTC

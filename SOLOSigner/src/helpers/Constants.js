@@ -15,7 +15,7 @@ const Constants = {
         NONE: "NONE",
         GET_WALLET: "GET_WALLET",
         SIGN: "SIGN",
-        ADD_ADDRESS: "ADD_ADDRESS"
+        MANAGE_WALLET: "MANAGE_WALLET"
     },
     BACKUP_FILE_TYPE: {
         PNG: "png",
@@ -63,12 +63,6 @@ const Constants = {
             value: "Constract's Address",
             icon: icCoinSolo
         },
-        MOZO: {
-            displayName: "MOZO",
-            name: "MOZO",
-            value: "Constract's Address",
-            icon: icCoinMozo
-        }
     },
     ERROR_TYPE: {
         UNKNOWN: {

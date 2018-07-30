@@ -59,8 +59,9 @@ function manageScheme(data, pin){
             }
             break;
         }
-        case Constant.ACTION_SCHEME.ADD_ADDRESS: {
-            console.log("Processing add new address.");
+        case Constant.ACTION_SCHEME.MANAGE_WALLET: {
+            console.log("Processing manage wallet.");
+            Actions.jump('add_wallet', {txData: jsonData, pin: pin});
             break;
         }
         default: {

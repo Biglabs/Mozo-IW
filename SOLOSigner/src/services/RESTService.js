@@ -10,7 +10,13 @@ const URL_BTC_CREATE_TRANSACTION = BASE_URL + API_PATH + "/btc/test/txs";
 const URL_ETH_CREATE_TRANSACTION = BASE_URL + API_PATH + "/eth/test/txs";
 const URL_BTC_TX_REF = 'http://api.blockcypher.com/v1/btc/test3/addrs/';
 
-function sendRequest(url, params, isPost){
+const HTTP_METHOD = {
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT"
+};
+
+function sendRequest(url, params, method){
     const FETCH_TIMEOUT = 30000;
     return new Promise((resolve, reject) => {
         try {
@@ -21,8 +27,6 @@ function sendRequest(url, params, isPost){
                 didTimeOut = true;
                 reject({isTimeOut : true});
             }, FETCH_TIMEOUT);
-            
-            let method = isPost ? 'POST' : 'GET';
             
             fetch(url, {
                 method: method,
@@ -73,7 +77,7 @@ module.exports.getAllAddressesFromServer = function(walletId){
         try {
             sendRequest(URL_GET_ALL_ADDRESSES, {
                 walletId: walletId,
-            }, false)
+            }, HTTP_METHOD.GET)
             .then((data) => {
                 console.log(data);
                 resolve(data);
@@ -92,7 +96,7 @@ module.exports.getAllAddressesFromServer = function(walletId){
 module.exports.getExistingWalletFromServer = function(publicKey, callback){
     try {
         let hash = Globals.convertToHash(publicKey);
-        sendRequest(URL_GET_WALLET + `${hash}`, false)
+        sendRequest(URL_GET_WALLET + `${hash}`, HTTP_METHOD.GET)
         .then((walletInfo) => {
             console.log(walletInfo);
             if (typeof callback === 'function') {
@@ -119,7 +123,7 @@ module.exports.registerWallet = function(publicKey) {
             let hash = Globals.convertToHash(publicKey);
             sendRequest(URL_REGISTER_WALLET, {
                 walletKey: hash,
-            }, true)
+            }, HTTP_METHOD.POST)
             .then((walletInfo) => {
                 console.log(walletInfo);
                 resolve(walletInfo);
@@ -147,77 +151,38 @@ module.exports.syncAddress = function(walletId, address) {
                 addressIndex: address.addressIndex,
             },
             walletId : walletId
-        }, true);
+        }, HTTP_METHOD.POST);
     } catch (error) {
         console.log(error);
     }
 }
 
+/**
+ * Upload all addresses to server.
+ * @param {Array} addresses
+ */
 module.exports.syncAllAddress = function(walletId, addresses) {
     try {
         sendRequest(URL_SYNC_ADDRESS, {
             addresses : addresses,
             walletId : walletId
-        }, true);
+        }, HTTP_METHOD.POST);
     } catch (error) {
         console.log(error);
     }
 }
 
-module.exports.createNewBTCTransaction = function(data){
-    return new Promise((resolve, reject) => {
-        try {
-            sendRequest(URL_BTC_CREATE_TRANSACTION, data, true)
-            .then((txData) => {
-                console.log(txData);
-                resolve(txData);
-            })
-            .catch((error) => {
-                console.log(error);
-                reject(error);
-            }); 
-        } catch (error) {
-            console.log(error);
-            reject(error);
-        }
-    });
-}
-
-module.exports.createNewETHTransaction = function(data){
-    return new Promise((resolve, reject) => {
-        try {
-            sendRequest(URL_ETH_CREATE_TRANSACTION, data, true)
-            .then((txData) => {
-                console.log(txData);
-                resolve(txData);
-            })
-            .catch((error) => {
-                console.log(error);
-                reject(error);
-            }); 
-        } catch (error) {
-            console.log(error);
-            reject(error);
-        }
-    });
-}
-
-module.exports.getTransactionRefs = function(addresses){
-    return new Promise((resolve, reject) => {
-        try {
-            let addrStr = addresses.join(';');
-            sendRequest(URL_BTC_TX_REF + addrStr, null, false)
-            .then((txData) => {
-                console.log(txData);
-                resolve(txData);
-            })
-            .catch((error) => {
-                console.log(error);
-                reject(error);
-            }); 
-        } catch (error) {
-            console.log(error);
-            reject(error);
-        }
-    });
+/**
+ * Update all addresses with properties to server.
+ * @param {Array} addresses
+ */
+module.exports.updateAddresses = function(walletId, addresses) {
+    try {
+        sendRequest(URL_SYNC_ADDRESS, {
+            addresses : addresses,
+            walletId : walletId
+        }, HTTP_METHOD.PUT);
+    } catch (error) {
+        console.log(error);
+    }
 }
