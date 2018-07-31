@@ -220,6 +220,18 @@ class SoloWalletViewController: UIViewController {
         self.mm_drawerController?.bouncePreview(for: MMDrawerSide.right) { _ in }
     }
     
+    func dismissCurrentController(){
+        if (Utils.getTopViewController() as? WalletListViewController) != nil{
+            let transition: CATransition = CATransition()
+            transition.duration = 0.3
+            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+            transition.type = kCATransitionReveal
+            transition.subtype = kCATransitionFromTop
+            self.view.window!.layer.add(transition, forKey: nil)
+        }
+        self.dismiss(animated: true)
+    }
+    
     // MARK: Update UI
     
     func updateWalletList(){
@@ -419,7 +431,7 @@ extension SoloWalletViewController: SoloWalletDelegate {
         case SDKAction.refreshTxHistory.rawValue:
             self.getTransactionHistories(blockHeight: nil)
         case EventType.Dismiss.rawValue:
-            self.dismiss(animated: true)
+            self.dismissCurrentController()
         default:
             break
         }
