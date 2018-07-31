@@ -257,6 +257,7 @@ class SoloWalletViewController: UIViewController {
     
     func updateCurrentCoin(_ newCoin: AddressDTO){
         self.currentCoin = newCoin
+        self.getBalance()
         self.createTitleView()
         self.resetCurrentCoinForAllChildren()
         if (self.currentCoin.transactions == nil) || self.currentCoin.transactions?.count == 0 {

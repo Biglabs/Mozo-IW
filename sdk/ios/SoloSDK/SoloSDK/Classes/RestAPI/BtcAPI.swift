@@ -12,7 +12,6 @@ public extension RESTService {
     public func getBtcBalance(_ address: String, network: String, completionHandler: completion = nil) {
         let networkPath = self.convertNetworkToPath(network: network)
         let url = Configuration.BASE_URL + "/api/\(networkPath)/addrs/\(address)/balance"
-        print(url)
         return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
     }
     

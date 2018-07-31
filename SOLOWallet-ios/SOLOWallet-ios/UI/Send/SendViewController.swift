@@ -266,7 +266,7 @@ class SendViewController: AbstractViewController {
         }
         if let hash = interTx.tx?.hash {
             self.viewTransactionOnBrowser(hash)
-            print("ETH transaction: ", hash)
+            print("Transaction hash: ", hash)
         }
     }
     
