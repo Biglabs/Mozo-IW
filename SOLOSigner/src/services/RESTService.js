@@ -144,8 +144,7 @@ module.exports.registerWallet = function(publicKey) {
  * @param {Array} addresses
  * @param {String} walletId
  */
-module.exports.uploadAllAddresses = function(addresses, walletId){
-    
+module.exports.uploadAllAddresses = function(addresses, walletId, callback){
     try {
         var walletAddressUpdateVM = [];
         addresses.map((address) => {
@@ -153,8 +152,23 @@ module.exports.uploadAllAddresses = function(addresses, walletId){
             walletAddressUpdateVM.push(item);
         });
         console.log("Update addresses to server.");
-        sendRequest(URL_SYNC_ADDRESS, walletAddressUpdateVM, HTTP_METHOD.POST);
+        sendRequest(URL_SYNC_ADDRESS, walletAddressUpdateVM, HTTP_METHOD.POST)
+        .then((result) => {
+            console.log(result);
+            if (typeof callback === 'function') {
+                callback(null, result);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            if (typeof callback === 'function') {
+                callback(error, null);
+            }
+        });
     } catch (error) {
-        console.log(error);
+        console.log("Upload all address error: " + error);
+        if (typeof callback === 'function') {
+            callback(error, null);
+        }
     }
 }

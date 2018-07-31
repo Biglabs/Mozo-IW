@@ -17,12 +17,14 @@ import Web3 from 'web3';
  * @param {Array} coinTypes
  * @return {Array}
  */
-createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
+createNewWallet = function(manager, importedPhrase, pin, coinTypes, mustSave) {
     let mnemonic = importedPhrase || 
         bip39.generateMnemonic(128, null, bip39.wordlists.english);
-    // Save PIN and mnemonic
-    let encryptedMnemonic = encryption.encrypt(mnemonic, pin);
-    manager.updateMnemonicWithPin(encryptedMnemonic, pin);
+    if (mustSave) {
+        // Save PIN and mnemonic
+        let encryptedMnemonic = encryption.encrypt(mnemonic, pin);
+        manager.updateMnemonicWithPin(encryptedMnemonic, pin);
+    }
     let wallets = generateWallets(mnemonic, coinTypes);
     return wallets;
 }
@@ -152,6 +154,7 @@ registerWalletAndSyncAddress = function(manager, publicKey, addresses, callback)
                 RESTService.registerWallet(publicKey).then((walletInfo) => {
                     console.log('Wallet is registered.');
                     storeWalletInfo(manager, walletInfo, addresses, (error, result) => {
+                        console.log("Callback after storing wallet and upload addresses.");
                         if (typeof callback === 'function') {
                             callback(error, result);
                         }
@@ -183,7 +186,13 @@ storeWalletInfo = function(manager, walletInfo, addresses, callback){
                 callback(null, true);
             }
             console.log("Sync all local addresses to server.");
-            RESTService.uploadAllAddresses(addresses, walletInfo.walletId);
+            RESTService.uploadAllAddresses(addresses, walletInfo.walletId, (error, result) => {
+                if (result) {
+                    console.log("Upload addresses successfully, result: " + result); 
+                } else {
+                    console.log("Upload addresses failed, error: " + error);
+                }
+            });
         });
     } catch (error) {
         console.log("Store wallet info error: " + error);
@@ -206,15 +215,15 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
     // Store isDbExisting true
     AsyncStorage.setItem(Constant.FLAG_DB_EXISTING, 'true');
     if (isNewPin) {
-        // TODO: Set timer here for the next time when user have to re-enter PIN
         let isDefault = coinTypes ? false : true;
         if (isDefault) {
             coinTypes = Constant.DEFAULT_COINS;
         }
-        let wallets = createNewWallet(manager, importedPhrase, pin, Constant.DEFAULT_COINS);
+        let wallets = createNewWallet(manager, importedPhrase, pin, Constant.DEFAULT_COINS, true);
         let addresses = createAddressList(manager, wallets, pin, coinTypes);
         let publicKey = wallets[0].neutered().toBase58();
         registerWalletAndSyncAddress(manager, publicKey, addresses, (error, result) => {
+            console.log("Callback after registering wallet.");
             if (typeof callback === 'function') {
                 if (result) {
                     callback(null, result);
