@@ -32,7 +32,7 @@ public class CoinTableViewCell: UITableViewCell {
             self.nameLabel.text = address.network ?? name
         }
         if address.isChild {
-            self.leadConstraint.constant += 20
+            self.leadConstraint.constant = 40
         }
         self.activateView.isHidden = !address.isCurrentAddress
     }
