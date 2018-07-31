@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JDStatusBarNotification
 
 public class ReceiveTransactionValueCell: UITableViewCell {
     @IBOutlet weak var inputCoinView: UIView!
@@ -34,6 +35,7 @@ public class ReceiveTransactionValueCell: UITableViewCell {
         self.inputCoinNameLabel?.textColor = .white
         self.inputCoinTextField.textColor = ThemeManager.shared.font
         self.inputCoinTextField.keyboardType = UIKeyboardType.decimalPad
+        self.inputCoinTextField.delegate = self
         self.inputCoinTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
         self.inputUSDLabel?.textColor = ThemeManager.shared.placeholder
     }
@@ -53,5 +55,17 @@ public class ReceiveTransactionValueCell: UITableViewCell {
         self.coin = coin
         let coinName = self.coin?.coin ?? ""
         self.inputCoinNameLabel?.text = "\(coinName)   "
+    }
+}
+
+extension ReceiveTransactionValueCell: UITextFieldDelegate {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Validate decimal format
+        let finalText = (textField.text ?? "") + string
+        if (finalText.isValidDecimalFormat() == false){
+            JDStatusBarNotification.show(withStatus: "Please input value in decimal format.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return false
+        }
+        return true
     }
 }

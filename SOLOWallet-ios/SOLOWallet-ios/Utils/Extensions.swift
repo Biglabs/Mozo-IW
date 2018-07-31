@@ -22,6 +22,11 @@ public extension String {
         return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
     }
     
+    public func isValidDecimalFormat() -> Bool{
+        let regex = try? NSRegularExpression(pattern: "^(?:|0|[1-9]\\d*)(?:\\.\\d*)?$", options: .caseInsensitive)
+        return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
+    }
+    
     public func isValidName() -> Bool {
         let regex = try? NSRegularExpression(pattern: "^[a-zA-Z0-9_-]*$", options: .caseInsensitive)
         return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil

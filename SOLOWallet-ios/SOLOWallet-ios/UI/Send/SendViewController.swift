@@ -76,6 +76,7 @@ class SendViewController: AbstractViewController {
         self.inputCoinTextField.textColor = ThemeManager.shared.font
         self.inputCoinTextField.keyboardType = UIKeyboardType.decimalPad
         self.inputCoinTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+        self.inputCoinTextField.delegate = self
         self.inputUSDLabel?.textColor = ThemeManager.shared.placeholder
         
         self.spendableTitleLabel.textColor = ThemeManager.shared.title
@@ -317,6 +318,18 @@ class SendViewController: AbstractViewController {
             // Address only
             self.addressTextField.text = value
         }
+    }
+}
+
+extension SendViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Validate decimal format
+        let finalText = (textField.text ?? "") + string
+        if (finalText.isValidDecimalFormat() == false){
+            JDStatusBarNotification.show(withStatus: "Please input value in decimal format.", dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+            return false
+        }
+        return true
     }
 }
 
