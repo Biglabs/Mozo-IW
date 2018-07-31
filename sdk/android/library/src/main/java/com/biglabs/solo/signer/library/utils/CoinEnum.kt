@@ -32,6 +32,13 @@ enum class CoinEnum(val displayName: String, val fullName: String, val key: Stri
             "ETH_TEST",
             R.drawable.ic_coin_eth
     ),
+    ETH_ROPSTEN(
+            "ETH ROPSTEN",
+            "ethereum",
+            "ETH",
+            "ETH_ROPSTEN",
+            R.drawable.ic_coin_eth
+    ),
     SOLO(
             "SOLO",
             "solo",
@@ -53,6 +60,15 @@ enum class CoinEnum(val displayName: String, val fullName: String, val key: Stri
             "UNKNOWN",
             R.drawable.ic_coin_unknown
     );
+
+    internal fun getNetworkForAPI(): String {
+        return when {
+            network.contains("main", true) -> "main"
+            network.contains("test", true) -> "test"
+            network.contains("ropsten", true) -> "ropsten"
+            else -> network
+        }
+    }
 
     companion object {
         internal fun find(key: String?, network: String?): CoinEnum {
