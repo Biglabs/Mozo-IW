@@ -273,6 +273,10 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
  */
 createAddressList = function(manager, wallets, pin, coinTypes){
     let defaultTypes = Constant.DEFAULT_COINS;
+    var choosenNetworks = [];
+    coinTypes.map(coinType => {
+        choosenNetworks.push(coinType.network);
+    });
     let addresses = [];
     wallets.map((wallet, index) => {
         let coinType = defaultTypes[index];
@@ -282,9 +286,10 @@ createAddressList = function(manager, wallets, pin, coinTypes){
         address.coin = coinType.name;
         address.network = coinType.network;
         address.inUse = true;
-        if (coinTypes.indexOf(coinType) == -1){
+        if (choosenNetworks.indexOf(coinType.network) == -1){
             address.inUse = false;
         }
+        console.log(`Address in use: ` + address.inUse);
         saveAddressToLocal(manager, address, pin);
         address.privkey = null;
         addresses.push(address);

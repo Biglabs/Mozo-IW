@@ -60,7 +60,8 @@ const Constants = {
         SOLO: {
             displayName: "SOLO",
             name: "SOLO",
-            value: "Constract's Address",
+            value: 0,
+            network: "SOLO",
             icon: icCoinSolo
         },
     },

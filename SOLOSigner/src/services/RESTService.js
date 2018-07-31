@@ -20,8 +20,12 @@ function sendRequest(url, params, method){
     const FETCH_TIMEOUT = 30000;
     return new Promise((resolve, reject) => {
         try {
-            let body = JSON.stringify(params);
-            console.log(body);
+            var body = null;
+            if (params != null && method != HTTP_METHOD.GET) {
+                body = JSON.stringify(params);
+                console.log(body);
+            }
+
             let didTimeOut = false;
             const timeout = setTimeout(function() {
                 didTimeOut = true;
@@ -30,7 +34,7 @@ function sendRequest(url, params, method){
             
             fetch(url, {
                 method: method,
-                body: method != HTTP_METHOD.GET ? body : null,
+                body: body,
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
@@ -96,7 +100,7 @@ module.exports.getAllAddressesFromServer = function(walletId){
 module.exports.getExistingWalletFromServer = function(publicKey, callback){
     try {
         let hash = Globals.convertToHash(publicKey);
-        sendRequest(URL_GET_WALLET + `${hash}`, HTTP_METHOD.GET)
+        sendRequest(URL_GET_WALLET + `${hash}`, null, HTTP_METHOD.GET)
         .then((walletInfo) => {
             console.log(walletInfo);
             if (typeof callback === 'function') {
