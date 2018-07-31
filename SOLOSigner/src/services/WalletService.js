@@ -395,7 +395,7 @@ signTxMessage = function(tosign, privateKey, net){
             let buffer = ethUtil.toBuffer(privateKey);
             let tosignBuffer = new Buffer(tosign, 'hex');
             let msgSign = ethUtil.ecsign(tosignBuffer, buffer);
-            publicKey = ethUtil.privateToPublic(buffer);
+            publicKey = ethUtil.privateToPublic(buffer).toString('hex');;
             sign = serialize(msgSign.v, msgSign.r, msgSign.s);
             console.log('Sign: ' + sign);
         } else { //BTC
