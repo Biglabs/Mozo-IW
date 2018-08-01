@@ -155,8 +155,9 @@ class SoloWalletViewController: UIViewController {
     }
     
     func createSoloBarButton() {
-        let logoBarButton = UIBarButtonItem.init(title: "Solo", style: .plain, target: self, action: nil)
+        let logoBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_SOLO_banner"), style: .plain, target: self, action: nil)
         logoBarButton.tintColor = ThemeManager.shared.main
+        logoBarButton.imageInsets = UIEdgeInsets.init(top: 0, left: -20, bottom: 0, right: 0)
         self.navigationItem.leftBarButtonItem = logoBarButton
     }
     
