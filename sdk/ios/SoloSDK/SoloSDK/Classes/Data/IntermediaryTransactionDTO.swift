@@ -25,12 +25,16 @@ public class IntermediaryTransactionDTO: ResponseObjectSerializable {
     /// Optional Array of errors in the form “error”:“description-of-error”. This is only returned if there was an error in any stage of transaction generation, and is usually accompanied by a HTTP 400 code.
     public var errors: [String]?
     
+    /// The nonce is the number of transactions sent from a given address. Each time you send a transaction, the nonce increases by 1 . There are rules about what transactions are valid transactions and the nonce is used to enforce some of these rules.
+    public var nonce: NSNumber?
+    
     public required init?(json: SwiftyJSON.JSON) {
         self.tx = TransactionDTO(json: json["tx"])
         self.signatures = json["signatures"].array?.filter({ $0.string != nil }).map({ $0.string! })
         self.tosign = json["tosign"].array?.filter({ $0.string != nil }).map({ $0.string! })
         self.pubkeys = json["pubkeys"].array?.filter({ $0.string != nil }).map({ $0.string! })
         self.errors = json["errors"].array?.filter({ $0.string != nil }).map({ $0.string! })
+        self.nonce = json["nonce"].number
     }
     
     public required init?(){}
@@ -51,6 +55,9 @@ public class IntermediaryTransactionDTO: ResponseObjectSerializable {
         }
         if let errors = self.errors {
             json["errors"] = errors
+        }
+        if let nonce = self.nonce {
+            json["nonce"] = nonce
         }
         return json
     }
