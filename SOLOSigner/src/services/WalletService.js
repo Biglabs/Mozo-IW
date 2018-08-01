@@ -391,11 +391,13 @@ signTxMessage = function(tosign, privateKey, net){
     try {
         var sign = null;
         var publicKey = null;
-        if(Web3.utils.isHex(privateKey)){ //ETH
+        if (Web3.utils.isHex(privateKey)){ //ETH
             let buffer = ethUtil.toBuffer(privateKey);
-            let tosignBuffer = new Buffer(tosign, 'hex');
+            // Remove the prefix "0x" if any
+            let tosignBuffer = new Buffer(tosign.replace("0x", ""), "hex");
             let msgSign = ethUtil.ecsign(tosignBuffer, buffer);
-            publicKey = ethUtil.privateToPublic(buffer).toString('hex');;
+            publicKey = ethUtil.privateToPublic(buffer).toString('hex');
+            console.log('Public key: ' + publicKey);
             sign = serialize(msgSign.v, msgSign.r, msgSign.s);
             console.log('Sign: ' + sign);
         } else { //BTC
@@ -459,6 +461,7 @@ module.exports.signTransaction = function(txData, pin, callback){
         validateTx.tosign.map(function (tosign, index) {
             var privateKey = privKeys[index];
             var sign = signTxMessage(tosign, privateKey, net);
+            console.log('Sign: ' + sign);
             validateTx.pubkeys.push(sign.publicKey);
             validateTx.signatures.push(sign.signature);
         });
