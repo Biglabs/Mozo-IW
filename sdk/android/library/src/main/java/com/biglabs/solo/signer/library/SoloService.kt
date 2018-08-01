@@ -33,7 +33,7 @@ internal interface SoloService {
     }
 
     @GET("wallets/{walletID}/addresses")
-    fun getWalletAddress(@Path("walletID") walletID: String): Call<List<Wallet>>
+    fun getWalletAddress(@Path("walletID") walletID: String, @Query("inUse") inUse: Boolean = true): Call<List<Wallet>>
 
     @GET("{coin}/{network}/addrs/{address}/balance")
     fun getBalance(@Path("coin") coin: String, @Path("network") network: String, @Path("address") address: String): Call<BalanceResponse>

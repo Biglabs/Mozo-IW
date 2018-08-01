@@ -38,8 +38,9 @@ class ReceiveFragment : Fragment() {
         input_amount.imeOptions = EditorInfo.IME_ACTION_DONE
         initializeEvents()
 
-        val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
-        walletsViewModel.getCurrentWallet().observe(this, Observer { updateUI(it) })
+        ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java).apply {
+            getCurrentWallet().observe(this@ReceiveFragment, Observer { updateUI(it) })
+        }
     }
 
     private fun initializeEvents() {
