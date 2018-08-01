@@ -65,7 +65,7 @@ function updateMnemonicWithPin(mnemonic, pin){
  * expose to outside
  */
 module.exports = {
-    //getAppInfo: getAppInfo,
+    getAppInfo: getAppInfo,
     checkPin: checkPin,
     //addMnemonicWithPin: addMnemonicWithPin,
     updateMnemonicWithPin: updateMnemonicWithPin,

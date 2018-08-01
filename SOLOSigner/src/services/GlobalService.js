@@ -1,21 +1,20 @@
-import {AsyncStorage, Linking} from "react-native";
+import {AsyncStorage, Linking, Platform} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {FLAG_DB_EXISTING} from '../helpers/Constants';
 
-const userReference = require('electron').remote.require('electron-settings');
-
 function checkWalletExisting() {
-    let result = userReference.get(FLAG_DB_EXISTING);
-    if (result === 'true') {
-        /* has wallet */
-        Actions.reset('security_pin', {isNewPIN: false});
+    if (Platform.OS.toUpperCase() === "WEB") {
+        const userReference = require('electron').remote.require('electron-settings');
+        let result = userReference.get(FLAG_DB_EXISTING);
+        if (result === 'true') {
+            // has wallet
+            Actions.reset('security_pin', {isNewPIN: false});
+        } else {
+            // no wallet, create a new one
+            Actions.reset('welcome');
+        }
     } else {
-        /* no wallet, create a new one */
-        Actions.reset('welcome');
-    }
-
-    return;
-    AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
+        AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
         if (result === 'true') {
             /* has wallet */
             Actions.reset('security_pin', {isNewPIN: false});
@@ -24,6 +23,7 @@ function checkWalletExisting() {
             Actions.reset('welcome');
         }
     });
+    }
 }
 
 function responseToReceiver(result, jsonData) {

@@ -2,6 +2,8 @@ import React from "react";
 import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
 
+import { isWebPlatform } from "../../../helpers/PlatformUtils";
+
 import {
     colorDisable,
     colorError,
@@ -16,7 +18,10 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
-import WalletBackupService from '../../../services/WalletBackupService';
+// import WalletBackupService from '../../../services/WalletBackupService';
+//import { walletBackupService as WalletBackupService } from '../../../services';
+
+const ipc = require('electron').ipcRenderer;
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
@@ -25,9 +30,15 @@ export default class RestoreWalletScreen extends React.Component {
     }
 
     onChooseFileClick() {
-        WalletBackupService.loadBackupFile(data => {
-            this.onReceiveData(data);
-        })
+        
+        if(isWebPlatform) {
+            // send command to main process
+            ipc.send('open-file-dialog');
+        } else {
+            /* WalletBackupService.loadBackupFile(data => {
+                this.onReceiveData(data);
+            }) */
+        }
     }
 
     onReceiveData(encryptedData) {
@@ -46,7 +57,7 @@ export default class RestoreWalletScreen extends React.Component {
     }
 
     onContinueClick() {
-        if (this.encryptedData && this.checkPassword()) {
+        /* if (this.encryptedData && this.checkPassword()) {
             let result = WalletBackupService.restoreWallet(this.encryptedData, this.encryptPassword);
             if (result) {
                 this.state.backupPhraseValidSate = 1;
@@ -60,7 +71,7 @@ export default class RestoreWalletScreen extends React.Component {
                     backupPhraseValidSate: 0
                 });
             }
-        }
+        } */
     }
 
     checkPassword() {
@@ -108,9 +119,9 @@ export default class RestoreWalletScreen extends React.Component {
                             {/*<View style={styles.dash}/>*/}
                         {/*</View>*/}
 
-                        <QRCodeScanner
+                        {/* <QRCodeScanner
                             cameraSize={180}
-                            onCodeRead={data => this.onReceiveData(data)}/>
+                            onCodeRead={data => this.onReceiveData(data)}/> */}
                     </View>
                 }
                 {

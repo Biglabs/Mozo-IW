@@ -4,7 +4,7 @@ import {Actions} from 'react-native-router-flux';
 
 import {ScreenFooterActions, Text} from "../components";
 // import WalletManager from '../../services/WalletService';
-import * as services from "../../services/index.js";
+import { walletService } from "../../services/index.js";
 
 
 
@@ -78,7 +78,7 @@ export default class SecurityPinScreen extends Component {
                 }); */
                 /** Code for testing */
                 let pin = JSON.stringify(this.pinCode);
-                services.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
+                walletService.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
                     //Check error type
                     console.log("handleEnterCorrectPin, error: ", error);
                     this.props.isNewPIN = false;

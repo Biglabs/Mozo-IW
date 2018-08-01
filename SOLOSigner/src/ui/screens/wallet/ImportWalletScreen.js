@@ -2,6 +2,7 @@ import React from "react";
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import bip39 from 'bip39';
+import QrReader from 'react-qr-reader';
 
 import {QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 import {
@@ -16,6 +17,8 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 
+import { isWebPlatform } from "../../../helpers/PlatformUtils";
+
 export default class ImportWalletScreen extends React.Component {
 
     constructor(props) {
@@ -24,8 +27,13 @@ export default class ImportWalletScreen extends React.Component {
             isScanningQRCode: false,
             isPhraseValid: false,
             isShowError: false,
-            backupPhrase: ''
+            backupPhrase: '',
+            delay: 100,
+            result: 'No result'
         }
+
+        // TODO: Remove later, for test
+        this.handleScan = this.handleScan.bind(this);
     }
 
     onSubmitPhrase(phrase) {
@@ -46,7 +54,26 @@ export default class ImportWalletScreen extends React.Component {
         }
     }
 
+    handleScan(result){
+        if(result){
+            this.setState({ 
+                backupPhrase: result 
+            });
+        }
+    }
+    handleError(err){
+        console.error(err);
+    }
+    openImageDialog() {
+        this.refs.qrReader.openImageDialog();
+    }
+
     render() {
+        const previewStyle = {
+            height: 180,
+            width: 180,
+        };
+
         return (
             <View style={styles.container}>
 
@@ -87,11 +114,23 @@ export default class ImportWalletScreen extends React.Component {
                         <Text style={styles.separator_text}>OR BETTER YET</Text>
                         <View style={styles.dash}/>
                     </View>
-
-                    <QRCodeScanner
+                    { isWebPlatform() && 
+                        <div>
+                            <QrReader
+                                ref="qrReader"
+                                delay={this.state.delay}
+                                style={previewStyle}
+                                onError={this.handleError}
+                                onScan={this.handleScan}
+                                legacyMode
+                            />
+                            <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
+                        </div>
+                    }
+                    {/* <QRCodeScanner
                         cameraSize={180}
                         scanning={this.state.isScanningQRCode}
-                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
+                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/> */}
                 </ScrollView>
 
                 <ScreenFooterActions

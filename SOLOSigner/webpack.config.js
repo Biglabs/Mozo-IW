@@ -77,6 +77,7 @@ module.exports = {
       'react-native': 'react-native-electron',
       'react-native-svg-uri': 'svgs',
       'react-native-svg': 'svgs',
+      // 'react-native-svg': 'react-svg-inline',
       //'react-native-fs': 'fs'
     },
     extensions: ['.web.js', '.js', '.json'],
