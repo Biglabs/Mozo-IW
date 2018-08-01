@@ -14,10 +14,7 @@ import com.biglabs.solo.signer.library.models.scheme.SignerRequest
 import com.biglabs.solo.signer.library.models.scheme.SignerResponse
 import com.biglabs.solo.signer.library.models.ui.TransactionHistory
 import com.biglabs.solo.signer.library.models.ui.Wallet
-import com.biglabs.solo.signer.library.utils.CoinUtils
-import com.biglabs.solo.signer.library.utils.Constants
-import com.biglabs.solo.signer.library.utils.SchemeUtils
-import com.biglabs.solo.signer.library.utils.logAsError
+import com.biglabs.solo.signer.library.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,10 +76,13 @@ class Signer private constructor(private val walletScheme: String) {
         if (myWalletID != null) {
             this.mSoloService.getWalletAddress(myWalletID!!).enqueue(object : Callback<List<Wallet>> {
                 override fun onResponse(call: Call<List<Wallet>>, response: Response<List<Wallet>>) {
-                    this@Signer.mSignerListener?.onReceiveWallets(response.body() ?: listOf())
+                    this@Signer.mSignerListener?.onReceiveWallets(
+                            (response.body() ?: listOf()).filter { it.coin != CoinEnum.UNKNOWN }
+                    )
                 }
 
                 override fun onFailure(call: Call<List<Wallet>>?, t: Throwable?) {
+                    call?.request()?.url()?.toString()?.logAsError("API Failed")
                     this@Signer.mSignerListener?.onError(ACTION_GET_WALLETS, t?.message)
                 }
             })
@@ -92,21 +92,23 @@ class Signer private constructor(private val walletScheme: String) {
     }
 
     fun getBalance(wallet: Wallet) {
-
         val coinType = wallet.coin.key
+        val network = wallet.coin.getNetworkForAPI()
 
         wallet.address?.logAsError("getBalance: $coinType")
-        this.mSoloService.getBalance(coinType.toLowerCase(), wallet.address!!).enqueue(object : Callback<BalanceResponse> {
+        this.mSoloService.getBalance(coinType.toLowerCase(), network, wallet.address!!).enqueue(object : Callback<BalanceResponse> {
             override fun onResponse(call: Call<BalanceResponse>?, response: Response<BalanceResponse>?) {
                 if (response?.body() != null) {
                     val balance = CoinUtils.convertToUIUnit(coinType, response.body()!!.balance)
                     this@Signer.mSignerListener?.onReceiveBalance(balance)
                 } else {
+                    call?.request()?.url()?.toString()?.logAsError("API Failed")
                     this@Signer.mSignerListener?.onError(ACTION_GET_BALANCE, response?.message())
                 }
             }
 
             override fun onFailure(call: Call<BalanceResponse>?, t: Throwable?) {
+                call?.request()?.url()?.toString()?.logAsError("API Failed")
                 this@Signer.mSignerListener?.onError(ACTION_UNKNOWN, t?.message)
             }
         })
@@ -118,56 +120,60 @@ class Signer private constructor(private val walletScheme: String) {
                 if (response?.body() != null) {
                     this@Signer.mSignerListener?.onReceiveTransactionHistory(response.body()!!)
                 } else {
+                    call?.request()?.url()?.toString()?.logAsError("API Failed")
                     this@Signer.mSignerListener?.onError(ACTION_GET_TX_HISTORY, response?.message())
                 }
             }
 
             override fun onFailure(call: Call<List<TransactionHistory>>?, t: Throwable?) {
+                call?.request()?.url()?.toString()?.logAsError("API Failed")
                 this@Signer.mSignerListener?.onError(ACTION_UNKNOWN, t?.message)
             }
         }
         if (lastItemBlockHeight > 0) {
-            this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.address!!, lastItemBlockHeight).enqueue(callback)
+            this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.coin.getNetworkForAPI(), wallet.address!!, lastItemBlockHeight).enqueue(callback)
         } else {
-            this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.address!!).enqueue(callback)
+            this.mSoloService.getTxHistory(wallet.coin.key.toLowerCase(), wallet.coin.getNetworkForAPI(), wallet.address!!).enqueue(callback)
         }
     }
 
-    fun createTransaction(context: Context, fromAddress: String, toAddress: String, gasLimit: String, coinType: String, network: String, value: String, msg: String) {
+    fun createTransaction(context: Context, fromAddress: String, toAddress: String, gasLimit: String, coin: CoinEnum, value: String, msg: String) {
         clearTempData()
 
         val v: Double = value.toDoubleOrNull() ?: 0.0
-        val valueInLong: Long = CoinUtils.convertToServerUnit(coinType, v).toLong()
+        val valueInLong: Long = CoinUtils.convertToServerUnit(coin.key, v).toLong()
 
         val params = TransactionResponseContent(fromAddress, toAddress, valueInLong)
         params.gasLimit = gasLimit.toLongOrNull() ?: Constants.GAS_LIMIT_EXTERNAL_ACCOUNT
         params.toString().logAsError("createTx param\n")
 
-        this.mSoloService.createTx(coinType.toLowerCase(), params).enqueue(object : Callback<TransactionResponse> {
+        this.mSoloService.createTx(coin.key.toLowerCase(), coin.getNetworkForAPI(), params).enqueue(object : Callback<TransactionResponse> {
             override fun onResponse(call: Call<TransactionResponse>?, response: Response<TransactionResponse>?) {
                 response?.body()?.toString()?.logAsError("createTx response\n")
 
-                this@Signer.mLastTxCoinType = coinType
+                this@Signer.mLastTxCoinType = coin.key
                 this@Signer.mLastTxMsg = msg
-                openDeepLink(context, Constants.SCHEME_ACTION_SIGN_TX, coinType, network, response?.body())
+                openDeepLink(context, Constants.SCHEME_ACTION_SIGN_TX, coin.key, coin.network, response?.body())
             }
 
             override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
+                call?.request()?.url()?.toString()?.logAsError("API Failed")
                 this@Signer.mSignerListener?.onError(ACTION_CONFIRM_TX, t?.message)
             }
         })
     }
 
-    fun sendTransaction() {
+    fun sendTransaction(coin: CoinEnum) {
         this.mLastTxSignedData?.let {
             it.toString().logAsError("mLastTxSignedData\n")
-            this.mSoloService.sendTx(this.mLastTxCoinType?.toLowerCase()!!, it).enqueue(object : Callback<TransactionResponse> {
+            this.mSoloService.sendTx(this.mLastTxCoinType?.toLowerCase()!!, coin.getNetworkForAPI(), it).enqueue(object : Callback<TransactionResponse> {
                 override fun onResponse(call: Call<TransactionResponse>?, response: Response<TransactionResponse>?) {
                     this@Signer.mSignerListener?.onReceiveSentTransaction(response?.isSuccessful == true, response?.body()?.tx?.hash)
                     clearTempData()
                 }
 
                 override fun onFailure(call: Call<TransactionResponse>?, t: Throwable?) {
+                    call?.request()?.url()?.toString()?.logAsError("API Failed")
                     this@Signer.mSignerListener?.onError(ACTION_SEND_TX, t?.message)
                 }
             })

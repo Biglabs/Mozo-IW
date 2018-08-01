@@ -16,10 +16,9 @@ import com.biglabs.solo.wallet.utils.RecyclerItemClickListener
 import com.biglabs.solo.wallet.utils.fullscreenLayout
 import kotlinx.android.synthetic.main.dialog_wallet_chooser.*
 
-
 class WalletChooserDialog : AppCompatDialogFragment(), RecyclerItemClickListener {
 
-    private var wallets: List<Wallet> = arrayListOf()
+    private var wallets = listOf<Wallet>()
     private val coins = arrayListOf<CoinCheckable>()
     private var adapter: WalletsRecyclerAdapter? = null
     private var walletsViewModel: WalletsViewModel? = null

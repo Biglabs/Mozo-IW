@@ -2,7 +2,7 @@ package com.biglabs.solo.signer.library.utils
 
 class Constants {
     companion object {
-        internal const val API_BASE_URL = "http://192.168.1.98:9060/api/"
+        internal const val API_BASE_URL = "http://192.168.1.98:9000/api/"
 
         internal const val SCHEME_SIGNER_APP = "solosigner"
         internal const val SCHEME_WALLET_SUFFIX = "solowallet"
