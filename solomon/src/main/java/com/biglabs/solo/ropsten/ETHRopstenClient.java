@@ -5,7 +5,9 @@ import com.biglabs.solo.blockcypher.model.blockchain.EthBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.web.rest.errors.ErrorConstants;
 import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
+import com.biglabs.solo.web.rest.errors.JsonRpcException;
 import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
 import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import org.slf4j.Logger;
@@ -96,13 +98,30 @@ public class ETHRopstenClient  {
         BigInteger nonce = getNonce(from);
         BigInteger gasPrice;
         BigInteger gasLimit;
-        if (txReq.getFees() != null) {
-            // get gas-price
-            gasPrice = web3j.ethGasPrice().sendAsync().get().getGasPrice();
-            gasLimit = txReq.getFees().toBigInteger().divide(gasPrice).add(BigInteger.ONE);
-        } else {
-            gasPrice = txReq.getGasPrice();
+
+        // dont use fees field
+//        if (txReq.getFees() != null) {
+//            // get gas-price
+//            gasPrice = web3j.ethGasPrice().sendAsync().get().getGasPrice();
+//            gasLimit = txReq.getFees().toBigInteger().divide(gasPrice).add(BigInteger.ONE);
+//        }
+
+        if (txReq.getGasLimit() != null){
             gasLimit = txReq.getGasLimit();
+        } else {
+            gasLimit = BigInteger.valueOf(21_000);
+            logger.info("Use default gas limit {}", gasLimit);
+        }
+
+        if (txReq.getGasPrice() != null) {
+            gasPrice = txReq.getGasPrice();
+        } else {
+            gasPrice = web3j.ethGasPrice().sendAsync().get().getGasPrice();
+            logger.info("Use auto-suggested gas price {}", gasPrice);
+            if (gasPrice == null) {
+                gasPrice = BigInteger.valueOf(1000000000);
+                logger.info("Fail to get gas price. Using 1 gwei as default gas price");
+            }
         }
 
         // create raw-tx
@@ -113,21 +132,21 @@ public class ETHRopstenClient  {
 
         tx.addInput(txReq.getInputs().get(0).toInput());
         tx.addOutput(txReq.getOutputs().get(0).toOutput());
+        tx.setGasLimit(gasLimit);
+        tx.setGasPrice(gasPrice);
         // set nonce, gasprice, gaslimit
         itx.setNonce(nonce);
-        itx.setGasLimit(gasLimit);
-        itx.setGasPrice(gasPrice);
         itx.setTx(tx);
         itx.setTosign(Arrays.asList(tosign));
         //TODO: consider to save raw tx to db
         return itx;
     }
 
-    public IntermediaryTransaction sendSignedTransaction(EthIntermediaryTx txReq) throws ExecutionException, InterruptedException {
+    public IntermediaryTransaction sendSignedTransaction(EthIntermediaryTx txReq) throws ExecutionException, InterruptedException, IOException {
         String to = txReq.getTx().getOutputs().get(0).getAddresses().get(0);
         BigInteger value = txReq.getTx().getOutputs().get(0).getValue().toBigInteger();
         RawTransaction rtx = RawTransaction.createEtherTransaction(
-            txReq.getNonce(), txReq.getGasPrice(), txReq.getGasLimit(), to, value);
+            txReq.getNonce(), txReq.getTx().getGasPrice(), txReq.getTx().getGasLimit(), to, value);
 
         String sig = txReq.getSignatures().get(0);
         String toSign = txReq.getTosign().get(0);
@@ -141,8 +160,10 @@ public class ETHRopstenClient  {
         RlpList rlpList = new RlpList(values);
         byte[] signedTx = RlpEncoder.encode(rlpList);
 
-        EthSendTransaction sendtx = web3j.ethSendRawTransaction(Numeric.toHexString(signedTx)).sendAsync().get();
-
+        EthSendTransaction sendtx = web3j.ethSendRawTransaction(Numeric.toHexString(signedTx)).send();
+        if (sendtx.getError() != null) {
+            throw new JsonRpcException("Fail to send transaction", sendtx.getError());
+        }
         txReq.getTx().setHash(sendtx.getTransactionHash());
         return txReq;
     }

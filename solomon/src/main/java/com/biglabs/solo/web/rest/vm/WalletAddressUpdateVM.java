@@ -1,9 +1,11 @@
 package com.biglabs.solo.web.rest.vm;
 
+import com.biglabs.solo.domain.Address;
+import com.biglabs.solo.domain.enumeration.CoinType;
 import com.biglabs.solo.domain.enumeration.Network;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -15,7 +17,7 @@ public class WalletAddressUpdateVM {
     private AddressUpdate address;
     @NotNull
     private String walletId;
-    private Boolean inUsed;
+    private Boolean inUse;
 
     public String getWalletId() {
         return walletId;
@@ -42,21 +44,32 @@ public class WalletAddressUpdateVM {
         this.address = address;
     }
 
-    public Boolean getInUsed() {
-        return inUsed;
+    public Boolean getInUse() {
+        return inUse;
     }
 
-    public void setInUsed(Boolean inUsed) {
-        this.inUsed = inUsed;
+    public void setInUse(Boolean inUse) {
+        this.inUse = inUse;
     }
 
     public static class AddressUpdate {
 
         @NotNull
-        private Network network;
+        private String address;
 
         @NotNull
-        private String address;
+        private Network network;
+
+        private CoinType coin;
+
+        @Min(value = 0, message = "Account index must be greater or equal 0")
+        private Integer accountIndex;
+
+        @Min(value = 0, message = "Chain index must be greater or equal 0")
+        private Integer chainIndex;
+
+        @Min(value = 0, message = "Address index must be greater or equal 0")
+        private Integer addressIndex;
 
         public Network getNetwork() {
             return network;
@@ -72,6 +85,49 @@ public class WalletAddressUpdateVM {
 
         public void setAddress(String address) {
             this.address = address;
+        }
+
+        public Integer getAccountIndex() {
+            return accountIndex;
+        }
+
+        public void setAccountIndex(Integer accountIndex) {
+            this.accountIndex = accountIndex;
+        }
+
+        public Integer getChainIndex() {
+            return chainIndex;
+        }
+
+        public void setChainIndex(Integer chainIndex) {
+            this.chainIndex = chainIndex;
+        }
+
+        public Integer getAddressIndex() {
+            return addressIndex;
+        }
+
+        public void setAddressIndex(Integer addressIndex) {
+            this.addressIndex = addressIndex;
+        }
+
+        public CoinType getCoin() {
+            return coin;
+        }
+
+        public void setCoin(CoinType coin) {
+            this.coin = coin;
+        }
+
+        public Address toNewAddress() {
+            Address a = new Address();
+            a.setAddress(this.address);
+            a.setNetwork(this.getNetwork());
+            a.setCoin(this.coin);
+            a.setAccountIndex(this.accountIndex);
+            a.setChainIndex(this.chainIndex);
+            a.setAddressIndex(this.addressIndex);
+            return a;
         }
     }
 }

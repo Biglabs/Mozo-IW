@@ -3,6 +3,7 @@ package com.biglabs.solo.blockcypher.model.transaction.intermediary;
 
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -14,10 +15,6 @@ import java.util.List;
 public class EthIntermediaryTx extends IntermediaryTransaction {
     @NotNull
     private BigInteger nonce;
-    @NotNull
-    private BigInteger gasPrice;
-    @NotNull
-    private BigInteger gasLimit;
 
     public BigInteger getNonce() {
         return nonce;
@@ -26,20 +23,20 @@ public class EthIntermediaryTx extends IntermediaryTransaction {
     public void setNonce(BigInteger nonce) {
         this.nonce = nonce;
     }
-
-    public BigInteger getGasPrice() {
-        return gasPrice;
-    }
-
-    public void setGasPrice(BigInteger gasPrice) {
-        this.gasPrice = gasPrice;
-    }
-
-    public BigInteger getGasLimit() {
-        return gasLimit;
-    }
-
-    public void setGasLimit(BigInteger gasLimit) {
-        this.gasLimit = gasLimit;
-    }
+//
+//    public BigInteger getGasPrice() {
+//        return gasPrice;
+//    }
+//
+//    public void setGasPrice(BigInteger gasPrice) {
+//        this.gasPrice = gasPrice;
+//    }
+//
+//    public BigInteger getGasLimit() {
+//        return gasLimit;
+//    }
+//
+//    public void setGasLimit(BigInteger gasLimit) {
+//        this.gasLimit = gasLimit;
+//    }
 }

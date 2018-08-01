@@ -78,6 +78,10 @@ public class WalletAddress implements Serializable {
         return this;
     }
 
+    public Boolean getInUse() {
+        return inUse;
+    }
+
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }

@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,6 +117,13 @@ public class Transaction {
     private boolean doubleSpend;
 //    @JsonProperty(value = "double_spend")
     private String doubleSpendTx;
+
+//    @NotNull
+    @JsonProperty("gas_price")
+    private BigInteger gasPrice;
+//    @NotNull
+    @JsonProperty("gas_limit")
+    private BigInteger gasLimit;
 
     private List<Input> inputs = new ArrayList<Input>();
     private List<Output> outputs = new ArrayList<Output>();
@@ -307,6 +316,22 @@ public class Transaction {
 
     public void setOutputs(List<Output> outputs) {
         this.outputs = outputs;
+    }
+
+    public BigInteger getGasPrice() {
+        return gasPrice;
+    }
+
+    public void setGasPrice(BigInteger gasPrice) {
+        this.gasPrice = gasPrice;
+    }
+
+    public BigInteger getGasLimit() {
+        return gasLimit;
+    }
+
+    public void setGasLimit(BigInteger gasLimit) {
+        this.gasLimit = gasLimit;
     }
 
     @Override

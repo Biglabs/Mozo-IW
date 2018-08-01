@@ -1,6 +1,7 @@
 package com.biglabs.solo.web.rest;
 
 import com.biglabs.solo.domain.Address;
+import com.biglabs.solo.domain.WalletAddress;
 import com.biglabs.solo.repository.WalletAddressRepository;
 import com.codahale.metrics.annotation.Timed;
 import com.biglabs.solo.domain.Wallet;
@@ -25,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Wallet.
@@ -143,10 +145,14 @@ public class WalletResource {
      */
     @GetMapping("/wallets/{walletId}/addresses")
     @Timed
-    public List<Address> getAddresses(@PathVariable String walletId) {
+    public List<Address> getAddresses(@PathVariable String walletId,
+                                      @RequestParam(value = "inUse", required = false) Boolean inUse) {
         log.debug("REST request to get Wallet : {}", walletId);
-        List<Address> addresses = walletAddressRepository.findAddressesByWallet_WalletId(walletId);
-        return addresses;
+        List<WalletAddress> addresses = walletAddressRepository.findWalletAddressByWallet_WalletId(walletId);
+        if (inUse != null) {
+            addresses = addresses.stream().filter(wa -> wa.getInUse().equals(inUse)).collect(Collectors.toList());
+        }
+        return addresses.stream().map(wa -> wa.getAddress()).collect(Collectors.toList());
     }
 //
 //    /**

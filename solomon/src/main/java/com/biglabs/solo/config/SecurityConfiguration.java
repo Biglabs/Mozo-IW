@@ -100,6 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/wallets/**").permitAll()
             .antMatchers("/api/btc/test/**").permitAll()
             .antMatchers("/api/eth/test/**").permitAll()
+            .antMatchers("/api/eth/ropsten/**").permitAll()
             .antMatchers("/api/wallet-addresses/**").permitAll()
             .antMatchers("/api/addresses").permitAll()
             .antMatchers("/api/register").permitAll()

@@ -12,10 +12,8 @@ import com.biglabs.solo.domain.WalletAddress;
 
 import com.biglabs.solo.repository.WalletAddressRepository;
 import com.biglabs.solo.web.rest.errors.BadRequestAlertException;
-import com.biglabs.solo.web.rest.util.HeaderUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +24,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,7 +61,7 @@ public class WalletAddressResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new walletAddress, or with status 400 (Bad Request) if the walletAddress has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/wallet-addresses")
+//    @PostMapping("/wallet-addresses")
     @Timed
     public ResponseEntity<List<WalletAddress>> linkWalletAddress(@Valid @RequestBody WalletAddressVM walletAddressVM) throws URISyntaxException, JsonProcessingException {
         log.debug("REST request to save WalletAddress : {}", walletAddressVM);
@@ -165,21 +162,82 @@ public class WalletAddressResource {
 //    }
 
     /**
-     * PUT  /wallet-addresses : Updates an existing walletAddress.
+     * POST  /wallet-addresses : Updates an existing walletAddress.
      *
-     * @param waUpdate the walletAddress to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated walletAddress,
+     * @param walletAddressVM the walletAddress to save
+     * @return the ResponseEntity with status 200 (OK) and list of {@link Result}s,
      * or with status 400 (Bad Request) if the walletAddress is not valid,
      * or with status 500 (Internal Server Error) if the walletAddress couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/wallet-addresses")
+    @PostMapping("/wallet-addresses")
     @Timed
     @Transactional
-    public ResponseEntity<WalletAddress> updateWalletAddress(@Valid @RequestBody WalletAddressUpdateVM waUpdate) throws URISyntaxException {
-        log.debug("REST request to update WalletAddress : {}", waUpdate);
+    public ResponseEntity<List<Result>> saveWalletAddress(@Valid @RequestBody List<WalletAddressUpdateVM> walletAddressVM) throws URISyntaxException {
+        log.debug("REST request to save WalletAddress : {}", walletAddressVM);
 
+        List<Result> ret = new ArrayList<>();
+        for (WalletAddressUpdateVM wau: walletAddressVM) {
+            Result r = new Result();
+            r.setAddress(wau.getAddress().getAddress());
+            r.setNetwork(wau.getAddress().getNetwork());
+            try {
+                WalletAddress toUpdate = update(wau);
+                r.setStatus(Status.SUCCEEDED);
+            } catch (Exception ex) {
+                r.setStatus(Status.FAILED);
+                r.setMessage(ex.getMessage());
+            }
+            ret.add(r);
+        }
 
+        return ResponseEntity.ok().body(ret);
+    }
+
+    public static class Result {
+        String address;
+        Network network;
+        Status status;
+        String message;
+
+        public Network getNetwork() {
+            return network;
+        }
+
+        public void setNetwork(Network network) {
+            this.network = network;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public Status getStatus() {
+            return status;
+        }
+
+        public void setStatus(Status status) {
+            this.status = status;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+    }
+
+    public enum Status {
+        SUCCEEDED, FAILED;
+    }
+
+    WalletAddress update(@Valid @RequestBody WalletAddressUpdateVM waUpdate) {
         Optional<Wallet> w = walletService.findOneByWalletId(waUpdate.getWalletId());
         if (!w.isPresent()) {
             throw new BadRequestAlertException("Wallet " + waUpdate.getWalletId() + " not exist.", ENTITY_NAME, "nowallet");
@@ -188,29 +246,32 @@ public class WalletAddressResource {
         // create or update addresses
         WalletAddressUpdateVM.AddressUpdate au = waUpdate.getAddress();
         Optional<Address> dbAddress = addressService.findAddressByAddressAndNetwork(au.getAddress(), au.getNetwork());
-
+        Address newAddress = null;
         if (!dbAddress.isPresent()) {
-            throw new BadRequestAlertException("Address " + waUpdate.getAddress() + " not exist.", ENTITY_NAME, "nowallet");
+
+            if (au.getAccountIndex() == null
+                || au.getChainIndex() == null
+                || au.getAddressIndex() == null
+                || au.getCoin() == null) {
+                throw new BadRequestAlertException("New Address must have coin type, account index, chain index and address index" , ENTITY_NAME, "badrequest");
+            }
+
+
+            newAddress = addressService.save(waUpdate.getAddress().toNewAddress());
         }
-
-
 
         //Link wallet and unlink address
         Optional<WalletAddress> was = walletAddressRepository.findFirstByWallet_WalletIdAndAddress_AddressAndAddress_Network(waUpdate.getWalletId(), au.getAddress(), au.getNetwork());
 
         WalletAddress toupdate = was.orElse(new WalletAddress());
         toupdate.setWallet(w.get());
-        toupdate.setAddress(dbAddress.get());
-        if (waUpdate.getInUsed() != null) {
-            toupdate.setInUse(waUpdate.getInUsed());
+        toupdate.setAddress(dbAddress.orElse(newAddress));
+        if (waUpdate.getInUse() != null) {
+            toupdate.setInUse(waUpdate.getInUse());
         }
 
-
         toupdate = walletAddressRepository.save(toupdate);
-
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, toupdate.getId().toString()))
-            .body(toupdate);
+        return toupdate;
     }
 
 //    /**

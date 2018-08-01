@@ -22,6 +22,7 @@ import org.zalando.problem.spring.web.advice.validation.ConstraintViolationProbl
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -108,6 +109,17 @@ public class ExceptionTranslator implements ProblemHandling {
             .withStatus(status)
             .with("message", ex.getMessage())
             .with("errors", ex.getBlockCypherError() != null ? ex.getBlockCypherError().getErrors() : Collections.emptyList())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler(JsonRpcException.class)
+    public ResponseEntity<Problem> handleConcurrencyFailure(JsonRpcException ex, NativeWebRequest request) {
+        Status status = Status.INTERNAL_SERVER_ERROR;
+        Problem problem = Problem.builder()
+            .withStatus(status)
+            .with("message", ex.getMessage())
+            .with("errors", Arrays.asList(ex.getRpcError()))
             .build();
         return create(ex, problem, request);
     }

@@ -27,6 +27,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -153,18 +154,33 @@ public class BTCClient {
     private void calculateAmount(Transaction tx, List<String> siblingAddrs, TxHistory txHistory) {
         switch (txHistory.action) {
             case SENT:
-                txHistory.amount = tx.getOutputs().stream()
+                Optional<BigDecimal> a = tx.getOutputs().stream()
                     .filter(output -> !siblingAddrs.contains(output.getAddresses().get(0)))
                     .map(output -> output.getValue())
-                    .reduce((output, output2) -> output.add(output2)).get();
-
-
+                    .reduce((output, output2) -> output.add(output2));
+                if (a.isPresent()) {
+                    txHistory.amount = a.get();
+                } else {
+                    logger.debug("SENT tx {}: owner sends to her own addresses  ", tx.getHash());
+                    logger.debug("Sibling address {}", siblingAddrs);
+                    txHistory.amount = tx.getOutputs().stream()
+                        .map(output -> output.getValue())
+                        .reduce((output, output2) -> output.add(output2))
+                        .get();
+                }
                 break;
             case RECEIVED:
-                txHistory.amount = tx.getOutputs().stream()
+                a = tx.getOutputs().stream()
                     .filter(output -> siblingAddrs.contains(output.getAddresses().get(0)))
                     .map(output -> output.getValue())
-                    .reduce((output, output2) -> output.add(output2)).get();
+                    .reduce((output, output2) -> output.add(output2));
+                if (a.isPresent()) {
+                    txHistory.amount = a.get();
+                } else {
+                    logger.debug("RECEIVED tx {}: no received amount", tx.getHash());
+                    logger.debug("Sibling address {}", siblingAddrs);
+                    txHistory.amount = BigDecimal.valueOf(0);
+                }
                 break;
             default:
                 break;
@@ -177,19 +193,24 @@ public class BTCClient {
             UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
                 .queryParam("limit", 20)
                 .queryParam( "token", bycContext.getToken());
+
             if (beforeHeight != null) {
                 builder.queryParam("before", beforeHeight);
             }
+
             ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(builder.toUriString(), BCYAddress.class);
             BCYAddress bcyAddress = ret.getBody();
             List<Transaction> txs = bcyAddress.getTxs();
+
             //antt: blockcypher always include unconfirmed txs in the results regardless of request params
             //      blockcypher is not to update with btc testnet
             //      use https://test-insight.bitpay.com/ to check different
             logger.debug("Number of tx {}", txs.size());
+
             return txs.stream()
                         .filter(transaction -> beforeHeight != null ? transaction.getBlockHeight() > 0 : true )
-                        .map(tx -> fromTx(addresses, tx, siblingAddrs)).collect(Collectors.toList());
+                        .map(tx -> fromTx(addresses, tx, siblingAddrs))
+                        .collect(Collectors.toList());
         } catch (HttpStatusCodeException ex) {
             throw getBlockCypherException(ex, ex.getMessage(), ex.getStatusCode(), ex.getResponseBodyAsString());
         }
