@@ -127,8 +127,7 @@ public class ETHRopstenClient  {
         // create raw-tx
         RawTransaction rawtx = RawTransaction
             .createEtherTransaction(nonce, gasPrice, gasLimit, to, value );
-        byte[] encodeRawTx = TransactionEncoder.encode(rawtx);
-        String tosign = Numeric.toHexString(Hash.sha3(encodeRawTx));
+        String tosign = encodeRawTx(rawtx);
 
         tx.addInput(txReq.getInputs().get(0).toInput());
         tx.addOutput(txReq.getOutputs().get(0).toOutput());
@@ -142,25 +141,26 @@ public class ETHRopstenClient  {
         return itx;
     }
 
-    public IntermediaryTransaction sendSignedTransaction(EthIntermediaryTx txReq) throws ExecutionException, InterruptedException, IOException {
-        String to = txReq.getTx().getOutputs().get(0).getAddresses().get(0);
-        BigInteger value = txReq.getTx().getOutputs().get(0).getValue().toBigInteger();
-        RawTransaction rtx = RawTransaction.createEtherTransaction(
-            txReq.getNonce(), txReq.getTx().getGasPrice(), txReq.getTx().getGasLimit(), to, value);
+    private String encodeRawTx(RawTransaction rawtx) {
+        byte[] encodeRawTx = TransactionEncoder.encode(rawtx);
+        return Numeric.toHexString(Hash.sha3(encodeRawTx));
+    }
+
+    public IntermediaryTransaction sendSignedTransaction(EthIntermediaryTx txReq) throws ExecutionException, InterruptedException {
+        RawTransaction rtx = rawTxFrom(txReq);
 
         String sig = txReq.getSignatures().get(0);
         String toSign = txReq.getTosign().get(0);
         String publicKey = txReq.getPubkeys().get(0);
         BigInteger publicKeyBI = new BigInteger(Numeric.hexStringToByteArray(publicKey));
         // Make signature
-
-        Sign.SignatureData sigData = makeSignature(toSign, sig, publicKeyBI);
+        Sign.SignatureData sigData = toSignatureData(toSign, sig, publicKeyBI);
 
         List<RlpType> values = asRlpValues(rtx, sigData);
         RlpList rlpList = new RlpList(values);
         byte[] signedTx = RlpEncoder.encode(rlpList);
 
-        EthSendTransaction sendtx = web3j.ethSendRawTransaction(Numeric.toHexString(signedTx)).send();
+        EthSendTransaction sendtx = web3j.ethSendRawTransaction(Numeric.toHexString(signedTx)).sendAsync().get();
         if (sendtx.getError() != null) {
             throw new JsonRpcException("Fail to send transaction", sendtx.getError());
         }
@@ -168,7 +168,25 @@ public class ETHRopstenClient  {
         return txReq;
     }
 
-    private Sign.SignatureData makeSignature(String toSign, String sig, BigInteger publicKey) {
+//    public BCYAddress tokenBalance(String symbol, String address) {
+//        BCYAddress bcyAddress = new BCYAddress();
+//        try {
+//            EthGetBalance ethGetBalance = web3j.ethGetBalance(address, DefaultBlockParameter.valueOf("latest")).send();
+//            bcyAddress.setAddress(address);
+//            bcyAddress.setBalance(new BigDecimal(ethGetBalance.getBalance()));
+//            return bcyAddress;
+//        } catch (IOException e) {
+//            throw new InternalServerErrorException(e.getMessage());
+//        }
+//    }
+    private RawTransaction rawTxFrom(EthIntermediaryTx txReq) {
+        String to = txReq.getTx().getOutputs().get(0).getAddresses().get(0);
+        BigInteger value = txReq.getTx().getOutputs().get(0).getValue().toBigInteger();
+        return RawTransaction.createEtherTransaction(
+            txReq.getNonce(), txReq.getTx().getGasPrice(), txReq.getTx().getGasLimit(), to, value);
+    }
+
+    private Sign.SignatureData toSignatureData(String toSign, String sig, BigInteger publicKey) {
         byte[] sigBytes = Numeric.hexStringToByteArray(sig);
         int len = sigBytes.length;
         int rlen = sigBytes[3];
