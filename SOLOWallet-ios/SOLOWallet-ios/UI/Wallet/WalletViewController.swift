@@ -28,6 +28,7 @@ class WalletViewController: AbstractViewController {
         
         self.tableView?.register(UINib.init(nibName: "ChangeWalletTableViewCell", bundle: nil), forCellReuseIdentifier: "ChangeWalletTableViewCell")
         self.tableView?.register(UINib.init(nibName: "InfoWalletTableViewCell", bundle: nil), forCellReuseIdentifier: "InfoWalletTableViewCell")
+        self.tableView?.register(UINib.init(nibName: "MozoWalletTableViewCell", bundle: nil), forCellReuseIdentifier: "MozoWalletTableViewCell")
         self.tableView?.register(UINib.init(nibName: "TransactionWalletTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionWalletTableViewCell")
         
         self.tableView?.dataSource = self
@@ -60,17 +61,26 @@ class WalletViewController: AbstractViewController {
 extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
+        if self.currentCoin?.coin == CoinType.MOZO.value {
+            return 4
+        }
         return 3
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 2 {
+        if section >= 2 {
+            if self.currentCoin?.coin?.compare(CoinType.MOZO.value) == ComparisonResult.orderedSame {
+                return 1
+            }
             return self.currentCoin?.transactions?.count ?? 0
         }
         return 1
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 2 && self.currentCoin?.coin == CoinType.MOZO.value {
+            return 0
+        }
         return 44
     }
     
@@ -87,6 +97,9 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
         } else if section == 1 {
             label.text = "My " + name + " Wallet"
         } else {
+            if section == 2 && self.currentCoin?.coin == CoinType.MOZO.value {
+                return nil
+            }
             label.text = "Transaction History"
         }
         view.addSubview(label)
@@ -110,12 +123,18 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
             //            cell.delegate = self
             return cell
         } else {
-            let cell = self.tableView?.dequeueReusableCell(withIdentifier: "TransactionWalletTableViewCell", for: indexPath) as! TransactionWalletTableViewCell
-            if let trans = self.currentCoin?.transactions?[indexPath.row] {
-                cell.bindData(trans, address: self.currentCoin!)
+            if indexPath.section == 2 && self.currentCoin?.coin?.compare(CoinType.MOZO.value) == ComparisonResult.orderedSame {
+                let cell = self.tableView?.dequeueReusableCell(withIdentifier: "MozoWalletTableViewCell", for: indexPath) as! MozoWalletTableViewCell
+                cell.delegate = self
+                return cell
+            } else {
+                let cell = self.tableView?.dequeueReusableCell(withIdentifier: "TransactionWalletTableViewCell", for: indexPath) as! TransactionWalletTableViewCell
+                if let trans = self.currentCoin?.transactions?[indexPath.row] {
+                    cell.bindData(trans, address: self.currentCoin!)
+                }
+                //            cell.delegate = self
+                return cell
             }
-            //            cell.delegate = self
-            return cell
         }
     }
     

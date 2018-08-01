@@ -40,7 +40,7 @@ public class TransactionWalletTableViewCell: UITableViewCell {
         }
         
         if transaction.action == "SENT" {
-            self.valueHighlightLabel.textColor = ThemeManager.shared.main
+            self.valueHighlightLabel.textColor = ThemeManager.shared.title
         }
         
         self.typeLabel.text = transaction.action?.lowercased().capitalizingFirstLetter()

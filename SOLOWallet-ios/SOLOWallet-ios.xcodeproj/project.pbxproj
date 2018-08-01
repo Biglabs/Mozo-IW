@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2050D26F21097BCE009A0ACF /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2050D26E21097BCD009A0ACF /* WalletListViewController.swift */; };
+		205DF05A211064E900A69141 /* MozoWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */; };
+		205DF05C211064FF00A69141 /* MozoWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */; };
 		207E029920ECD545006543F6 /* TransactionHistoryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */; };
 		2093A1B72100760600965D30 /* ReceiveTransactionValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A1B62100760600965D30 /* ReceiveTransactionValueCell.xib */; };
 		2093A1B92100767C00965D30 /* ReceiveTransactionValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093A1B82100767C00965D30 /* ReceiveTransactionValueCell.swift */; };
@@ -61,6 +63,8 @@
 /* Begin PBXFileReference section */
 		0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.release.xcconfig"; sourceTree = "<group>"; };
 		2050D26E21097BCD009A0ACF /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletListViewController.swift; sourceTree = "<group>"; };
+		205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MozoWalletTableViewCell.swift; sourceTree = "<group>"; };
+		205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MozoWalletTableViewCell.xib; sourceTree = "<group>"; };
 		207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDTO.swift; sourceTree = "<group>"; };
 		2093A1B62100760600965D30 /* ReceiveTransactionValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReceiveTransactionValueCell.xib; sourceTree = "<group>"; };
 		2093A1B82100767C00965D30 /* ReceiveTransactionValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveTransactionValueCell.swift; sourceTree = "<group>"; };
@@ -281,6 +285,8 @@
 				C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */,
 				C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */,
 				C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */,
+				205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */,
+				205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */,
 				C63A844820DB88580073EB08 /* TransactionWalletTableViewCell.swift */,
 				C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */,
 			);
@@ -403,6 +409,7 @@
 				C6134A2D20E3F4D300A5FE50 /* CoinTableViewCell.xib in Resources */,
 				C616DEFC20D8BFA700258ACE /* LaunchScreen.storyboard in Resources */,
 				C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */,
+				205DF05C211064FF00A69141 /* MozoWalletTableViewCell.xib in Resources */,
 				C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */,
 				2093A1B72100760600965D30 /* ReceiveTransactionValueCell.xib in Resources */,
 				C63A844520DB62BF0073EB08 /* Main.storyboard in Resources */,
@@ -497,6 +504,7 @@
 				C63080D420ECA3F1002E638E /* ETH+SendViewController.swift in Sources */,
 				C616DF5120D916A800258ACE /* AbstractViewController.swift in Sources */,
 				C616DF1D20D8E78400258ACE /* UIFontTextSize.swift in Sources */,
+				205DF05A211064E900A69141 /* MozoWalletTableViewCell.swift in Sources */,
 				2093A1BD210089AA00965D30 /* GenerateTransactionCell.swift in Sources */,
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C63A844120DB56650073EB08 /* Utils.swift in Sources */,

@@ -31,7 +31,8 @@ class WalletListViewController: AbstractViewController {
     }
     
     func buildMainView() {
-        self.title = "WALLET LIST"
+        self.createTitleView()
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.tap))
         tap.numberOfTapsRequired = 1
         tap.delegate = self
@@ -40,6 +41,15 @@ class WalletListViewController: AbstractViewController {
         self.createTableView()
         self.createFooter()
         self.createManageBarButton()
+    }
+    
+    func createTitleView() {
+        let titleLabel = UILabel.init()
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        titleLabel.textColor = ThemeManager.shared.main
+        titleLabel.text = "WALLET LIST"
+        
+        self.navigationItem.titleView = titleLabel
     }
     
     func createManageBarButton() {
