@@ -9,6 +9,7 @@ import SoloButton from './widgets/SoloButton';
 import SelectionGroup from './widgets/SelectionGroup';
 import SoloText from './widgets/SoloText';
 import SoloTextInput from './widgets/SoloTextInput';
+import SoloSVG from './widgets/SoloSVG';
 
 // noinspection JSUnusedGlobalSymbols
 module.exports = {
@@ -25,4 +26,5 @@ module.exports = {
     Button: SoloButton,
     Text: SoloText,
     TextInput: SoloTextInput,
+    SVG: SoloSVG,
 };

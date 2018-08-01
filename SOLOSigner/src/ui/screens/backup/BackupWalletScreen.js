@@ -2,7 +2,6 @@ import React from "react";
 import {Alert, AsyncStorage, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
-import SvgUri from 'react-native-svg-uri';
 import {inject} from "mobx-react";
 
 import {
@@ -18,9 +17,12 @@ import {
     styleScreenSubTitleText,
     styleWarningText,
 } from "../../../res";
-import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput} from "../../components";
+import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput, SVG} from "../../components";
 import Constant from "../../../helpers/Constants";
-import WalletBackupService from '../../../services/WalletBackupService';
+// import WalletBackupService from '../../../services/WalletBackupService';
+import { isWebPlatform } from "../../../helpers/PlatformUtils";
+import { walletBackupService as WalletBackupService } from '../../../services';
+
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
@@ -38,12 +40,33 @@ export default class BackupWalletScreen extends React.Component {
     }
 
     doExport(fileType: Constant.BACKUP_FILE_TYPE) {
+
+        // TODO: WEB
+        if(isWebPlatform()) {
+            const userReference = require('electron').remote.require('electron-settings');
+            // TODO: test code
+            userReference.set("file-content",this.qrCodeData.props.value);
+            const ipc = require('electron').ipcRenderer;
+            // send command to main process
+            ipc.send('open-save-file-dialog',{fileType: Constant.BACKUP_FILE_TYPE});
+            return;
+           /*  try {
+                var QRCode = require('qrcode')
+                QRCode.toFile('filename.png', data.props.value);
+            }
+            catch(e) { 
+                alert('Failed to save the file !'); 
+            } */
+        }
+        // // TODO: END WEB
+
+
         if (this.qrCodeData && !this.qrCodeBase64) {
             this.qrCodeData.toDataURL(data => {
                 this.qrCodeBase64 = data;
                 this.doExport(fileType);
             });
-            return;
+            //return;
         }
 
         if (this.qrCodeBase64) {
@@ -85,6 +108,7 @@ export default class BackupWalletScreen extends React.Component {
             return false;
         }
 
+        console.log("encryptedData: " +WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword));
         this.setState({
             isReadyToBackup: true,
             encryptedData: WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword),
@@ -96,9 +120,30 @@ export default class BackupWalletScreen extends React.Component {
     }
 
     onQRCodeRendered = (data) => {
+        console.log("onQRCodeRendered:" + data)
         this.qrCodeData = data;
         this.confirmEncryptPassword = null;
         this.state.encryptedData = null;
+    };
+
+    onQRCodeRenderedWeb = (data) => {
+        if(isWebPlatform){
+            this.qrCodeData = data;
+            this.confirmEncryptPassword = null;
+            this.state.encryptedData = null;
+            /* try {
+                var QRCode = require('qrcode')
+                QRCode.toFile('filename.png', data.props.value);
+            }
+            catch(e) { 
+                alert('Failed to save the file !'); 
+            }
+
+            console.log("onQRCodeRenderedWeb:" + data)
+            this.qrCodeData = data;
+            this.confirmEncryptPassword = null;
+            this.state.encryptedData = null; */
+        }
     };
 
     render() {
@@ -158,7 +203,13 @@ export default class BackupWalletScreen extends React.Component {
                             <QRCode
                                 size={200}
                                 value={this.state.encryptedData}
-                                getRef={this.onQRCodeRendered}/>
+                                ref = {this.onQRCodeRenderedWeb}
+                                getRef={this.onQRCodeRendered}
+                            />
+                            {/* <QRCode
+                                size={200}
+                                value={this.state.encryptedData}
+                                getRef={this.onQRCodeRendered}/> */}
                         </View>
                         <Text style={styles.export_explain_text}>
                             From the destination device, go to
@@ -171,20 +222,21 @@ export default class BackupWalletScreen extends React.Component {
                             <TouchableOpacity
                                 style={styles.export_button}
                                 onPress={() => this.doExport(Constant.BACKUP_FILE_TYPE.PNG)}>
-                                <SvgUri
+                                <SVG
                                     fill={colorPrimary}
                                     width={32}
                                     height={32}
-                                    svgXmlData={icons.icExportQR}/>
+                                    svg={icons.icExportQR}/>
+
                                 <Text style={styles.export_button_text}>{'\n'}QR Image file</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.export_button}
                                 onPress={() => this.doExport(Constant.BACKUP_FILE_TYPE.TXT)}>
-                                <SvgUri
+                                <SVG
                                     width={32}
                                     height={32}
-                                    svgXmlData={icons.icExportText}/>
+                                    svg={icons.icExportText}/>
                                 <Text style={styles.export_button_text}>{'\n'}Text file</Text>
                             </TouchableOpacity>
                         </View>

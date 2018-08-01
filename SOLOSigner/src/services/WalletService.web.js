@@ -1,80 +1,16 @@
-// import {AsyncStorage} from 'react-native';
-import RESTService, { syncAllAddress } from './RESTService';
+import RESTService  from './RESTService';
 import ethUtil from 'ethereumjs-util';
-// import Web3 from 'web3';
 
-//import Bitcoin from 'react-native-bitcoinjs-lib';
-import Bitcoin from 'bitcoinjs-lib';
-
-import bip39 from 'bip39';
 import encryption from '../helpers/EncryptionUtils';
 
 import Constant from '../helpers/Constants';
 import DataService from './DataService.web';
 
-import { saveWalletInfo } from "../models/Wallet";
-import { checkPin } from "../models/App";
+import { saveWalletInfo, createNewWallet } from "../models/Wallet";
+import { checkPin, getAppInfo } from "../models/App";
 import { addAddress, getAllAddresses } from "../models/Addresses";
 
 const userReference = require('electron').remote.require('electron-settings');
-
-
-/**
- * Returns the standard derivation path in bip44 format.
- * The output of this function can be use to create a key pair.
- * @param {String} _coinType
- * @param {Int} _accountIndex
- * @param {_chain} _chain
- * @returns {String}
- */
-/* standardDerivationPath = function(_coinType, _accountIndex, _chain) {
-    // Default is 0
-    let accountIndex = _accountIndex || 0;
-    // Default is external
-    let chain = _chain || 0;
-    return `m/44'/${_coinType}'/${accountIndex}'/${chain}`;
-} */
-
-
-/**
- * Generate a list of keypair (wallet) according to each derivation path.
- * @param {String} mnemonic
- * @param {Array} coinTypes
- * @return {Array}
- */
-/* generateWallets = function(mnemonic, coinTypes){
-    let seed = bip39.mnemonicToSeedHex(mnemonic);
-    let wallets = [];
-    coinTypes.map(coinType => {
-        let rootKey = coinType == Constant.COIN_TYPE.BTC_TEST ? Bitcoin.HDNode.fromSeedHex(seed, Bitcoin.networks.testnet) : Bitcoin.HDNode.fromSeedHex(seed);
-        let path = standardDerivationPath(coinType.value);
-        let wallet = rootKey.derivePath(path);
-        wallets.push(wallet);
-    });
-    return wallets;
-} */
-
-
-/**
- * Return a list of keypair (wallet) following a list of coin type.
- * A mnemonic string will be used in this process and stored to local db in encryption for backup purpose.
- * @param {DataService} manager
- * @param {String} importedPhrase
- * @param {String} pin
- * @param {Array} coinTypes
- * @return {Array}
- */
-/* createNewWallet = function(manager, importedPhrase, pin, coinTypes) {
-    let mnemonic = importedPhrase || 
-        bip39.generateMnemonic(128, null, bip39.wordlists.english);
-    // Save PIN and mnemonic
-    let encryptedMnemonic = encryption.encrypt(mnemonic, pin);
-    // manager.updateMnemonicWithPin(encryptedMnemonic, pin);
-    updateMnemonicWithPin(encryptedMnemonic, pin);
-
-    let wallets = generateWallets(mnemonic, coinTypes);
-    return wallets;
-} */
 
 /**
  * Save an address to local DB with the encrypted private key.
@@ -224,7 +160,8 @@ storeWalletInfo = function(manager, walletInfo, addresses, callback){
  * @param {Array} coinTypes
  * @param {Callback} callback
  */
-module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
+// module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
+manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
     let manager = DataService.getInstance();
     // Store isDbExisting true
     // TODO: @apply desktop: save flag Constant.FLAG_DB_EXISTING
@@ -252,7 +189,7 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
             address.privkey = null;
             addresses.push(address);
         });
-        //console.log("addAddress: " + addAddress);
+        console.log("addAddress: " + addAddress);
         let publicKey = wallets[0].neutered().toBase58();
         registerWalletAndSyncAddress(manager, publicKey, addresses, (error, result) => { // TODO CHECKING
             if (typeof callback === 'function') {
@@ -295,3 +232,22 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         }
     }
 }
+
+/**
+ * View Backup Phrase
+ * @param {String} pin 
+ */
+// module.exports.viewBackupPhrase = function (pin) {
+viewBackupPhrase = function (pin) {
+    let appInfo = getAppInfo();
+    if (appInfo) {
+        return encryption.decrypt(appInfo.mnemonic, pin);
+    }
+    return null;
+};
+
+module.exports = {
+    viewBackupPhrase: viewBackupPhrase,
+    manageWallet: manageWallet
+
+};

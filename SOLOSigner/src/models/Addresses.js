@@ -25,6 +25,8 @@ function addAddress(address) {
         chainIndex: address.chainIndex,
         addressIndex: address.addressIndex,
     });
+    //write to file
+    userReference.set(WebConstants.ADDRESS_SCHEMA, addressList);
 }
 
 /**

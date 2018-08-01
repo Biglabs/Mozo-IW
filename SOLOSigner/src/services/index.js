@@ -1,17 +1,21 @@
+import {Platform} from "react-native";
 import { isWebPlatform } from "../helpers/PlatformUtils.js";
 
-let manageWalletService;
+let walletService, walletBackupService, manageWalletService;
 
 /** 
  * Load services base on running platform
 */
-(function initGameIIFE() {
+(function initServices() {
     if(isWebPlatform()){
-        const { manageWalletWeb } = require("./WalletService.web");
-        manageWalletService = manageWalletWeb;
+        // require("./WalletService.web");
+        walletService = require("./WalletService.web");
+        walletBackupService = require("./WalletBackupService.web");
     } else {
-        const { manageWallet } = require("./WalletService");
-        manageWalletService = manageWallet;
+        //require("./WalletService");
+        walletService = require("./WalletService");
+        walletBackupService = require("./WalletBackupService");
+
     }
     
 }());
@@ -20,5 +24,9 @@ let manageWalletService;
  * expose to outside
  */
 module.exports = {
-    manageWallet: manageWalletService
+    //manageWallet: walletService.manageWallet,
+    //viewBackupPhrase: walletService.viewBackupPhrase,
+    walletService: walletService,
+    walletBackupService: walletBackupService,
+    manageWallet: walletService.manageWallet // TODO: EDIT create wallet using new way
 };

@@ -48,7 +48,7 @@ function saveWalletInfo(walletInfo) {
  * @param {_chain} _chain
  * @returns {String}
  */
-standardDerivationPath = function(_coinType, _accountIndex, _chain) {
+function standardDerivationPath (_coinType, _accountIndex, _chain) {
     // Default is 0
     let accountIndex = _accountIndex || 0;
     // Default is external
@@ -56,14 +56,14 @@ standardDerivationPath = function(_coinType, _accountIndex, _chain) {
     return `m/44'/${_coinType}'/${accountIndex}'/${chain}`;
 }
 
-
 /**
  * Generate a list of keypair (wallet) according to each derivation path.
  * @param {String} mnemonic
  * @param {Array} coinTypes
  * @return {Array}
  */
-generateWallets = function(mnemonic, coinTypes){
+
+function generateWallets (mnemonic, coinTypes){
     let seed = bip39.mnemonicToSeedHex(mnemonic);
     let wallets = [];
     coinTypes.map(coinType => {
@@ -83,7 +83,7 @@ generateWallets = function(mnemonic, coinTypes){
  * @param {Array} coinTypes
  * @return {Array}
  */
-createNewWallet = function(importedPhrase, pin, coinTypes) {
+function createNewWallet  (importedPhrase, pin, coinTypes) {
     let mnemonic = importedPhrase || 
         bip39.generateMnemonic(128, null, bip39.wordlists.english);
     // Save PIN and mnemonic
@@ -97,5 +97,5 @@ createNewWallet = function(importedPhrase, pin, coinTypes) {
 
 module.exports = {
     saveWalletInfo: saveWalletInfo,
-    createNewWallet: createNewWallet,
+    createNewWallet: createNewWallet
 };
