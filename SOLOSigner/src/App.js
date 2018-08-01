@@ -1,6 +1,6 @@
 import React from 'react';
-import {Linking} from 'react-native';
-import {Router, Modal, Scene} from 'react-native-router-flux';
+import {BackHandler, Linking} from 'react-native';
+import {Modal, Router, Scene} from 'react-native-router-flux';
 import {Provider} from "mobx-react";
 
 import stores from "./stores";
@@ -56,7 +56,16 @@ export default () => {
 
                     {/* backup screens */}
                     <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
-                    <Scene key="confirm_backup_phrase" component={ConfirmBackupPhrase} hideNavBar/>
+                    <Scene key="confirm_backup_phrase" component={ConfirmBackupPhrase} hideNavBar
+                           onEnter={() => {
+                               this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+                                   /* return true to disable hardware back button */
+                                   return true;
+                               });
+                           }}
+                           onExit={() => {
+                               this.backHandler.remove();
+                           }}/>
                     <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/>
 
                     {/* transaction screens */}

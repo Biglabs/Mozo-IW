@@ -6,6 +6,7 @@ import {inject, observer} from "mobx-react";
 import {CoinItemView, ScreenFooterActions, Text} from "../../components";
 import WalletManager from '../../../services/WalletService';
 import Globals from '../../../services/GlobalService';
+import Constant from "../../../helpers/Constants";
 
 import {
     colorPrimary,
