@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="nxT-K3-3vR" customClass="MozoWalletTableViewCell" customModule="SOLOWallet_ios" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nxT-K3-3vR" id="nAi-Jq-JFu">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vcS-5x-hhv">
+                        <rect key="frame" x="20" y="-1" width="158" height="50"/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="158" id="QYi-aq-Shj"/>
+                            <constraint firstAttribute="height" constant="50" id="Ua8-7y-NZf"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="BUY MOZO">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WdM-SV-teO">
+                        <rect key="frame" x="197" y="-1" width="158" height="50"/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="DMu-UK-J2l"/>
+                            <constraint firstAttribute="width" constant="158" id="xqe-k5-JFh"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="SELL MOZO">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="vcS-5x-hhv" firstAttribute="centerY" secondItem="nAi-Jq-JFu" secondAttribute="centerY" id="9AM-ZW-e8F"/>
+                    <constraint firstItem="vcS-5x-hhv" firstAttribute="leading" secondItem="nAi-Jq-JFu" secondAttribute="leading" constant="20" id="cFN-ds-ViY"/>
+                    <constraint firstAttribute="trailing" secondItem="WdM-SV-teO" secondAttribute="trailing" constant="20" id="olN-H1-oH4"/>
+                    <constraint firstItem="vcS-5x-hhv" firstAttribute="baseline" secondItem="WdM-SV-teO" secondAttribute="baseline" id="vtC-dB-Snb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="btnBuy" destination="vcS-5x-hhv" id="7tv-L7-YiZ"/>
+                <outlet property="btnSell" destination="WdM-SV-teO" id="mun-yq-qfY"/>
+            </connections>
+            <point key="canvasLocation" x="-273" y="-111"/>
+        </tableViewCell>
+    </objects>
+</document>
