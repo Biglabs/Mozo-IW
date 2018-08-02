@@ -141,7 +141,7 @@ class DataService {
      * Get all in use addresses
      */
     getAllAddressesInUse(){
-        let addresses = DataService.realm.objects('Address').filtered("address.inUse == true");
+        let addresses = DataService.realm.objects('Address').filtered("inUse = true");
         return addresses;
     }
 

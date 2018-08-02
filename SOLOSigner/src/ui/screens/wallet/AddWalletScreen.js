@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {FlatList, StyleSheet, TouchableOpacity, View, AppState} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {inject, observer} from "mobx-react";
 
@@ -46,6 +46,7 @@ export default class AddWalletScreen extends Component {
     }
 
     getInitialWallets(){
+        console.log("Get initial wallets.");
         if (this.props.txData && this.props.pin) {
             console.log("Get in use coin types for executing communication action.");
             var inUseCoinTypes = WalletManager.loadInUseCoinTypes(); 
