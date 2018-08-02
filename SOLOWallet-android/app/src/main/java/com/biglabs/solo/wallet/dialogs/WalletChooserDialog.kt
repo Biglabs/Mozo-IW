@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatDialogFragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.view.*
+import com.biglabs.solo.signer.library.Signer
 import com.biglabs.solo.signer.library.models.ui.Wallet
 import com.biglabs.solo.wallet.R
 import com.biglabs.solo.wallet.adapters.WalletsRecyclerAdapter
@@ -45,14 +46,22 @@ class WalletChooserDialog : AppCompatDialogFragment(), RecyclerItemClickListener
         super.onViewCreated(view, savedInstanceState)
 
         adapter = WalletsRecyclerAdapter(coins, this)
-        wallets_recycler.itemAnimator = DefaultItemAnimator()
-        wallets_recycler.adapter = adapter
+        wallets_recycler.run {
+            itemAnimator = DefaultItemAnimator()
+            adapter = this@WalletChooserDialog.adapter
+        }
 
         view.setOnClickListener { dismiss() }
+        button_manage_wallet.setOnClickListener {
+            context?.let {
+                Signer.getInstance().manageWallet(it)
+            }
+        }
 
-        walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
-        walletsViewModel!!.getWallets().observe(this, Observer { onWalletsChanged(it) })
-        walletsViewModel!!.getCurrentWallet().observe(this, Observer { onCurrentWalletChanged(it) })
+        walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java).apply {
+            getWallets().observe(this@WalletChooserDialog, Observer { onWalletsChanged(it) })
+            getCurrentWallet().observe(this@WalletChooserDialog, Observer { onCurrentWalletChanged(it) })
+        }
     }
 
     override fun onStart() {
@@ -65,8 +74,10 @@ class WalletChooserDialog : AppCompatDialogFragment(), RecyclerItemClickListener
             val coinCheckable = CoinCheckable(it.coin)
             if (this.coins.contains(coinCheckable)) {
                 val selectedIndex = this.coins.indexOf(coinCheckable)
-                this.coins[selectedIndex].checked = true
-                this.coins[selectedIndex].walletIndex = selectedIndex
+                this.coins[selectedIndex].run {
+                    checked = true
+                    walletIndex = selectedIndex
+                }
                 adapter?.notifyDataSetChanged()
 
                 if (isUpdatingCurrentWallet) {
@@ -84,6 +95,8 @@ class WalletChooserDialog : AppCompatDialogFragment(), RecyclerItemClickListener
             val coinCheckable = CoinCheckable(wallet.coin, index)
             if (!this.coins.contains(coinCheckable)) {
                 this.coins.add(coinCheckable)
+            } else {
+                this.coins[this.coins.indexOf(coinCheckable)].checked = false
             }
         }
 

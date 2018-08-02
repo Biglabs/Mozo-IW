@@ -46,8 +46,9 @@ class SendFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
-        walletsViewModel.getCurrentWallet().observe(this, Observer { updateUI(it) })
+        ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java).apply {
+            getCurrentWallet().observe(this@SendFragment, Observer { updateUI(it) })
+        }
 
         input_amount.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {

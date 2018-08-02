@@ -43,8 +43,9 @@ class MainActivity : AppCompatActivity(), SignerListener {
         initializeEvents()
         Signer.initialize(this, this, BuildConfig.APPLICATION_ID)
 
-        walletsViewModel = ViewModelProviders.of(this).get(WalletsViewModel::class.java)
-        walletsViewModel.getCurrentWallet().observe(this, Observer { onCurrentWalletChanged(it) })
+        walletsViewModel = ViewModelProviders.of(this).get(WalletsViewModel::class.java).apply {
+            getCurrentWallet().observe(this@MainActivity, Observer { onCurrentWalletChanged(it) })
+        }
 
         loadCurrentTabFragment()
     }

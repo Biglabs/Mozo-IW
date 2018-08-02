@@ -53,8 +53,9 @@ class WalletFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val walletsViewModel = ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java)
-        currentWalletLivaData = walletsViewModel.getCurrentWallet()
+        ViewModelProviders.of(activity!!).get(WalletsViewModel::class.java).apply {
+            currentWalletLivaData = getCurrentWallet()
+        }
 
         initializeEvents()
 

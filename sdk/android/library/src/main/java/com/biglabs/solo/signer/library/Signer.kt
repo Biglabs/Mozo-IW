@@ -62,7 +62,7 @@ class Signer private constructor(private val walletScheme: String) {
                     .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                         dialog.dismiss()
                         instance = null
-                        (context as? Activity)?.finish()
+                        (context as Activity).finish()
                     }
                     .create()
                     .show()
@@ -180,6 +180,10 @@ class Signer private constructor(private val walletScheme: String) {
         }
     }
 
+    fun manageWallet(context: Context) {
+        openDeepLink(context, Constants.SCHEME_ACTION_MANAGE_WALLET)
+    }
+
     fun handleScheme(intent: Intent) {
         if (TextUtils.equals(intent.scheme, walletScheme)) {
             val data = intent.dataString.split("://")[1]
@@ -194,6 +198,9 @@ class Signer private constructor(private val walletScheme: String) {
                     Constants.SCHEME_ACTION_SIGN_TX -> {
                         this.mLastTxSignedData = it.result?.signedTransactionObject()
                         this.mSignerListener?.onReceiveSignTransactionResult(this.mLastTxSignedData != null)
+                    }
+                    Constants.SCHEME_ACTION_MANAGE_WALLET -> {
+                        this.mSignerListener?.onSyncCompleted()
                     }
                     else -> {
                     }
