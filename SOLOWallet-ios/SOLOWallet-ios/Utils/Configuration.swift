@@ -31,11 +31,14 @@ public class Configuration {
     public static var BLOCK_CYPHER_TESTNET_SCAN_URL = "https://live.blockcypher.com/btc-testnet/tx"
     public static var BLOCK_CYPHER_ETH_VIEW_TRANSACTION = "https://api.blockcypher.com/v1/beth/test/txs/"
     
-    public static func getScanURL(_ coinType: String?, isTestnet: Bool) -> String{
+    public static func getScanURL(_ coinType: String?, network: String?, isTestnet: Bool) -> String{
         if isTestnet {
             if coinType == CoinType.BTC.key {
                 return BLOCK_CYPHER_TESTNET_SCAN_URL
             } else if coinType == CoinType.ETH.key {
+                if network == CoinNetwork.ETH_ROPSTEN.value {
+                    return ROPSTEN_ETHERSCAN_URL
+                }
                 return BLOCK_CYPHER_ETH_VIEW_TRANSACTION
             }
         }

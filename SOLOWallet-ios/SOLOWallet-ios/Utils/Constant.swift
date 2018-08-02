@@ -46,6 +46,24 @@ public enum CoinType {
     }
 }
 
+public enum CoinNetwork {
+    case BTC_MAIN
+    case BTC_TEST
+    case ETH_MAIN
+    case ETH_TEST
+    case ETH_ROPSTEN
+    
+    public var value : String {
+        switch self {
+        case .BTC_MAIN: return "BTC_MAIN"
+        case .BTC_TEST: return "BTC_TEST"
+        case .ETH_MAIN: return "ETH_MAIN"
+        case .ETH_TEST: return "ETH_TEST"
+        case .ETH_ROPSTEN: return "ETH_ROPSTEN"
+        }
+    }
+}
+
 public enum SoloTab {
     case Wallet
     case Receive
