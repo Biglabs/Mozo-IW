@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Change dir and build') {
       steps {
-        dir(path: 'SOLOWallet-android') {
+        dir(path: 'SOLOWallet-ios') {
           sh 'pwd'
         }
 
