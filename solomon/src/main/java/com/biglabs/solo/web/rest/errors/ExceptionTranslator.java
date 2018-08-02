@@ -1,6 +1,7 @@
 package com.biglabs.solo.web.rest.errors;
 
 import com.biglabs.solo.blockcypher.exception.BlockCypherException;
+import com.biglabs.solo.blockcypher.model.Error;
 import com.biglabs.solo.web.rest.util.HeaderUtil;
 
 import com.google.common.base.Strings;
@@ -116,10 +117,12 @@ public class ExceptionTranslator implements ProblemHandling {
     @ExceptionHandler(JsonRpcException.class)
     public ResponseEntity<Problem> handleConcurrencyFailure(JsonRpcException ex, NativeWebRequest request) {
         Status status = Status.INTERNAL_SERVER_ERROR;
+        Error error = new Error();
+        error.setError(ex.getRpcError().getMessage());
         Problem problem = Problem.builder()
             .withStatus(status)
             .with("message", ex.getMessage())
-            .with("errors", Arrays.asList(ex.getRpcError()))
+            .with("errors", Arrays.asList(error))
             .build();
         return create(ex, problem, request);
     }

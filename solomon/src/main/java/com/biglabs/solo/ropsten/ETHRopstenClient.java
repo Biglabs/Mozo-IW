@@ -18,10 +18,7 @@ import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.methods.response.EthBlock;
-import org.web3j.protocol.core.methods.response.EthGetBalance;
-import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
-import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.*;
 import org.web3j.rlp.RlpEncoder;
 import org.web3j.rlp.RlpList;
 import org.web3j.rlp.RlpString;
@@ -40,6 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static org.web3j.utils.Convert.Unit.GWEI;
+
 /**
  * Created by antt on 7/3/2018.
  */
@@ -47,7 +46,8 @@ import java.util.concurrent.ExecutionException;
 public class ETHRopstenClient  {
     private static final String BLOCKCHAIN_NAME = "ETH.ropsten";
     private static final Logger logger = LoggerFactory.getLogger(ETHRopstenClient.class);
-//    private final BlockCypherProperties blockCypherProperties;
+    private static final BigInteger ONE_GWEI = BigInteger.valueOf(1000000000);
+    //    private final BlockCypherProperties blockCypherProperties;
     private final RestOperations restTemplate;
     private final Web3j web3j;
     public ETHRopstenClient(RestOperations restTemplate, Web3j web3j) {
@@ -116,13 +116,23 @@ public class ETHRopstenClient  {
         if (txReq.getGasPrice() != null) {
             gasPrice = txReq.getGasPrice();
         } else {
-            gasPrice = web3j.ethGasPrice().sendAsync().get().getGasPrice();
-            logger.info("Use auto-suggested gas price {}", gasPrice);
-            if (gasPrice == null) {
-                gasPrice = BigInteger.valueOf(1000000000);
+            EthGasPrice p = web3j.ethGasPrice().sendAsync().get();
+
+            if (p.hasError()) {
+                gasPrice = ONE_GWEI;
                 logger.info("Fail to get gas price. Using 1 gwei as default gas price");
+            } else {
+                gasPrice = p.getGasPrice();
+                logger.info("Use auto-suggested gas price {}", gasPrice);
             }
         }
+
+        logger.info("nonce {}", nonce);
+        logger.info("gas_price {}", gasPrice);
+        logger.info("gas_limit {}", gasLimit);
+        logger.info("fee {}", gasLimit.multiply(gasPrice));
+
+        //TODO: validate transaction before send
 
         // create raw-tx
         RawTransaction rawtx = RawTransaction
@@ -130,10 +140,13 @@ public class ETHRopstenClient  {
         byte[] encodeRawTx = TransactionEncoder.encode(rawtx);
         String tosign = Numeric.toHexString(Hash.sha3(encodeRawTx));
 
+//        web3j.ethAccounts()
+
         tx.addInput(txReq.getInputs().get(0).toInput());
         tx.addOutput(txReq.getOutputs().get(0).toOutput());
         tx.setGasLimit(gasLimit);
         tx.setGasPrice(gasPrice);
+        tx.setFees(new BigDecimal(gasLimit.multiply(gasPrice)));
         // set nonce, gasprice, gaslimit
         itx.setNonce(nonce);
         itx.setTx(tx);
@@ -162,6 +175,7 @@ public class ETHRopstenClient  {
 
         EthSendTransaction sendtx = web3j.ethSendRawTransaction(Numeric.toHexString(signedTx)).send();
         if (sendtx.getError() != null) {
+            logger.warn("ERROR: {}, code {}", sendtx.getError().getMessage(), sendtx.getError().getCode());
             throw new JsonRpcException("Fail to send transaction", sendtx.getError());
         }
         txReq.getTx().setHash(sendtx.getTransactionHash());
@@ -216,7 +230,9 @@ public class ETHRopstenClient  {
     BigInteger getNonce(String address) throws Exception {
         EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(
             address, DefaultBlockParameterName.LATEST).sendAsync().get();
-
+        if (ethGetTransactionCount.hasError()) {
+            throw new JsonRpcException("Cannot get nonce of address", ethGetTransactionCount.getError());
+        }
         return ethGetTransactionCount.getTransactionCount();
     }
 
