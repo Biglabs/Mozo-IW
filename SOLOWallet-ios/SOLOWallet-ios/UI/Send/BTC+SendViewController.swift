@@ -26,12 +26,7 @@ extension SendViewController {
                 }
                 return
             }
-            let json = SwiftyJSON.JSON(value)
-            if let errors = json["errors"].array {
-                JDStatusBarNotification.show(withStatus: errors[0]["error"].string, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
-                return
-            }
-            completion(json, nil)
+            completion(value, nil)
         }
     }
     

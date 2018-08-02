@@ -202,12 +202,15 @@ class SendViewController: AbstractViewController {
     }
         
     func validateTransaction(transaction: TransactionDTO, isSigning: Bool){
+        let sv = self.displaySpinner(onView: self.view)
         if self.currentCoin?.coin == CoinType.ETH.key {
             self.createNewEthTx(transaction, network: (self.currentCoin?.network)!){value, error in
+                self.removeSpinner(spinner: sv)
                 self.handleValidationResult(value: value, isSigning: isSigning)
             }
         } else if self.currentCoin?.coin == CoinType.BTC.key {
             self.createNewBtcTx(transaction, network: (self.currentCoin?.network)!){value, error in
+                self.removeSpinner(spinner: sv)
                 self.handleValidationResult(value: value, isSigning: isSigning)
             }
         }
@@ -215,7 +218,14 @@ class SendViewController: AbstractViewController {
     
     func handleValidationResult(value: Any?, isSigning: Bool){
         if value != nil {
-            let interTx = IntermediaryTransactionDTO.init(json: value as! JSON)!
+            let json = SwiftyJSON.JSON(value!)
+            let interTx = IntermediaryTransactionDTO.init(json: json)!
+            if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
+                let error = ErrorDTO()
+                error?.detail = interTx.errors?.first
+                self.displayErrorAlert(error: error!)
+                return
+            }
             if isSigning {
                 self.soloSDK.singner?.signTransaction(transaction: interTx, coinType: (self.currentCoin?.coin!)!, network: (self.currentCoin?.network)!){ result in
                     self.handleSignResult(result:result)
@@ -245,12 +255,15 @@ class SendViewController: AbstractViewController {
     
     private func sendFund(_ signedTx: String) {
         self.resetValue()
+        let sv = self.displaySpinner(onView: self.view)
         if self.currentCoin?.coin == CoinType.ETH.key {
             self.sendETH(signedTx, network: (self.currentCoin?.network)!){value, error in
+                self.removeSpinner(spinner: sv)
                 self.handleSendTxResponse(value: value!)
             }
         } else if self.currentCoin?.coin == CoinType.BTC.key {
             self.sendBTC(signedTx, network: (self.currentCoin?.network)!){value, error in
+                self.removeSpinner(spinner: sv)
                 self.handleSendTxResponse(value: value!)
             }
         }
@@ -263,7 +276,7 @@ class SendViewController: AbstractViewController {
             let error = ErrorDTO()
             error?.detail = interTx.errors?.first
             self.displayErrorAlert(error: error!)
-            return;
+            return
         }
         if let hash = interTx.tx?.hash {
             self.viewTransactionOnBrowser(hash)
@@ -293,7 +306,7 @@ class SendViewController: AbstractViewController {
         alertController.addAction(cancelAction)
         
         let OKAction = UIAlertAction(title: "Ok", style: .default) { (action) in
-            let baseUrl = Configuration.getScanURL(self.currentCoin?.coin, isTestnet: true)
+            let baseUrl = Configuration.getScanURL(self.currentCoin?.coin, network: self.currentCoin?.network, isTestnet: true)
             let url = URL(string: "\(baseUrl)/\(txId)")
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
         }
