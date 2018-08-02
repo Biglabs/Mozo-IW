@@ -1,6 +1,6 @@
+import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons';
 import {Platform} from "react-native";
 import RNFileSystem from "react-native-fs";
-import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons';
 
 const defaultPath = Platform.select({
     ios: RNFileSystem.DocumentDirectoryPath,
@@ -113,7 +113,10 @@ const DEFAULT_COINS = [
     Constants.COIN_TYPE.ETH,
     Constants.COIN_TYPE.ETH_TEST,
     Constants.COIN_TYPE.ETH_ROPSTEN
-];
+].map(c => {
+    c.isDefault = true;
+    return c;
+});
 
 Constants.DEFAULT_COINS = DEFAULT_COINS;
 

@@ -22,8 +22,25 @@ import {
 @inject("selectedWalletsStore")
 @observer
 export default class AddWalletScreen extends Component {
+    componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
+        this.isManageMode = this.props.txData && this.props.pin;
+        this.getInitialWallets();
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    getInitialWallets() {
+        if (this.isManageMode) {
+            let inUseCoinTypes = WalletManager.loadInUseCoinTypes();
+            this.props.selectedWalletsStore.updateWallets(inUseCoinTypes);
+        }
+    }
+
     handleContinuePress(selectedWallets) {
-        if (this.props.txData && this.props.pin) {
+        if (this.isManageMode) {
             console.log("Executing communication action.");
             WalletManager.updateAddresses(selectedWallets);
             Actions.pop();
@@ -36,33 +53,13 @@ export default class AddWalletScreen extends Component {
 
     handleBackPress() {
         Actions.pop();
-        if (this.props.txData && this.props.pin) {
+        if (this.isManageMode) {
             console.log("Executing communication action.");
             let error = Constant.ERROR_TYPE.CANCEL_REQUEST;
             Globals.responseToReceiver({error: error}, this.props.txData);
         } else {
             console.log("Executing create new wallet flow.");
         }
-    }
-
-    getInitialWallets(){
-        console.log("Get initial wallets.");
-        if (this.props.txData && this.props.pin) {
-            console.log("Get in use coin types for executing communication action.");
-            var inUseCoinTypes = WalletManager.loadInUseCoinTypes(); 
-            return inUseCoinTypes;
-        } else {
-            console.log("Get default for executing create new custom wallet.");
-            return this.props.selectedWalletsStore.wallets;
-        }
-    }
-
-    componentDidMount() {
-        AppState.addEventListener('change', this._handleAppStateChange);
-    }
-
-    componentWillUnmount() {
-        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     _handleAppStateChange = (nextAppState) => {
@@ -73,7 +70,7 @@ export default class AddWalletScreen extends Component {
     };
 
     render() {
-        let selectedWallets = this.getInitialWallets();
+        let selectedWallets = this.props.selectedWalletsStore.wallets;
         return (
             <View style={styles.container}>
 
@@ -94,7 +91,7 @@ export default class AddWalletScreen extends Component {
 
                 <TouchableOpacity
                     style={styles.button_add_more}
-                    onPress={() => Actions.add_more_wallet({selectedWallets: selectedWallets})}>
+                    onPress={() => Actions.add_more_wallet()}>
                     <Text style={styles.button_add_more_text}>+ Add more wallet</Text>
                 </TouchableOpacity>
 

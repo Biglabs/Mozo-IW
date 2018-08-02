@@ -27,7 +27,7 @@ export default class AddMoreWalletScreen extends Component {
             return coin.displayName.replace(" ", "_").concat(coin.value).concat(coin.network).toLowerCase()
         };
 
-        this.selectedWallets = props.selectedWallets;
+        this.selectedWallets = this.props.selectedWalletsStore.wallets;
 
         this.wallets = [];
         Object.keys(Constant.COIN_TYPE).map(key => {
@@ -49,7 +49,7 @@ export default class AddMoreWalletScreen extends Component {
         }
     }
 
-    onItemClicked(key) {
+    onItemCoinClick = key => {
         let coinIndex = this.wallets.findIndex(item => {
             return item.identifierKey === key
         });
@@ -132,7 +132,7 @@ export default class AddMoreWalletScreen extends Component {
                             icon={item.icon}
                             label={item.displayName}
                             checked={item.selected || false}
-                            onItemClicked={(key) => this.onItemClicked(key)}/>
+                            onItemClicked={item.isDefault ? null : this.onItemCoinClick}/>
                     }
                 />
 
