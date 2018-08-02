@@ -20,7 +20,7 @@ import {
 import {ScreenHeaderActions, Text} from "../../components";
 import Constant from '../../../helpers/Constants';
 import Globals from '../../../services/GlobalService';
-import WalletManager from '../../../services/WalletService';
+import SignService from '../../../services/SignService';
 
 export default class ConfirmationScreen extends React.Component {
 
@@ -62,7 +62,7 @@ export default class ConfirmationScreen extends React.Component {
     onConfirmTransaction() {
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
-                WalletManager.signTransaction(this.props.txData, this.props.pin, (error, result) => {
+                SignService.signTransaction(this.props.txData, this.props.pin, (error, result) => {
                     if (result) {
                         Actions.pop();
                         Globals.responseToReceiver({signedTransaction: result}, this.props.txData);

@@ -6,7 +6,7 @@ import bip39 from 'bip39';
 import Constant from "../helpers/Constants";
 import PermissionUtils from "../helpers/PermissionUtils";
 import encryption from "../helpers/EncryptionUtils";
-import WalletService from "./WalletService";
+import {appDAO} from "../dao";
 import RNFileSelector from "react-native-file-selector";
 
 const ERROR = {
@@ -21,8 +21,8 @@ const ERROR = {
  * @param {string} password     Password to encrypt wallet
  * @returns {string}            Return encrypted string or null if backup phrase not existing
  */
-function getEncryptedWallet(pin: string, password: string) {
-    let mnemonic = WalletService.viewBackupPhrase(pin);
+export function getEncryptedWallet(pin: string, password: string) {
+    let mnemonic = appDAO.getRawMnemonic(pin);
     if (mnemonic) {
         return encryption.encrypt(mnemonic, password);
     } else return null;
@@ -39,7 +39,7 @@ function getEncryptedWallet(pin: string, password: string) {
  */
 async function backupWallet(pin: string, encryptPassword: string, fileType: Constant.BACKUP_FILE_TYPE, qrCodeBase64?: string) {
     if (!this.encryptedData) {
-        this.encryptedData = getEncryptedWallet(pin, encryptPassword);
+        this.encryptedData = this.getEncryptedWallet(pin, encryptPassword);
         if (!this.encryptedData) throw new Error(ERROR.ENCRYPT_FAILED);
     }
 

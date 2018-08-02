@@ -1,7 +1,6 @@
-import {Linking, AsyncStorage} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Constant from '../helpers/Constants';
-import DataService from './DataService';
+import {walletDAO} from '../dao';
 import CachingService from './CachingService';
 import Globals from './GlobalService';
 
@@ -49,8 +48,7 @@ function manageScheme(data, pin){
         }
         case Constant.ACTION_SCHEME.GET_WALLET: {
             console.log("Processing get wallet info.");
-            let manager = DataService.getInstance();
-            let walletInfo = manager.getWalletInfo();
+            let walletInfo = walletDAO.getWalletInfo();
             if(walletInfo){
                 walletInfo = { walletId : walletInfo.walletId };
                 Globals.responseToReceiver(walletInfo, jsonData);

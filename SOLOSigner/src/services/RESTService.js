@@ -1,5 +1,3 @@
-import Globals from "./GlobalService";
-
 const BASE_URL = "http://192.168.1.98:9000";
 const API_PATH = "/api";
 const URL_GET_ALL_ADDRESSES = BASE_URL + API_PATH + "/wallet-addresses";
@@ -99,8 +97,7 @@ module.exports.getAllAddressesFromServer = function(walletId){
 
 module.exports.getExistingWalletFromServer = function(publicKey, callback){
     try {
-        let hash = Globals.convertToHash(publicKey);
-        sendRequest(URL_GET_WALLET + `${hash}`, null, HTTP_METHOD.GET)
+        sendRequest(URL_GET_WALLET + `${publicKey}`, null, HTTP_METHOD.GET)
         .then((walletInfo) => {
             console.log(walletInfo);
             if (typeof callback === 'function') {
@@ -124,9 +121,8 @@ module.exports.getExistingWalletFromServer = function(publicKey, callback){
 module.exports.registerWallet = function(publicKey) {
     return new Promise((resolve, reject) => {
         try {
-            let hash = Globals.convertToHash(publicKey);
             sendRequest(URL_REGISTER_WALLET, {
-                walletKey: hash,
+                walletKey: publicKey,
             }, HTTP_METHOD.POST)
             .then((walletInfo) => {
                 console.log(walletInfo);
