@@ -10,6 +10,8 @@ pipeline {
       steps {
         dir(path: 'SOLOWallet-android') {
           sh 'pwd'
+          sh '''if (env.ANDROID_HOME == null || env.ANDROID_HOME == "") error "ANDROID_HOME not defined"
+if (env.JAVA_HOME == null || env.JAVA_HOME == "") error "JAVA_HOME not defined"'''
         }
 
       }
