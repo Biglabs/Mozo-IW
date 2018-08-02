@@ -115,16 +115,6 @@ const DEFAULT_COINS = [
     Constants.COIN_TYPE.ETH_ROPSTEN
 ];
 
-const COIN_TYPE_LIST = [
-    Constants.COIN_TYPE.BTC,
-    Constants.COIN_TYPE.BTC_TEST,
-    Constants.COIN_TYPE.ETH,
-    Constants.COIN_TYPE.ETH_TEST,
-    Constants.COIN_TYPE.ETH_ROPSTEN,
-    Constants.COIN_TYPE.SOLO,
-];
-
 Constants.DEFAULT_COINS = DEFAULT_COINS;
-Constants.COIN_TYPE_LIST = COIN_TYPE_LIST;
 
 module.exports = Constants;

@@ -307,12 +307,13 @@ module.exports.loadInUseCoinTypes = function(){
     let addresses = manager.getAllAddressesInUse();
     var coinTypes = [];
     addresses.map(address => {
-        Constant.COIN_TYPE_LIST.map(item => {
+        for(var property in Constant.COIN_TYPE){
+            var item = Constant.COIN_TYPE[property];
             if (address.coin == item.name && address.network == item.network){
                 coinTypes.push(item);
                 return;        
             }
-        });
+        }
     });
     return coinTypes;
 }
