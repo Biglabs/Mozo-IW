@@ -23,8 +23,7 @@ public extension String {
     }
     
     public func isValidDecimalFormat() -> Bool{
-        let regex = try? NSRegularExpression(pattern: "^(?:|0|[1-9]\\d*)(?:\\.\\d*)?$", options: .caseInsensitive)
-        return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
+        return Float(self) != nil
     }
     
     public func isValidName() -> Bool {
@@ -89,6 +88,27 @@ public extension UIViewController {
         }
         
         return false
+    }
+    
+    public func displaySpinner(onView : UIView) -> UIView {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        return spinnerView
+    }
+    
+    func removeSpinner(spinner :UIView) {
+        DispatchQueue.main.async {
+            spinner.removeFromSuperview()
+        }
     }
 }
 
