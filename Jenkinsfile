@@ -13,6 +13,16 @@ pipeline {
             sh 'pwd'
           }
         }
+        stage('Move to folder') {
+          steps {
+            sh 'cd SOLOWallet-android/'
+          }
+        }
+      }
+    }
+    stage('Check-again') {
+      steps {
+        sh 'pwd'
       }
     }
   }
