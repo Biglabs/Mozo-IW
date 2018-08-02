@@ -37,6 +37,21 @@ const AddressSchema = {
     },
 };
 
+const TokenSchema = {
+    name: 'Token',
+    properties: {
+        address_network: 'string',
+        address: 'string',
+        network: 'string',
+        inUse: 'bool',
+        prvKey: 'string',
+        coin: 'string',
+        accountIndex: 'int',
+        chainIndex: 'int',
+        addressIndex: 'int',
+    },
+};
+
 const configuration = {schema: [WalletSchema, AddressSchema, AppSchema], path : "solo.signer"};
 
 class DataService {
@@ -119,6 +134,14 @@ class DataService {
 
     getAllAddresses(){
         let addresses = DataService.realm.objects('Address');
+        return addresses;
+    }
+
+    /**
+     * Get all in use addresses
+     */
+    getAllAddressesInUse(){
+        let addresses = DataService.realm.objects('Address').filtered("address.inUse == true");
         return addresses;
     }
 

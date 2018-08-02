@@ -298,6 +298,26 @@ createAddressList = function(manager, wallets, pin, coinTypes){
 }
 
 /**
+ * Load all addresses which are in use and convert to a list of coin types and networks. 
+ * @param {String} pin
+ * @param {Array} coinTypes
+ */
+module.exports.loadInUseCoinTypes = function(){
+    let manager = DataService.getInstance();
+    let addresses = manager.getAllAddressesInUse();
+    var coinTypes = [];
+    addresses.map(address => {
+        for(var item in Constant.COIN_TYPE){
+            if (address.coin == item.name && address.network == item.network){
+                coinTypes.push(item);
+                break;        
+            }
+        }
+    });
+    return coinTypes;
+}
+
+/**
  * Update all addresses with new coin type list then update them at local and server. 
  * @param {String} pin
  * @param {Array} coinTypes

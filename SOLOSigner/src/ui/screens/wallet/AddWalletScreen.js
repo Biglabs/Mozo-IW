@@ -44,8 +44,34 @@ export default class AddWalletScreen extends Component {
         }
     }
 
+    getInitialWallets(){
+        if (this.props.txData && this.props.pin) {
+            console.log("Get in use coin types for executing communication action.");
+            var inUseCoinTypes = WalletManager.loadInUseCoinTypes(); 
+            return inUseCoinTypes;
+        } else {
+            console.log("Get default for executing create new custom wallet.");
+            return this.props.selectedWalletsStore.wallets;
+        }
+    }
+
+    componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+        if (nextAppState !== 'active') {
+            console.log('App has come to the background!');
+            Actions.pop();
+        }
+    };
+
     render() {
-        let selectedWallets = this.props.selectedWalletsStore.wallets;
+        let selectedWallets = this.getInitialWallets();
         return (
             <View style={styles.container}>
 

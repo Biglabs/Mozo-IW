@@ -35,14 +35,6 @@ export default class SecurityPinScreen extends Component {
         }
     }
 
-    // Unit test for signning transaction
-    // componentDidMount() {
-    //     WalletManager.signTxMessage('ce180bf4724b360f5e52b4f26fc44054f7ed7de78bb485ab93ce585023de7a8d', 
-    //     '0xb7643ad0c07b2f2a1232fc4d276c5554e05fa1c8fddb2aed738c7ae0526f5350', 'ETH_TEST');
-    //     WalletManager.signTxMessage('3e7c8671c98af65e4f957d0843a15ce0616a0624cc5fbc3e6f72b7871f118ac1', 
-    //     '0xb7643ad0c07b2f2a1232fc4d276c5554e05fa1c8fddb2aed738c7ae0526f5350', 'ETH_TEST');
-    // }
-
     handleContinuePress() {
         if (this.props.isNewPIN) {
             if (this.state.isConfirm) {
