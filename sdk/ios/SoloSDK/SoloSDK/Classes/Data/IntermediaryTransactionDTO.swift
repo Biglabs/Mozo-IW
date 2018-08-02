@@ -33,7 +33,9 @@ public class IntermediaryTransactionDTO: ResponseObjectSerializable {
         self.signatures = json["signatures"].array?.filter({ $0.string != nil }).map({ $0.string! })
         self.tosign = json["tosign"].array?.filter({ $0.string != nil }).map({ $0.string! })
         self.pubkeys = json["pubkeys"].array?.filter({ $0.string != nil }).map({ $0.string! })
-        self.errors = json["errors"].array?.filter({ $0.string != nil }).map({ $0.string! })
+        self.errors = json["errors"].array?.filter({ $0.dictionaryObject != nil }).map({
+            $0.dictionaryObject!["error"]
+        }) as? [String]
         self.nonce = json["nonce"].number
     }
     
