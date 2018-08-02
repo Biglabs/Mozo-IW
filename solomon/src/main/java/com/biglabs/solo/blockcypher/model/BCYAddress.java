@@ -3,6 +3,7 @@ package com.biglabs.solo.blockcypher.model;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.biglabs.solo.blockcypher.model.transaction.summary.TransactionSummary;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by antt on 6/27/2018.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BCYAddress {
     private static final Logger logger = LoggerFactory.getLogger(BCYAddress.class);
 

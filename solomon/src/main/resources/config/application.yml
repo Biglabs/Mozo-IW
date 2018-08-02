@@ -105,7 +105,9 @@ jhipster:
 application:
     web3j:
         infuraRopstenUrl: https://ropsten.infura.io/iG52lGijPGJaYTLUtOoY
-
+    ropsten:
+        contractAddresses:
+            mozo: "0xf8406a3fd4e7a0ef084eab70a50d6dfb84873b23"
 blockcypher:
     token: fb87b92b0df94d72a90984c28945f029
     endpoint: https://api.blockcypher.com

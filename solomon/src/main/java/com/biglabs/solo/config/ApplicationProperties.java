@@ -2,6 +2,9 @@ package com.biglabs.solo.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Properties specific to Solomon.
  * <p>
@@ -11,9 +14,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
     public final Web3jConfig web3j = new Web3jConfig();
+    public final Ropsten ropsten = new Ropsten();
 
     public Web3jConfig getWeb3j() {
         return web3j;
+    }
+
+    public Ropsten getRopsten() {
+        return ropsten;
     }
 
     public static class Web3jConfig {
@@ -26,5 +34,17 @@ public class ApplicationProperties {
         }
 
         public String infuraRopstenUrl;
+    }
+
+    public static class Ropsten {
+        Map<String, String> contractAddresses;
+
+        public Map<String, String> getContractAddresses() {
+            return contractAddresses;
+        }
+
+        public void setContractAddresses(Map<String, String> contractAddresses) {
+            this.contractAddresses = contractAddresses;
+        }
     }
 }

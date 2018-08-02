@@ -5,15 +5,22 @@ import com.biglabs.solo.blockcypher.model.blockchain.EthBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
-import com.biglabs.solo.web.rest.errors.ErrorConstants;
+import com.biglabs.solo.config.ApplicationProperties;
+import com.biglabs.solo.eth.Erc20Contract;
 import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
 import com.biglabs.solo.web.rest.errors.JsonRpcException;
 import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
-import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.FunctionReturnDecoder;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
@@ -29,15 +36,15 @@ import org.web3j.utils.Numeric;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import static org.web3j.utils.Convert.Unit.GWEI;
 
 /**
  * Created by antt on 7/3/2018.
@@ -50,9 +57,18 @@ public class ETHRopstenClient  {
     //    private final BlockCypherProperties blockCypherProperties;
     private final RestOperations restTemplate;
     private final Web3j web3j;
-    public ETHRopstenClient(RestOperations restTemplate, Web3j web3j) {
+    private final ApplicationProperties appProps;
+    private final Map<String, Erc20Contract> ropstenContracts;
+//    private final ApplicationProperties.Ropsten ropsten;
+
+    public ETHRopstenClient(RestOperations restTemplate,
+                            Web3j web3j,
+                            ApplicationProperties appProps,
+                            @Qualifier("ropstenContracts") Map<String, Erc20Contract> r) {
         this.restTemplate = restTemplate;
         this.web3j = web3j;
+        this.appProps = appProps;
+        this.ropstenContracts = r;
     }
 
     public BCYAddress balance(String address) {
@@ -182,17 +198,26 @@ public class ETHRopstenClient  {
         return txReq;
     }
 
-//    public BCYAddress tokenBalance(String symbol, String address) {
-//        BCYAddress bcyAddress = new BCYAddress();
-//        try {
-//            EthGetBalance ethGetBalance = web3j.ethGetBalance(address, DefaultBlockParameter.valueOf("latest")).send();
-//            bcyAddress.setAddress(address);
-//            bcyAddress.setBalance(new BigDecimal(ethGetBalance.getBalance()));
-//            return bcyAddress;
-//        } catch (IOException e) {
-//            throw new InternalServerErrorException(e.getMessage());
+    public BCYAddress tokenBalance(String symbol, String address) throws Exception {
+        logger.info("[{}] Balance of {}", symbol, address);
+        BCYAddress bcyAddress = new BCYAddress();
+        Erc20Contract contract = ropstenContracts.get(symbol.toLowerCase());
+        if (contract == null) {
+            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", symbol));
+        }
+
+        BigInteger result = contract.balanceOf(address).send();
+//
+//        if (response.hasError()) {
+//            String msg = MessageFormat.format("{0}: Cannot get balance of address {1}", symbol.toUpperCase(), address);
+//            throw new JsonRpcException(msg, response.getError());
 //        }
-//    }
+//        Uint256 b = (Uint256) types.get(0).getValue();
+        bcyAddress.setAddress(address);
+        bcyAddress.setBalance(new BigDecimal(result));
+        return bcyAddress;
+    }
+
     private RawTransaction rawTxFrom(EthIntermediaryTx txReq) {
         String to = txReq.getTx().getOutputs().get(0).getAddresses().get(0);
         BigInteger value = txReq.getTx().getOutputs().get(0).getValue().toBigInteger();
