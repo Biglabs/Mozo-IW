@@ -20,12 +20,12 @@ pipeline {
         }
       }
     }
-        stage('Check-again') {
-          dir ('SOLOWallet-android') { 
-          steps {
-          sh 'pwd'
-         }
-	     }
-     }
+ 	stage('Check-again') {
+	  steps {
+	    dir ('SOLOWallet-android') {
+	    sh 'pwd'
+	}
+      }
+    }
   }
 }
