@@ -25,9 +25,9 @@ const createWindow = () => {
   });
 
   //hide default menu of browser
-  mainWindow.setMenu(null);
+  //mainWindow.setMenu(null);
   //open dev tools
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;

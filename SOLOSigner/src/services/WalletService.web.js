@@ -139,7 +139,9 @@ storeWalletInfo = function(manager, walletInfo, addresses, callback){
                 callback(null, true);
             }
             console.log("Sync all local addresses to server.");
-            RESTService.syncAllAddress(walletInfo.walletId, addresses);
+            // RESTService.syncAllAddress(walletInfo.walletId, addresses);
+            RESTService.uploadAllAddresses(walletInfo.walletId, addresses);
+            
         } else {
             throw "Fail to Save wallet !";
         }

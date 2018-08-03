@@ -6,6 +6,11 @@ import {fontRegular} from '../../../res';
 import {isAndroid} from "../../../helpers/PlatformUtils";
 
 export default class SoloText extends React.Component {
+
+    setNativeProps = (nativeProps) => {
+    
+    }
+
     render() {
         return <Text {...this.props}
                      style={[

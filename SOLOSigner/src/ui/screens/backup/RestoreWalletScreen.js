@@ -22,9 +22,6 @@ import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../..
 // import WalletBackupService from '../../../services/WalletBackupService';
 import { walletBackupService as WalletBackupService } from '../../../services';
 
-
-
-
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -51,7 +48,7 @@ export default class RestoreWalletScreen extends React.Component {
         } else {
             WalletBackupService.loadBackupFile(data => {
                 this.onReceiveData(data);
-            })
+            });
         }
     }
 
@@ -119,13 +116,15 @@ export default class RestoreWalletScreen extends React.Component {
         console.error(err);
     }
 
-    /*
+    
     openImageDialog() {
         this.refs.qrReader.openImageDialog();
     }
 
+    
     displayQRCodeScan(){
         if(isWebPlatform()){
+            const QrReader = require('react-qr-reader');
             const previewStyle = {
                 height: 180,
                 width: 180,
@@ -153,7 +152,6 @@ export default class RestoreWalletScreen extends React.Component {
         
         
     }
-    */
 
     render() {
         return (

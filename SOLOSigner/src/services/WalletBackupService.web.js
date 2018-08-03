@@ -1,5 +1,4 @@
 import {AsyncStorage, Platform} from "react-native";
-import RNShare from "react-native-share";
 import bip39 from 'bip39';
 
 import Constant from "../helpers/Constants";
