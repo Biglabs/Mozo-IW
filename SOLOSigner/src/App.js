@@ -42,12 +42,12 @@ import { isWebPlatform } from "./helpers/PlatformUtils";
     }
 }());
 
-function loadConfirmScreen(){
-    if(!isWebPlatform()){
-        const ConfirmationScreen = require('./ui/screens/transaction/ConfirmationScreen');
-        return <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>;
-    }
-}
+// function loadConfirmScreen(){
+//     if(!isWebPlatform()){
+//         const ConfirmationScreen = require('./ui/screens/transaction/ConfirmationScreen');
+//         return <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>;
+//     }
+// }
 
 export default () => {
     return (
