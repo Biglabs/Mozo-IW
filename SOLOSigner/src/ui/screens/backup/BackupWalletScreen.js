@@ -20,7 +20,7 @@ import {
 import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput, SVG} from "../../components";
 import Constant from "../../../helpers/Constants";
 // import WalletBackupService from '../../../services/WalletBackupService';
-import { isWebPlatform } from "../../../helpers/PlatformUtils";
+import { isWebPlatform, getFilePathFromUser } from "../../../helpers/PlatformUtils";
 import { walletBackupService as WalletBackupService } from '../../../services';
 
 
@@ -39,39 +39,12 @@ export default class BackupWalletScreen extends React.Component {
         this.newEncryptPassword = null;
     }
 
-    doExport(fileType: Constant.BACKUP_FILE_TYPE) {
-
-        // TODO: WEB
+    doExport(fileType) {
+        const ignoreError = WalletBackupService.ERROR.USER_DENIED;
+        // start code for desktop
         if(isWebPlatform()) {
-            const userReference = require('electron').remote.require('electron-settings');
-            // TODO: test code
-            userReference.set("file-content",this.qrCodeData.props.value);
-            const ipc = require('electron').ipcRenderer;
-            // send command to main process
-            ipc.send('open-save-file-dialog',{fileType: Constant.BACKUP_FILE_TYPE});
-            return;
-           /*  try {
-                var QRCode = require('qrcode')
-                QRCode.toFile('filename.png', data.props.value);
-            }
-            catch(e) { 
-                alert('Failed to save the file !'); 
-            } */
-        }
-        // // TODO: END WEB
-
-
-        if (this.qrCodeData && !this.qrCodeBase64) {
-            this.qrCodeData.toDataURL(data => {
-                this.qrCodeBase64 = data;
-                this.doExport(fileType);
-            });
-            //return;
-        }
-
-        if (this.qrCodeBase64) {
-            const ignoreError = WalletBackupService.ERROR.USER_DENIED;
-            WalletBackupService.backupWallet(this.props.pin, this.newEncryptPassword, fileType, this.qrCodeBase64)
+            WalletBackupService
+                .backupWallet(this.state.encryptedData, this.props.pin, this.newEncryptPassword, fileType, this.qrCodeData)
                 .then(() => {
                     this.props.backupWalletStateStore.setBackupWalletState(true);
                 })
@@ -85,6 +58,32 @@ export default class BackupWalletScreen extends React.Component {
                         );
                     }
                 });
+        // End code for desktop
+        } else {
+            if (this.qrCodeData && !this.qrCodeBase64) {
+                this.qrCodeData.toDataURL(data => {
+                    this.qrCodeBase64 = data;
+                    this.doExport(fileType);
+                });
+            }
+
+            if (this.qrCodeBase64) {
+                // const ignoreError = WalletBackupService.ERROR.USER_DENIED;
+                WalletBackupService.backupWallet(this.props.pin, this.newEncryptPassword, fileType, this.qrCodeBase64)
+                    .then(() => {
+                        this.props.backupWalletStateStore.setBackupWalletState(true);
+                    })
+                    .catch(err => {
+                        if (err.message !== ignoreError) {
+                            Alert.alert(
+                                'Something went wrong!',
+                                "Cannot backup wallet right now, try again later.",
+                                [{text: 'OK', onPress: () => Actions.pop()},],
+                                {cancelable: false}
+                            );
+                        }
+                    });
+            }
         }
     }
 

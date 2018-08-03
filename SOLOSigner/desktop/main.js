@@ -3,12 +3,11 @@ const { app, BrowserWindow } = require('electron');
 /**
  * Get instance of electron-settings
  * In order to ensure ensuring that no more than one unique electron-settings instances don't exist simultaneously.
- * You must require electron-settings in the renderer process, use remote.require('electron-settings').
+ * You must require electron-settings in the renderer process, use require('electron').remote.require('electron-settings').
  */
 const userReference = require('electron-settings');
 
-
-// settings.deleteAll();
+userReference.deleteAll();
 
 let mainWindow = null;
 
@@ -25,8 +24,10 @@ const createWindow = () => {
     show: false */
   });
 
+  //hide default menu of browser
+  mainWindow.setMenu(null);
   //open dev tools
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -37,7 +38,6 @@ const createWindow = () => {
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
-
 }
 
 app.on('ready', () => {
@@ -45,42 +45,81 @@ app.on('ready', () => {
 });
 
 
-const ipc = require('electron').ipcMain
-const dialog = require('electron').dialog
+const ipc = require('electron').ipcMain;
+const dialog = require('electron').dialog;
 
 /**
  * handle open file dialog
  */
 ipc.on('open-file-dialog', function (event) {
   dialog.showOpenDialog({
-    properties: ['openFile', 'openDirectory']
+    properties: ['openFile']
   }, function (files) {
     if (files) 
-      event.sender.send('selected-directory', files);
+      event.sender.send('selected-file', files[0]);
   });
 });
 
-/**
- * handle save file dialog
- */
-ipc.on('open-save-file-dialog', function (event, fileType) {
-  console.log(fileType);
-  dialog.showSaveDialog({ 
-    filters: [
-      //{ name: 'text', extensions: ['txt'] },
-      { name: 'png', extensions: ['png'] }
-    ]}, function (fileName) {
-      if (fileName === undefined) {
-        return;
-      } else {
-        // TODO: test code
-        console.log(fileName);
-        var QRCode = require('qrcode')
-        // QRCode.toFile('filename.png', data.props.value);
-        QRCode.toFile(fileName, userReference.get("file-content"));
-        dialog.showMessageBox({ message: "The file has been saved! :-)",
 
-      buttons: ["OK"] });
-      }
-  }); 
+/**
+ * handle save QR Code file
+ */
+ipc.on('open-save-file-dialog', function (event, fileExtenstion) {
+  try {
+    let fileType = fileExtenstion.fileType.toLowerCase();
+    let fileContent = userReference.get("file-content");
+    
+    //open save file dialog
+    dialog.showSaveDialog({ 
+      filters: [
+        { name: fileType, extensions: [fileType] }
+      ]}, function (fileName) {
+        if (fileName === undefined) {
+          return;
+        } else {
+          // save file base on type
+          if(fileType === 'png') {
+            var QRCode = require('qrcode');
+            QRCode.toFile(fileName, fileContent);
+          } else if(fileType === 'txt'){
+            var fs = require('fs');
+            fs.writeFileSync(fileName, fileContent, 'utf-8');
+          } else {
+            throw "Invalid file extension";
+          }
+          showMessageDialog();
+          //clear save data
+          userReference.set("file-content","");
+        }
+    }); 
+  } catch (error) {
+    showErrorDialog();
+  }
 });
+
+/**
+ * Display message dialog
+ * 
+ * @param {Object} option Configuration for message dialog 
+ */
+function showMessageDialog(option) {
+  const options = {
+    type: 'info',
+    title: 'Information',
+    message: "Save file successful?",
+    buttons: ['OK']
+  };
+
+  dialog.showMessageBox(options, function (index) {
+    console.log("Save file success...");
+  });
+}
+
+/**
+ * Display error dialog
+ */
+function showErrorDialog() {
+  ipc.on('open-error-dialog', function (event) {
+    dialog.showErrorBox('Error Message', 'System has problem while processing.');
+  })
+}

@@ -9,7 +9,7 @@
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
     "ios-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios --configuration Release",
     "test": "jest",
-    "desktop": "webpack && electron ./desktop/main.js",
+    "desktop": "yarn && webpack && electron ./desktop/main.js",
     "webpack": "webpack --progress",
     "webpack-server": "webpack-serve"
   },

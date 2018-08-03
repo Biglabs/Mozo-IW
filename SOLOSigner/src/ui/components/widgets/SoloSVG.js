@@ -31,30 +31,3 @@ const SoloSVG = ({ width, height, svg, fill = '', style = {} }) => {
 }
 
 export default SoloSVG;
-
-/* export default class SoloSVG extends Component {
-
-    setNativeProps = (nativeProps) => {
-        //this._root.setNativeProps(nativeProps);
-    }
-
-    render() {
-        if (Platform.OS.toUpperCase() === "WEB") {
-            return (
-                <SVGInline 
-                    width={this.props.width.toString()}
-                    height={this.props.height.toString()}
-                    svg={this.props.svg}
-                />
-            );    
-        } else {
-            return (
-                <SvgUri 
-                    width={this.props.width} 
-                    height={this.props.height} 
-                    svgXmlData={this.props.svg}
-                />
-            ); 
-        }
-    }
-} */
