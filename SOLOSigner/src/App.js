@@ -25,14 +25,14 @@ import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
 import ConfirmBackupPhrase from './ui/screens/backup/ConfirmBackupPhraseScreen';
 import ViewBackupPhrase from './ui/screens/backup/ViewBackupPhraseScreen';
 
-import { isWebPlatform } from "./helpers/PlatformUtils";
+import {isWebPlatform} from "./helpers/PlatformUtils";
 
-/** 
+/**
  * Load services base on running platform
-*/
+ */
 (function initServices() {
-    if(isWebPlatform()){
-        
+    if (isWebPlatform) {
+
     } else {
         const LinkingService = require("./services/LinkingService");
         Linking.getInitialURL().then((url) => {
@@ -42,8 +42,8 @@ import { isWebPlatform } from "./helpers/PlatformUtils";
     }
 }());
 
-// function loadConfirmScreen(){
-//     if(!isWebPlatform()){
+// function loadConfirmScreen() {
+//     if (!isWebPlatform) {
 //         const ConfirmationScreen = require('./ui/screens/transaction/ConfirmationScreen');
 //         return <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>;
 //     }
@@ -84,7 +84,7 @@ export default () => {
                     <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/>
 
                     {/* transaction screens */}
-                    {/* <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/> */}
+                    {/*{loadConfirmScreen()}*/}
                 </Modal>
             </Router>
         </Provider>
