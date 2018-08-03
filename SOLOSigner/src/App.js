@@ -24,6 +24,7 @@ import BackupWalletScreen from './ui/screens/backup/BackupWalletScreen';
 import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
 import ConfirmBackupPhrase from './ui/screens/backup/ConfirmBackupPhraseScreen';
 import ViewBackupPhrase from './ui/screens/backup/ViewBackupPhraseScreen';
+import ConfirmationScreen from './ui/screens/transaction/ConfirmationScreen';
 
 import {isWebPlatform} from "./helpers/PlatformUtils";
 
@@ -31,7 +32,7 @@ import {isWebPlatform} from "./helpers/PlatformUtils";
  * Load services base on running platform
  */
 (function initServices() {
-    if (isWebPlatform) {
+    if (isWebPlatform()) {
 
     } else {
         const LinkingService = require("./services/LinkingService");
@@ -85,6 +86,7 @@ export default () => {
 
                     {/* transaction screens */}
                     {/*{loadConfirmScreen()}*/}
+                    <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
                 </Modal>
             </Router>
         </Provider>
