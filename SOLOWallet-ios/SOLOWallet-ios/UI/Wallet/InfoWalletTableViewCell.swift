@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SoloSDK
 
 public class InfoWalletTableViewCell: UITableViewCell {
     

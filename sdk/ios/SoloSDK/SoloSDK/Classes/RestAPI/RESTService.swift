@@ -58,6 +58,7 @@ public final class RESTService {
     }
     
     func execute(_ method: Alamofire.HTTPMethod, url: String, parameters: Any? = nil, completionHandler: completion = nil) {
+        print("Execute url: " + url)
         if parameters == nil {
             self.execute(method, url: url, params: nil, completionHandler: completionHandler)
         } else if let params = parameters as? [String: Any] {

@@ -16,6 +16,7 @@ public final class SoloSDK: NSObject {
     
     public let api: RESTService?
     public let singner: SignerManager?
+    public let autoStoreContentForOfflineUse: Bool = true
     
     public init(bundleId: String) {
         self.api = RESTService()

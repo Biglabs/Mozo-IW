@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import SoloSDK
 
 class WalletViewController: AbstractViewController {
     var tableView: UITableView?
