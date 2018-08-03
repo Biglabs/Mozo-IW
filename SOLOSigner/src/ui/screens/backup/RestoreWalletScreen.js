@@ -1,6 +1,7 @@
 import React from "react";
 import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
+import QrReader from 'react-qr-reader';
 
 import { isWebPlatform } from "../../../helpers/PlatformUtils";
 
@@ -19,25 +20,38 @@ import {
 } from '../../../res';
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 // import WalletBackupService from '../../../services/WalletBackupService';
-//import { walletBackupService as WalletBackupService } from '../../../services';
+import { walletBackupService as WalletBackupService } from '../../../services';
 
 const ipc = require('electron').ipcRenderer;
+
+
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {loadedBackupData: false, errorMessage: '', backupPhraseValidSate: -1};
+
+        // TODO: Remove later, for test
+        this.handleScan = this.handleScan.bind(this);
     }
 
     onChooseFileClick() {
-        
+        let that = this;
         if(isWebPlatform) {
             // send command to main process
             ipc.send('open-file-dialog');
+            ipc.on('selected-file', function (event, file) {
+                console.log(file.toString());
+                var fs = require('fs');
+                fs.readFile(file, function(err, data) {
+                    console.log(data.toString());
+                    that.onReceiveData(data.toString());
+                  });
+            });
         } else {
-            /* WalletBackupService.loadBackupFile(data => {
+            WalletBackupService.loadBackupFile(data => {
                 this.onReceiveData(data);
-            }) */
+            })
         }
     }
 
@@ -57,7 +71,7 @@ export default class RestoreWalletScreen extends React.Component {
     }
 
     onContinueClick() {
-        /* if (this.encryptedData && this.checkPassword()) {
+        if (this.encryptedData && this.checkPassword()) {
             let result = WalletBackupService.restoreWallet(this.encryptedData, this.encryptPassword);
             if (result) {
                 this.state.backupPhraseValidSate = 1;
@@ -71,7 +85,7 @@ export default class RestoreWalletScreen extends React.Component {
                     backupPhraseValidSate: 0
                 });
             }
-        } */
+        }
     }
 
     checkPassword() {
@@ -90,6 +104,52 @@ export default class RestoreWalletScreen extends React.Component {
             errorMessage: '',
             backupPhraseValidSate: -1
         })
+    }
+
+    handleScan(result){
+        if(result){
+            console.log(result);
+            this.onReceiveData(result);
+            /* this.setState({ 
+                backupPhrase: result 
+            }); */
+        }
+    }
+    handleError(err){
+        console.error(err);
+    }
+    openImageDialog() {
+        this.refs.qrReader.openImageDialog();
+    }
+
+    displayQRCodeScan(){
+        if(isWebPlatform()){
+            const previewStyle = {
+                height: 180,
+                width: 180,
+            };
+            return (
+                <div>
+                    <QrReader
+                        ref="qrReader"
+                        delay={this.state.delay}
+                        style={previewStyle}
+                        onError={this.handleError}
+                        onScan={this.handleScan}
+                        legacyMode
+                    />
+                    <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
+                </div>
+            );
+        } else {
+            return (
+                <QRCodeScanner
+                    cameraSize={180}
+                    onCodeRead={data => this.onReceiveData(data)}/>
+            );
+        }
+        
+        
     }
 
     render() {
@@ -118,7 +178,7 @@ export default class RestoreWalletScreen extends React.Component {
                             <Text style={styles.separator_text}>OR</Text>
                             <View style={styles.dash}/>
                         </View>
-
+                        {this.displayQRCodeScan()}
                         {/* <QRCodeScanner
                             cameraSize={180}
                             onCodeRead={data => this.onReceiveData(data)}/> */}

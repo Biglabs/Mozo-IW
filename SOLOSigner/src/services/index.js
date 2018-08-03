@@ -15,7 +15,6 @@ let walletService, walletBackupService, manageWalletService;
         //require("./WalletService");
         walletService = require("./WalletService");
         walletBackupService = require("./WalletBackupService");
-
     }
     
 }());

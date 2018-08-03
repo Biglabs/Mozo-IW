@@ -1,12 +1,13 @@
 import bip39 from 'bip39';
 import Bitcoin from 'bitcoinjs-lib';
 
-import encryption from '../helpers/EncryptionUtils';
-
 import { updateMnemonicWithPin } from "../models/App";
 
 import Constant from "../helpers/Constants";
 import WebConstants from "../helpers/WebConstants";
+
+import encryption from '../helpers/EncryptionUtils';
+// import { checkDirectorySync } from "../helpers/PlatformUtils";
 
 const userReference = require('electron').remote.require('electron-settings');
 
@@ -23,8 +24,8 @@ function getWalletInfo() {
 /**
  * Save Wallet Information
  *
- * @param {*} walletInfo
- * @returns
+ * @param { Object } walletInfo
+ * @returns {Boolean} true if success, false if fail
  */
 function saveWalletInfo(walletInfo) {
     try {
@@ -95,7 +96,45 @@ function createNewWallet  (importedPhrase, pin, coinTypes) {
     return wallets;
 }
 
+/**
+ * Load backup phrase (seed words) from local storage and encrypt it with password
+ *
+ * @param {string} pin          Security Pin for unlock local data
+ * @param {string} password     Password to encrypt wallet
+ * @returns {string}            Return encrypted string or null if backup phrase not existing
+ */
+function getEncryptedWallet(pin, password) {
+    let mnemonic = WalletService.viewBackupPhrase(pin);
+    if (mnemonic) {
+        return encryption.encrypt(mnemonic, password);
+    } else return null;
+}
+
+
+/**
+ * Save QR Code data to file
+ *
+ * @param {String}              fileType        Export file type. @see Constant.BACKUP_FILE_TYPE
+ * @param {String}              fileContent     Data for saving to file
+ * @returns {Promise<boolean>}                  Result is true if backup success or otherwise
+ */
+function backupWallet(fileType, fileContent) {    
+    try {
+        //set data for main process
+        userReference.set("file-content",fileContent);
+        const ipc = require('electron').ipcRenderer;
+        //send message to main process
+        ipc.send('open-save-file-dialog',{fileType: fileType});
+        userReference.set(Constant.FLAG_BACKUP_WALLET, 'true');
+    } catch (error) {
+        console.log(error);
+        throw err;
+    }
+}
+
+
 module.exports = {
     saveWalletInfo: saveWalletInfo,
-    createNewWallet: createNewWallet
+    createNewWallet: createNewWallet,
+    backupWallet: backupWallet,
 };
