@@ -16,6 +16,8 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 
+import { isWebPlatform } from "../../../helpers/PlatformUtils";
+
 export default class ImportWalletScreen extends React.Component {
 
     constructor(props) {
