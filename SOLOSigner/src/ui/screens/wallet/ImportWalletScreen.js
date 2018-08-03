@@ -73,33 +73,33 @@ export default class ImportWalletScreen extends React.Component {
     }
 
     displayQRCodeScan(){
-        if(isWebPlatform()){
-            const QrReader = require('react-qr-reader');
-            const previewStyle = {
-                height: 180,
-                width: 180,
-            };
-            return (
-                <div>
-                    <QrReader
-                        ref="qrReader"
-                        delay={this.state.delay}
-                        style={previewStyle}
-                        onError={this.handleError}
-                        onScan={this.handleScan}
-                        legacyMode
-                    />
-                    <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
-                </div>
-            );
-        } else {
+        // if(isWebPlatform()){
+        //     const QrReader = require('react-qr-reader');
+        //     const previewStyle = {
+        //         height: 180,
+        //         width: 180,
+        //     };
+        //     return (
+        //         <div>
+        //             <QrReader
+        //                 ref="qrReader"
+        //                 delay={this.state.delay}
+        //                 style={previewStyle}
+        //                 onError={this.handleError}
+        //                 onScan={this.handleScan}
+        //                 legacyMode
+        //             />
+        //             <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
+        //         </div>
+        //     );
+        // } else {
             return (
                 <QRCodeScanner
                     cameraSize={180}
                     scanning={this.state.isScanningQRCode}
                     onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
             );
-        }
+        // }
     }
 
     render() {
