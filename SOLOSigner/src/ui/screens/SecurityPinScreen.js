@@ -23,7 +23,7 @@ const inputNewPIN = "Create a new PIN";
 const inputConfirmPIN = "Confirm PIN";
 const inputExistingPIN = "Enter PIN";
 
-export default class SecurityPinScreen extends Component {
+export default class SecurityPinScreen extends Component<Props> {
     constructor(props) {
         super(props);
         this.pinCode = Array.apply(null, Array(PIN_LENGTH));
