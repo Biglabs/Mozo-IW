@@ -1,6 +1,8 @@
 package com.biglabs.solo.eth;
 
 
+import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
+import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
 import com.biglabs.solo.web.rest.errors.JsonRpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.abi.datatypes.generated.Uint8;
+import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.RemoteCall;
@@ -33,12 +36,15 @@ public class Erc20Contract {
 
     public static final String FUNC_SYMBOL = "symbol";
     public static final String FUNC_BALANCEOF = "balanceOf";
+    public static final String FUNC_TOTALSUPPLY = "totalSupply";
+    public static final String FUNC_TRANSFERFROM = "transferFrom";
 
     public final Web3j web3j;
 
     private final String contractAddress;
     private String symbol;
     private BigInteger decimals;
+    private BigInteger totalSupply;
 
     public Erc20Contract(Web3j web3j, String address) {
         this.web3j = web3j;
@@ -53,6 +59,8 @@ public class Erc20Contract {
             logger.info("#   symbol:\t{}", symbol);
             this.decimals = decimals().send();
             logger.info("#   decimal:\t{}", decimals);
+            totalSupply = totalSupply().send();
+            logger.info("#   totalSupply:\t{}", totalSupply);
             return true;
         } catch (Exception e) {
             logger.error("Failed to init contract at address {}: {}", contractAddress, e.getMessage());
@@ -70,6 +78,10 @@ public class Erc20Contract {
 
     public BigInteger getDecimals() {
         return decimals;
+    }
+
+    public BigInteger getTotalSupply() {
+        return totalSupply;
     }
 
     public RemoteCall<String> symbol() {
@@ -97,6 +109,17 @@ public class Erc20Contract {
             Arrays.asList(new TypeReference<Uint256>() {}));
 
         return executeRemoteSingleValueReturn(address, function, BigInteger.class);
+    }
+
+    public RemoteCall<BigInteger> totalSupply() {
+        final Function function = new Function(FUNC_TOTALSUPPLY,
+            Arrays.<Type>asList(),
+            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        return executeRemoteSingleValueReturn(Address.DEFAULT.toString(), function, BigInteger.class);
+    }
+
+    public EthIntermediaryTx prepareTransfer(String from, String to, BigInteger value) {
+        return null;
     }
 
     private <T> RemoteCall<T> executeRemoteSingleValueReturn(String fromAddress, Function f, Class<T> returnType) {
