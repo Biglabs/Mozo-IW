@@ -2,12 +2,14 @@
 
 import React from "react";
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import SvgUri from 'react-native-svg-uri';
-import {RNCamera} from 'react-native-camera';
 import PropTypes from 'prop-types';
 
+import {isWebPlatform} from "../../../helpers/PlatformUtils";
 import {colorPrimary, fontBold, icons} from "../../../res";
 import SoloText from '../widgets/SoloText';
+import SVG from '../widgets/SoloSVG';
+
+const RNCamera = isWebPlatform ? null : require('react-native-camera');
 
 export default class QRCodeScanner extends React.Component {
     constructor(props) {
@@ -46,15 +48,18 @@ export default class QRCodeScanner extends React.Component {
                 style={{width: this.scanAreaSize, height: this.scanAreaSize,}}
                 disabled={this.state.isScanning}
                 onPress={this.onPress}>
-                <SvgUri width={this.scanAreaSize} height={this.scanAreaSize} svgXmlData={icons.icScanArea}
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            zIndex: -1,
-                        }}/>
+                <SVG
+                    width={this.scanAreaSize} height={this.scanAreaSize}
+                    svg={icons.icScanArea}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: -1,
+                    }}
+                />
                 {
-                    this.state.isScanning &&
+                    this.state.isScanning && RNCamera &&
                     <RNCamera
                         style={{width: this.cameraSize, height: this.cameraSize, margin: 10}}
                         ratio='1:1'

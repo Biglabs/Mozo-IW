@@ -25,6 +25,7 @@ function createDirectorySync(directory) {
  */
 module.exports = {
     isAndroid : Platform.OS === 'android',
+    isIOS : Platform.OS === 'ios',
     isWebPlatform : isWebPlatform,
     checkDirectorySync: createDirectorySync,
     //getFilePathFromUser: getFilePathFromUser,
