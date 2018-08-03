@@ -10,7 +10,6 @@
 		2050D26F21097BCE009A0ACF /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2050D26E21097BCD009A0ACF /* WalletListViewController.swift */; };
 		205DF05A211064E900A69141 /* MozoWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */; };
 		205DF05C211064FF00A69141 /* MozoWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */; };
-		207E029920ECD545006543F6 /* TransactionHistoryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */; };
 		2093A1B72100760600965D30 /* ReceiveTransactionValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A1B62100760600965D30 /* ReceiveTransactionValueCell.xib */; };
 		2093A1B92100767C00965D30 /* ReceiveTransactionValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093A1B82100767C00965D30 /* ReceiveTransactionValueCell.swift */; };
 		2093A1BB2100899B00965D30 /* GenerateTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A1BA2100899B00965D30 /* GenerateTransactionCell.xib */; };
@@ -45,7 +44,6 @@
 		C63A844B20DB88620073EB08 /* TransactionWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */; };
 		C69AF7B520D9EDA200C61FA4 /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */; };
 		C69AF7B620D9EDA200C61FA4 /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */; };
-		C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */; };
 		C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */; };
 		C69AF7C520DA5C4700C61FA4 /* InfoWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */; };
 		C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */; };
@@ -65,7 +63,6 @@
 		2050D26E21097BCD009A0ACF /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletListViewController.swift; sourceTree = "<group>"; };
 		205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MozoWalletTableViewCell.swift; sourceTree = "<group>"; };
 		205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MozoWalletTableViewCell.xib; sourceTree = "<group>"; };
-		207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDTO.swift; sourceTree = "<group>"; };
 		2093A1B62100760600965D30 /* ReceiveTransactionValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReceiveTransactionValueCell.xib; sourceTree = "<group>"; };
 		2093A1B82100767C00965D30 /* ReceiveTransactionValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveTransactionValueCell.swift; sourceTree = "<group>"; };
 		2093A1BA2100899B00965D30 /* GenerateTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenerateTransactionCell.xib; sourceTree = "<group>"; };
@@ -105,7 +102,6 @@
 		C63A844A20DB88620073EB08 /* TransactionWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionWalletTableViewCell.xib; sourceTree = "<group>"; };
 		C69AF7B320D9EDA200C61FA4 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo-bold.ttf"; sourceTree = "<group>"; };
 		C69AF7B420D9EDA200C61FA4 /* utm-avo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "utm-avo.ttf"; sourceTree = "<group>"; };
-		C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDTO.swift; sourceTree = "<group>"; };
 		C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDTO.swift; sourceTree = "<group>"; };
 		C69AF7C420DA5C4700C61FA4 /* InfoWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoWalletTableViewCell.xib; sourceTree = "<group>"; };
 		C69AF7C620DA5C5700C61FA4 /* InfoWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoWalletTableViewCell.swift; sourceTree = "<group>"; };
@@ -323,9 +319,7 @@
 		C69AF7B720DA0F6D00C61FA4 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				C69AF7BA20DA13BF00C61FA4 /* AddressDTO.swift */,
 				C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */,
-				207E029820ECD545006543F6 /* TransactionHistoryDTO.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -494,7 +488,6 @@
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */,
 				2093A1B92100767C00965D30 /* ReceiveTransactionValueCell.swift in Sources */,
-				C69AF7BB20DA13BF00C61FA4 /* AddressDTO.swift in Sources */,
 				C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
 				C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */,
@@ -509,7 +502,6 @@
 				C69AF7C720DA5C5700C61FA4 /* InfoWalletTableViewCell.swift in Sources */,
 				C63A844120DB56650073EB08 /* Utils.swift in Sources */,
 				C616DF1720D8E09400258ACE /* ThemeManager.swift in Sources */,
-				207E029920ECD545006543F6 /* TransactionHistoryDTO.swift in Sources */,
 				C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */,
 				C6134A4020E4843C00A5FE50 /* HandshakeView.swift in Sources */,
 				C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */,

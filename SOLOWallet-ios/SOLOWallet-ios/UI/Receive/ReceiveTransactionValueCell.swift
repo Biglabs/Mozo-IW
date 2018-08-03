@@ -8,6 +8,7 @@
 
 import UIKit
 import JDStatusBarNotification
+import SoloSDK
 
 public class ReceiveTransactionValueCell: UITableViewCell {
     @IBOutlet weak var inputCoinView: UIView!

@@ -58,6 +58,8 @@ class SoloWalletViewController: UIViewController {
         guard let walletId = UserDefaults.standard.string(forKey: Configuration.WALLLET_ID) else {
             return
         }
+        // TODO: Check connection status here
+        
         self.feed = AddressFeed.init(walletId, soloSDK: self.soloSDK)
         self.refreshAddress()
     }
