@@ -1,7 +1,7 @@
 import React from "react";
 import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
-import QrReader from 'react-qr-reader';
+// import QrReader from 'react-qr-reader';
 
 import { isWebPlatform } from "../../../helpers/PlatformUtils";
 
@@ -22,7 +22,6 @@ import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../..
 // import WalletBackupService from '../../../services/WalletBackupService';
 import { walletBackupService as WalletBackupService } from '../../../services';
 
-const ipc = require('electron').ipcRenderer;
 
 
 
@@ -38,6 +37,7 @@ export default class RestoreWalletScreen extends React.Component {
     onChooseFileClick() {
         let that = this;
         if(isWebPlatform) {
+            const ipc = require('electron').ipcRenderer;
             // send command to main process
             ipc.send('open-file-dialog');
             ipc.on('selected-file', function (event, file) {
@@ -118,6 +118,8 @@ export default class RestoreWalletScreen extends React.Component {
     handleError(err){
         console.error(err);
     }
+
+    /*
     openImageDialog() {
         this.refs.qrReader.openImageDialog();
     }
@@ -151,6 +153,7 @@ export default class RestoreWalletScreen extends React.Component {
         
         
     }
+    */
 
     render() {
         return (

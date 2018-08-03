@@ -21,7 +21,7 @@ import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput, SVG} from "..
 import Constant from "../../../helpers/Constants";
 // import WalletBackupService from '../../../services/WalletBackupService';
 import { isWebPlatform, getFilePathFromUser } from "../../../helpers/PlatformUtils";
-import { walletBackupService as WalletBackupService } from '../../../services';
+// import { walletBackupService as WalletBackupService } from '../../../services';
 
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
@@ -40,24 +40,24 @@ export default class BackupWalletScreen extends React.Component {
     }
 
     doExport(fileType) {
-        const ignoreError = WalletBackupService.ERROR.USER_DENIED;
+        // const ignoreError = WalletBackupService.ERROR.USER_DENIED;
         // start code for desktop
         if(isWebPlatform()) {
-            WalletBackupService
-                .backupWallet(this.state.encryptedData, this.props.pin, this.newEncryptPassword, fileType, this.qrCodeData)
-                .then(() => {
-                    this.props.backupWalletStateStore.setBackupWalletState(true);
-                })
-                .catch(err => {
-                    if (err.message !== ignoreError) {
-                        Alert.alert(
-                            'Something went wrong!',
-                            "Cannot backup wallet right now, try again later.",
-                            [{text: 'OK', onPress: () => Actions.pop()},],
-                            {cancelable: false}
-                        );
-                    }
-                });
+            // WalletBackupService
+            //     .backupWallet(this.state.encryptedData, this.props.pin, this.newEncryptPassword, fileType, this.qrCodeData)
+            //     .then(() => {
+            //         this.props.backupWalletStateStore.setBackupWalletState(true);
+            //     })
+            //     .catch(err => {
+            //         if (err.message !== ignoreError) {
+            //             Alert.alert(
+            //                 'Something went wrong!',
+            //                 "Cannot backup wallet right now, try again later.",
+            //                 [{text: 'OK', onPress: () => Actions.pop()},],
+            //                 {cancelable: false}
+            //             );
+            //         }
+            //     });
         // End code for desktop
         } else {
             if (this.qrCodeData && !this.qrCodeBase64) {
@@ -69,20 +69,20 @@ export default class BackupWalletScreen extends React.Component {
 
             if (this.qrCodeBase64) {
                 // const ignoreError = WalletBackupService.ERROR.USER_DENIED;
-                WalletBackupService.backupWallet(this.props.pin, this.newEncryptPassword, fileType, this.qrCodeBase64)
-                    .then(() => {
-                        this.props.backupWalletStateStore.setBackupWalletState(true);
-                    })
-                    .catch(err => {
-                        if (err.message !== ignoreError) {
-                            Alert.alert(
-                                'Something went wrong!',
-                                "Cannot backup wallet right now, try again later.",
-                                [{text: 'OK', onPress: () => Actions.pop()},],
-                                {cancelable: false}
-                            );
-                        }
-                    });
+                // WalletBackupService.backupWallet(this.props.pin, this.newEncryptPassword, fileType, this.qrCodeBase64)
+                //     .then(() => {
+                //         this.props.backupWalletStateStore.setBackupWalletState(true);
+                //     })
+                //     .catch(err => {
+                //         if (err.message !== ignoreError) {
+                //             Alert.alert(
+                //                 'Something went wrong!',
+                //                 "Cannot backup wallet right now, try again later.",
+                //                 [{text: 'OK', onPress: () => Actions.pop()},],
+                //                 {cancelable: false}
+                //             );
+                //         }
+                //     });
             }
         }
     }
@@ -107,11 +107,11 @@ export default class BackupWalletScreen extends React.Component {
             return false;
         }
 
-        console.log("encryptedData: " +WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword));
-        this.setState({
-            isReadyToBackup: true,
-            encryptedData: WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword),
-        });
+        // console.log("encryptedData: " +WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword));
+        // this.setState({
+        //     isReadyToBackup: true,
+        //     encryptedData: WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword),
+        // });
     }
 
     clearError() {

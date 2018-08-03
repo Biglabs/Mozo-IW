@@ -2,7 +2,6 @@ import React from "react";
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import bip39 from 'bip39';
-import QrReader from 'react-qr-reader';
 
 import {QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 import {
@@ -67,41 +66,44 @@ export default class ImportWalletScreen extends React.Component {
     handleError(err){
         console.error(err);
     }
-    openImageDialog() {
-        this.refs.qrReader.openImageDialog();
-    }
 
-    displayQRCodeScan(){
-        if(isWebPlatform()){
-            const previewStyle = {
-                height: 180,
-                width: 180,
-            };
-            return (
-                <div>
-                    <QrReader
-                        ref="qrReader"
-                        delay={this.state.delay}
-                        style={previewStyle}
-                        onError={this.handleError}
-                        onScan={this.handleScan}
-                        legacyMode
-                    />
-                    <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
-                </div>
-            );
-        } else {
-            return (
-                <QRCodeScanner
-                    cameraSize={180}
-                    scanning={this.state.isScanningQRCode}
-                    onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
-            );
-        }
-        
-        
-    }
+    /*
+  openImageDialog() {
+       // this.refs.qrReader.openImageDialog();
+   }
 
+   displayQRCodeScan(){
+       import QrReader from 'react-qr-reader';
+       if(isWebPlatform()){
+           const previewStyle = {
+               height: 180,
+               width: 180,
+           };
+           return (
+               <div>
+                   <QrReader
+                       ref="qrReader"
+                       delay={this.state.delay}
+                       style={previewStyle}
+                       onError={this.handleError}
+                       onScan={this.handleScan}
+                       legacyMode
+                   />
+                   <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
+               </div>
+           );
+       } else {
+           return (
+               <QRCodeScanner
+                   cameraSize={180}
+                   scanning={this.state.isScanningQRCode}
+                   onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
+           );
+       }
+
+
+   }
+*/
     render() {
         return (
             <View style={styles.container}>
@@ -143,7 +145,10 @@ export default class ImportWalletScreen extends React.Component {
                         <Text style={styles.separator_text}>OR BETTER YET</Text>
                         <View style={styles.dash}/>
                     </View>
-                    {this.displayQRCodeScan()}
+                    <QRCodeScanner
+                        cameraSize={180}
+                        scanning={this.state.isScanningQRCode}
+                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
                 </ScrollView>
 
                 <ScreenFooterActions
