@@ -12,3 +12,19 @@ module.exports.decrypt = function (data, password) {
         return null;
     }
 };
+
+/**
+ * Hash input pin
+ * @param {String} inputPIN
+ */
+// TODO: this function also exist in GlobalService
+module.exports.convertToHash = function (inputPIN){
+    let pinString = null;
+    if(typeof(responseData) === 'string'){
+        pinString = inputPIN;
+    } else {
+        pinString = JSON.stringify(inputPIN);
+    }
+    let sha512 = require('js-sha512');
+    return sha512(pinString);
+}

@@ -16,6 +16,8 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 
+import { isWebPlatform } from "../../../helpers/PlatformUtils";
+
 export default class ImportWalletScreen extends React.Component {
 
     constructor(props) {
@@ -24,8 +26,13 @@ export default class ImportWalletScreen extends React.Component {
             isScanningQRCode: false,
             isPhraseValid: false,
             isShowError: false,
-            backupPhrase: ''
+            backupPhrase: '',
+            delay: 100,
+            result: 'No result'
         }
+
+        // TODO: Remove later, for test
+        this.handleScan = this.handleScan.bind(this);
     }
 
     onSubmitPhrase(phrase) {
@@ -44,6 +51,55 @@ export default class ImportWalletScreen extends React.Component {
                 importedPhrase: this.state.backupPhrase
             })
         }
+    }
+
+    handleScan(result){
+        console.log(result);
+        if(result){
+            // console.log(result);
+        this.onSubmitPhrase(result);
+          /*  this.setState({ 
+                backupPhrase: result 
+            }); */
+        }
+    }
+    handleError(err){
+        console.error(err);
+    }
+
+
+    openImageDialog() {
+       // this.refs.qrReader.openImageDialog();
+    }
+
+    displayQRCodeScan(){
+        // if(isWebPlatform()){
+        //     const QrReader = require('react-qr-reader');
+        //     const previewStyle = {
+        //         height: 180,
+        //         width: 180,
+        //     };
+        //     return (
+        //         <div>
+        //             <QrReader
+        //                 ref="qrReader"
+        //                 delay={this.state.delay}
+        //                 style={previewStyle}
+        //                 onError={this.handleError}
+        //                 onScan={this.handleScan}
+        //                 legacyMode
+        //             />
+        //             <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
+        //         </div>
+        //     );
+        // } else {
+        //     return (
+        //         <QRCodeScanner
+        //             cameraSize={180}
+        //             scanning={this.state.isScanningQRCode}
+        //             onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
+        //     );
+        // }
     }
 
     render() {
@@ -87,7 +143,7 @@ export default class ImportWalletScreen extends React.Component {
                         <Text style={styles.separator_text}>OR BETTER YET</Text>
                         <View style={styles.dash}/>
                     </View>
-
+                    {/*{this.displayQRCodeScan()}*/}
                     <QRCodeScanner
                         cameraSize={180}
                         scanning={this.state.isScanningQRCode}

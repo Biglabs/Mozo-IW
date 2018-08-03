@@ -1,11 +1,13 @@
 import React from 'react';
-import {StyleSheet, View, YellowBox} from 'react-native';
+import {StyleSheet, View, YellowBox, Platform} from 'react-native';
 import TimerMixin from 'react-timer-mixin';
-import SvgUri from 'react-native-svg-uri';
 
 import {colorPrimary, dimenScreenWidth, icons} from '../../res';
 import {AnimatedView} from "../components";
+
 import Globals from '../../services/GlobalService';
+
+import { SVG } from '../components/';
 
 export default class SplashScreen extends React.Component {
 
@@ -26,11 +28,16 @@ export default class SplashScreen extends React.Component {
     render() {
         let logoWidth = 64 * dimenScreenWidth / 100;
         let logoHeight = 37.8 * logoWidth / 100;
+
         return (
             <View style={styles.container}>
                 <AnimatedView animation='fade_in' duration={500}>
-                    <SvgUri width={logoWidth} height={logoHeight} svgXmlData={icons.icSoloLogo}/>
-                </AnimatedView>
+                    <SVG 
+                        width={logoWidth.toString()} 
+                        height={logoHeight.toString()}
+                        svg={icons.icSoloLogo}
+                    />
+                </AnimatedView>    
             </View>
         );
     }

@@ -35,14 +35,14 @@ public class MainApplication extends Application implements ReactApplication, Sh
         @Override
         protected List<ReactPackage> getPackages() {
             return Arrays.asList(
-                    new MainReactPackage(),
-                    new RNFileSelectorPackage(),
-                    new RNFSPackage(),
-                    new RNSharePackage(),
-                    new RealmReactPackage(),
-                    new RNCameraPackage(),
-                    new SvgPackage(),
-                    new RandomBytesPackage()
+                new MainReactPackage(),
+                new RealmReactPackage(),
+                new RNFileSelectorPackage(),
+                new RNSharePackage(),
+                new RNFSPackage(),
+                new RNCameraPackage(),
+                new SvgPackage(),
+                new RandomBytesPackage()
             );
         }
 

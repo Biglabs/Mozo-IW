@@ -169,6 +169,10 @@ dependencies {
     implementation "com.facebook.react:react-native:0.20.1"
     implementation 'com.nbsp:library:1.8'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    compile project(':react-native-udp')
+    compile project(':react-native-tcp')
+
 }
 
 // Run this once to be able to run the application with BUCK

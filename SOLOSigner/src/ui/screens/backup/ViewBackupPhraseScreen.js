@@ -14,8 +14,10 @@ import {
     icons,
     styleWarningText
 } from '../../../res';
-import {ScreenFooterActions, ScreenHeaderActions, Text} from "../../components";
-import WalletManager from '../../../services/WalletService';
+import {ScreenFooterActions, ScreenHeaderActions, Text, SVG} from "../../components";
+//import WalletManager from '../../../services/WalletService';
+
+import { walletService as  WalletManager } from "../../../services";
 
 export default class ViewBackupPhraseScreen extends React.Component {
 
@@ -26,6 +28,8 @@ export default class ViewBackupPhraseScreen extends React.Component {
             userConfirmed: false,
         };
         let result = WalletManager.viewBackupPhrase(this.props.pin);
+        //let result = service.manageWallet.viewBackupPhrase(this.props.pin);
+
         if (result) {
             this.doViewBackupPhrase(result);
         } else {
@@ -70,10 +74,12 @@ export default class ViewBackupPhraseScreen extends React.Component {
                     !this.state.userConfirmed &&
                     <View style={styles.state_container}>
                         <View style={styles.warning_text}>
-                            <SvgUri width={20}
-                                    height={20}
-                                    svgXmlData={icons.icWarning}
-                                    style={{marginRight: 6}}/>
+                            <SVG 
+                                width={20}
+                                height={20}
+                                svg={icons.icWarning}
+                                style={{marginRight: 6}}
+                            />
                             <Text style={[styleWarningText, {paddingBottom: 4}]}>WARNING</Text>
                         </View>
 
@@ -123,11 +129,18 @@ export default class ViewBackupPhraseScreen extends React.Component {
                         <TouchableOpacity
                             style={styles.button_cancel_container}
                             onPress={() => Actions.pop()}>
-                            <SvgUri width={18}
+                            <SVG 
+                                width={18}
+                                height={18}
+                                fill={colorPrimary}
+                                svg={icons.icCancel}
+                                style={{marginRight: 4}}
+                            />
+                            {/* <SvgUri width={18}
                                     height={18}
                                     fill={colorPrimary}
                                     svgXmlData={icons.icCancel}
-                                    style={{marginRight: 4}}/>
+                                    style={{marginRight: 4}}/> */}
                             <Text style={styles.button_cancel}>Cancel</Text>
                         </TouchableOpacity>
                     </View>

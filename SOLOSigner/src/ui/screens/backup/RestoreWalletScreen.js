@@ -1,6 +1,9 @@
 import React from "react";
 import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
+// import QrReader from 'react-qr-reader';
+
+import { isWebPlatform } from "../../../helpers/PlatformUtils";
 
 import {
     colorDisable,
@@ -16,18 +19,37 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
-import WalletBackupService from '../../../services/WalletBackupService';
+// import WalletBackupService from '../../../services/WalletBackupService';
+import { walletBackupService as WalletBackupService } from '../../../services';
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {loadedBackupData: false, errorMessage: '', backupPhraseValidSate: -1};
+
+        // TODO: Remove later, for test
+        this.handleScan = this.handleScan.bind(this);
     }
 
     onChooseFileClick() {
-        WalletBackupService.loadBackupFile(data => {
-            this.onReceiveData(data);
-        })
+        let that = this;
+        if(isWebPlatform) {
+            const ipc = require('electron').ipcRenderer;
+            // send command to main process
+            ipc.send('open-file-dialog');
+            ipc.on('selected-file', function (event, file) {
+                console.log(file.toString());
+                var fs = require('fs');
+                fs.readFile(file, function(err, data) {
+                    console.log(data.toString());
+                    that.onReceiveData(data.toString());
+                  });
+            });
+        } else {
+            WalletBackupService.loadBackupFile(data => {
+                this.onReceiveData(data);
+            });
+        }
     }
 
     onReceiveData(encryptedData) {
@@ -81,6 +103,56 @@ export default class RestoreWalletScreen extends React.Component {
         })
     }
 
+    handleScan(result){
+        if(result){
+            console.log(result);
+            this.onReceiveData(result);
+            /* this.setState({ 
+                backupPhrase: result 
+            }); */
+        }
+    }
+    handleError(err){
+        console.error(err);
+    }
+
+    
+    openImageDialog() {
+        this.refs.qrReader.openImageDialog();
+    }
+
+    
+    displayQRCodeScan(){
+        // if(isWebPlatform()){
+        //     const QrReader = require('react-qr-reader');
+        //     const previewStyle = {
+        //         height: 180,
+        //         width: 180,
+        //     };
+        //     return (
+        //         <div>
+        //             <QrReader
+        //                 ref="qrReader"
+        //                 delay={this.state.delay}
+        //                 style={previewStyle}
+        //                 onError={this.handleError}
+        //                 onScan={this.handleScan}
+        //                 legacyMode
+        //             />
+        //             <input type="button" value="Submit QR Code" onClick={()=> this.openImageDialog()} />
+        //         </div>
+        //     );
+        // } else {
+            return (
+                <QRCodeScanner
+                    cameraSize={180}
+                    onCodeRead={data => this.onReceiveData(data)}/>
+            );
+        // }
+        
+        
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -108,9 +180,9 @@ export default class RestoreWalletScreen extends React.Component {
                             {/*<View style={styles.dash}/>*/}
                         {/*</View>*/}
 
-                        <QRCodeScanner
+                        {/* <QRCodeScanner
                             cameraSize={180}
-                            onCodeRead={data => this.onReceiveData(data)}/>
+                            onCodeRead={data => this.onReceiveData(data)}/> */}
                     </View>
                 }
                 {
