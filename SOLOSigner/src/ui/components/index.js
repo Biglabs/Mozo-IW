@@ -5,26 +5,13 @@ import CreateWalletOptionItem from './views/CreateWalletOptionItem';
 import ScreenFooterActions from './views/ScreenFooterActions';
 import ScreenHeaderActions from './views/ScreenHeaderActions';
 import AnimatedView from './widgets/AnimatedView';
+import QRCodeScanner from './views/QRCodeScanner';
 import SoloButton from './widgets/SoloButton';
 import SelectionGroup from './widgets/SelectionGroup';
 import SoloText from './widgets/SoloText';
 import SoloTextInput from './widgets/SoloTextInput';
 import SoloSVG from './widgets/SoloSVG';
 
-import { isWebPlatform } from "../../helpers/PlatformUtils";
-
-let QRCodeScanner;
-/** 
- * Load services base on running platform
-*/
-(function initServices() {
-    if(isWebPlatform()){
-       
-    } else {
-        QRCodeScanner = require('./views/QRCodeScanner');
-    }
-    
-}());
 // noinspection JSUnusedGlobalSymbols
 module.exports = {
     /* views */

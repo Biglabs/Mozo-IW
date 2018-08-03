@@ -93,12 +93,12 @@ export default class ImportWalletScreen extends React.Component {
         //         </div>
         //     );
         // } else {
-            return (
-                <QRCodeScanner
-                    cameraSize={180}
-                    scanning={this.state.isScanningQRCode}
-                    onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
-            );
+        //     return (
+        //         <QRCodeScanner
+        //             cameraSize={180}
+        //             scanning={this.state.isScanningQRCode}
+        //             onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
+        //     );
         // }
     }
 
@@ -143,11 +143,11 @@ export default class ImportWalletScreen extends React.Component {
                         <Text style={styles.separator_text}>OR BETTER YET</Text>
                         <View style={styles.dash}/>
                     </View>
-                    {this.displayQRCodeScan()}
-                    {/* <QRCodeScanner
+                    {/*{this.displayQRCodeScan()}*/}
+                    <QRCodeScanner
                         cameraSize={180}
                         scanning={this.state.isScanningQRCode}
-                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/> */}
+                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
                 </ScrollView>
 
                 <ScreenFooterActions

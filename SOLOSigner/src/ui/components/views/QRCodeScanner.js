@@ -9,7 +9,7 @@ import {colorPrimary, fontBold, icons} from "../../../res";
 import SoloText from '../widgets/SoloText';
 import SVG from '../widgets/SoloSVG';
 
-const RNCamera = isWebPlatform ? null : require('react-native-camera');
+const RNCamera = isWebPlatform() ? null : require('react-native-camera');
 
 export default class QRCodeScanner extends React.Component {
     constructor(props) {
