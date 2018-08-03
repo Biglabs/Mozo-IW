@@ -18,19 +18,17 @@ export default class WelcomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View>
-                    <SVG
-                        width={this.logoWidth.toString()}
-                        height={this.logoHeight.toString()}
-                        fill={colorPrimary.toString()}
-                        svg={icons.icSoloLogo}
-                        style={{
-                            flex: .5,
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                        }}
-                    />
-                </View>
+                <SVG
+                    width={this.logoWidth.toString()}
+                    height={this.logoHeight.toString()}
+                    fill={colorPrimary.toString()}
+                    svg={icons.icSoloLogo}
+                    style={{
+                        flex: .5,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                    }}
+                />
 
                 <Text style={styles.welcome_text}>Welcome to SOLO Signer</Text>
 
