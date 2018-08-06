@@ -1,179 +1,49 @@
-//import Realm from "realm";
-import Globals from "./GlobalService";
-
-const AppSchema = {
-    name: 'App',
-    primaryKey: 'pin',
-    properties: {
-        pin: 'string',
-        mnemonic: 'string'
-    },
+/**
+ * Return all items by schema name
+ *
+ * @param {String} schemaName
+ */
+Object.prototype.objects = function(schemaName) {
+    let userReference = require('electron').remote.require('electron-settings');
+    return userReference.get(schemaName);
 }
 
-const WalletSchema = {
-    name: 'Wallet',
-    primaryKey: 'id',
-    properties: {
-        id: 'int',
-        walletKey : 'string',
-        walletId : 'string',
-        name: 'string?'
-    },
-};
-
-const AddressSchema = {
-    name: 'Address',
-    primaryKey: 'address_network',
-    properties: {
-        address_network: 'string',
-        address: 'string',
-        network: 'string',
-        prvKey: 'string',
-        coin: 'string',
-        accountIndex: 'int',
-        chainIndex: 'int',
-        addressIndex: 'int',
-    },
-};
-
-const configuration = {schema: [WalletSchema, AddressSchema, AppSchema], path : "solo.signer"};
-
-
-
-class DataService {
-    static myInstance = null;
-
-    static realm = null;
-
-    static userReference = null;
-
-    // get reference to global electron-setting objects
-    //const settings = require('electron').remote.require('electron-settings');
-
-    /**
-     * @returns {DataService}
-     */
-    /* static getInstance() {
-        if (DataService.myInstance == null) {
-            DataService.myInstance = new DataService();
-            DataService.realm = new Realm(configuration);
-        }
-
-        return DataService.myInstance;
-    } */
-
-    static getInstance() {
-        if (DataService.myInstance == null) {
-            DataService.myInstance = new DataService();
-            DataService.userReference =  require('electron').remote.require('electron-settings');
-        }
-        return DataService.myInstance;
-    }
-
-    checkPin(expectedPin){
-        let appInfo = this.getAppInfo();
-        if(appInfo && appInfo.pin) {
-            let actualHashPin = appInfo.pin;
-            let expectedHashPin = Globals.convertToHash(expectedPin);
-            if(expectedHashPin == actualHashPin){
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    updateMnemonicWithPin(mnemonic, pin){
-        let appInfo = this.getAppInfo();
-        let hashPin = Globals.convertToHash(pin);
-        if(appInfo){
-            //Remove old PIN
-            DataService.realm.write(() => {
-                DataService.realm.delete(appInfo);
-            });
-        } 
-        //Add new
-        this.addMnemonicWithPin(mnemonic, hashPin);
-        return hashPin;
-    }
-
-    addMnemonicWithPin(mnemonic, hashPin){
-        DataService.realm.write(() => {
-            DataService.realm.create('App', { pin : hashPin, mnemonic : mnemonic });
-        });
-    }
-    
-    saveWalletInfo(walletInfo) {
-        return new Promise((resolve, reject) => {
-            try {
-                let wallet = this.getWalletInfo();
-                DataService.realm.write(() => {
-                    // Fix issue: Local data is not cleared totally.
-                    if (wallet) {
-                        DataService.realm.delete(wallet);
-                    }
-                    DataService.realm.create('Wallet', walletInfo);
-                    resolve(true);
-                });
-            } catch (error) {
-                reject(error);
-            }
-        });
-    }
-
-    getWalletInfo() {
-        let wallets = DataService.realm.objects('Wallet');
-        if(wallets.length > 0) {
-            return wallets[0];
-        }
-        return null;
-    }
-
-    getAllAddresses(){
-        let addresses = DataService.realm.objects('Address');
-        return addresses;
-    }
-
-    addAddress(address) {
-        DataService.realm.write(() => {
-            let primaryKey = address.address + "_" + address.network;
-            // Fix issue: Local data is not cleared totally.
-            let adrObj = DataService.realm.objectForPrimaryKey('Address', primaryKey);
-            if (!adrObj) {
-                DataService.realm.create('Address', 
-                { 
-                    address_network : primaryKey,
-                    address : address.address, 
-                    network: address.network, 
-                    prvKey: address.privkey,
-                    coin: address.coin,
-                    accountIndex: address.accountIndex,
-                    chainIndex: address.chainIndex,
-                    addressIndex: address.addressIndex,
-                });
-            }
-        });
-    }
-
-    getPrivateKeyFromAddress(address) {
-        let addresses = DataService.realm.objects('Address');
-        for(var i = 0; i < address.length; i++) {
-            let item = addresses[i];
-            if (item.address.toUpperCase() == address.toUpperCase()) {
-                return item.prvKey;
-            }
-        }
-        return null;
-    }
-
-    getAppInfo() {
-        let apps = DataService.realm.objects('App');
-        if(apps.length > 0) {
-            return apps[0];
-        }
-        return null;
-    }
+/**
+ * Create a block code to call a function inside.
+ *
+ * @param {Function} callFunction
+ */
+Object.prototype.write = function(callFunction) {
+    callFunction();
 }
-export default DataService;
+
+/**
+ * Insert new item into a list which is stored in user reference.
+ *
+ * @param {String} schemaName
+ * @param {Object} object
+ */
+Object.prototype.create = function(schemaName, object) {
+    let userReference = require('electron').remote.require('electron-settings');
+    //get list of address
+    let addressList = userReference.get(WebConstants.ADDRESS_SCHEMA);
+    addressList.push(object);
+    //write to file
+    userReference.set(schemaName, object);
+}
+
+/**
+ * Filter or query to get a list of items through some conditions.
+ *
+ * @param {String} query
+ */
+Array.prototype.filtered = function(query) {
+    // TODO: Implement query for a list of items
+    return [];
+}
+
+Object.prototype.objectForPrimaryKey = function(schemaName, key){
+    // TODO: Implement for web
+    return {};
+}
+

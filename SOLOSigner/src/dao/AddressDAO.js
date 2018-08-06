@@ -1,9 +1,21 @@
-import DataService from '../services/DataService';
+import { isWebPlatform } from "../helpers/PlatformUtils";
+import service from '../services/DataService';
+DataService = service.getInstance().constructor;
+/** 
+ * Load services base on running platform
+*/
+(function initServices() {
+    if(isWebPlatform()){
+        DataService = require('../services/DataService.web');
+    }
+    console.log("Service: " + JSON.stringify(DataService));
+}());
+
 /**
  * Get all addresses
  */
 export function getAllAddresses(){
-    let addresses = DataService.getInstance().constructor.realm.objects('Address');
+    let addresses = DataService.localStorage.objects('Address');
     return addresses;
 }
 
@@ -21,9 +33,9 @@ export function getAllAddressesInUse(){
  * @param {Array} networks
  */
 export function activeAddressesByNetworks(networks){
-    let service = DataService.getInstance().constructor;
+    let service = DataService;
     let addresses = getAllAddresses();
-    service.realm.write(() => {
+    service.localStorage.write(() => {
         for(var i = 0; i < addresses.length; i++) {
             let address = addresses[i];
             if (networks.indexOf(address.network) > -1){
@@ -55,13 +67,13 @@ export function saveAddressToLocal(address, pin) {
  * @param {String} address
  */
 function addAddress(address) {
-    let service = DataService.getInstance().constructor;
-    service.realm.write(() => {
+    let service = DataService;
+    service.localStorage.write(() => {
         let primaryKey = address.address + "_" + address.network;
         // Fix issue: Local data is not cleared totally.
-        let adrObj = service.realm.objectForPrimaryKey('Address', primaryKey);
+        let adrObj = service.localStorage.objectForPrimaryKey('Address', primaryKey);
         if (!adrObj) {
-            service.realm.create('Address', 
+            service.localStorage.create('Address', 
             { 
                 address_network : primaryKey,
                 address : address.address, 
@@ -81,8 +93,8 @@ function addAddress(address) {
  * Return private key of an address in string format.
  */
 export function getPrivateKeyFromAddress(address) {
-    let service = DataService.getInstance().constructor;
-    let addresses = service.realm.objects('Address');
+    let service = DataService;
+    let addresses = service.localStorage.objects('Address');
     for(var i = 0; i < address.length; i++) {
         let item = addresses[i];
         if (item.address.toUpperCase() == address.toUpperCase()) {

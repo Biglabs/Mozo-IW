@@ -1,4 +1,7 @@
-import DataService from '../services/DataService';
+import service from '../services/DataService';
+
+// For mobile
+DataService = service.getInstance().constructor;
 /**
  * Validate input PIN from user with the current PIN in local DB.
  * @param {String} expectedPin
@@ -28,11 +31,11 @@ export function updateMnemonicWithPin(mnemonic, pin){
     let appInfo = getAppInfo();
     let HashUtils = require("../helpers/HashUtils");
     let hashPin = HashUtils.convertToHash(pin);
-    let service = DataService.getInstance().constructor;
+    let service = DataService;
     if(appInfo){
         //Remove old PIN
-        service.realm.write(() => {
-            service.realm.delete(appInfo);
+        service.localStorage.write(() => {
+            service.localStorage.delete(appInfo);
         });
     } 
     //Add new
@@ -46,9 +49,9 @@ export function updateMnemonicWithPin(mnemonic, pin){
  * @param {String} pin
  */
 export function addMnemonicWithPin(mnemonic, hashPin){
-    let service = DataService.getInstance().constructor;
-    service.realm.write(() => {
-        service.realm.create('App', { pin : hashPin, mnemonic : mnemonic });
+    let service = DataService;
+    service.localStorage.write(() => {
+        service.localStorage.create('App', { pin : hashPin, mnemonic : mnemonic });
     });
 }
 
@@ -56,8 +59,8 @@ export function addMnemonicWithPin(mnemonic, hashPin){
  * Get app info and all related attributes
  */
 function getAppInfo() {
-    let service = DataService.getInstance().constructor;
-    let apps = service.realm.objects('App');
+    let service = DataService;
+    let apps = service.localStorage.objects('App');
     if(apps.length > 0) {
         return apps[0];
     }

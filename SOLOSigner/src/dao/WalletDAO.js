@@ -1,4 +1,7 @@
-import DataService from '../services/DataService';
+import service from '../services/DataService';
+
+// For mobile
+var DataService = service.getInstance().constructor;
 
 /**
  * Insert wallet info to local DB.
@@ -7,14 +10,14 @@ import DataService from '../services/DataService';
 export function saveWalletInfo(walletInfo) {
     return new Promise((resolve, reject) => {
         try {
-            let service = DataService.getInstance().constructor;
+            let service = DataService;
             let wallet = getWalletInfo();
-            service.realm.write(() => {
+            service.localStorage.write(() => {
                 // Fix issue: Local data is not cleared totally.
                 if (wallet) {
-                    service.realm.delete(wallet);
+                    service.localStorage.delete(wallet);
                 }
-                service.realm.create('Wallet', walletInfo);
+                service.localStorage.create('Wallet', walletInfo);
                 resolve(true);
             });
         } catch (error) {
@@ -27,7 +30,7 @@ export function saveWalletInfo(walletInfo) {
  * Get current wallet info.
  */
 export function getWalletInfo() {
-    let wallets = DataService.getInstance().constructor.realm.objects('Wallet');
+    let wallets = DataService.localStorage.objects('Wallet');
     if(wallets.length > 0) {
         return wallets[0];
     }

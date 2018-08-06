@@ -1,5 +1,4 @@
 import Realm from "realm";
-import Globals from "./GlobalService";
 
 const AppSchema = {
     name: 'App',
@@ -57,7 +56,7 @@ const configuration = {schema: [WalletSchema, AddressSchema, AppSchema], path : 
 class DataService {
     static myInstance = null;
 
-    static realm = null;
+    static localStorage = null;
 
     /**
      * @returns {DataService}
@@ -65,11 +64,16 @@ class DataService {
     static getInstance() {
         if (DataService.myInstance == null) {
             DataService.myInstance = new DataService();
-            DataService.realm = new Realm(configuration);
+            DataService.localStorage = new Realm(configuration);
         }
 
         return DataService.myInstance;
     }
 }
 export default DataService;
+
+// module.exports = {
+//     getInstance : DataService.getInstance,
+//     localStorage: DataService.getInstance().localStorage
+// }
 
