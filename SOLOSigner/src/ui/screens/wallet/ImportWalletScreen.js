@@ -16,8 +16,6 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 
-import { isWebPlatform } from "../../../helpers/PlatformUtils";
-
 export default class ImportWalletScreen extends React.Component {
 
     constructor(props) {
@@ -29,7 +27,7 @@ export default class ImportWalletScreen extends React.Component {
             backupPhrase: '',
             delay: 100,
             result: 'No result'
-        }
+        };
 
         // TODO: Remove later, for test
         this.handleScan = this.handleScan.bind(this);
@@ -143,7 +141,6 @@ export default class ImportWalletScreen extends React.Component {
                         <Text style={styles.separator_text}>OR BETTER YET</Text>
                         <View style={styles.dash}/>
                     </View>
-                    {/*{this.displayQRCodeScan()}*/}
                     <QRCodeScanner
                         cameraSize={180}
                         scanning={this.state.isScanningQRCode}

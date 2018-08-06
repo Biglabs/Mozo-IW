@@ -17,12 +17,10 @@ import {
     styleScreenSubTitleText,
     styleWarningText,
 } from "../../../res";
-import {ScreenFooterActions, ScreenHeaderActions, Text, TextInput, SVG} from "../../components";
+import {ScreenFooterActions, ScreenHeaderActions, SVG, Text, TextInput} from "../../components";
 import Constant from "../../../helpers/Constants";
-// import WalletBackupService from '../../../services/WalletBackupService';
-import { isWebPlatform, getFilePathFromUser } from "../../../helpers/PlatformUtils";
-// import { walletBackupService as WalletBackupService } from '../../../services';
-
+import {getFilePathFromUser, isWebPlatform} from "../../../helpers/PlatformUtils";
+import {walletBackupService as WalletBackupService} from '../../../services';
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
@@ -35,54 +33,47 @@ export default class BackupWalletScreen extends React.Component {
 
     componentWillUnmount() {
         this.qrCodeData = null;
-        this.qrCodeBase64 = null;
         this.newEncryptPassword = null;
     }
 
     doExport(fileType) {
-        // const ignoreError = WalletBackupService.ERROR.USER_DENIED;
+        const ignoreError = WalletBackupService.ERROR.USER_DENIED;
         // start code for desktop
-        if(isWebPlatform()) {
-            // WalletBackupService
-            //     .backupWallet(this.state.encryptedData, this.props.pin, this.newEncryptPassword, fileType, this.qrCodeData)
-            //     .then(() => {
-            //         this.props.backupWalletStateStore.setBackupWalletState(true);
-            //     })
-            //     .catch(err => {
-            //         if (err.message !== ignoreError) {
-            //             Alert.alert(
-            //                 'Something went wrong!',
-            //                 "Cannot backup wallet right now, try again later.",
-            //                 [{text: 'OK', onPress: () => Actions.pop()},],
-            //                 {cancelable: false}
-            //             );
-            //         }
-            //     });
-        // End code for desktop
-        } else {
-            if (this.qrCodeData && !this.qrCodeBase64) {
-                this.qrCodeData.toDataURL(data => {
-                    this.qrCodeBase64 = data;
-                    this.doExport(fileType);
+        if (isWebPlatform()) {
+            WalletBackupService
+                .backupWallet(this.state.encryptedData, this.props.pin, this.newEncryptPassword, fileType, this.qrCodeData)
+                .then(() => {
+                    this.props.backupWalletStateStore.setBackupWalletState(true);
+                })
+                .catch(err => {
+                    if (err.message !== ignoreError) {
+                        Alert.alert(
+                            'Something went wrong!',
+                            "Cannot backup wallet right now, try again later.",
+                            [{text: 'OK'},],
+                            {cancelable: false}
+                        );
+                    }
                 });
-            }
-
-            if (this.qrCodeBase64) {
-                // const ignoreError = WalletBackupService.ERROR.USER_DENIED;
-                // WalletBackupService.backupWallet(this.props.pin, this.newEncryptPassword, fileType, this.qrCodeBase64)
-                //     .then(() => {
-                //         this.props.backupWalletStateStore.setBackupWalletState(true);
-                //     })
-                //     .catch(err => {
-                //         if (err.message !== ignoreError) {
-                //             Alert.alert(
-                //                 'Something went wrong!',
-                //                 "Cannot backup wallet right now, try again later.",
-                //                 [{text: 'OK', onPress: () => Actions.pop()},],
-                //                 {cancelable: false}
-                //             );
-                //         }
-                //     });
+            // End code for desktop
+        } else {
+            if (this.qrCodeData != null) {
+                this.qrCodeData.toDataURL(data => {
+                    WalletBackupService.backupWallet(this.props.pin, this.newEncryptPassword, fileType, data)
+                        .then(() => {
+                            this.props.backupWalletStateStore.setBackupWalletState(true);
+                        })
+                        .catch(err => {
+                            if (err.message && err.message !== ignoreError) {
+                                Alert.alert(
+                                    'Something went wrong!',
+                                    "Cannot backup wallet right now, try again later.",
+                                    [{text: 'OK'},],
+                                    {cancelable: false}
+                                );
+                            }
+                        });
+                });
             }
         }
     }
@@ -108,10 +99,10 @@ export default class BackupWalletScreen extends React.Component {
         }
 
         // console.log("encryptedData: " +WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword));
-        // this.setState({
-        //     isReadyToBackup: true,
-        //     encryptedData: WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword),
-        // });
+        this.setState({
+            isReadyToBackup: true,
+            encryptedData: WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword),
+        });
     }
 
     clearError() {
@@ -126,7 +117,7 @@ export default class BackupWalletScreen extends React.Component {
     };
 
     onQRCodeRenderedWeb = (data) => {
-        if(isWebPlatform){
+        if (isWebPlatform()) {
             this.qrCodeData = data;
             this.confirmEncryptPassword = null;
             this.state.encryptedData = null;
@@ -202,13 +193,9 @@ export default class BackupWalletScreen extends React.Component {
                             <QRCode
                                 size={200}
                                 value={this.state.encryptedData}
-                                ref = {this.onQRCodeRenderedWeb}
+                                ref={this.onQRCodeRenderedWeb}
                                 getRef={this.onQRCodeRendered}
                             />
-                            {/* <QRCode
-                                size={200}
-                                value={this.state.encryptedData}
-                                getRef={this.onQRCodeRendered}/> */}
                         </View>
                         <Text style={styles.export_explain_text}>
                             From the destination device, go to
