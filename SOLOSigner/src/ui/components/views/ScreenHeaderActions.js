@@ -1,13 +1,15 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from "react-native";
-import SvgUri from 'react-native-svg-uri';
+import {StyleSheet, TouchableOpacity, View, Platform} from "react-native";
+
 import {Actions} from 'react-native-router-flux';
 import PropTypes from 'prop-types';
 
 import {colorPrimary, colorScreenBackground, colorTitleText, fontBold, icons} from '../../../res';
 import SoloText from "../widgets/SoloText";
+
+import SVG from "../widgets/SoloSVG";
 
 export default class ScreenHeaderActions extends React.Component {
     constructor(props) {
@@ -29,15 +31,16 @@ export default class ScreenHeaderActions extends React.Component {
             <View {...this.props} style={[styles.toolbar, {backgroundColor: this.backgroundColor}, this.props.style]}>
 
                 <TouchableOpacity style={styles.button} onPress={this.onPressAction}>
-                    <SvgUri
+                    <SVG
                         width={8}
                         height={13}
                         fill={this.backIconColor}
-                        svgXmlData={icons.icArrowBack}
+                        svg={icons.icArrowBack}
                         style={{
                             marginLeft: 16,
                             marginRight: 6,
-                        }}/>
+                        }}
+                    />
                     <SoloText style={[styles.button_text, {color: this.backTextColor}]}>Back</SoloText>
                 </TouchableOpacity>
 

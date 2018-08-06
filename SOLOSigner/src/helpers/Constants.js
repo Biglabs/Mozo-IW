@@ -1,11 +1,17 @@
 import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons';
 import {Platform} from "react-native";
-import RNFileSystem from "react-native-fs";
+// import RNFileSystem from "react-native-fs";
 
-const defaultPath = Platform.select({
-    ios: RNFileSystem.DocumentDirectoryPath,
-    android: `${RNFileSystem.ExternalStorageDirectoryPath}/Documents`
-});
+import { isWebPlatform } from "./PlatformUtils";
+
+let defaultPath;
+
+// if (!isWebPlatform) {
+//     defaultPath = Platform.select({
+//         ios: RNFileSystem.DocumentDirectoryPath,
+//         android: `${RNFileSystem.ExternalStorageDirectoryPath}/Documents`
+//     });
+// }
 
 const Constants = {
     SATOSHI_UNIT: 100000000,

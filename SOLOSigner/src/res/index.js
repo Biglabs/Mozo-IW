@@ -1,11 +1,12 @@
-import {Dimensions, Platform} from 'react-native';
+import {Dimensions} from 'react-native';
+import {isIOS} from "../helpers/PlatformUtils";
 import icons from './icons';
 
 const {width} = Dimensions.get('window');
 
 const styles = {
-    fontRegular: Platform.select({ios: 'UTM Avo', android: 'utm-avo'}),
-    fontBold: Platform.select({ios: 'UTMAvoBold', android: 'utm-avo-bold'}),
+    fontRegular: isIOS ? 'UTM Avo' : 'utm-avo',
+    fontBold: isIOS ? 'UTMAvoBold' : 'utm-avo-bold',
 
     colorPrimary: '#006DFF',
     colorBorder: '#cdcdcd',
@@ -20,7 +21,7 @@ const styles = {
     dimenScreenPaddingTop: 40,
     dimenScreenPaddingBottom: 70,
     dimenScreenPaddingHorizontal: 30,
-    dimenTitleTextSize: width / 375 * Platform.select({ios: 30, android: 28}),
+    dimenTitleTextSize: width / 375 * (isIOS ? 30 : 28),
 };
 
 const styleButtonCommon = {

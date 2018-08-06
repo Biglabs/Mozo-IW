@@ -4,7 +4,6 @@ import {Modal, Router, Scene} from 'react-native-router-flux';
 import {Provider} from "mobx-react";
 
 import stores from "./stores";
-import LinkingService from "./services/LinkingService";
 
 /* general screens */
 import SplashScreen from './ui/screens/SplashScreen';
@@ -25,14 +24,31 @@ import BackupWalletScreen from './ui/screens/backup/BackupWalletScreen';
 import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
 import ConfirmBackupPhrase from './ui/screens/backup/ConfirmBackupPhraseScreen';
 import ViewBackupPhrase from './ui/screens/backup/ViewBackupPhraseScreen';
-
-/* transaction screens */
 import ConfirmationScreen from './ui/screens/transaction/ConfirmationScreen';
 
-Linking.getInitialURL().then((url) => {
-    LinkingService.checkScheme(url);
-});
-Linking.addEventListener('url', LinkingService.handleEventOpenUrl);
+import {isWebPlatform} from "./helpers/PlatformUtils";
+
+/**
+ * Load services base on running platform
+ */
+(function initServices() {
+    if (isWebPlatform()) {
+
+    } else {
+        const LinkingService = require("./services/LinkingService");
+        Linking.getInitialURL().then((url) => {
+            LinkingService.checkScheme(url);
+        });
+        Linking.addEventListener('url', LinkingService.handleEventOpenUrl);
+    }
+}());
+
+// function loadConfirmScreen() {
+//     if (!isWebPlatform) {
+//         const ConfirmationScreen = require('./ui/screens/transaction/ConfirmationScreen');
+//         return <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>;
+//     }
+// }
 
 export default () => {
     return (
@@ -69,6 +85,7 @@ export default () => {
                     <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/>
 
                     {/* transaction screens */}
+                    {/*{loadConfirmScreen()}*/}
                     <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
                 </Modal>
             </Router>

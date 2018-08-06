@@ -191,6 +191,7 @@ storeWalletInfo = function(walletInfo, addresses, callback){
  */
 module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes, callback) {
     // Store isDbExisting true
+    // TODO: @apply desktop: save flag Constant.FLAG_DB_EXISTING
     AsyncStorage.setItem(Constant.FLAG_DB_EXISTING, 'true');
     if (isNewPin) {
         let isDefault = coinTypes ? false : true;

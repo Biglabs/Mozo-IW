@@ -1,10 +1,12 @@
 'use strict';
 
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity,Platform} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 
 import {buttons, colorDisable, colorTitleText, dimenScreenPaddingHorizontal, fontBold, fontRegular} from '../../../res';
+// use for display svg on web
+import SVGInline from "react-svg-inline";
 
 export default class SoloButton extends React.Component {
     constructor(props) {
@@ -68,6 +70,28 @@ export default class SoloButton extends React.Component {
         }
     }
 
+    renderSVG(data, finalIconColor){
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return(
+                <SVGInline 
+                    width={data.iconSize.toString()}
+                    height={data.iconSize.toString()}
+                    fill={finalIconColor.toString()}
+                    svg={data.props.icon}
+                    style={data.iconStyle}
+                />
+            );
+        }
+        return (
+            <SvgUri 
+                width={data.iconSize}
+                height={data.iconSize}
+                fill={finalIconColor}
+                svgXmlData={data.props.icon}
+                style={data.iconStyle}
+            />
+        );
+    }
     render() {
         let finalTextStyle = [];
         if (this.hasIcon) {
@@ -99,11 +123,7 @@ export default class SoloButton extends React.Component {
 
                 {
                     this.hasIcon
-                    && <SvgUri width={this.iconSize}
-                               height={this.iconSize}
-                               fill={finalIconColor}
-                               svgXmlData={this.props.icon}
-                               style={this.iconStyle}/>
+                    && this.renderSVG(this, finalIconColor) 
                 }
             </TouchableOpacity>
         )

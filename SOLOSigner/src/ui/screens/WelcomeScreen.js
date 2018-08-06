@@ -1,10 +1,9 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import SvgUri from 'react-native-svg-uri';
 
 import {colorPrimary, colorScreenBackground, dimenScreenWidth, icons} from '../../res';
-import {Button, Text} from "../components";
+import {Button, SVG, Text} from "../components";
 
 const buttonWidthPercent = dimenScreenWidth >= 500 ? '44%' : '84%';
 
@@ -19,15 +18,17 @@ export default class WelcomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <SvgUri width={this.logoWidth}
-                        height={this.logoHeight}
-                        fill={colorPrimary}
-                        svgXmlData={icons.icSoloLogo}
-                        style={{
-                            flex: .5,
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                        }}/>
+                <SVG
+                    width={this.logoWidth.toString()}
+                    height={this.logoHeight.toString()}
+                    fill={colorPrimary.toString()}
+                    svg={icons.icSoloLogo}
+                    style={{
+                        flex: .5,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                    }}
+                />
 
                 <Text style={styles.welcome_text}>Welcome to SOLO Signer</Text>
 

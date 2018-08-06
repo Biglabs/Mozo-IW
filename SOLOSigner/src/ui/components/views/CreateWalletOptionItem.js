@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 
 import SoloText from "../widgets/SoloText";
@@ -16,6 +16,10 @@ import {
     fontRegular,
     icons
 } from '../../../res';
+
+// use for display svg on web
+import SVGInline from "react-svg-inline";
+
 // noinspection JSUnusedLocalSymbols, exclude color, fontFamily, fontSize, textAlign from ButtonStyles.BorderGrayStyle
 const {color, fontFamily, fontSize, textAlign, ...buttonGrayStyle} = buttons.BorderGrayStyle;
 
@@ -24,6 +28,69 @@ export default class CreateWalletOptionItem extends React.Component {
         super(props);
         this.label = props.label || props.title || 'Label';
         this.content = props.content || props.children || 'content';
+    }
+
+    renderExpressIcon(props, isSelected, colorTitleText){
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return(
+                <SVGInline
+                    width='18'
+                    height='18'
+                    fill={props.iconColor || (isSelected ? '#ffffff' : colorTitleText)}
+                    svg = {props.icon}
+                    style={{
+                        position: 'absolute',
+                        marginLeft: 14,
+                        marginTop: 18,
+                    }}
+                />
+            );
+        }
+        return(
+            <SvgUri width={18}
+                height={18}
+                fill={props.iconColor || (isSelected ? '#ffffff' : colorTitleText)}
+                svgXmlData={props.icon}
+                style={{
+                    position: 'absolute',
+                    marginLeft: 14,
+                    marginTop: 18,
+                }}
+            />
+        );
+    }
+
+    renderCheckCircle(isSelected) {
+        if(Platform.OS.toUpperCase() ==="WEB"){
+            return(
+                <SVGInline 
+                    width='20'
+                    height='20'
+                    svg={icons.icCheckCircle}
+                    style={{
+                        position: 'absolute',
+                        alignSelf: 'flex-end',
+                        top: 8,
+                        right: 8,
+                        zIndex: isSelected ? 0 : -1
+                    }}
+                />
+            );
+        }
+        return (
+            <SvgUri 
+                width={20}
+                height={20}
+                svgXmlData={icons.icCheckCircle}
+                style={{
+                    position: 'absolute',
+                    alignSelf: 'flex-end',
+                    top: 8,
+                    right: 8,
+                    zIndex: isSelected ? 0 : -1
+                }}
+            />
+        );
     }
 
     render() {
@@ -46,27 +113,9 @@ export default class CreateWalletOptionItem extends React.Component {
                     onPress={this.props.onPress}>
                     {
                         this.props.icon
-                        && <SvgUri width={18}
-                                   height={18}
-                                   fill={this.props.iconColor || (isSelected ? '#ffffff' : colorTitleText)}
-                                   svgXmlData={this.props.icon}
-                                   style={{
-                                       position: 'absolute',
-                                       marginLeft: 14,
-                                       marginTop: 18,
-                                   }}/>
+                        && this.renderExpressIcon(this.props, isSelected, colorTitleText)
                     }
-
-                    <SvgUri width={20}
-                            height={20}
-                            svgXmlData={icons.icCheckCircle}
-                            style={{
-                                position: 'absolute',
-                                alignSelf: 'flex-end',
-                                top: 8,
-                                right: 8,
-                                zIndex: isSelected ? 0 : -1
-                            }}/>
+                    {this.renderCheckCircle(isSelected)}
 
                     <SoloText style={[
                         styles.button_name,

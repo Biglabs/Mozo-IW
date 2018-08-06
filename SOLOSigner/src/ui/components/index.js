@@ -1,14 +1,16 @@
 import BackupWalletStateIcon from './views/BackupWalletStateIcon';
 import CoinListItem from './views/CoinListItem';
 import CreateWalletOptionItem from './views/CreateWalletOptionItem';
-import QRCodeScanner from './views/QRCodeScanner';
+// import QRCodeScanner from './views/QRCodeScanner';
 import ScreenFooterActions from './views/ScreenFooterActions';
 import ScreenHeaderActions from './views/ScreenHeaderActions';
 import AnimatedView from './widgets/AnimatedView';
+import QRCodeScanner from './views/QRCodeScanner';
 import SoloButton from './widgets/SoloButton';
 import SelectionGroup from './widgets/SelectionGroup';
 import SoloText from './widgets/SoloText';
 import SoloTextInput from './widgets/SoloTextInput';
+import SoloSVG from './widgets/SoloSVG';
 
 // noinspection JSUnusedGlobalSymbols
 module.exports = {
@@ -25,4 +27,5 @@ module.exports = {
     Button: SoloButton,
     Text: SoloText,
     TextInput: SoloTextInput,
+    SVG: SoloSVG,
 };
