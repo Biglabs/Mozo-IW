@@ -29,6 +29,6 @@ module.exports = {
     //viewBackupPhrase: walletService.viewBackupPhrase,
     walletService: walletService,
     walletBackupService: walletBackupService,
-    manageWallet: walletService.manageWallet, // TODO: EDIT create wallet using new way
+   manageWallet: walletService.manageWallet, // TODO: EDIT create wallet using new way
     DataService: dataService
 };

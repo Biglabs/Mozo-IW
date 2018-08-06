@@ -1,15 +1,16 @@
 import { isWebPlatform } from "../helpers/PlatformUtils";
 import service from '../services/DataService';
+
 DataService = service.getInstance().constructor;
 /** 
  * Load services base on running platform
 */
-(function initServices() {
+/* (function initServices() {
     if(isWebPlatform()){
         DataService = require('../services/DataService.web');
     }
     console.log("Service: " + JSON.stringify(DataService));
-}());
+}()); */
 
 /**
  * Get all addresses
