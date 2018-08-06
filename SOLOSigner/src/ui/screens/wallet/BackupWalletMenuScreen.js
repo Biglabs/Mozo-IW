@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
-import {BackupWalletStateIcon, ScreenHeaderActions, Text, SVG} from "../../components";
+import {BackupWalletStateIcon, ScreenHeaderActions, SvgView, Text} from "../../components";
 import {colorDisable, colorScreenBackground, colorTitleText, dimenScreenPaddingHorizontal, icons} from '../../../res';
 
 export default class BackupWalletMenuScreen extends React.Component {
@@ -20,7 +20,7 @@ export default class BackupWalletMenuScreen extends React.Component {
                     <BackupWalletStateIcon/>
 
                     <TouchableOpacity style={styles.buttons_icon}>
-                        <SVG
+                        <SvgView
                             width={20}
                             height={20}
                             svg={icons.icInformation}
@@ -36,7 +36,7 @@ export default class BackupWalletMenuScreen extends React.Component {
                     <Text style={styles.buttons_text}>View Backup Phrase</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
-                        <SVG
+                        <SvgView
                             width={20}
                             height={20}
                             svg={icons.icInformation}

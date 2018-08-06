@@ -8,8 +8,7 @@ import PropTypes from 'prop-types';
 
 import {colorPrimary, colorScreenBackground, colorTitleText, fontBold, icons} from '../../../res';
 import SoloText from "../widgets/SoloText";
-
-import SVG from "../widgets/SoloSVG";
+import SvgView from "../widgets/SoloSVG";
 
 export default class ScreenHeaderActions extends React.Component {
     constructor(props) {
@@ -31,7 +30,7 @@ export default class ScreenHeaderActions extends React.Component {
             <View {...this.props} style={[styles.toolbar, {backgroundColor: this.backgroundColor}, this.props.style]}>
 
                 <TouchableOpacity style={styles.button} onPress={this.onPressAction}>
-                    <SVG
+                    <SvgView
                         width={8}
                         height={13}
                         fill={this.backIconColor}
