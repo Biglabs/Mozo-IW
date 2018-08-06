@@ -197,7 +197,8 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         if (isDefault) {
             coinTypes = Constant.DEFAULT_COINS;
         }
-        let wallets = createNewWallet(importedPhrase, pin, Constant.DEFAULT_COINS, true);
+        let standardTypes = getStandardCoinTypes();
+        let wallets = createNewWallet(importedPhrase, pin, standardTypes, true);
         let addresses = createAddressList(wallets, pin, coinTypes);
         let publicKey = wallets[0].neutered().toBase58();
         registerWalletAndSyncAddress(publicKey, addresses, (error, result) => {
@@ -250,14 +251,14 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
  * @param {Array} coinTypes
  */
 createAddressList = function(wallets, pin, coinTypes){
-    let defaultTypes = Constant.DEFAULT_COINS;
+    let standardTypes = getStandardCoinTypes();
     var choosenNetworks = [];
     coinTypes.map(coinType => {
         choosenNetworks.push(coinType.network);
     });
     let addresses = [];
     wallets.map((wallet, index) => {
-        let coinType = defaultTypes[index];
+        let coinType = standardTypes[index];
         let address = generateAddressAtIndex(wallet, coinType.value, 0);
         address.accountIndex = 0;
         address.chainIndex = 0;
@@ -273,6 +274,20 @@ createAddressList = function(wallets, pin, coinTypes){
         addresses.push(address);
     });
     return addresses;
+}
+
+/**
+ * Return standard coin type list by converting constant COIN_TYPE
+ */
+getStandardCoinTypes = function(){
+    var standardCoinTypes = [];
+    for(var property in Constant.COIN_TYPE){
+        var item = Constant.COIN_TYPE[property];
+        if (item.name != "SOLO") {
+            standardCoinTypes.push(item);
+        }
+    }
+    return standardCoinTypes;
 }
 
 /**

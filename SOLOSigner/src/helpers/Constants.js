@@ -108,8 +108,6 @@ const Constants = {
 };
 
 const DEFAULT_COINS = [
-    Constants.COIN_TYPE.BTC,
-    Constants.COIN_TYPE.BTC_TEST,
     Constants.COIN_TYPE.ETH,
     Constants.COIN_TYPE.ETH_TEST,
     Constants.COIN_TYPE.ETH_ROPSTEN
