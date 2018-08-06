@@ -35,6 +35,9 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* SOLOSignerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SOLOSignerTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		2E2994E5DAB34A75BFE92E41 /* libRNFastCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA0B38A9165425E815A6F37 /* libRNFastCrypto.a */; };
+		33D390BA8B2D432CA40B9689 /* libRNOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 032F4B455B2F453F815982EC /* libRNOS.a */; };
+		44D416DEFE234EE5BCE3BAEE /* libTcpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F41E8CA44EE34A43BEF4740F /* libTcpSockets.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		65F4F2E5B5FA49DBA921EA85 /* libRNRandomBytes-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 392125327F3C445F83E3790C /* libRNRandomBytes-tvOS.a */; };
 		6804C65A4DD248CE8A1617D0 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA16FEB777442F0BDC61BB1 /* libRNSVG.a */; };
@@ -43,6 +46,7 @@
 		7447CB9B29FE4C8C9A24A9A0 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DCEEC2B3BA4F16AF694457 /* libc++.tbd */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8555D0F94F4E40C6A07F3957 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AADB30E643941AE93FF02AE /* libRNSVG-tvOS.a */; };
+		8A66B77F6D014C74A2B62BF8 /* libUdpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A57C228B5941AC872A2F46 /* libUdpSockets.a */; };
 		97C5D52DF4B0482CB84F8CA0 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97BFDF07078843BC90B43D8A /* libRNFS.a */; };
 		A251E70A326E48859AFF5F2D /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5552D7CE6F24C0EBD8EE582 /* libRNRandomBytes.a */; };
 		A79BF979E1F94FEC8DD9DB3E /* utm-avo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B349334B3224A529B94AF9E /* utm-avo.ttf */; };
@@ -50,10 +54,6 @@
 		C61B8E1220CF5E52003614A3 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C61B8E0D20CF5DEA003614A3 /* libRNCamera.a */; };
 		D446CBE14F6F4E3AA21B3F7A /* utm-avo-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B893D3B797674863B0450526 /* utm-avo-bold.ttf */; };
 		FFD4F5331018436A9A8DB67E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F01E04DF312F43B38311A20D /* libz.tbd */; };
-		33D390BA8B2D432CA40B9689 /* libRNOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 032F4B455B2F453F815982EC /* libRNOS.a */; };
-		2E2994E5DAB34A75BFE92E41 /* libRNFastCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA0B38A9165425E815A6F37 /* libRNFastCrypto.a */; };
-		44D416DEFE234EE5BCE3BAEE /* libTcpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F41E8CA44EE34A43BEF4740F /* libTcpSockets.a */; };
-		8A66B77F6D014C74A2B62BF8 /* libUdpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A57C228B5941AC872A2F46 /* libUdpSockets.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +119,34 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		2086DD8021184E9200063924 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11F181F2B8024A82AD2EAE43 /* RNFastCrypto.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNFastCrypto;
+		};
+		2086DD8321184E9200063924 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83FCC58B625A441B80AA5FAC /* RNOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNOS;
+		};
+		2086DD8621184E9200063924 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B142E55D4DA64A288B3296C9 /* TcpSockets.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = TcpSockets;
+		};
+		2086DD8921184E9200063924 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281C727CD48F431A8F80CCC9 /* UdpSockets.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = UdpSockets;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -405,6 +433,8 @@
 		00E356EE1AD99517003FC87E /* SOLOSignerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SOLOSignerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* SOLOSignerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SOLOSignerTests.m; sourceTree = "<group>"; };
+		032F4B455B2F453F815982EC /* libRNOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNOS.a; sourceTree = "<group>"; };
+		11F181F2B8024A82AD2EAE43 /* RNFastCrypto.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFastCrypto.xcodeproj; path = "../node_modules/react-native-safe-crypto/ios/RNFastCrypto.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SOLOSigner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SOLOSigner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,21 +445,25 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SOLOSigner/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SOLOSigner/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		281C727CD48F431A8F80CCC9 /* UdpSockets.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = UdpSockets.xcodeproj; path = "../node_modules/react-native-udp/ios/UdpSockets.xcodeproj"; sourceTree = "<group>"; };
 		2AADB30E643941AE93FF02AE /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* SOLOSigner-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOSigner-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* SOLOSigner-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SOLOSigner-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		392125327F3C445F83E3790C /* libRNRandomBytes-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNRandomBytes-tvOS.a"; sourceTree = "<group>"; };
+		45A57C228B5941AC872A2F46 /* libUdpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libUdpSockets.a; sourceTree = "<group>"; };
 		521D4C11D8634B79A943E2FF /* libRealmReact.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRealmReact.a; sourceTree = "<group>"; };
 		591065DDF5A34B0DBBE0338C /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		59F539B0674F4C7EB0D34DC8 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		83FCC58B625A441B80AA5FAC /* RNOS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNOS.xcodeproj; path = "../node_modules/react-native-os/ios/RNOS.xcodeproj"; sourceTree = "<group>"; };
 		8B349334B3224A529B94AF9E /* utm-avo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "utm-avo.ttf"; path = "../assets/fonts/utm-avo.ttf"; sourceTree = "<group>"; };
 		97BFDF07078843BC90B43D8A /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		ABA16FEB777442F0BDC61BB1 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		B142E55D4DA64A288B3296C9 /* TcpSockets.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TcpSockets.xcodeproj; path = "../node_modules/react-native-tcp/ios/TcpSockets.xcodeproj"; sourceTree = "<group>"; };
 		B5552D7CE6F24C0EBD8EE582 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
 		B893D3B797674863B0450526 /* utm-avo-bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "utm-avo-bold.ttf"; path = "../assets/fonts/utm-avo-bold.ttf"; sourceTree = "<group>"; };
 		B8DCEEC2B3BA4F16AF694457 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -440,14 +474,8 @@
 		D210EC87B05940F6AD1179B2 /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRandomBytes.xcodeproj; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; };
 		E85772F1CEF2460B9C139805 /* RNShare.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNShare.xcodeproj; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; };
 		F01E04DF312F43B38311A20D /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		83FCC58B625A441B80AA5FAC /* RNOS.xcodeproj */ = {isa = PBXFileReference; name = "RNOS.xcodeproj"; path = "../node_modules/react-native-os/ios/RNOS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		032F4B455B2F453F815982EC /* libRNOS.a */ = {isa = PBXFileReference; name = "libRNOS.a"; path = "libRNOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		11F181F2B8024A82AD2EAE43 /* RNFastCrypto.xcodeproj */ = {isa = PBXFileReference; name = "RNFastCrypto.xcodeproj"; path = "../node_modules/react-native-safe-crypto/ios/RNFastCrypto.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		FBA0B38A9165425E815A6F37 /* libRNFastCrypto.a */ = {isa = PBXFileReference; name = "libRNFastCrypto.a"; path = "libRNFastCrypto.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		B142E55D4DA64A288B3296C9 /* TcpSockets.xcodeproj */ = {isa = PBXFileReference; name = "TcpSockets.xcodeproj"; path = "../node_modules/react-native-tcp/ios/TcpSockets.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		F41E8CA44EE34A43BEF4740F /* libTcpSockets.a */ = {isa = PBXFileReference; name = "libTcpSockets.a"; path = "libTcpSockets.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		281C727CD48F431A8F80CCC9 /* UdpSockets.xcodeproj */ = {isa = PBXFileReference; name = "UdpSockets.xcodeproj"; path = "../node_modules/react-native-udp/ios/UdpSockets.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		45A57C228B5941AC872A2F46 /* libUdpSockets.a */ = {isa = PBXFileReference; name = "libUdpSockets.a"; path = "libUdpSockets.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		F41E8CA44EE34A43BEF4740F /* libTcpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTcpSockets.a; sourceTree = "<group>"; };
+		FBA0B38A9165425E815A6F37 /* libRNFastCrypto.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFastCrypto.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -484,7 +512,6 @@
 				FFD4F5331018436A9A8DB67E /* libz.tbd in Frameworks */,
 				73C8AA5A93D1444E94C93933 /* libRNShare.a in Frameworks */,
 				97C5D52DF4B0482CB84F8CA0 /* libRNFS.a in Frameworks */,
-				E7D38AAEC8074B54A843F0D4 /* libRNFileSelector.a in Frameworks */,
 				33D390BA8B2D432CA40B9689 /* libRNOS.a in Frameworks */,
 				2E2994E5DAB34A75BFE92E41 /* libRNFastCrypto.a in Frameworks */,
 				44D416DEFE234EE5BCE3BAEE /* libTcpSockets.a in Frameworks */,
@@ -637,6 +664,38 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2086DD7721184E9200063924 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2086DD8121184E9200063924 /* libRNFastCrypto.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2086DD7921184E9200063924 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2086DD8A21184E9200063924 /* libUdpSockets.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2086DD7B21184E9200063924 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2086DD8421184E9200063924 /* libRNOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2086DD7D21184E9200063924 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2086DD8721184E9200063924 /* libTcpSockets.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,6 +742,10 @@
 				521D4C11D8634B79A943E2FF /* libRealmReact.a */,
 				C3700D62084C436E936C469F /* libRNShare.a */,
 				97BFDF07078843BC90B43D8A /* libRNFS.a */,
+				032F4B455B2F453F815982EC /* libRNOS.a */,
+				FBA0B38A9165425E815A6F37 /* libRNFastCrypto.a */,
+				F41E8CA44EE34A43BEF4740F /* libTcpSockets.a */,
+				45A57C228B5941AC872A2F46 /* libUdpSockets.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -744,7 +807,6 @@
 				D01F79BBB65747CB866B6187 /* RealmReact.xcodeproj */,
 				E85772F1CEF2460B9C139805 /* RNShare.xcodeproj */,
 				59F539B0674F4C7EB0D34DC8 /* RNFS.xcodeproj */,
-				7B73125A77BF4637A4A3EA86 /* RNFileSelector.xcodeproj */,
 				83FCC58B625A441B80AA5FAC /* RNOS.xcodeproj */,
 				11F181F2B8024A82AD2EAE43 /* RNFastCrypto.xcodeproj */,
 				B142E55D4DA64A288B3296C9 /* TcpSockets.xcodeproj */,
@@ -996,8 +1058,16 @@
 					ProjectRef = C61B8DE320CF5DE8003614A3 /* RNCamera.xcodeproj */;
 				},
 				{
+					ProductGroup = 2086DD7721184E9200063924 /* Products */;
+					ProjectRef = 11F181F2B8024A82AD2EAE43 /* RNFastCrypto.xcodeproj */;
+				},
+				{
 					ProductGroup = 30C8828E20F0CDDC00F2D2CB /* Products */;
 					ProjectRef = 59F539B0674F4C7EB0D34DC8 /* RNFS.xcodeproj */;
+				},
+				{
+					ProductGroup = 2086DD7B21184E9200063924 /* Products */;
+					ProjectRef = 83FCC58B625A441B80AA5FAC /* RNOS.xcodeproj */;
 				},
 				{
 					ProductGroup = 30AFFC3320CBBD9B00C6AF0C /* Products */;
@@ -1010,6 +1080,14 @@
 				{
 					ProductGroup = 30CAD76D20CA701200923828 /* Products */;
 					ProjectRef = 591065DDF5A34B0DBBE0338C /* RNSVG.xcodeproj */;
+				},
+				{
+					ProductGroup = 2086DD7D21184E9200063924 /* Products */;
+					ProjectRef = B142E55D4DA64A288B3296C9 /* TcpSockets.xcodeproj */;
+				},
+				{
+					ProductGroup = 2086DD7921184E9200063924 /* Products */;
+					ProjectRef = 281C727CD48F431A8F80CCC9 /* UdpSockets.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1077,6 +1155,34 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2086DD8121184E9200063924 /* libRNFastCrypto.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFastCrypto.a;
+			remoteRef = 2086DD8021184E9200063924 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2086DD8421184E9200063924 /* libRNOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNOS.a;
+			remoteRef = 2086DD8321184E9200063924 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2086DD8721184E9200063924 /* libTcpSockets.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTcpSockets.a;
+			remoteRef = 2086DD8621184E9200063924 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2086DD8A21184E9200063924 /* libUdpSockets.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libUdpSockets.a;
+			remoteRef = 2086DD8921184E9200063924 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {
@@ -1494,10 +1600,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = SOLOSignerTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1538,10 +1644,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = SOLOSignerTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1584,10 +1690,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = SOLOSigner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1618,10 +1724,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = SOLOSigner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1658,10 +1764,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = "SOLOSigner-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1711,10 +1817,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = "SOLOSigner-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1763,10 +1869,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = "SOLOSigner-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1815,10 +1921,10 @@
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)..\node_modules\neact-native-file-selectorios/**",
-					"$(SRCROOT)\..\node_modules\react-native-os\ios",
-					"$(SRCROOT)\..\node_modules\react-native-safe-crypto\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-osios",
+					"$(SRCROOT)..\node_modules\neact-native-safe-cryptoios/**",
+					"$(SRCROOT)..\node_modules\neact-native-tcpios/**",
+					"$(SRCROOT)..\node_modules\neact-native-udpios/**",
 				);
 				INFOPLIST_FILE = "SOLOSigner-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

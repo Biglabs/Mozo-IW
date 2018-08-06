@@ -1,18 +1,21 @@
 import {AsyncStorage, Platform} from "react-native";
 import RNFileSystem from "react-native-fs";
 import RNShare from "react-native-share";
+import RNFileSelector from "react-native-file-selector";
 import bip39 from 'bip39';
 
 import Constant from "../helpers/Constants";
-import PermissionUtils from "../helpers/PermissionUtils";
 import encryption from "../helpers/EncryptionUtils";
+import PermissionUtils from "../helpers/PermissionUtils";
+import {isIOS} from '../helpers/PlatformUtils';
 import {appDAO} from "../dao";
-import RNFileSelector from "react-native-file-selector";
 
 const ERROR = {
     ENCRYPT_FAILED: 'encrypt failed',
     USER_DENIED: 'user denied',
 };
+
+let ANDROID_BACKUP_FOLDER = `${RNFileSystem.ExternalStorageDirectoryPath}/Documents/SoloSigner`;
 
 /**
  * Load backup phrase (seed words) from local storage and encrypt it with password
@@ -44,38 +47,35 @@ async function backupWallet(pin: string, encryptPassword: string, fileType: Cons
     }
 
     const today = new Date();
-    const filePath = `${Constant.BACKUP_FOLDER}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.${fileType}`;
+    const filePath = `${ANDROID_BACKUP_FOLDER}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.${fileType}`;
 
     await PermissionUtils.requestStoragePermission()
         .then(granted => {
             if (granted) {
                 /** First: check backup folder is exist */
-                return RNFileSystem.exists(Constant.BACKUP_FOLDER);
+                return isIOS || RNFileSystem.exists(ANDROID_BACKUP_FOLDER);
             } else throw new Error(ERROR.USER_DENIED);
         })
         .then(backupFolderExisting => {
             /** And then: create backup folder if not existing */
-            return backupFolderExisting || RNFileSystem.mkdir(Constant.BACKUP_FOLDER);
+            return backupFolderExisting || RNFileSystem.mkdir(ANDROID_BACKUP_FOLDER);
         })
         .then(() => {
             /** And then: save files to local storage */
             switch (fileType) {
                 case Constant.BACKUP_FILE_TYPE.PNG:
-                    if (Platform.OS === 'ios') {
-                        return true
-                    } else {
-                        return RNFileSystem.writeFile(filePath, qrCodeBase64, 'base64');
-                    }
+                    return isIOS || RNFileSystem.writeFile(filePath, qrCodeBase64, 'base64');
                 case Constant.BACKUP_FILE_TYPE.TXT:
                     return RNFileSystem.writeFile(filePath, this.encryptedData);
             }
         })
         .then(() => {
             /** And then: open Share menu allows save files to another place  */
-            let exportPngOnIOS = fileType === Constant.BACKUP_FILE_TYPE.PNG && Platform.OS === 'ios';
+            let exportPngOnIOS = fileType === Constant.BACKUP_FILE_TYPE.PNG && isIOS;
             let shareOptions = {
                 url: exportPngOnIOS ? `data:image/jpg;base64,${qrCodeBase64}` : `file://${filePath}`,
             };
+            console.log('Share backup wallet: ' + JSON.stringify(shareOptions));
             return RNShare.open(shareOptions);
         })
         .then(() => {
@@ -118,7 +118,7 @@ function loadBackupFile(callback) {
         .then(granted => {
             if (granted) {
                 /** First: check backup folder is exist */
-                return RNFileSystem.exists(Constant.BACKUP_FOLDER);
+                return RNFileSystem.exists(ANDROID_BACKUP_FOLDER);
             } else throw new Error(ERROR.USER_DENIED);
         })
         .then(backupFolderExisting => {
@@ -130,7 +130,7 @@ function loadBackupFile(callback) {
                 onDone: (path) => doReadFile(path, callback)
             };
 
-            if (backupFolderExisting) fileSelectorProps.path = Constant.BACKUP_FOLDER;
+            if (backupFolderExisting) fileSelectorProps.path = ANDROID_BACKUP_FOLDER;
             RNFileSelector.Show(fileSelectorProps);
         })
         .catch(e => {

@@ -97,7 +97,7 @@ function loadBackupFile(callback) {
                 onDone: (path) => doReadFile(path, callback)
             };
 
-            if (backupFolderExisting) fileSelectorProps.path = Constant.BACKUP_FOLDER;
+            //if (backupFolderExisting) fileSelectorProps.path = Constant.BACKUP_FOLDER;
             //RNFileSelector.Show(fileSelectorProps);
         })
         .catch(e => {
