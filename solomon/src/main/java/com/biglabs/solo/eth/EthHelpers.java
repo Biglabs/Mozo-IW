@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthGasPrice;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
+import org.web3j.rlp.RlpEncoder;
+import org.web3j.rlp.RlpList;
 import org.web3j.rlp.RlpString;
 import org.web3j.rlp.RlpType;
 import org.web3j.utils.Bytes;
@@ -19,6 +22,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Service Interface for managing Wallet.
@@ -65,6 +69,23 @@ public class EthHelpers {
         return result;
     }
 
+    public static byte[] signedTx(RawTransaction rawTx, EthIntermediaryTx txReq) {
+        Sign.SignatureData sigData = EthHelpers.toSignatureDataFrom(txReq);
+
+        List<RlpType> values = EthHelpers.asRlpValues(rawTx, sigData);
+        return RlpEncoder.encode(new RlpList(values));
+    }
+
+    public static Sign.SignatureData toSignatureDataFrom(EthIntermediaryTx txReq) {
+
+        String sig = txReq.getSignatures().get(0);
+        String toSign = txReq.getTosign().get(0);
+        String publicKey = txReq.getPubkeys().get(0);
+        BigInteger publicKeyBI = new BigInteger(Numeric.hexStringToByteArray(publicKey));
+        // Make signature
+        return EthHelpers.toSignatureData(toSign, sig, publicKeyBI);
+    }
+
     public static Sign.SignatureData toSignatureData(String toSign, String sig, BigInteger publicKey) {
         byte[] sigBytes = Numeric.hexStringToByteArray(sig);
         int len = sigBytes.length;
@@ -83,7 +104,7 @@ public class EthHelpers {
                         new ECDSASignature(new BigInteger(r), new BigInteger(s)));
     }
 
-    public static RawTransaction rawTxFrom(EthIntermediaryTx txReq) {
+    public static RawTransaction rawEthTxFrom(EthIntermediaryTx txReq) {
         String to = txReq.getTx().getOutputs().get(0).getAddresses().get(0);
         BigInteger value = txReq.getTx().getOutputs().get(0).getValue().toBigInteger();
         return RawTransaction.createEtherTransaction(
@@ -123,5 +144,22 @@ public class EthHelpers {
         byte[] s = Numeric.toBytesPadded(sig.s, 32);
 
         return new Sign.SignatureData(v, r, s);
+    }
+
+    public static BigInteger retrieveGasPrice(Web3j web3j) throws InterruptedException, ExecutionException {
+        BigInteger gasPrice;EthGasPrice p = web3j.ethGasPrice().sendAsync().get();
+
+        if (p.hasError()) {
+            gasPrice = ONE_GWEI;
+            logger.info("Fail to get gas price. Using 1 gwei as default gas price");
+        } else {
+            gasPrice = p.getGasPrice();
+            logger.info("Use auto-suggested gas price {}", gasPrice);
+        }
+        return gasPrice;
+    }
+
+    public static RawTransaction rawTxFrom(EthIntermediaryTx txReq, String contractAddress) {
+        return RawTransaction.createTransaction(txReq.getNonce(), txReq.getTx().getGasPrice(), txReq.getTx().getGasLimit(), contractAddress, txReq.getTx().getData());
     }
 }

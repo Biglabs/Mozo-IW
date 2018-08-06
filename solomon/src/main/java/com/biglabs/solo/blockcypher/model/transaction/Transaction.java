@@ -127,6 +127,7 @@ public class Transaction {
 
     private List<Input> inputs = new ArrayList<Input>();
     private List<Output> outputs = new ArrayList<Output>();
+    private String data;
 
     public Transaction() {
     }
@@ -332,6 +333,14 @@ public class Transaction {
 
     public void setGasLimit(BigInteger gasLimit) {
         this.gasLimit = gasLimit;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Override

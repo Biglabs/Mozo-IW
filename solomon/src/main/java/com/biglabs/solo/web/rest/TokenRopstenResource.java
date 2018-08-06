@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -73,19 +75,23 @@ public class TokenRopstenResource {
 //        return Collections.emptyList();
 //    }
 //
-//    @PostMapping("/txs")
-//    @Timed
-//    public ResponseEntity<IntermediaryTransaction> createTransaction(@Valid @RequestBody EthTransactionRequest txReq) throws Exception {
-//        IntermediaryTransaction tx = ethClient.createTransaction(txReq);
-//        return ResponseEntity.ok().body(tx);
-//    }
-//
-//    @PostMapping("/txs/send-signed-tx")
-//    @Timed
-//    public ResponseEntity<IntermediaryTransaction> sendSignedTransaction(@Valid @RequestBody EthIntermediaryTx txReq) throws Exception {
-//        IntermediaryTransaction tx = ethClient.sendSignedTransaction(txReq);
-//        return ResponseEntity.created(new URI("/api/btc/test/txs/" + tx.getTx().getHash()))
-//            .body(tx);
-//    }
+    @PostMapping("/txs/transfer")
+    @Timed
+    public ResponseEntity<EthIntermediaryTx> createTransaction(@Valid @RequestBody EthTransactionRequest txReq) throws Exception {
+        if (!"MOZO".equalsIgnoreCase(txReq.getSymbol())) {
+            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
+        }
+        EthIntermediaryTx tx = ethClient.prepareTransfer(txReq.getSymbol(), txReq);
+        return ResponseEntity.ok().body(tx);
+    }
+
+    @PostMapping("/txs/send-transfer-tx")
+    @Timed
+    public ResponseEntity<IntermediaryTransaction> sendTransferTx(@Valid @RequestBody EthIntermediaryTx txReq) throws Exception {
+        RemoteCall<EthSendTransaction> ethRespon = ethClient.transfer(txReq);
+        txReq.getTx().setHash(ethRespon.send().getTransactionHash());
+        return ResponseEntity.created(new URI("/api/btc/test/txs/" + txReq.getTx().getHash()))
+            .body(txReq);
+    }
 
 }

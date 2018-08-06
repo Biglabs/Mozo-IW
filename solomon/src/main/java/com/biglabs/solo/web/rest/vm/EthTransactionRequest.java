@@ -17,6 +17,7 @@ import java.util.List;
 public class EthTransactionRequest extends TransactionRequest{
     private BigInteger gasPrice;
     private BigInteger gasLimit;
+    private String symbol;
 
     public BigInteger getGasPrice() {
         return gasPrice;
@@ -32,5 +33,13 @@ public class EthTransactionRequest extends TransactionRequest{
 
     public void setGasLimit(BigInteger gasLimit) {
         this.gasLimit = gasLimit;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }

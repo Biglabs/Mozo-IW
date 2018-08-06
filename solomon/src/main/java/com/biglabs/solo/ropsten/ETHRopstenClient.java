@@ -1,36 +1,32 @@
 package com.biglabs.solo.ropsten;
 
 import com.biglabs.solo.blockcypher.model.BCYAddress;
+import com.biglabs.solo.blockcypher.model.TokenInfo;
 import com.biglabs.solo.blockcypher.model.blockchain.EthBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.Transaction;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
 import com.biglabs.solo.config.ApplicationProperties;
 import com.biglabs.solo.eth.Erc20Contract;
+import com.biglabs.solo.eth.EthHelpers;
 import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
 import com.biglabs.solo.web.rest.errors.JsonRpcException;
 import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
+import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.token.Token;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
-import org.web3j.abi.FunctionEncoder;
-import org.web3j.abi.FunctionReturnDecoder;
-import org.web3j.abi.TypeReference;
-import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.Type;
-import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
-import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.*;
 import org.web3j.rlp.RlpEncoder;
 import org.web3j.rlp.RlpList;
-import org.web3j.rlp.RlpString;
 import org.web3j.rlp.RlpType;
-import org.web3j.utils.Bytes;
 import org.web3j.utils.Numeric;
 
 import java.io.IOException;
@@ -40,7 +36,6 @@ import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -53,11 +48,10 @@ import java.util.concurrent.ExecutionException;
 public class ETHRopstenClient  {
     private static final String BLOCKCHAIN_NAME = "ETH.ropsten";
     private static final Logger logger = LoggerFactory.getLogger(ETHRopstenClient.class);
-    private static final BigInteger ONE_GWEI = BigInteger.valueOf(1000000000);
     //    private final BlockCypherProperties blockCypherProperties;
     private final RestOperations restTemplate;
     private final Web3j web3j;
-    private final ApplicationProperties appProps;
+//    private final ApplicationProperties appProps;
     private final Map<String, Erc20Contract> ropstenContracts;
 //    private final ApplicationProperties.Ropsten ropsten;
 
@@ -67,7 +61,7 @@ public class ETHRopstenClient  {
                             @Qualifier("ropstenContracts") Map<String, Erc20Contract> r) {
         this.restTemplate = restTemplate;
         this.web3j = web3j;
-        this.appProps = appProps;
+//        this.appProps = appProps;
         this.ropstenContracts = r;
     }
 
@@ -104,14 +98,11 @@ public class ETHRopstenClient  {
     }
 
     public IntermediaryTransaction createTransaction(EthTransactionRequest txReq) throws Exception {
-        Transaction tx = new Transaction();
-        EthIntermediaryTx itx = new EthIntermediaryTx();
-
         String from = txReq.getInputs().get(0).getAddresses().get(0);
         String to = txReq.getOutputs().get(0).getAddresses().get(0);
         BigInteger value = txReq.getOutputs().get(0).getValue().toBigInteger();
         // get none
-        BigInteger nonce = getNonce(from);
+        BigInteger nonce = EthHelpers.getNonce(web3j, from);
         BigInteger gasPrice;
         BigInteger gasLimit;
 
@@ -132,15 +123,7 @@ public class ETHRopstenClient  {
         if (txReq.getGasPrice() != null) {
             gasPrice = txReq.getGasPrice();
         } else {
-            EthGasPrice p = web3j.ethGasPrice().sendAsync().get();
-
-            if (p.hasError()) {
-                gasPrice = ONE_GWEI;
-                logger.info("Fail to get gas price. Using 1 gwei as default gas price");
-            } else {
-                gasPrice = p.getGasPrice();
-                logger.info("Use auto-suggested gas price {}", gasPrice);
-            }
+            gasPrice = EthHelpers.retrieveGasPrice(web3j);
         }
 
         logger.info("nonce {}", nonce);
@@ -153,16 +136,16 @@ public class ETHRopstenClient  {
         // create raw-tx
         RawTransaction rawtx = RawTransaction
             .createEtherTransaction(nonce, gasPrice, gasLimit, to, value );
-        String tosign = encodeRawTx(rawtx);
+        String tosign = EthHelpers.encodeRawTxToSign(rawtx);
 
-//        web3j.ethAccounts()
-
+        Transaction tx = new Transaction();
         tx.addInput(txReq.getInputs().get(0).toInput());
         tx.addOutput(txReq.getOutputs().get(0).toOutput());
         tx.setGasLimit(gasLimit);
         tx.setGasPrice(gasPrice);
         tx.setFees(new BigDecimal(gasLimit.multiply(gasPrice)));
         // set nonce, gasprice, gaslimit
+        EthIntermediaryTx itx = new EthIntermediaryTx();
         itx.setNonce(nonce);
         itx.setTx(tx);
         itx.setTosign(Arrays.asList(tosign));
@@ -170,25 +153,9 @@ public class ETHRopstenClient  {
         return itx;
     }
 
-    private String encodeRawTx(RawTransaction rawtx) {
-        byte[] encodeRawTx = TransactionEncoder.encode(rawtx);
-        return Numeric.toHexString(Hash.sha3(encodeRawTx));
-    }
-
     public IntermediaryTransaction sendSignedTransaction(EthIntermediaryTx txReq) throws ExecutionException, InterruptedException {
-        RawTransaction rtx = rawTxFrom(txReq);
-
-        String sig = txReq.getSignatures().get(0);
-        String toSign = txReq.getTosign().get(0);
-        String publicKey = txReq.getPubkeys().get(0);
-        BigInteger publicKeyBI = new BigInteger(Numeric.hexStringToByteArray(publicKey));
-        // Make signature
-        Sign.SignatureData sigData = toSignatureData(toSign, sig, publicKeyBI);
-
-        List<RlpType> values = asRlpValues(rtx, sigData);
-        RlpList rlpList = new RlpList(values);
-        byte[] signedTx = RlpEncoder.encode(rlpList);
-
+        RawTransaction rtx = EthHelpers.rawEthTxFrom(txReq);
+        byte[] signedTx = EthHelpers.signedTx(rtx, txReq);
         EthSendTransaction sendtx = web3j.ethSendRawTransaction(Numeric.toHexString(signedTx)).sendAsync().get();
         if (sendtx.getError() != null) {
             logger.warn("ERROR: {}, code {}", sendtx.getError().getMessage(), sendtx.getError().getCode());
@@ -198,9 +165,9 @@ public class ETHRopstenClient  {
         return txReq;
     }
 
-    public BCYAddress tokenBalance(String symbol, String address) throws Exception {
+    public TokenInfo tokenBalance(String symbol, String address) throws Exception {
         logger.info("[{}] Balance of {}", symbol, address);
-        BCYAddress bcyAddress = new BCYAddress();
+        TokenInfo tokenInfo = new TokenInfo();
         Erc20Contract contract = ropstenContracts.get(symbol.toLowerCase());
         if (contract == null) {
             throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", symbol));
@@ -213,103 +180,31 @@ public class ETHRopstenClient  {
 //            throw new JsonRpcException(msg, response.getError());
 //        }
 //        Uint256 b = (Uint256) types.get(0).getValue();
-        bcyAddress.setAddress(address);
-        bcyAddress.setBalance(new BigDecimal(result));
-        return bcyAddress;
+        tokenInfo.setAddress(address);
+        tokenInfo.setBalance(new BigDecimal(result));
+        tokenInfo.setSymbol(symbol);
+        tokenInfo.setDecimals(contract.getDecimals());
+        tokenInfo.setContractAddress(contract.getContractAddress());
+        return tokenInfo;
     }
 
-    private RawTransaction rawTxFrom(EthIntermediaryTx txReq) {
-        String to = txReq.getTx().getOutputs().get(0).getAddresses().get(0);
-        BigInteger value = txReq.getTx().getOutputs().get(0).getValue().toBigInteger();
-        return RawTransaction.createEtherTransaction(
-            txReq.getNonce(), txReq.getTx().getGasPrice(), txReq.getTx().getGasLimit(), to, value);
-    }
-
-    private Sign.SignatureData toSignatureData(String toSign, String sig, BigInteger publicKey) {
-        byte[] sigBytes = Numeric.hexStringToByteArray(sig);
-        int len = sigBytes.length;
-        int rlen = sigBytes[3];
-        int sIndex = 6 + rlen;
-        int sLen = sigBytes[5 + rlen];
-        byte[] r = new byte[rlen];
-        byte[] s = new byte[sLen];
-        System.arraycopy(sigBytes, 4, r, 0, rlen);
-        System.arraycopy(sigBytes, sIndex, s, 0, sLen);
-        logger.debug("Signature {}", sig);
-        logger.debug("R         {}", Numeric.toHexString(r));
-        logger.debug("S         {}", Numeric.toHexString(s));
-        return signMessage(Numeric.hexStringToByteArray(toSign),
-                        publicKey,
-                        new ECDSASignature(new BigInteger(r), new BigInteger(s)));
-    }
-
-
-    public static Sign.SignatureData signMessage(byte[] tosign, BigInteger publicKey, ECDSASignature sig) {
-
-        // Now we have to work backwards to figure out the recId needed to recover the signature.
-        int recId = -1;
-        for (int i = 0; i < 4; i++) {
-            BigInteger k = Sign.recoverFromSignature(i, sig, tosign);
-            if (k != null && k.equals(publicKey)) {
-                recId = i;
-                break;
-            }
+    public EthIntermediaryTx prepareTransfer(String symbol, EthTransactionRequest txRequest) throws Exception {
+        Erc20Contract contract = ropstenContracts.get(symbol.toLowerCase());
+        if (contract == null) {
+            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", symbol));
         }
-        if (recId == -1) {
-            throw new RuntimeException(
-                "Could not construct a recoverable key. This should never happen.");
-        }
+        String from = txRequest.getInputs().get(0).getAddresses().get(0);
+        String to = txRequest.getOutputs().get(0).getAddresses().get(0);
+        BigDecimal value = txRequest.getOutputs().get(0).getValue();
 
-        int headerByte = recId + 27;
-
-        // 1 header + 32 bytes for R + 32 bytes for S
-        byte v = (byte) headerByte;
-        byte[] r = Numeric.toBytesPadded(sig.r, 32);
-        byte[] s = Numeric.toBytesPadded(sig.s, 32);
-
-        return new Sign.SignatureData(v, r, s);
+        return contract.prepareTransfer(symbol, txRequest.getGasLimit(), txRequest.getGasPrice(), from, to, value.toBigInteger());
     }
 
-    BigInteger getNonce(String address) throws Exception {
-        EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(
-            address, DefaultBlockParameterName.LATEST).sendAsync().get();
-        if (ethGetTransactionCount.hasError()) {
-            throw new JsonRpcException("Cannot get nonce of address", ethGetTransactionCount.getError());
+    public RemoteCall<EthSendTransaction> transfer(EthIntermediaryTx txReq) {
+        Erc20Contract contract = ropstenContracts.get(txReq.getSymbol().toLowerCase());
+        if (contract == null) {
+            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", txReq.getSymbol()));
         }
-        return ethGetTransactionCount.getTransactionCount();
+        return contract.transfer(txReq);
     }
-
-    static List<RlpType> asRlpValues(
-        RawTransaction rawTransaction, Sign.SignatureData signatureData) {
-        List<RlpType> result = new ArrayList<>();
-
-        result.add(RlpString.create(rawTransaction.getNonce()));
-        result.add(RlpString.create(rawTransaction.getGasPrice()));
-        result.add(RlpString.create(rawTransaction.getGasLimit()));
-
-        // an empty to address (contract creation) should not be encoded as a numeric 0 value
-        String to = rawTransaction.getTo();
-        if (to != null && to.length() > 0) {
-            // addresses that start with zeros should be encoded with the zeros included, not
-            // as numeric values
-            result.add(RlpString.create(Numeric.hexStringToByteArray(to)));
-        } else {
-            result.add(RlpString.create(""));
-        }
-
-        result.add(RlpString.create(rawTransaction.getValue()));
-
-        // value field will already be hex encoded, so we need to convert into binary first
-        byte[] data = Numeric.hexStringToByteArray(rawTransaction.getData());
-        result.add(RlpString.create(data));
-
-        if (signatureData != null) {
-            result.add(RlpString.create(signatureData.getV()));
-            result.add(RlpString.create(Bytes.trimLeadingZeroes(signatureData.getR())));
-            result.add(RlpString.create(Bytes.trimLeadingZeroes(signatureData.getS())));
-        }
-
-        return result;
-    }
-
 }

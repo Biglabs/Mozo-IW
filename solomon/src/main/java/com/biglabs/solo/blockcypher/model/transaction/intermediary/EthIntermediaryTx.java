@@ -15,6 +15,7 @@ import java.util.List;
 public class EthIntermediaryTx extends IntermediaryTransaction {
     @NotNull
     private BigInteger nonce;
+    private String symbol;
 
     public BigInteger getNonce() {
         return nonce;
@@ -23,7 +24,15 @@ public class EthIntermediaryTx extends IntermediaryTransaction {
     public void setNonce(BigInteger nonce) {
         this.nonce = nonce;
     }
-//
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+    //
 //    public BigInteger getGasPrice() {
 //        return gasPrice;
 //    }
