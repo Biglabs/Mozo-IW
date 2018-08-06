@@ -32,9 +32,11 @@ public class CoinTableViewCell: UITableViewCell {
             self.iconImage.image = UIImage.init(named: "ic_\(name)")
             self.nameLabel.text = address.network ?? name
         }
+        self.leadConstraint.constant = 20
         if address.isChild {
             self.leadConstraint.constant = 40
         }
+        
         self.activateView.isHidden = !address.isCurrentAddress
     }
     
