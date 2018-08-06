@@ -24,7 +24,13 @@ export function getAllAddresses(){
  * Get all in use addresses
  */
 export function getAllAddressesInUse(){
-    let addresses = getAllAddresses().filtered("inUse = true");
+    var addresses = [];
+    getAllAddresses().map(address => {
+        // .filtered("inUse = true");
+        if (address.inUse){
+            addresses.push(address);
+        }
+    });
     return addresses;
 }
 
