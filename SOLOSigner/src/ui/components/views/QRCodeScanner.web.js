@@ -1,8 +1,7 @@
 'use strict';
 
 import React from "react";
-import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {RNCamera} from 'react-native-camera';
+import {StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
 import PropTypes from 'prop-types';
 
 import {colorPrimary, fontBold, icons} from "../../../res";
@@ -57,13 +56,13 @@ export default class QRCodeScanner extends React.Component {
                     }}
                 />
                 {
-                    this.state.isScanning &&
-                    <RNCamera
-                        style={{width: this.cameraSize, height: this.cameraSize, margin: 10}}
-                        ratio='1:1'
-                        permissionDialogTitle={'Permission to use camera'}
-                        permissionDialogMessage={'We need your permission to use your camera phone'}
-                        onBarCodeRead={this.onCodeRead}/>
+                    // this.state.isScanning &&
+                    // <RNCamera
+                    //     style={{width: this.cameraSize, height: this.cameraSize, margin: 10}}
+                    //     ratio='1:1'
+                    //     permissionDialogTitle={'Permission to use camera'}
+                    //     permissionDialogMessage={'We need your permission to use your camera phone'}
+                    //     onBarCodeRead={this.onCodeRead}/>
                 }
             </TouchableOpacity>
 

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Platform} from "react-native";
+import {Platform, StyleSheet, TouchableOpacity, View} from "react-native";
 
 import {Actions} from 'react-native-router-flux';
 import PropTypes from 'prop-types';
@@ -89,7 +89,9 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
         textAlign: 'center',
         textAlignVertical: 'center',
-        includeFontPadding: false,
+        ...Platform.select({
+            android: {includeFontPadding: false}
+        }),
     }
 });
 

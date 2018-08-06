@@ -1,11 +1,9 @@
 import React, {Component} from "react";
-import {Alert, ActivityIndicator, StyleSheet, TouchableHighlight, View} from 'react-native';
+import {ActivityIndicator, Alert, Platform, StyleSheet, TouchableHighlight, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 import {ScreenFooterActions, Text} from "../components";
-// import WalletManager from '../../services/WalletService';
-import { walletService } from "../../services/index.js";
-
+import {walletService} from "../../services";
 
 
 import {colorPrimary, colorScreenBackground, dimenScreenPaddingBottom, styleScreenTitleText} from '../../res';
@@ -94,7 +92,7 @@ export default class SecurityPinScreen extends Component<Props> {
                 //console.log("handleEnterCorrectPin: " + square(11)); // 121
                 //console.log("handleEnterCorrectPin: " + diag(4, 3)); // 5
                 /** End Code for testing */
-            //}, 5); // old code
+                //}, 5); // old code
             }, 1); // test code
         });
     }
@@ -273,7 +271,9 @@ const styles = StyleSheet.create({
         fontSize: 23.8,
         textAlign: 'center',
         textAlignVertical: 'center',
-        includeFontPadding: false,
+        ...Platform.select({
+            android: {includeFontPadding: false}
+        }),
         paddingBottom: 2
     }
 });

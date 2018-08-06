@@ -43,13 +43,6 @@ import {isWebPlatform} from "./helpers/PlatformUtils";
     }
 }());
 
-// function loadConfirmScreen() {
-//     if (!isWebPlatform) {
-//         const ConfirmationScreen = require('./ui/screens/transaction/ConfirmationScreen');
-//         return <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>;
-//     }
-// }
-
 export default () => {
     return (
         <Provider {...stores}>
@@ -85,7 +78,6 @@ export default () => {
                     <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/>
 
                     {/* transaction screens */}
-                    {/*{loadConfirmScreen()}*/}
                     <Scene key="trans_confirm" component={ConfirmationScreen} hideNavBar/>
                 </Modal>
             </Router>
