@@ -1,7 +1,8 @@
 import {Platform} from "react-native";
 import { isWebPlatform } from "../helpers/PlatformUtils.js";
+import WalletBackupService from './WalletBackupService';
 
-let walletService, walletBackupService, manageWalletService, dataService;
+let walletService, manageWalletService, dataService;
 
 /** 
  * Load services base on running platform
@@ -10,12 +11,10 @@ let walletService, walletBackupService, manageWalletService, dataService;
     if(isWebPlatform()){
         // require("./WalletService.web");
         // walletService = require("./WalletService.web");
-        walletBackupService = require("./WalletBackupService.web");
         dataService = require("./DataService.web");
     } else {
         //require("./WalletService");
         walletService = require("./WalletService");
-        walletBackupService = require("./WalletBackupService");
         dataService = require("./DataService.js");
     }
     
