@@ -4,18 +4,14 @@ import {FLAG_DB_EXISTING} from '../helpers/Constants';
 import AsyncStorage from '../helpers/AsyncStorageUtils';
 
 function checkWalletExisting() {
-
-    
     AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
+        console.log(`checkWalletExisting ${result}`);
         if (result === 'true') {
-            /* has wallet */
-            Actions.reset('security_pin', {isNewPIN: false});
-        } else if (result === 'false') {
-            /* no wallet, create a new one */
-            Actions.reset('welcome');
+             /* has wallet */
+             Actions.reset('security_pin', {isNewPIN: false});
         } else {
-            // TODO: reload app
-            console.log(`System error related to IO: ${result}`);
+             /* no wallet, create a new one */
+             Actions.reset('welcome');
         }
     });
 }

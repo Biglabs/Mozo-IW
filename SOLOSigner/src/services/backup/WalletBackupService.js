@@ -3,12 +3,12 @@ import RNShare from "react-native-share";
 import RNFileSelector from "react-native-file-selector";
 import bip39 from 'bip39';
 
-import Constant from "../helpers/Constants";
-import encryption from "../helpers/EncryptionUtils";
-import PermissionUtils from "../helpers/PermissionUtils";
-import {isIOS} from '../helpers/PlatformUtils';
-import {appDAO} from "../dao";
-import AsyncStorage from '../helpers/AsyncStorageUtils';
+import Constant from "../../helpers/Constants";
+import encryption from "../../helpers/EncryptionUtils";
+import PermissionUtils from "../../helpers/PermissionUtils";
+import {isIOS} from '../../helpers/PlatformUtils';
+import {appDAO} from "../../dao/index";
+import AsyncStorage from '../../helpers/AsyncStorageUtils';
 
 const ERROR = {
     ENCRYPT_FAILED: 'encrypt failed',
@@ -24,7 +24,7 @@ let ANDROID_BACKUP_FOLDER = `${RNFileSystem.ExternalStorageDirectoryPath}/Docume
  * @param {string} password     Password to encrypt wallet
  * @returns {string}            Return encrypted string or null if backup phrase not existing
  */
-export function getEncryptedWallet(pin: string, password: string) {
+export function getEncryptedWallet(pin, password) {
     let mnemonic = appDAO.getRawMnemonic(pin);
     if (mnemonic) {
         return encryption.encrypt(mnemonic, password);
@@ -40,7 +40,7 @@ export function getEncryptedWallet(pin: string, password: string) {
  * @param {string}              qrCodeBase64    Base64 content for export QRCode image file
  * @returns {Promise<boolean>}                  Result is true if backup success or otherwise
  */
-async function backupWallet(pin: string, encryptPassword: string, fileType: Constant.BACKUP_FILE_TYPE, qrCodeBase64?: string) {
+async function backupWallet(pin, encryptPassword, fileType, qrCodeBase64 = null) {
     if (!this.encryptedData) {
         this.encryptedData = this.getEncryptedWallet(pin, encryptPassword);
         if (!this.encryptedData) throw new Error(ERROR.ENCRYPT_FAILED);
