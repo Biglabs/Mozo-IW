@@ -1,35 +1,14 @@
 import RNFileSystem from "react-native-fs";
 import RNShare from "react-native-share";
 import RNFileSelector from "react-native-file-selector";
-import bip39 from 'bip39';
 
 import Constant from "../../helpers/Constants";
-import encryption from "../../helpers/EncryptionUtils";
 import PermissionUtils from "../../helpers/PermissionUtils";
 import {isIOS} from '../../helpers/PlatformUtils';
-import {appDAO} from "../../dao/index";
 import AsyncStorage from '../../helpers/AsyncStorageUtils';
-
-const ERROR = {
-    ENCRYPT_FAILED: 'encrypt failed',
-    USER_DENIED: 'user denied',
-};
+import WalletBackupReference from './WalletBackupReference';
 
 let ANDROID_BACKUP_FOLDER = `${RNFileSystem.ExternalStorageDirectoryPath}/Documents/SoloSigner`;
-
-/**
- * Load backup phrase (seed words) from local storage and encrypt it with password
- *
- * @param {string} pin          Security Pin for unlock local data
- * @param {string} password     Password to encrypt wallet
- * @returns {string}            Return encrypted string or null if backup phrase not existing
- */
-export function getEncryptedWallet(pin, password) {
-    let mnemonic = appDAO.getRawMnemonic(pin);
-    if (mnemonic) {
-        return encryption.encrypt(mnemonic, password);
-    } else return null;
-}
 
 /**
  * Encrypt backup phrase (seed words) with password and save it to file
@@ -42,8 +21,8 @@ export function getEncryptedWallet(pin, password) {
  */
 async function backupWallet(pin, encryptPassword, fileType, qrCodeBase64 = null) {
     if (!this.encryptedData) {
-        this.encryptedData = this.getEncryptedWallet(pin, encryptPassword);
-        if (!this.encryptedData) throw new Error(ERROR.ENCRYPT_FAILED);
+        this.encryptedData = WalletBackupReference.encryptWallet(pin, encryptPassword);
+        if (!this.encryptedData) throw new Error(WalletBackupReference.ERROR.ENCRYPT_FAILED);
     }
 
     const today = new Date();
@@ -54,7 +33,7 @@ async function backupWallet(pin, encryptPassword, fileType, qrCodeBase64 = null)
             if (granted) {
                 /** First: check backup folder is exist */
                 return isIOS || RNFileSystem.exists(ANDROID_BACKUP_FOLDER);
-            } else throw new Error(ERROR.USER_DENIED);
+            } else throw new Error(WalletBackupReference.ERROR.USER_DENIED);
         })
         .then(backupFolderExisting => {
             /** And then: create backup folder if not existing */
@@ -119,7 +98,7 @@ function loadBackupFile(callback) {
             if (granted) {
                 /** First: check backup folder is exist */
                 return RNFileSystem.exists(ANDROID_BACKUP_FOLDER);
-            } else throw new Error(ERROR.USER_DENIED);
+            } else throw new Error(WalletBackupReference.ERROR.USER_DENIED);
         })
         .then(backupFolderExisting => {
             /** And then: open file picker */
@@ -138,24 +117,10 @@ function loadBackupFile(callback) {
         });
 }
 
-/**
- * Restore wallet from encrypted phrase (seed words) with password
- *
- * @param {string}  data        Encrypted phrase data
- * @param {string}  password    Password for decrypt
- * @returns {string}            Return backup phrase (seed words) as raw string or return null if decrypt fail
- */
-function restoreWallet(data, password) {
-    const result = encryption.decrypt(data, password);
-    if (bip39.validateMnemonic(result)) return result;
-    else return null;
-}
-
 export default {
-    ERROR: ERROR,
-    getEncryptedWallet: getEncryptedWallet,
+    ERROR: WalletBackupReference.ERROR,
+    encryptWallet: WalletBackupReference.encryptWallet,
+    restoreWallet: WalletBackupReference.restoreWallet,
     backupWallet: backupWallet,
-
     loadBackupFile: loadBackupFile,
-    restoreWallet: restoreWallet,
 }
