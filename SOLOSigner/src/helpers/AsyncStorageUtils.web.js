@@ -29,20 +29,18 @@ module.exports.setItem = function(key, value, callback){
  * @param {Function} callback Function that will be called with a result if found or any error. 
  */
 module.exports.getItem = function(key, callback){
-    let result;
+    let result = null;
     let error;
     
     try {
-        result= userReference.get(key);
+        result= userReference.get(key)  || null;
     } catch (err) {
-        error = err;
-        result = 'false';
+        error  = err;
     }
 
     if (typeof callback === 'function') {
         return callback(error, result);
     }
-    return null;
 }
 /**
  * Removes an item for a key and invokes a callback upon completion. Returns a Promise object.
