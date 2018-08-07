@@ -31,11 +31,26 @@ export default class LocalUserReference {
         let addressList = userReference.get(schemaName) || [];
         addressList.push(object);
         //write to file
-        userReference.set(schemaName, object);
+        userReference.set(schemaName, addressList);
     }
 
-     objectForPrimaryKey(schemaName, key){
-        // TODO: Implement for web
-        return {};
+    /**
+     * get item base on schema name and key
+     * @param {String} schemaName 
+     * @param {String} key
+     * @returns {*} return address object or null
+     */
+    objectForPrimaryKey(schemaName, key){
+        let addressList = userReference.get(schemaName);
+        console.log(JSON.stringify(addressList));
+        let rs;
+        if(addressList) {
+            rs = addressList.filter(item => item['address_network'] === key);
+        }
+        if(rs && rs.length == 1){
+            return rs[0];
+        }
+        return null;
+        
     }
 }
