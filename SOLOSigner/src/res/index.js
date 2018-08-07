@@ -40,6 +40,7 @@ const styleButtonBorderBase = {
     borderRadius: styles.dimenCornerRadius,
     borderColor: styles.colorBorder,
     borderWidth: 1,
+    borderStyle: 'solid'
 };
 
 styles.buttons = {

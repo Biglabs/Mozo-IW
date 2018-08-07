@@ -42,6 +42,8 @@ export default class CreateWalletOptionItem extends React.Component {
                         position: 'absolute',
                         marginLeft: 14,
                         marginTop: 18,
+                        top: 0,
+                        left: 0
                     }}
                 />
             );
@@ -66,6 +68,7 @@ export default class CreateWalletOptionItem extends React.Component {
                 <SVGInline 
                     width='20'
                     height='20'
+                    fill='#ffffff'
                     svg={icons.icCheckCircle}
                     style={{
                         position: 'absolute',
@@ -81,6 +84,7 @@ export default class CreateWalletOptionItem extends React.Component {
             <SvgUri 
                 width={20}
                 height={20}
+                fill='#ffffff'
                 svgXmlData={icons.icCheckCircle}
                 style={{
                     position: 'absolute',

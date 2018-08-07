@@ -35,7 +35,7 @@ export default class CoinListItem extends React.PureComponent {
         );
     }
 
-    rendericCheckCircle() {
+    renderCheckCircle() {
         //check platform
         if(Platform.OS.toUpperCase() ==="WEB"){
             return (
@@ -90,15 +90,7 @@ export default class CoinListItem extends React.PureComponent {
                         style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</SoloText>
                     {
                         this.props.checked &&
-                        <SvgUri
-                            width={20}
-                            height={20}
-                            svgXmlData={icons.icCheckCircle}
-                            fill={colorPrimary}
-                            style={{
-                                position: 'absolute',
-                                right: 0
-                            }}/>
+                        this.renderCheckCircle()
                     }
                 </View>
                 <View style={styles.dash}/>
