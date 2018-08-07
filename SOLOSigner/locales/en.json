@@ -1,20 +1,14 @@
-//
-//  en.json
-//  Solo Signer
-//
-//  Created by Hoang Nguyen on 8/6/18.
-//
 {
     "welcome": {
       "lbWelcome": "Welcome to SOLO Signer",
       "btnCreate": "Create New Wallet",
       "btnImport": "Import Wallet",
-      "btnRestore": "Restore Encryted Wallet",
+      "btnRestore": "Restore Encryted Wallet"
     },
     "home": {
       "lbTitle": "Create New Wallet",
       "lbExpress": "Express",
-      "lbCustom": "Custom",
+      "lbCustom": "Custom"
     },
     "security_pin": {
       "lbTitle": "Security PIN",
@@ -45,6 +39,6 @@
     },
     "navigation_bar": {
         "btnBack": "Back",
-        "btnContinue": "Continue",
+        "btnContinue": "Continue"
     }
 }
