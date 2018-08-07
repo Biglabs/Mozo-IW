@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
         fontFamily: fontRegular,
         fontSize: 14,
         color: colorTitleText,
+        paddingLeft: 20,
+        paddingTop: 12,
+        paddingRight: 20,
+        paddingBottom: 14,
     }
 });
 
