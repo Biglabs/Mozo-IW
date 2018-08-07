@@ -1,6 +1,5 @@
 import React from "react";
 import {Alert, AsyncStorage, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
 import {inject} from "mobx-react";
 
@@ -17,7 +16,7 @@ import {
     styleScreenSubTitleText,
     styleWarningText,
 } from "../../../res";
-import {ScreenFooterActions, ScreenHeaderActions, SVG, Text, TextInput} from "../../components";
+import {ScreenFooterActions, ScreenHeaderActions, SvgView, Text, TextInput} from "../../components";
 import Constant from "../../../helpers/Constants";
 import {getFilePathFromUser, isWebPlatform} from "../../../helpers/PlatformUtils";
 import {walletBackupService as WalletBackupService} from '../../../services';
@@ -208,7 +207,7 @@ export default class BackupWalletScreen extends React.Component {
                             <TouchableOpacity
                                 style={styles.export_button}
                                 onPress={() => this.doExport(Constant.BACKUP_FILE_TYPE.PNG)}>
-                                <SVG
+                                <SvgView
                                     fill={colorPrimary}
                                     width={32}
                                     height={32}
@@ -219,7 +218,7 @@ export default class BackupWalletScreen extends React.Component {
                             <TouchableOpacity
                                 style={styles.export_button}
                                 onPress={() => this.doExport(Constant.BACKUP_FILE_TYPE.TXT)}>
-                                <SVG
+                                <SvgView
                                     width={32}
                                     height={32}
                                     svg={icons.icExportText}/>

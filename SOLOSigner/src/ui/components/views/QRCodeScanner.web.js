@@ -1,12 +1,12 @@
 'use strict';
 
 import React from "react";
-import {StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 
 import {colorPrimary, fontBold, icons} from "../../../res";
 import SoloText from '../widgets/SoloText';
-import SVG from '../widgets/SoloSVG';
+import SvgView from '../widgets/SoloSVG';
 
 export default class QRCodeScanner extends React.Component {
     constructor(props) {
@@ -45,8 +45,9 @@ export default class QRCodeScanner extends React.Component {
                 style={{width: this.scanAreaSize, height: this.scanAreaSize,}}
                 disabled={this.state.isScanning}
                 onPress={this.onPress}>
-                <SVG
-                    width={this.scanAreaSize} height={this.scanAreaSize}
+                <SvgView
+                    width={this.scanAreaSize}
+                    height={this.scanAreaSize}
                     svg={icons.icScanArea}
                     style={{
                         position: 'absolute',

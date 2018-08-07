@@ -14,7 +14,7 @@ import {
     icons,
     styleWarningText
 } from '../../../res';
-import {ScreenFooterActions, ScreenHeaderActions, Text, SVG} from "../../components";
+import {ScreenFooterActions, ScreenHeaderActions, Text, SvgView} from "../../components";
 //import WalletManager from '../../../services/WalletService';
 
 import { walletService as  WalletManager } from "../../../services";
@@ -74,7 +74,7 @@ export default class ViewBackupPhraseScreen extends React.Component {
                     !this.state.userConfirmed &&
                     <View style={styles.state_container}>
                         <View style={styles.warning_text}>
-                            <SVG 
+                            <SvgView
                                 width={20}
                                 height={20}
                                 svg={icons.icWarning}
@@ -129,7 +129,7 @@ export default class ViewBackupPhraseScreen extends React.Component {
                         <TouchableOpacity
                             style={styles.button_cancel_container}
                             onPress={() => Actions.pop()}>
-                            <SVG 
+                            <SvgView
                                 width={18}
                                 height={18}
                                 fill={colorPrimary}
