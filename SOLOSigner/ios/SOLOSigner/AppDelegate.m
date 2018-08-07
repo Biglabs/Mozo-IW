@@ -37,6 +37,11 @@
   self.window.rootViewController = navigationController;
   [self.window makeKeyAndVisible];
   
+  // https://facebook.github.io/react-native/docs/running-on-device
+  UIView* launchScreenView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] objectAtIndex:0];
+  launchScreenView.frame = self.window.bounds;
+  rootView.loadingView = launchScreenView;
+  
   return YES;
 }
 
