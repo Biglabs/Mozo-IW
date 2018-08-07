@@ -70,7 +70,7 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section >= 2 {
-            if self.currentCoin?.coin?.compare(CoinType.MOZO.value) == ComparisonResult.orderedSame {
+            if section == 2 && self.currentCoin?.coin?.compare(CoinType.MOZO.value) == ComparisonResult.orderedSame {
                 return 1
             }
             return self.currentCoin?.transactions?.count ?? 0
@@ -130,7 +130,8 @@ extension WalletViewController: UITableViewDelegate, UITableViewDataSource {
                 return cell
             } else {
                 let cell = self.tableView?.dequeueReusableCell(withIdentifier: "TransactionWalletTableViewCell", for: indexPath) as! TransactionWalletTableViewCell
-                if let trans = self.currentCoin?.transactions?[indexPath.row] {
+                
+                if (self.currentCoin?.transactions?.count)! > 0, let trans = self.currentCoin?.transactions?[indexPath.row] {
                     cell.bindData(trans, address: self.currentCoin!)
                 }
                 //            cell.delegate = self
@@ -149,7 +150,7 @@ extension WalletViewController: UIScrollViewDelegate {
         //Bottom Refresh
         if scrollView == self.tableView {
             if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height) {
-                if !self.isLoadingMoreTH {
+                if !self.isLoadingMoreTH && (self.currentCoin?.transactions != nil) && (self.currentCoin?.transactions?.count)! > 0 {
                     let blockHeight = (self.currentCoin?.transactions?.last?.blockHeight)!
                     print("Load more transaction histories with block height \(String(describing: blockHeight))")
                     self.isLoadingMoreTH = true
