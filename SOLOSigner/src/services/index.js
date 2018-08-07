@@ -3,7 +3,7 @@ import DataService from './DataService';
 import GlobalService from './GlobalService';
 import LinkingService from './LinkingService';
 import RESTService from './RESTService';
-import SignService from './SignService';
+// import SignService from './SignService';
 import WalletService from './WalletService';
 import WalletBackupService from './WalletBackupService';
 
@@ -16,7 +16,8 @@ module.exports = {
     GlobalService: GlobalService,
     LinkingService: LinkingService,
     RESTService: RESTService,
-    SignService: SignService,
+    // TODO: MUST fix issue Can't resolve (Desktop)
+    // SignService: SignService,
     WalletService: WalletService,
     WalletBackupService: WalletBackupService,
 };

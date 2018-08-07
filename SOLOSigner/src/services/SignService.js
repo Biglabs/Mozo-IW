@@ -1,7 +1,6 @@
 import Web3 from 'web3';
 import {addressDAO} from '../dao';
 import Constant from '../helpers/Constants';
-// import Bitcoin from 'react-native-bitcoinjs-lib';
 import ethUtil from 'ethereumjs-util';
 import {isWebPlatform} from "../helpers/PlatformUtils";
 

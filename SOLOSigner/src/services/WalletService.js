@@ -1,11 +1,24 @@
 import Constant from '../helpers/Constants';
 import {addressDAO, appDAO, walletDAO} from '../dao';
-import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import encryption from '../helpers/EncryptionUtils';
 import AsyncStorage from '../helpers/AsyncStorageUtils';
 import RESTService from './RESTService';
 import ethUtil from 'ethereumjs-util';
+import {isWebPlatform} from "../helpers/PlatformUtils";
+
+let Bitcoin;
+
+/**
+ * Load services base on running platform
+ */
+(function initServices() {
+    if (isWebPlatform()) {
+        Bitcoin = require("bitcoinjs-lib");
+    } else {
+        Bitcoin = require("react-native-bitcoinjs-lib");
+    }
+}());
 
 /**
  * Return a list of keypair (wallet) following a list of coin type.
