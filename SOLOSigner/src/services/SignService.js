@@ -1,8 +1,22 @@
 import Web3 from 'web3';
 import {addressDAO} from '../dao';
 import Constant from '../helpers/Constants';
-import Bitcoin from 'react-native-bitcoinjs-lib';
+// import Bitcoin from 'react-native-bitcoinjs-lib';
 import ethUtil from 'ethereumjs-util';
+import {isWebPlatform} from "../helpers/PlatformUtils";
+
+let Bitcoin;
+
+/**
+ * Load services base on running platform
+ */
+(function initServices() {
+    if (isWebPlatform()) {
+        Bitcoin = require("bitcoinjs-lib");
+    } else {
+        Bitcoin = require("react-native-bitcoinjs-lib");
+    }
+}());
 
 /**
  * Serialize returns the ECDSA signature in the more strict DER format.  Note

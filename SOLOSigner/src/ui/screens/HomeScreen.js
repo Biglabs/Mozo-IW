@@ -12,8 +12,7 @@ import {
     icons
 } from '../../res';
 import {BackupWalletStateIcon, Text} from "../components";
-import LinkingManager from "../../services/LinkingService";
-import CachingService from '../../services/CachingService';
+import {LinkingService, CachingService} from '../../services';
 import AsyncStorage from '../../helpers/AsyncStorageUtils';
 
 // use for display svg on web
@@ -29,7 +28,7 @@ export default class HomeScreen extends React.Component {
         let storage = CachingService.getInstance();
         let schemeData = storage.getSchemeData();
         if (schemeData) {
-            LinkingManager.manageScheme(schemeData, this.props.pin);
+            LinkingService.manageScheme(schemeData, this.props.pin);
             CachingService.getInstance().setSchemeData(null);
         }
     }
