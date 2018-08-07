@@ -20,6 +20,9 @@ public class Utils {
         } else if coinType == CoinType.BTC.key {
             //Convert value from ether to satoshis
             retValue = NSNumber(value: value * 1E+8)
+        } else if coinType == CoinType.MOZO.key {
+            //Convert value from mozo to mozo junior
+            retValue = NSNumber(value: value * 1E+2)
         }
         return retValue
     }
@@ -32,6 +35,9 @@ public class Utils {
         } else if coinType == CoinType.BTC.key {
             //Convert value from ether to satoshis
             retValue = Double(value) / 1E+8
+        }  else if coinType == CoinType.MOZO.key {
+            //Convert value from junior mozo to mozo
+            retValue = Double(value) / 1E+2
         }
         return retValue
     }

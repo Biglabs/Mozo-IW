@@ -148,6 +148,12 @@ public final class RESTService {
         return path
     }
     
+    public func extractNetworkPathFromText(network: String) -> String{
+        let path = network.lowercased()
+        let paths = path.components(separatedBy: "_")
+        return paths.last!
+    }
+    
     private func mappingConnectionError(_ response: HTTPURLResponse?, error: Error?) -> ConnectionError?{
         var connectionError: ConnectionError?
 

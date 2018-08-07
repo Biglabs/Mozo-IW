@@ -149,6 +149,7 @@ class SoloWalletViewController: UIViewController {
                     child.coin = CoinType.MOZO.key
                     child.network = address.network?.replace(address.coin!, withString: child.coin!)
                     child.isChild = true
+                    child.transactions = []
                     filterAddresses.append(child)
                 }
             }
@@ -296,6 +297,8 @@ class SoloWalletViewController: UIViewController {
             self.getETHBalance()
         case CoinType.BTC.key:
             self.getBTCBalance()
+        case CoinType.MOZO.key:
+            self.getTokenBalance()
         default:
             self.getUSD()
         }
@@ -323,6 +326,22 @@ class SoloWalletViewController: UIViewController {
         }
         
         self.soloSDK?.api?.getEthBalance(address, network: self.currentCoin.network!) { (value, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let connectionError = error {
+                    Utils.showError(connectionError)
+                }
+                return
+            }
+            self.displayBalance(jsonStr: value)
+        }
+    }
+    
+    func getTokenBalance(){
+        guard let address = self.currentCoin.address else {
+            return
+        }
+        self.soloSDK?.api?.getTokenBalance(address, network: self.currentCoin.network!, symbol: CoinType.MOZO.value) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {

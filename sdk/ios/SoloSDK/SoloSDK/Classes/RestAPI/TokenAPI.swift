@@ -16,7 +16,7 @@ public extension RESTService {
     ///   - symbol: the symbol of token
     ///   - completionHandler: handle after completed
     public func getTokenBalance(_ address: String, network: String, symbol: String, completionHandler: completion = nil) {
-        let networkPath = self.convertNetworkToPath(network: network)
+        let networkPath = self.extractNetworkPathFromText(network: network)
         let url = Configuration.BASE_URL + "/api/token/\(networkPath)/\(address)/balance?symbol=\(symbol)"
         return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
     }
@@ -27,7 +27,7 @@ public extension RESTService {
     ///   - transaction: the original transaction
     ///   - completionHandler: handle after completed
     public func createNewTokenTransaction(_ transaction: TransactionDTO, network: String, completionHandler: completion = nil) {
-        let networkPath = self.convertNetworkToPath(network: network)
+        let networkPath = self.extractNetworkPathFromText(network: network)
         let url = Configuration.BASE_URL + "/api/token/\(networkPath)/txs/transfer"
         let param = transaction.toJSON()
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
@@ -40,7 +40,7 @@ public extension RESTService {
     ///   - network: the network
     ///   - completionHandler: handle after completed
     public func sendTokenTransaction(_ param: Any, network: String, completionHandler: completion = nil) {
-        let networkPath = self.convertNetworkToPath(network: network)
+        let networkPath = self.extractNetworkPathFromText(network: network)
         let url = Configuration.BASE_URL + "/api/token/\(networkPath)/txs/send-transfer-tx"
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
     }
@@ -53,7 +53,7 @@ public extension RESTService {
     ///   - blockHeight: the block height of a transaction history.
     ///   - completionHandler: handle after completed
     public func getTokenTransactionHistories(_ address: String, network: String, blockHeight: Int64?, completionHandler: completion = nil) {
-        let networkPath = self.convertNetworkToPath(network: network)
+        let networkPath = self.extractNetworkPathFromText(network: network)
         var url = Configuration.BASE_URL + "/api/token/\(networkPath)/addrs/\(address)/txhistory"
         if blockHeight != nil {
             url += "?beforeHeight=" + String(blockHeight ?? 0)
