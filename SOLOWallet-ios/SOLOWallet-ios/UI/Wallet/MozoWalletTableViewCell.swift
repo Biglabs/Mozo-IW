@@ -30,10 +30,10 @@ public class MozoWalletTableViewCell: UITableViewCell {
     }
     
     @IBAction func btnSellTapped(_ sender: Any) {
-        
+//        self.delegate?.request(SDKAction.getBalance.rawValue)
     }
     
     @IBAction func btnBuyTapped(_ sender: Any) {
-        
+//        self.delegate?.request(SDKAction.getBalance.rawValue)
     }
 }
