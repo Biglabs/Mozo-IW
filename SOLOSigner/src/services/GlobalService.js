@@ -4,27 +4,20 @@ import {FLAG_DB_EXISTING} from '../helpers/Constants';
 import AsyncStorage from '../helpers/AsyncStorageUtils';
 
 function checkWalletExisting() {
-    if (Platform.OS.toUpperCase() === "WEB") {
-        const userReference = require('electron').remote.require('electron-settings');
-        let result = userReference.get(FLAG_DB_EXISTING);
+
+    
+    AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
         if (result === 'true') {
-            // has wallet
+            /* has wallet */
             Actions.reset('security_pin', {isNewPIN: false});
-        } else {
-            // no wallet, create a new one
+        } else if (result === 'false') {
+            /* no wallet, create a new one */
             Actions.reset('welcome');
+        } else {
+            // TODO: reload app
+            console.log(`System error related to IO: ${result}`);
         }
-    } else {
-        AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
-            if (result === 'true') {
-                /* has wallet */
-                Actions.reset('security_pin', {isNewPIN: false});
-            } else {
-                /* no wallet, create a new one */
-                Actions.reset('welcome');
-            }
-        });
-    }
+    });
 }
 
 function responseToReceiver(result, jsonData) {
