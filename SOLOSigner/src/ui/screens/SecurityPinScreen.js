@@ -3,7 +3,7 @@ import {ActivityIndicator, Alert, Platform, StyleSheet, TouchableHighlight, View
 import {Actions} from 'react-native-router-flux';
 
 import {ScreenFooterActions, Text} from "../components";
-import {walletService} from "../../services";
+import {WalletService} from "../../services";
 
 
 import {colorPrimary, colorScreenBackground, dimenScreenPaddingBottom, styleScreenTitleText} from '../../res';
@@ -66,7 +66,7 @@ export default class SecurityPinScreen extends Component<Props> {
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
                 let pin = JSON.stringify(this.pinCode);
-                walletService.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
+                WalletService.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
                     //Check error type
                     console.log("handleEnterCorrectPin, error: ", error);
                     this.props.isNewPIN = false;

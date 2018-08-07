@@ -15,9 +15,8 @@ import {
     styleWarningText
 } from '../../../res';
 import {ScreenFooterActions, ScreenHeaderActions, Text, SvgView} from "../../components";
-//import WalletManager from '../../../services/WalletService';
 
-import { walletService as  WalletManager } from "../../../services";
+import { WalletService as  WalletManager } from "../../../services";
 
 export default class ViewBackupPhraseScreen extends React.Component {
 
