@@ -7,13 +7,15 @@ function checkWalletExisting() {
 
     
     AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
-        console.log(`checkWalletExisting ${result}`);
         if (result === 'true') {
             /* has wallet */
             Actions.reset('security_pin', {isNewPIN: false});
-        } else {
+        } else if (result === 'false') {
             /* no wallet, create a new one */
             Actions.reset('welcome');
+        } else {
+            // TODO: reload app
+            console.log(`System error related to IO: ${result}`);
         }
     });
 }

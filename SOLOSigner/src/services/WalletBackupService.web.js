@@ -4,7 +4,7 @@ import bip39 from 'bip39';
 import Constant from "../helpers/Constants";
 import PermissionUtils from "../helpers/PermissionUtils";
 import encryption from "../helpers/EncryptionUtils";
-import WalletService from "./WalletService.web";
+import WalletService from "./WalletService";
 import { backupWallet as backupWalletDAO }from "../models/Wallet";
 import AsyncStorage from '../helpers/AsyncStorageUtils';
 
