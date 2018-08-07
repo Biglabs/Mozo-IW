@@ -6,26 +6,44 @@
       "btnRestore": "Restore Encryted Wallet"
     },
     "home": {
-      "lbTitle": "Create New Wallet",
-      "lbExpress": "Express",
-      "lbCustom": "Custom"
+      "btnPair": "Pair Devices",
+      "btnPaper": "Paper Wallet",
+      "btnBackup": "Backup Wallet"
     },
     "security_pin": {
       "lbTitle": "Security PIN",
       "lbCreate": "Create a new PIN",
       "lbConfirm": "Confirm PIN",
       "lbEnter": "Enter PIN",
-      "lbCreateInterface": "Creating Interface"
+      "lbCreateInterface": "Creating Interface",
+      "btnCLR": "CLR",
+      "btnDEL": "DEL"
+    },
+    "add_wallet": {
+      "lbTitle": "Add Wallet",
+      "lbPlease": "Please select the wallet you wish to active",
+      "lbWe": "We require you to active at least one wallet. Please note that additional wallets can be activated later time.",
+      "btnAddMore": "Add More Wallet"
     },
     "add_more_wallet": {
+      "lbTitle": "Add More Wallet",
+      "lbSearch": "Search for wallet you want",
+      "btnAdd": "Add"
     },
     "create_wallet": {
+      "lbTitle": "Create New Wallet",
+      "lbExpress": "Express",
+      "lbExpressDetail": "Select this option if you’d like to access your new SOLO Wallet quickly. Please note that you’ll always be able to customize at a later time.",
+      "lbCustom": "Custom",
+      "lbCustomDetail":"Select this option if you’d like to customize your wallet. You’ll be able to select your wallet Tokens and Currencies, set up a security PIN, and back up your wallet."
     },
     "import_wallet": {
     },
     "restore_wallet": {
     },
     "backup_wallet_menu": {
+      "lbTitle": "BACKUP WALLET",
+      "btnBackup": "Backup Wallet"
     },
     "backup_wallet": {
     },
