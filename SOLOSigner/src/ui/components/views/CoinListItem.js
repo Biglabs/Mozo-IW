@@ -2,72 +2,15 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, TouchableOpacity, View, Platform, Text} from 'react-native';
-import SvgUri from 'react-native-svg-uri';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {colorContentText, colorDisable, colorPrimary, colorTitleText, fontBold, icons} from '../../../res';
 import SoloText from "../widgets/SoloText";
-
-// use for display svg on web
-import SVGInline from "react-svg-inline";
+import SoloSVG from "../widgets/SoloSVG";
 
 export default class CoinListItem extends React.PureComponent {
-
-   /*  setNativeProps = (nativeProps) => {
-        
-    } */
-
-    renderCoinIcon() {
-        //check platform
-        if(Platform.OS.toUpperCase() ==="WEB"){
-            return (
-                <SVGInline 
-                    width="24" 
-                    height="24" 
-                    svg={this.props.icon}/>
-            );
-        } 
-        return (
-            <SvgUri 
-                width={24} 
-                height={24} 
-                svgXmlData={this.props.icon}/>
-        );
-    }
-
-    renderCheckCircle() {
-        //check platform
-        if(Platform.OS.toUpperCase() ==="WEB"){
-            return (
-                <SVGInline 
-                    width="20" 
-                    height="20" 
-                    svg={icons.icCheckCircle}
-                    fill={colorPrimary}
-                    style={{
-                        position: 'absolute',
-                        right: 0
-                    }}
-                />
-            );
-        } 
-        return (
-            <SvgUri
-                width={20}
-                height={20}
-                svgXmlData={icons.icCheckCircle}
-                fill={colorPrimary}
-                style={{
-                    position: 'absolute',
-                    right: 0
-                }}
-            />
-        );
-    }
-
     render() {
         let isHandleItemClick = this.props.onItemClicked || false;
-        console.log(isHandleItemClick);
         let textRateMargin = this.props.checked ? 30 : 0;
 
         return (
@@ -83,14 +26,23 @@ export default class CoinListItem extends React.PureComponent {
                 disabled={!isHandleItemClick}>
 
                 <View style={styles.content}>
-                    {this.renderCoinIcon()}
+                    <SoloSVG width={24} height={24} svg={this.props.icon}/>
                     <SoloText style={styles.label}>{this.props.label}</SoloText>
 
                     <SoloText
                         style={[styles.text_rate, {marginRight: textRateMargin}]}>{"0 usd".toUpperCase()}</SoloText>
                     {
                         this.props.checked &&
-                        this.renderCheckCircle()
+                        <SoloSVG
+                            width={20}
+                            height={20}
+                            svg={icons.icCheckCircle}
+                            fill={colorPrimary}
+                            style={{
+                                position: 'absolute',
+                                right: 0
+                            }}
+                        />
                     }
                 </View>
                 <View style={styles.dash}/>
