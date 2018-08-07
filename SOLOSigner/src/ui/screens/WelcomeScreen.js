@@ -4,6 +4,7 @@ import {Actions} from 'react-native-router-flux';
 
 import {colorPrimary, colorScreenBackground, dimenScreenWidth, icons} from '../../res';
 import {Button, SvgView, Text} from "../components";
+import { strings } from '../../helpers/i18nUtils';
 
 const buttonWidthPercent = dimenScreenWidth >= 500 ? '44%' : '84%';
 
@@ -33,7 +34,7 @@ export default class WelcomeScreen extends React.Component {
                     }}
                 />
 
-                <Text style={styles.welcome_text}>Welcome to SOLO Signer</Text>
+                <Text style={styles.welcome_text}>{strings('welcome.lbWelcome')}</Text>
 
                 <View style={styles.button_container}>
                     <Button title='Create New Wallet'

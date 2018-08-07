@@ -4,7 +4,7 @@ import {Actions} from 'react-native-router-flux';
 
 import {ScreenFooterActions, Text} from "../components";
 import {WalletService} from "../../services";
-
+import { strings } from '../../helpers/i18nUtils';
 
 import {colorPrimary, colorScreenBackground, dimenScreenPaddingBottom, styleScreenTitleText} from '../../res';
 
@@ -109,14 +109,14 @@ export default class SecurityPinScreen extends Component<Props> {
             return (
                 <View style={styles.loading_container}>
                     <ActivityIndicator size="large" color="#ffffff" animating={this.state.isShowingLoading}/>
-                    <Text style={styles.loading_text}>Creating Interface</Text>
+                    <Text style={styles.loading_text}>{strings('security_pin.lbCreateInterface')}</Text>
                 </View>
             );
         else
             return (
                 <View style={styles.container}>
 
-                    <Text style={[styleScreenTitleText, styles.title]}>Security Pin</Text>
+                    <Text style={[styleScreenTitleText, styles.title]}>{strings('security_pin.lbTitle')}</Text>
 
                     <Text style={styles.sub_title}>{this.state.title}</Text>
 

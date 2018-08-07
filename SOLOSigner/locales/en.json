@@ -1,0 +1,50 @@
+//
+//  en.json
+//  Solo Signer
+//
+//  Created by Hoang Nguyen on 8/6/18.
+//
+{
+    "welcome": {
+      "lbWelcome": "Welcome to SOLO Signer",
+      "btnCreate": "Create New Wallet",
+      "btnImport": "Import Wallet",
+      "btnRestore": "Restore Encryted Wallet",
+    },
+    "home": {
+      "lbTitle": "Create New Wallet",
+      "lbExpress": "Express",
+      "lbCustom": "Custom",
+    },
+    "security_pin": {
+      "lbTitle": "Security PIN",
+      "lbCreate": "Create a new PIN",
+      "lbConfirm": "Confirm PIN",
+      "lbEnter": "Enter PIN",
+      "lbCreateInterface": "Creating Interface"
+    },
+    "add_more_wallet": {
+    },
+    "create_wallet": {
+    },
+    "import_wallet": {
+    },
+    "restore_wallet": {
+    },
+    "backup_wallet_menu": {
+    },
+    "backup_wallet": {
+    },
+    "paper_wallet": {
+    },
+    "confirm_backup_phrase": {
+    },
+    "view_backup_phrase": {
+    },
+    "trans_confirm": {
+    },
+    "navigation_bar": {
+        "btnBack": "Back",
+        "btnContinue": "Continue",
+    }
+}
