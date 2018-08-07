@@ -90,6 +90,12 @@ const Constants = {
             detail: "Address(es) is not created by Signer.",
             type: "Business"
         },
+        WRONG_PASSWORD: {
+            code: "ERR-005",
+            title: "Wrong password",
+            detail: "User input a wrong password",
+            type: "Business"
+        }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',
     FLAG_PUBLIC_KEY: '@publicKey:key',

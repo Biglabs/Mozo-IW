@@ -5,6 +5,7 @@ import {Actions} from 'react-native-router-flux';
 import {ScreenFooterActions, Text} from "../components";
 import {WalletService} from "../../services";
 import { strings } from '../../helpers/i18nUtils';
+import Constant from '../../helpers/Constants';
 
 import {colorPrimary, colorScreenBackground, dimenScreenPaddingBottom, styleScreenTitleText} from '../../res';
 
@@ -43,12 +44,7 @@ export default class SecurityPinScreen extends Component<Props> {
                 if (this.pinCode.toString() === this.pinCodeConfirm.toString()) {
                     this.handleEnterCorrectPin();
                 } else {
-                    Alert.alert(
-                        'Error',
-                        'Confirm PIN does not match!',
-                        [{text: 'OK'},],
-                    );
-                    this.clearPin();
+                    this.handleIncorrectPIN('Confirm PIN does not match!');
                 }
             } else {
                 this.pinCodeConfirm = this.pinCode;
@@ -61,6 +57,15 @@ export default class SecurityPinScreen extends Component<Props> {
         }
     }
 
+    handleIncorrectPIN(error) {
+        Alert.alert(
+            'Error',
+            error,
+            [{text: 'OK'},],
+        );
+        this.clearPin();
+    }
+
     handleEnterCorrectPin() {
         let me = this;
         this.setState({isShowingLoading: true}, () => {
@@ -69,6 +74,10 @@ export default class SecurityPinScreen extends Component<Props> {
                 WalletService.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
                     //Check error type
                     console.log("handleEnterCorrectPin, error: ", error);
+                    if (error && error == Constant.ERROR_TYPE.WRONG_PASSWORD) {
+                        this.handleIncorrectPIN(error.detail);
+                        return;
+                    }
                     this.props.isNewPIN = false;
                     // Open Home Screen
                     let pin = JSON.stringify(this.pinCode);

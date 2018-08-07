@@ -253,7 +253,7 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
             });
         } else {
             if (typeof callback === 'function') {
-                callback(new Error("Inputted PIN is not correct"), null);
+                callback(Constant.ERROR_TYPE.WRONG_PASSWORD, null);
             }
         }
     }
