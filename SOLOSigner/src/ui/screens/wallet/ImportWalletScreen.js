@@ -1,5 +1,5 @@
 import React from "react";
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import bip39 from 'bip39';
 
@@ -179,7 +179,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-
+        ...Platform.select({
+            android: {textAlignVertical: 'top'}
+        }),
     },
     error_text: {
         width: '100%',

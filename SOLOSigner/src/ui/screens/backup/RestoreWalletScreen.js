@@ -1,9 +1,6 @@
 import React from "react";
-import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
-// import QrReader from 'react-qr-reader';
-
-import { isWebPlatform } from "../../../helpers/PlatformUtils";
 
 import {
     colorDisable,
@@ -19,13 +16,13 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
-// import WalletBackupService from '../../../services/WalletBackupService';
 import { walletBackupService as WalletBackupService } from '../../../services';
+import { isWebPlatform } from "../../../helpers/PlatformUtils";
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {loadedBackupData: false, errorMessage: '', backupPhraseValidSate: -1};
+        this.state = {loadedBackupData: false, errorMessage: '', backupPhraseValidState: -1};
 
         // TODO: Remove later, for test
         this.handleScan = this.handleScan.bind(this);
@@ -61,6 +58,7 @@ export default class RestoreWalletScreen extends React.Component {
         if (this.state.loadedBackupData) {
             this.encryptedData = null;
             this.encryptPassword = null;
+            this.clearError();
             this.setState({loadedBackupData: false});
         } else {
             Actions.pop();
@@ -71,7 +69,7 @@ export default class RestoreWalletScreen extends React.Component {
         if (this.encryptedData && this.checkPassword()) {
             let result = WalletBackupService.restoreWallet(this.encryptedData, this.encryptPassword);
             if (result) {
-                this.state.backupPhraseValidSate = 1;
+                this.state.backupPhraseValidState = 1;
                 Actions.security_pin({
                     isNewPIN: true,
                     importedPhrase: result
@@ -79,7 +77,7 @@ export default class RestoreWalletScreen extends React.Component {
             } else {
                 this.setState({
                     errorMessage: 'Restore failed! Invalid encrypt password',
-                    backupPhraseValidSate: 0
+                    backupPhraseValidState: 0
                 });
             }
         }
@@ -90,7 +88,7 @@ export default class RestoreWalletScreen extends React.Component {
         else {
             this.setState({
                 errorMessage: 'Encrypt password is required',
-                backupPhraseValidSate: 0
+                backupPhraseValidState: 0
             });
             return false;
         }
@@ -99,7 +97,7 @@ export default class RestoreWalletScreen extends React.Component {
     clearError() {
         this.setState({
             errorMessage: '',
-            backupPhraseValidSate: -1
+            backupPhraseValidState: -1
         })
     }
 
@@ -116,12 +114,12 @@ export default class RestoreWalletScreen extends React.Component {
         console.error(err);
     }
 
-    
+
     openImageDialog() {
         this.refs.qrReader.openImageDialog();
     }
 
-    
+
     displayQRCodeScan(){
         // if(isWebPlatform()){
         //     const QrReader = require('react-qr-reader');
@@ -149,8 +147,8 @@ export default class RestoreWalletScreen extends React.Component {
                     onCodeRead={data => this.onReceiveData(data)}/>
             );
         // }
-        
-        
+
+
     }
 
     render() {
@@ -180,9 +178,9 @@ export default class RestoreWalletScreen extends React.Component {
                             {/*<View style={styles.dash}/>*/}
                         {/*</View>*/}
 
-                        {/* <QRCodeScanner
+                        <QRCodeScanner
                             cameraSize={180}
-                            onCodeRead={data => this.onReceiveData(data)}/> */}
+                            onCodeRead={data => this.onReceiveData(data)}/>
                     </View>
                 }
                 {
@@ -194,7 +192,7 @@ export default class RestoreWalletScreen extends React.Component {
 
                         <TextInput
                             style={styles.input_password}
-                            error={this.state.backupPhraseValidSate === 0}
+                            error={this.state.backupPhraseValidState === 0}
                             placeholder='Encrypt password'
                             multiline={false}
                             numberOfLines={1}
@@ -203,7 +201,7 @@ export default class RestoreWalletScreen extends React.Component {
                             onFocus={() => this.clearError()}
                             onChangeText={text => this.encryptPassword = text}/>
 
-                        <Text style={[styles.error_text, {opacity: this.state.backupPhraseValidSate === 0 ? 1 : 0}]}>
+                        <Text style={[styles.error_text, {opacity: this.state.backupPhraseValidState === 0 ? 1 : 0}]}>
                             * {this.state.errorMessage}
                         </Text>
                     </View>

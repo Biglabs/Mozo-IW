@@ -1,7 +1,6 @@
 import BackupWalletStateIcon from './views/BackupWalletStateIcon';
 import CoinListItem from './views/CoinListItem';
 import CreateWalletOptionItem from './views/CreateWalletOptionItem';
-// import QRCodeScanner from './views/QRCodeScanner';
 import ScreenFooterActions from './views/ScreenFooterActions';
 import ScreenHeaderActions from './views/ScreenHeaderActions';
 import AnimatedView from './widgets/AnimatedView';

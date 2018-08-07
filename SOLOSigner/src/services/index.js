@@ -5,7 +5,7 @@ import LinkingService from './LinkingService';
 import RESTService from './RESTService';
 // import SignService from './SignService';
 import WalletService from './WalletService';
-import WalletBackupService from './WalletBackupService';
+import WalletBackupService from './backup/WalletBackupService';
 
 /**
  * expose to outside

@@ -1,12 +1,11 @@
 import {Platform} from "react-native";
 import bip39 from 'bip39';
 
-import Constant from "../helpers/Constants";
-import PermissionUtils from "../helpers/PermissionUtils";
-import encryption from "../helpers/EncryptionUtils";
-import WalletService from "./WalletService";
-import { backupWallet as backupWalletDAO }from "../models/Wallet";
-import AsyncStorage from '../helpers/AsyncStorageUtils';
+import Constant from "../../helpers/Constants";
+import PermissionUtils from "../../helpers/PermissionUtils";
+import encryption from "../../helpers/EncryptionUtils";
+import { backupWallet as backupWalletDAO }from "../../models/Wallet";
+import WalletService from '../WalletService';
 
 const ERROR = {
     ENCRYPT_FAILED: 'encrypt failed',
