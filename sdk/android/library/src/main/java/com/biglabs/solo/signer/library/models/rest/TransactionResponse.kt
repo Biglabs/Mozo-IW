@@ -36,6 +36,9 @@ internal class TransactionResponse {
     @SerializedName("errors")
     var errors: Array<String>? = null
 
+    @SerializedName("nonce")
+    var nonce = 0
+
     override fun toString(): String {
         return Gson().toJson(this)
     }
