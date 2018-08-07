@@ -65,16 +65,6 @@ export default class SecurityPinScreen extends Component<Props> {
         let me = this;
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
-                /* let pin = JSON.stringify(this.pinCode);
-                WalletManager.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
-                    //Check error type
-                    console.log("handleEnterCorrectPin, error: ", error);
-                    this.props.isNewPIN = false;
-                    // Open Home Screen
-                    let pin = JSON.stringify(this.pinCode);
-                    Actions.home({pin: pin});
-                }); */
-                /** Code for testing */
                 let pin = JSON.stringify(this.pinCode);
                 walletService.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
                     //Check error type
@@ -83,17 +73,8 @@ export default class SecurityPinScreen extends Component<Props> {
                     // Open Home Screen
                     let pin = JSON.stringify(this.pinCode);
                     Actions.home({pin: pin});
-                });
-
-                /* me.setState({
-                    isShowingLoading: false
-                }); */
-                //console.log( "From wallet services: " + test());
-                //console.log("handleEnterCorrectPin: " + square(11)); // 121
-                //console.log("handleEnterCorrectPin: " + diag(4, 3)); // 5
-                /** End Code for testing */
-                //}, 5); // old code
-            }, 1); // test code
+                });                
+            }, 5);
         });
     }
 
