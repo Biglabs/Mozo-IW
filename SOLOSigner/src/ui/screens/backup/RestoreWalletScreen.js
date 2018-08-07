@@ -16,8 +16,8 @@ import {
     styleScreenTitleText,
 } from '../../../res';
 import {Button, QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
-import { walletBackupService as WalletBackupService } from '../../../services';
-import { isWebPlatform } from "../../../helpers/PlatformUtils";
+import {WalletBackupService} from '../../../services';
+import {isWebPlatform} from "../../../helpers/PlatformUtils";
 
 export default class RestoreWalletScreen extends React.Component {
     constructor(props) {
@@ -30,17 +30,17 @@ export default class RestoreWalletScreen extends React.Component {
 
     onChooseFileClick() {
         let that = this;
-        if(isWebPlatform) {
+        if (isWebPlatform) {
             const ipc = require('electron').ipcRenderer;
             // send command to main process
             ipc.send('open-file-dialog');
             ipc.on('selected-file', function (event, file) {
                 console.log(file.toString());
                 var fs = require('fs');
-                fs.readFile(file, function(err, data) {
+                fs.readFile(file, function (err, data) {
                     console.log(data.toString());
                     that.onReceiveData(data.toString());
-                  });
+                });
             });
         } else {
             WalletBackupService.loadBackupFile(data => {
@@ -101,8 +101,8 @@ export default class RestoreWalletScreen extends React.Component {
         })
     }
 
-    handleScan(result){
-        if(result){
+    handleScan(result) {
+        if (result) {
             console.log(result);
             this.onReceiveData(result);
             /* this.setState({ 
@@ -110,7 +110,8 @@ export default class RestoreWalletScreen extends React.Component {
             }); */
         }
     }
-    handleError(err){
+
+    handleError(err) {
         console.error(err);
     }
 
@@ -120,7 +121,7 @@ export default class RestoreWalletScreen extends React.Component {
     }
 
 
-    displayQRCodeScan(){
+    displayQRCodeScan() {
         // if(isWebPlatform()){
         //     const QrReader = require('react-qr-reader');
         //     const previewStyle = {
@@ -141,11 +142,11 @@ export default class RestoreWalletScreen extends React.Component {
         //         </div>
         //     );
         // } else {
-            return (
-                <QRCodeScanner
-                    cameraSize={180}
-                    onCodeRead={data => this.onReceiveData(data)}/>
-            );
+        return (
+            <QRCodeScanner
+                cameraSize={180}
+                onCodeRead={data => this.onReceiveData(data)}/>
+        );
         // }
 
 
@@ -168,14 +169,14 @@ export default class RestoreWalletScreen extends React.Component {
                         </Text>
 
                         {/*<Button*/}
-                            {/*title='Choose backup file'*/}
-                            {/*textStyle={styles.button_choose_file}*/}
-                            {/*onPress={() => this.onChooseFileClick()}/>*/}
+                        {/*title='Choose backup file'*/}
+                        {/*textStyle={styles.button_choose_file}*/}
+                        {/*onPress={() => this.onChooseFileClick()}/>*/}
 
                         {/*<View style={styles.separator_container}>*/}
-                            {/*<View style={styles.dash}/>*/}
-                            {/*<Text style={styles.separator_text}>OR</Text>*/}
-                            {/*<View style={styles.dash}/>*/}
+                        {/*<View style={styles.dash}/>*/}
+                        {/*<Text style={styles.separator_text}>OR</Text>*/}
+                        {/*<View style={styles.dash}/>*/}
                         {/*</View>*/}
 
                         <QRCodeScanner

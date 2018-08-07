@@ -1,5 +1,5 @@
 import React from "react";
-import {Alert, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {inject} from "mobx-react";
 
@@ -18,9 +18,8 @@ import {
 } from "../../../res";
 import {ScreenFooterActions, ScreenHeaderActions, SvgView, Text, TextInput} from "../../components";
 import Constant from "../../../helpers/Constants";
-import {getFilePathFromUser, isWebPlatform} from "../../../helpers/PlatformUtils";
-import {walletBackupService as WalletBackupService} from '../../../services';
-import AsyncStorage from '../../../helpers/AsyncStorageUtils';
+import {isWebPlatform} from "../../../helpers/PlatformUtils";
+import {WalletBackupService} from '../../../services';
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
@@ -98,10 +97,9 @@ export default class BackupWalletScreen extends React.Component {
             return false;
         }
 
-        // console.log("encryptedData: " +WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword));
         this.setState({
             isReadyToBackup: true,
-            encryptedData: WalletBackupService.getEncryptedWallet(this.props.pin, this.newEncryptPassword),
+            encryptedData: WalletBackupService.encryptWallet(this.props.pin, this.newEncryptPassword),
         });
     }
 

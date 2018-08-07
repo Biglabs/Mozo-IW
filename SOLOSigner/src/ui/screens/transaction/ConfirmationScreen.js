@@ -19,8 +19,7 @@ import {
 } from '../../../res';
 import {ScreenHeaderActions, Text} from "../../components";
 import Constant from '../../../helpers/Constants';
-import Globals from '../../../services/GlobalService';
-import SignService from '../../../services/SignService';
+import {GlobalService as Globals, SignService} from '../../../services';
 
 export default class ConfirmationScreen extends React.Component {
 
