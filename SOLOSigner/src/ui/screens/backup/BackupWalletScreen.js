@@ -1,5 +1,5 @@
 import React from "react";
-import {Alert, AsyncStorage, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {inject} from "mobx-react";
 
@@ -20,6 +20,7 @@ import {ScreenFooterActions, ScreenHeaderActions, SvgView, Text, TextInput} from
 import Constant from "../../../helpers/Constants";
 import {getFilePathFromUser, isWebPlatform} from "../../../helpers/PlatformUtils";
 import {walletBackupService as WalletBackupService} from '../../../services';
+import AsyncStorage from '../../../helpers/AsyncStorageUtils';
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 

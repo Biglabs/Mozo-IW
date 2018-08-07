@@ -1,10 +1,11 @@
 import React from "react";
-import {Alert, AsyncStorage, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Bip39 from 'bip39';
 
 import {Button, ScreenFooterActions, Text} from "../../components";
 import Constant from "../../../helpers/Constants";
+import AsyncStorage from '../../../helpers/AsyncStorageUtils';
 import {
     colorBorder,
     colorDisable,

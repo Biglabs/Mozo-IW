@@ -3,7 +3,7 @@ import {addressDAO, appDAO, walletDAO} from '../dao';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import encryption from '../helpers/EncryptionUtils';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '../helpers/AsyncStorageUtils';
 import RESTService from './RESTService';
 import ethUtil from 'ethereumjs-util';
 

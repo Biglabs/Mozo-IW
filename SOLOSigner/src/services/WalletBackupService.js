@@ -1,4 +1,3 @@
-import {AsyncStorage, Platform} from "react-native";
 import RNFileSystem from "react-native-fs";
 import RNShare from "react-native-share";
 import RNFileSelector from "react-native-file-selector";
@@ -9,6 +8,7 @@ import encryption from "../helpers/EncryptionUtils";
 import PermissionUtils from "../helpers/PermissionUtils";
 import {isIOS} from '../helpers/PlatformUtils';
 import {appDAO} from "../dao";
+import AsyncStorage from '../helpers/AsyncStorageUtils';
 
 const ERROR = {
     ENCRYPT_FAILED: 'encrypt failed',

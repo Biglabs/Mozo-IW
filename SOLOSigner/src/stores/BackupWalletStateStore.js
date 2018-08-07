@@ -1,6 +1,6 @@
 import {action, observable} from "mobx";
 import Constant from '../helpers/Constants';
-import {AsyncStorage} from "react-native";
+import AsyncStorage from '../helpers/AsyncStorageUtils';
 
 export default class BackupWalletStateStore {
     @observable

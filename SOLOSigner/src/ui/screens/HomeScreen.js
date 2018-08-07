@@ -1,5 +1,5 @@
 import React from "react";
-import {AsyncStorage, StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 
@@ -14,6 +14,7 @@ import {
 import {BackupWalletStateIcon, Text} from "../components";
 import LinkingManager from "../../services/LinkingService";
 import CachingService from '../../services/CachingService';
+import AsyncStorage from '../../helpers/AsyncStorageUtils';
 
 // use for display svg on web
 import SVGInline from "react-svg-inline";

@@ -1,7 +1,7 @@
 import {Linking, Platform} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {FLAG_DB_EXISTING} from '../helpers/Constants';
-import ASUtils from '../helpers/AsyncStorageUtils';
+import AsyncStorage from '../helpers/AsyncStorageUtils';
 
 function checkWalletExisting() {
     if (Platform.OS.toUpperCase() === "WEB") {
@@ -15,8 +15,7 @@ function checkWalletExisting() {
             Actions.reset('welcome');
         }
     } else {
-        console.log("ASUtils: " + JSON.stringify(ASUtils));
-        ASUtils.getItem(FLAG_DB_EXISTING, (error, result) => {
+        AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
             if (result === 'true') {
                 /* has wallet */
                 Actions.reset('security_pin', {isNewPIN: false});
