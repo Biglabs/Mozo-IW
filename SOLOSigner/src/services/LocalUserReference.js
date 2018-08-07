@@ -2,7 +2,7 @@ const userReference = require('electron').remote.require('electron-settings');
 
 export default class LocalUserReference {
     
-        /**
+    /**
      * Return all items by schema name
      *
      * @param {String} schemaName
@@ -28,7 +28,7 @@ export default class LocalUserReference {
      */
     create(schemaName, object) {
         //get list of address
-        let addressList = userReference.get(schemaName);
+        let addressList = userReference.get(schemaName) || [];
         addressList.push(object);
         //write to file
         userReference.set(schemaName, object);

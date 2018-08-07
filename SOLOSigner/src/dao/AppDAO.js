@@ -61,7 +61,7 @@ export function addMnemonicWithPin(mnemonic, hashPin){
 function getAppInfo() {
     let service = DataService;
     let apps = service.localStorage.objects('App');
-    if(apps.length > 0) {
+    if(apps && apps.length > 0) {
         return apps[0];
     }
     return null;

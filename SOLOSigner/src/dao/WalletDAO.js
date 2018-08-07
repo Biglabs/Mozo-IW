@@ -31,7 +31,7 @@ export function saveWalletInfo(walletInfo) {
  */
 export function getWalletInfo() {
     let wallets = DataService.localStorage.objects('Wallet');
-    if(wallets.length > 0) {
+    if(wallets && wallets.length > 0) {
         return wallets[0];
     }
     return null;
