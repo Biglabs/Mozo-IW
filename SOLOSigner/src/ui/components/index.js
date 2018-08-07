@@ -23,9 +23,9 @@ module.exports = {
     ScreenHeaderActions: ScreenHeaderActions,
     /* widgets */
     AnimatedView: AnimatedView,
-    SelectionGroup: SelectionGroup,
     Button: SoloButton,
+    SelectionGroup: SelectionGroup,
+    SvgView: SoloSVG,
     Text: SoloText,
     TextInput: SoloTextInput,
-    SVG: SoloSVG,
 };
