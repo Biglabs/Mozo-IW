@@ -87,7 +87,7 @@
     "view_backup_phrase": {
       "lbTitle": "VIEW BACKUP PHRASE",
       "lbWarning": "Warning",
-      "lbWarningDetail": "Your Backup Phrase will be displayed as both a QR code and a string of random words.{'\n\n'} Make sure you view your Backup Phrase in private. Anyone with the following QR code and Backup Phrase can gain full access to your funds so DO NOT store them publicly or share with anyone.",
+      "lbWarningDetail": "Your Backup Phrase will be displayed as both a QR code and a string of random words.\n\nMake sure you view your Backup Phrase in private. Anyone with the following QR code and Backup Phrase can gain full access to your funds so DO NOT store them publicly or share with anyone.",
       "btnUnderstand": "I understand",
       "lbScan": "Scan this QR Code with the camera of the device you wish to pair to, or enter the Backup Phrase below.",
       "btnCancel": "Cancel"
