@@ -129,5 +129,13 @@ public class WalletAddressUpdateVM {
             a.setAddressIndex(this.addressIndex);
             return a;
         }
+
+        @Override
+        public String toString() {
+            return "AddressUpdate{" +
+                "address='" + address + '\'' +
+                ", network=" + network +
+                '}';
+        }
     }
 }
