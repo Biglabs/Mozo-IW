@@ -19,6 +19,7 @@ import {
 import {ScreenHeaderActions, SvgView, Text} from "../../components";
 import Constant from '../../../helpers/Constants';
 import {GlobalService as Globals, SignService} from '../../../services';
+import { strings } from '../../../helpers/i18nUtils';
 
 export default class ConfirmationScreen extends React.Component {
 
@@ -139,7 +140,7 @@ export default class ConfirmationScreen extends React.Component {
             return (
                 <View style={styles.container}>
                     <ScreenHeaderActions
-                        title='Send Confirmation'
+                        title={strings('trans_confirm.lbTitle')}
                         backgroundColor={colorPrimary}
                         accentColor='#ffffff'
                         onBackPress={() => {
@@ -154,7 +155,7 @@ export default class ConfirmationScreen extends React.Component {
                                 width={15}
                                 height={15}
                                 svg={icons.icSend}/>
-                            <Text style={styles.text_send}>Send</Text>
+                            <Text style={styles.text_send}>{strings('trans_confirm.lbSend')}</Text>
                         </View>
                         <Text style={styles.text_value}>
                             {this.value} {(this.props.txData.coinType || '').toUpperCase()}
@@ -164,14 +165,14 @@ export default class ConfirmationScreen extends React.Component {
                         <View style={styles.dash}/>
 
                         <Text>
-                            <Text style={styles.text_section}>Mining Fee: {this.fees}</Text>
+                            <Text style={styles.text_section}>{strings('trans_confirm.lbMiningFee')}: {this.fees}</Text>
                             <Text
                                 style={[styles.text_section, styles.text_mining_fee_value]}> {this.props.txData.coinType}</Text>
                         </Text>
 
                         <View style={styles.dash}/>
 
-                        <Text style={styles.text_section}>To:</Text>
+                        <Text style={styles.text_section}>{strings('trans_confirm.lbTo')}:</Text>
                         <View style={styles.address_container}>
                             <SvgView
                                 width={20}
@@ -188,7 +189,7 @@ export default class ConfirmationScreen extends React.Component {
                         </View>
                         <View style={styles.dash}/>
 
-                        <Text style={styles.text_section}>From:</Text>
+                        <Text style={styles.text_section}>{strings('trans_confirm.lbFrom')}:</Text>
                         <View style={styles.address_container}>
                             <SvgView
                                 fill={colorPrimary}
@@ -211,7 +212,7 @@ export default class ConfirmationScreen extends React.Component {
                             this.state.pressedConfirm &&
                             <View style={styles.confirmation_container}>
 
-                                <Text style={styles.confirmation_text}>Hold 5s to confirm send transaction</Text>
+                                <Text style={styles.confirmation_text}>{strings('trans_confirm.lbHold')}</Text>
                             </View>
                         }
                         <View style={styles.confirmation_footer}>
@@ -236,11 +237,11 @@ export default class ConfirmationScreen extends React.Component {
                                     width={20}
                                     height={20}
                                     svg={icons.icCheck}/>
-                                <Text style={styles.text_confirm}>Confirm</Text>
+                                <Text style={styles.text_confirm}>{strings('trans_confirm.btnConfirm')}</Text>
                             </TouchableOpacity>
                             <Text style={styles.text_reject} onPress={() => {
                                 this.cancelTransaction();
-                            }}>Reject</Text>
+                            }}>{strings('trans_confirm.btnReject')}</Text>
                         </View>
 
                     </View>
