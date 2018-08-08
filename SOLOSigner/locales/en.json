@@ -120,7 +120,8 @@
     },
     "error": {
       "system": {
-        "title": "System error"
+        "title": "System error",
+        "detail": "Your action can not be performed now."
       },
       "no_wallet": {
         "title": "Offline - Wallet info not found",
@@ -149,6 +150,14 @@
       "invalid_backup_phrase": {
         "title": "Invalid backup phrase",
         "detail": "Backup Phrase is invalid"
+      },
+      "cannot_view_backup_phrase": {
+        "title": "",
+        "detail": "Cannot view Backup Phrase now, try later."
+      },
+      "cannot_backup_wallet": {
+        "title": "",
+        "detail": "Cannot backup Wallet now, try later."
       }
     }
 }

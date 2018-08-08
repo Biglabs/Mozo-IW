@@ -15,7 +15,9 @@ import {
 } from '../../../res';
 import {ScreenFooterActions, ScreenHeaderActions, Text, SvgView} from "../../components";
 
-import { WalletService as  WalletManager } from "../../../services";
+import { WalletService as WalletManager } from "../../../services";
+import { strings } from '../../../helpers/i18nUtils';
+import Constant from '../../../helpers/Constants';
 
 export default class ViewBackupPhraseScreen extends React.Component {
 
@@ -32,9 +34,9 @@ export default class ViewBackupPhraseScreen extends React.Component {
             this.doViewBackupPhrase(result);
         } else {
             Alert.alert(
-                'Something went wrong!',
-                "Cannot view Backup Phrase right now, try again later.",
-                [{text: 'OK', onPress: () => Actions.pop()},],
+                Constant.ERROR_TYPE.CANNOT_VIEW_BACKUP_PHRASE.title,
+                Constant.ERROR_TYPE.CANNOT_VIEW_BACKUP_PHRASE.detail,
+                [{text: strings('alert.btnOK'), onPress: () => Actions.pop()},],
                 {cancelable: false}
             )
         }
@@ -66,7 +68,7 @@ export default class ViewBackupPhraseScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScreenHeaderActions title='View Backup Phrase'/>
+                <ScreenHeaderActions title={strings('view_backup_phrase.lbTitle')}/>
 
                 {
                     !this.state.userConfirmed &&
@@ -78,16 +80,11 @@ export default class ViewBackupPhraseScreen extends React.Component {
                                 svg={icons.icWarning}
                                 style={{marginRight: 6}}
                             />
-                            <Text style={[styleWarningText, {paddingBottom: 4}]}>WARNING</Text>
+                            <Text style={[styleWarningText, {paddingBottom: 4}]}>{strings('view_backup_phrase.lbWarning')}</Text>
                         </View>
 
                         <Text style={styles.explain_text}>
-                            Your Backup Phrase will be displayed as both a QR code and a string of random words.
-                            {'\n\n'}
-                            Make sure you view your Backup Phrase in private. Anyone with the following QR code and
-                            Backup
-                            Phrase can gain full access to your funds so DO NOT store them publicly or share with
-                            anyone.
+                            {strings('view_backup_phrase.lbWarningDetail')}
                         </Text>
                     </View>
                 }
@@ -99,7 +96,7 @@ export default class ViewBackupPhraseScreen extends React.Component {
                 {
                     !this.state.userConfirmed &&
                     <ScreenFooterActions
-                        rightButtonText='I understand'
+                        rightButtonText={strings('view_backup_phrase.btnUnderstand')}
                         onBackPress={() => Actions.pop()}
                         enabledContinue={this.state.countDownDuration === 0}
                         onContinuePress={() => this.setState({userConfirmed: true})}/>
@@ -109,8 +106,8 @@ export default class ViewBackupPhraseScreen extends React.Component {
                     this.state.userConfirmed &&
                     <View style={styles.state_container}>
                         <Text style={[styles.explain_text, styles.explain_qr_code_text]}>
-                            Scan this QR Code with the camera of the device you wish to pair to, or enter the Backup
-                            Phrase below.</Text>
+                            {strings('view_backup_phrase.lbScan')}
+                        </Text>
 
                         <View style={styles.image_qr_code}>
                             <QRCode value={this.backupPhrase} size={120}/>
@@ -134,7 +131,7 @@ export default class ViewBackupPhraseScreen extends React.Component {
                                 svg={icons.icCancel}
                                 style={{marginRight: 4}}
                             />
-                            <Text style={styles.button_cancel}>Cancel</Text>
+                            <Text style={styles.button_cancel}>{strings('view_backup_phrase.btnCancel')}</Text>
                         </TouchableOpacity>
                     </View>
                 }

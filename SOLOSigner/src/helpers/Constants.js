@@ -108,6 +108,18 @@ const Constants = {
             title: strings('error.invalid_backup_phrase.title'),
             detail: strings('error.invalid_backup_phrase.detail'),
             type: "Business"
+        },
+        CANNOT_VIEW_BACKUP_PHRASE: {
+            code: "ERR-008",
+            title: strings('error.system.title'),
+            detail: strings('error.cannot_view_backup_phrase.detail'),
+            type: "Business"
+        },
+        CANNOT_BACKUP_WALLET: {
+            code: "ERR-009",
+            title: strings('error.system.title'),
+            detail: strings('error.cannot_backup_wallet.detail'),
+            type: "Business"
         }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',
