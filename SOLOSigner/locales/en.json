@@ -47,6 +47,7 @@
     "restore_wallet": {
     },
     "backup_wallet": {
+      
     },
     "backup_wallet_menu": {
       "lbTitle": "BACKUP WALLET",
@@ -158,6 +159,14 @@
       "cannot_backup_wallet": {
         "title": "",
         "detail": "Cannot backup Wallet now, try later."
+      },
+      "weak_password": {
+        "title": "Weak password",
+        "detail": "Please choose a stronger password. Try a mix of letters, numbers, symbols and at least 8 characters."
+      },
+      "empty_password": {
+        "title": "Empty password",
+        "detail": "Password cannot be empty."
       }
     }
 }

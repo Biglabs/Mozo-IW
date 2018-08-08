@@ -120,6 +120,18 @@ const Constants = {
             title: strings('error.system.title'),
             detail: strings('error.cannot_backup_wallet.detail'),
             type: "Business"
+        },
+        WEAK_PASSWORD: {
+            code: "ERR-010",
+            title: strings('error.weak_password.title'),
+            detail: strings('error.weak_password.detail'),
+            type: "Business"
+        },
+        EMPTY_PASSWORD: {
+            code: "ERR-010",
+            title: strings('error.empty_password.title'),
+            detail: strings('error.empty_password.detail'),
+            type: "Business"
         }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',

@@ -20,6 +20,7 @@ import {ScreenFooterActions, ScreenHeaderActions, SvgView, Text, TextInput} from
 import Constant from "../../../helpers/Constants";
 import {isWebPlatform} from "../../../helpers/PlatformUtils";
 import {WalletBackupService} from '../../../services';
+import { strings } from '../../../helpers/i18nUtils';
 
 const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
@@ -47,9 +48,9 @@ export default class BackupWalletScreen extends React.Component {
                 .catch(err => {
                     if (err.message !== ignoreError) {
                         Alert.alert(
-                            'Something went wrong!',
-                            "Cannot backup wallet right now, try again later.",
-                            [{text: 'OK'},],
+                            Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.title,
+                            Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.detail,
+                            [{text: strings('alert.btnOK'), 
                             {cancelable: false}
                         );
                     }
@@ -65,9 +66,9 @@ export default class BackupWalletScreen extends React.Component {
                         .catch(err => {
                             if (err.message && err.message !== ignoreError) {
                                 Alert.alert(
-                                    'Something went wrong!',
-                                    "Cannot backup wallet right now, try again later.",
-                                    [{text: 'OK'},],
+                                    Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.title,
+                                    Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.detail,
+                                    [{text: strings('alert.btnOK'), 
                                     {cancelable: false}
                                 );
                             }
@@ -81,19 +82,19 @@ export default class BackupWalletScreen extends React.Component {
         if (this.newEncryptPassword && this.newEncryptPassword.length > 0) {
             if (passwordRegex.test(this.newEncryptPassword)) {
                 if (this.newEncryptPassword !== this.confirmEncryptPassword) {
-                    this.setState({isShowError: true, errorMessage: 'The password does not match', errorViewIndex: 1});
+                    this.setState({isShowError: true, errorMessage: Constant.ERROR_TYPE.INCORRECT_CONFIRM_PASSWORD.detail, errorViewIndex: 1});
                     return false;
                 }
             } else {
                 this.setState({
                     isShowError: true,
-                    errorMessage: 'Please choose a stronger password. Try a mix of letters, numbers, symbols and at least 8 characters.',
+                    errorMessage: Constant.ERROR_TYPE.WEAK_PASSWORD.detail,
                     errorViewIndex: 0
                 });
                 return false;
             }
         } else {
-            this.setState({isShowError: true, errorMessage: 'Password cannot be empty', errorViewIndex: 0});
+            this.setState({isShowError: true, errorMessage: Constant.ERROR_TYPE.EMPTY_PASSWORD.detail, errorViewIndex: 0});
             return false;
         }
 
