@@ -3,13 +3,14 @@ import {StyleSheet, View} from 'react-native';
 
 import {ScreenHeaderActions} from "../../components";
 import {colorScreenBackground} from '../../../res';
+import { strings } from '../../../helpers/i18nUtils';
 
 export default class PaperWalletScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
 
-                <ScreenHeaderActions title='Paper Wallet'/>
+                <ScreenHeaderActions title={strings('paper_wallet.lbTitle')}/>
 
             </View>
         )

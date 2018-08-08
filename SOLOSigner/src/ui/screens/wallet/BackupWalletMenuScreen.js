@@ -1,6 +1,7 @@
 import React from "react";
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import { strings } from '../../../helpers/i18nUtils';
 
 import {BackupWalletStateIcon, ScreenHeaderActions, SvgView, Text} from "../../components";
 import {colorDisable, colorScreenBackground, colorTitleText, dimenScreenPaddingHorizontal, icons} from '../../../res';
@@ -10,12 +11,12 @@ export default class BackupWalletMenuScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScreenHeaderActions title='Backup Wallet'/>
+                <ScreenHeaderActions title={strings('backup_wallet_menu.lbTitle')}/>
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
                     onPress={() => Actions.backup_wallet({pin: this.props.pin})}>
-                    <Text style={styles.buttons_text}>Backup Wallet</Text>
+                    <Text style={styles.buttons_text}>{strings('backup_wallet_menu.btnBackup')}</Text>
 
                     <BackupWalletStateIcon/>
 
@@ -33,7 +34,7 @@ export default class BackupWalletMenuScreen extends React.Component {
                 <TouchableOpacity
                     style={styles.buttons}
                     onPress={() => Actions.view_backup_phrase({pin: this.props.pin})}>
-                    <Text style={styles.buttons_text}>View Backup Phrase</Text>
+                    <Text style={styles.buttons_text}>{strings('backup_wallet_menu.btnView')}</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgView
