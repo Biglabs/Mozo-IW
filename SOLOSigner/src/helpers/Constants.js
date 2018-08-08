@@ -132,6 +132,12 @@ const Constants = {
             title: strings('error.empty_password.title'),
             detail: strings('error.empty_password.detail'),
             type: "Business"
+        },
+        INCORRECT_ANSWER: {
+            code: "ERR-011",
+            title: strings('error.incorrect_answer.title'),
+            detail: strings('error.incorrect_answer.detail'),
+            type: "Business"
         }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',

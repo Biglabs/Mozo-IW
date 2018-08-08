@@ -96,11 +96,11 @@ export default class ConfirmationScreen extends React.Component {
 
     handleConfirmTimeout() {
         Alert.alert(
-            'Transaction confirmation timeout',
-            'This transaction has been time out. Please try again.',
+            Constant.ERROR_TYPE.TIME_OUT_CONFIRM.title,
+            Constant.ERROR_TYPE.TIME_OUT_CONFIRM.detail,
             [
                 {
-                    text: 'OK', onPress: () => {
+                    text: strings('alert.btnOK'), onPress: () => {
                         this.cancelTransaction(Constant.ERROR_TYPE.TIME_OUT_CONFIRM);
                     }
                 },
