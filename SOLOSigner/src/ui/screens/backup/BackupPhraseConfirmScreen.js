@@ -5,6 +5,7 @@ import {Actions} from 'react-native-router-flux';
 import {Button, ScreenFooterActions, Text} from "../../components";
 import Constant from "../../../helpers/Constants";
 import AsyncStorage from '../../../helpers/AsyncStorageUtils';
+import { strings } from '../../../helpers/i18nUtils';
 import {
     colorBorder,
     colorDisable,
@@ -63,9 +64,9 @@ export default class BackupPhraseConfirmScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styleScreenTitleText}>Backup Phrase</Text>
+                <Text style={styleScreenTitleText}>{strings('backup_phrase_confirm.lbTitle')}</Text>
                 <Text style={styleScreenSubTitleText}>
-                    Which one is {this.randomWordIndex}th backup phrase?
+                    {strings('backup_phrase_confirm.lbTitle', this.randomWordIndex)}
                 </Text>
 
                 <View style={[styles.word_display_container, styles.phrase_confirm_container]}>
@@ -80,8 +81,7 @@ export default class BackupPhraseConfirmScreen extends React.Component {
                         }
                     </View>
 
-                    <Text style={styles.phrase_confirm_explain_text}>Please tap each word in the correct
-                        order.</Text>
+                    <Text style={styles.phrase_confirm_explain_text}>{strings('backup_phrase_confirm.lbPleaseTap')}</Text>
 
                     <ScrollView
                         style={styles.phrase_confirm_words}

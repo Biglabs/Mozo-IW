@@ -2,6 +2,7 @@ import React from "react";
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Bip39 from 'bip39';
+import { strings } from '../../../helpers/i18nUtils';
 
 import {ScreenFooterActions, Text} from "../../components";
 import {
@@ -41,13 +42,13 @@ export default class BackupPhraseConfirmScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styleScreenTitleText}>Backup Phrase</Text>
+                <Text style={styleScreenTitleText}>{strings('backup_phrase_display.lbTitle')}</Text>
                 <Text style={styleScreenExplainText}>
-                    Please write it down on a paper and keep it in a safe place as you would with paper money
+                    {strings('backup_phrase_display.lbPleaseWrite')}
                 </Text>
 
                 <Text style={[styleWarningText, {marginTop: 10}]}>
-                    If you lose your recovery phase, your wallet cannot be recovered.
+                    {strings('backup_phrase_display.lbIfYouLose')}
                 </Text>
 
                 <View style={[styles.word_display_container, styles.phrase_container]}>
@@ -67,7 +68,7 @@ export default class BackupPhraseConfirmScreen extends React.Component {
                         }
                     </View>
 
-                    <Text style={styles.radio_user_confirm_text}>I have safely stored recovery phrase</Text>
+                    <Text style={styles.radio_user_confirm_text}>{strings('backup_phrase_display.btnStored')}</Text>
                 </TouchableOpacity>
 
                 <View style={styles.dash}/>
@@ -79,7 +80,7 @@ export default class BackupPhraseConfirmScreen extends React.Component {
                 <TouchableOpacity
                     style={styles.button_skip}
                     onPress={() => this.openSecurityPin()}>
-                    <Text style={styles.button_skip_text}>Skip</Text>
+                    <Text style={styles.button_skip_text}>{strings('backup_phrase_display.btnSkip')}</Text>
                 </TouchableOpacity>
             </View>
         )
