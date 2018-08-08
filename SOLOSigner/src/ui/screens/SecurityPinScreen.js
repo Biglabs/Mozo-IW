@@ -18,9 +18,9 @@ const numberPad = [
     ['CLR', 0, 'DEL']
 ];
 const PIN_LENGTH = 6;
-const inputNewPIN = "Create a new PIN";
-const inputConfirmPIN = "Confirm PIN";
-const inputExistingPIN = "Enter PIN";
+const inputNewPIN = strings('security_pin.lbCreate');
+const inputConfirmPIN = strings('security_pin.lbConfirm');
+const inputExistingPIN = strings('security_pin.lbEnter');
 
 export default class SecurityPinScreen extends Component<Props> {
     constructor(props) {
@@ -44,7 +44,7 @@ export default class SecurityPinScreen extends Component<Props> {
                 if (this.pinCode.toString() === this.pinCodeConfirm.toString()) {
                     this.handleEnterCorrectPin();
                 } else {
-                    this.handleIncorrectPIN('Confirm PIN does not match!');
+                    this.handleIncorrectPIN(Constant.ERROR_TYPE.INCORRECT_CONFIRM_PASSWORD);
                 }
             } else {
                 this.pinCodeConfirm = this.pinCode;
@@ -59,9 +59,9 @@ export default class SecurityPinScreen extends Component<Props> {
 
     handleIncorrectPIN(error) {
         Alert.alert(
-            'Error',
-            error,
-            [{text: 'OK'},],
+            error.title,
+            error.detail,
+            [{text: strings('alert.btnOK')},],
         );
         this.clearPin();
     }
@@ -75,7 +75,7 @@ export default class SecurityPinScreen extends Component<Props> {
                     //Check error type
                     console.log("handleEnterCorrectPin, error: ", error);
                     if (error && error == Constant.ERROR_TYPE.WRONG_PASSWORD) {
-                        this.handleIncorrectPIN(error.detail);
+                        this.handleIncorrectPIN(error);
                         return;
                     }
                     this.props.isNewPIN = false;

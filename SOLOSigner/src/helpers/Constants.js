@@ -95,6 +95,12 @@ const Constants = {
             title: "Wrong password",
             detail: "User input a wrong password",
             type: "Business"
+        },
+        INCORRECT_CONFIRM_PASSWORD: {
+            code: "ERR-006",
+            title: "Failed",
+            detail: "Confirm PIN does not match.",
+            type: "Business"
         }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',
