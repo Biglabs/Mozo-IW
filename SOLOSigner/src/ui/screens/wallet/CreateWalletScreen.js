@@ -1,6 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import { strings } from '../../../helpers/i18nUtils';
 
 import {CreateWalletOptionItem, ScreenFooterActions, SelectionGroup, Text} from "../../components";
 import {colorScreenBackground, dimenScreenPaddingHorizontal, icons, styleScreenTitleText} from '../../../res';
@@ -26,7 +27,7 @@ export default class CreateWalletScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Text style={styleScreenTitleText}>Create New Wallet</Text>
+                <Text style={styleScreenTitleText}>{strings('create_wallet.lbTitle')}</Text>
 
                 <SelectionGroup
                     onSelectionChanged={(index) => {
@@ -34,13 +35,13 @@ export default class CreateWalletScreen extends React.Component {
                             selectedIndex: index
                         });
                     }}>
-                    <CreateWalletOptionItem label="Express"
-                                            content="Select this option if you’d like to access your new SOLO Wallet quickly. Please note that you’ll always be able to customize at a later time."
+                    <CreateWalletOptionItem label={strings('create_wallet.lbExpress')}
+                                            content={strings('create_wallet.lbExpressDetail')}
                                             icon={icons.icFlash}
                                             style={styles.buttons}/>
 
-                    <CreateWalletOptionItem title="Custom"
-                                            content="Select this option if you’d like to customize your wallet. You’ll be able to select your wallet Tokens and Currencies, set up a security PIN, and back up your wallet."
+                    <CreateWalletOptionItem label={strings('create_wallet.lbCustom')}
+                                            content={strings('create_wallet.lbCustomDetail')}
                                             icon={icons.icSettings}
                                             style={styles.buttons}/>
                 </SelectionGroup>
