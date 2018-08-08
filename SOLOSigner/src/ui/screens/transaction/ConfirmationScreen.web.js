@@ -1,6 +1,5 @@
 import React from "react";
 import {ActivityIndicator, Alert, AppState, StyleSheet, TouchableOpacity, View} from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import {Actions} from 'react-native-router-flux';
 // import CountDown from 'react-native-countdown-component';
 
@@ -17,7 +16,7 @@ import {
     fontRegular,
     icons
 } from '../../../res';
-import {ScreenHeaderActions, Text} from "../../components";
+import {ScreenHeaderActions, SvgView, Text} from "../../components";
 import Constant from '../../../helpers/Constants';
 import Globals from '../../../services/GlobalService';
 // import SignService from '../../../services/SignService';
@@ -32,31 +31,35 @@ export default class ConfirmationScreen extends React.Component {
         };
 
         this.toAddress = [];
-        this.props.txData.params.tx.outputs.map(out => {
-            out.addresses.map(address => this.toAddress.push(address));
-        });
-
         this.fromAddress = [];
-        this.props.txData.params.tx.inputs.map(inp => {
-            inp.addresses.map(address => this.fromAddress.push(address));
-        });
-
         this.value = 0;
-        this.props.txData.params.tx.outputs.map(item => {
-            // Do not add return money
-            // BlockCypher will set the change address to the first transaction input/address listed in the transaction. 
-            // To redirect this default behavior, you can set an optional change_address field within the TX request object.
-            if (item.addresses[0] != this.fromAddress[0]) {
-                this.value += item.value;
+        this.fees = 0;
+        if (props.txData && props.txData.params && props.txData.params.tx) {
+            props.txData.params.tx.outputs.map(out => {
+                out.addresses.map(address => this.toAddress.push(address));
+            });
+
+            props.txData.params.tx.inputs.map(inp => {
+                inp.addresses.map(address => this.fromAddress.push(address));
+            });
+
+            props.txData.params.tx.outputs.map(item => {
+                // Do not add return money
+                // BlockCypher will set the change address to the first transaction input/address listed in the transaction.
+                // To redirect this default behavior, you can set an optional change_address field within the TX request object.
+                if (item.addresses[0] != this.fromAddress[0]) {
+                    this.value += item.value;
+                }
+            });
+            if (this.value > 0) {
+                this.value /= (props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
             }
-        });
-        if (this.value > 0) {
-            this.value /= (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
+
+            this.fees = props.txData.params.tx.fees / (props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
+        } else {
+            /* transaction param is empty, */
+            // TODO: should be auto close this screen or alert error
         }
-
-        this.fees = this.props.txData.params.tx.fees / (this.props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
-
-        this.confirmTimeout = Constant.CONFIRM_TIME_OUT;
     }
 
     onConfirmTransaction() {
@@ -128,7 +131,12 @@ export default class ConfirmationScreen extends React.Component {
                     <ActivityIndicator size="large" color="#ffffff" animating={this.state.isShowingLoading}/>
                 </View>
             );
-        else
+        else {
+            let toAddressCoinType = '';
+            let coin = Constant.COIN_TYPE[this.props.txData.coinType];
+            if (coin) {
+                toAddressCoinType = coin.icon;
+            }
             return (
                 <View style={styles.container}>
                     <ScreenHeaderActions
@@ -142,11 +150,11 @@ export default class ConfirmationScreen extends React.Component {
 
                     <View style={styles.content}>
                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
-                            <SvgUri
+                            <SvgView
                                 fill={colorPrimary}
                                 width={15}
                                 height={15}
-                                svgXmlData={icons.icSend}/>
+                                svg={icons.icSend}/>
                             <Text style={styles.text_send}>Send</Text>
                         </View>
                         <Text style={styles.text_value}>
@@ -165,23 +173,40 @@ export default class ConfirmationScreen extends React.Component {
                         <View style={styles.dash}/>
 
                         <Text style={styles.text_section}>To:</Text>
-
-                        {
-                            this.toAddress.map(address => {
-                                return <Text key={address} style={styles.text_address} numberOfLines={1}
-                                             ellipsizeMode='middle'>{address}</Text>
-                            })
-                        }
+                        <View style={styles.address_container}>
+                            <SvgView
+                                width={20}
+                                height={20}
+                                svg={toAddressCoinType}/>
+                            <View style={styles.address_container_map}>
+                                {
+                                    this.toAddress.map(address => {
+                                        return <Text key={address} style={styles.text_address} numberOfLines={1}
+                                                     ellipsizeMode='middle'>{address}</Text>
+                                    })
+                                }
+                            </View>
+                        </View>
 
                         <View style={styles.dash}/>
 
                         <Text style={styles.text_section}>From:</Text>
-                        {
-                            this.fromAddress.map(address => {
-                                return <Text key={address} style={styles.text_address} numberOfLines={1}
-                                             ellipsizeMode='middle'>{address}</Text>
-                            })
-                        }
+                        <View style={styles.address_container}>
+                            <SvgView
+                                fill={colorPrimary}
+                                width={20}
+                                height={20}
+                                svg={icons.icWallet}/>
+                            <View style={styles.address_container_map}>
+                                {
+                                    this.fromAddress.map(address => {
+                                        return <Text key={address} style={styles.text_address} numberOfLines={1}
+                                                     ellipsizeMode='middle'>{address}</Text>
+                                    })
+                                }
+                            </View>
+                        </View>
+
                         <View style={styles.dash}/>
 
                         {
@@ -197,7 +222,7 @@ export default class ConfirmationScreen extends React.Component {
                                 {/*digitBgColor={colorPrimary}*/}
                                 {/*digitTxtColor={colorScreenBackground}*/}
                                 {/*timeTxtColor={colorPrimary}*/}
-                                {/*until={this.confirmTimeout}*/}
+                                {/*until={Constant.CONFIRM_TIME_OUT}*/}
                                 {/*onFinish={() => this.handleConfirmTimeout()}*/}
                                 {/*size={20}*/}
                                 {/*timeToShow={['M', 'S']}*/}
@@ -208,11 +233,11 @@ export default class ConfirmationScreen extends React.Component {
                                                   this.setState({pressedConfirm: false});
                                                   this.onConfirmTransaction();
                                               }}>
-                                <SvgUri
+                                <SvgView
                                     fill={colorPrimary}
                                     width={20}
                                     height={20}
-                                    svgXmlData={icons.icCheck}/>
+                                    svg={icons.icCheck}/>
                                 <Text style={styles.text_confirm}>Confirm</Text>
                             </TouchableOpacity>
                             <Text style={styles.text_reject} onPress={() => {
@@ -223,6 +248,7 @@ export default class ConfirmationScreen extends React.Component {
                     </View>
                 </View>
             )
+        }
     }
 }
 

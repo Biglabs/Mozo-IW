@@ -21,6 +21,7 @@ import ic_settings from './ic_settings';
 import ic_solo_logo from './ic_solo_logo';
 import ic_solo_title from './ic_solo_title';
 import ic_sync from './ic_sync';
+import ic_wallet from './ic_wallet';
 import ic_warning from './ic_warning';
 
 const icons = {
@@ -47,6 +48,7 @@ const icons = {
     icSoloLogo: ic_solo_logo,
     icSoloTitle: ic_solo_title,
     icSync: ic_sync,
+    icWallet: ic_wallet,
     icWarning: ic_warning,
 };
 
