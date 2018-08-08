@@ -2,7 +2,6 @@ import React from "react";
 import {Alert, Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from "react-native-router-flux";
 import QRCode from 'react-native-qrcode-svg';
-import SvgUri from 'react-native-svg-uri';
 
 import {
     colorBorder,
@@ -135,11 +134,6 @@ export default class ViewBackupPhraseScreen extends React.Component {
                                 svg={icons.icCancel}
                                 style={{marginRight: 4}}
                             />
-                            {/* <SvgUri width={18}
-                                    height={18}
-                                    fill={colorPrimary}
-                                    svgXmlData={icons.icCancel}
-                                    style={{marginRight: 4}}/> */}
                             <Text style={styles.button_cancel}>Cancel</Text>
                         </TouchableOpacity>
                     </View>

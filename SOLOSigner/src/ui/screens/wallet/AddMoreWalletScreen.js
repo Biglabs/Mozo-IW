@@ -1,10 +1,9 @@
 import React, {Component} from "react";
-import {FlatList, StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
-import SvgUri from 'react-native-svg-uri';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {inject} from "mobx-react";
 
-import {CoinItemView, ScreenHeaderActions, Text, TextInput} from "../../components";
+import {CoinItemView, ScreenHeaderActions, SvgView, Text, TextInput} from "../../components";
 import Constant from '../../../helpers/Constants';
 import { strings } from '../../../helpers/i18nUtils';
 import {
@@ -18,8 +17,6 @@ import {
     icons
 } from '../../../res';
 
-// use for display svg on web
-import SVGInline from "react-svg-inline";
 @inject("selectedWalletsStore")
 export default class AddMoreWalletScreen extends Component {
 
@@ -92,35 +89,6 @@ export default class AddMoreWalletScreen extends Component {
         return this.wallets.filter(item => item.displayName.toLowerCase().includes(keyword.toLowerCase()));
     }
 
-    renderIcSearch() {
-        //check platform
-        if(Platform.OS.toUpperCase() ==="WEB"){
-            return (
-                <SVGInline 
-                    width="24" 
-                    height="24" 
-                    svg={icons.icSearch}
-                    style={{
-                        position: 'absolute',
-                        right: 0,
-                        margin: 10.5
-                    }}    
-                />
-            );
-        } 
-        return (
-            <SvgUri
-                width={24}
-                height={24}
-                svgXmlData={icons.icSearch}
-                style={{
-                    position: 'absolute',
-                    right: 0,
-                    margin: 10.5
-            }}/>
-        );
-    }
-    
     render() {
         let hasWalletSelected = this.state.selectedWallets.length > 0;
         let buttonAddTextColor = hasWalletSelected ? colorPrimary : colorDisable;
@@ -141,7 +109,15 @@ export default class AddMoreWalletScreen extends Component {
                         }}
                         onSubmitEditing={() => this.doSearchWallet()}
                     />
-                    {this.renderIcSearch()}
+                    <SvgView
+                        width={24}
+                        height={24}
+                        svg={icons.icSearch}
+                        style={{
+                            position: 'absolute',
+                            right: 0,
+                            margin: 10.5
+                        }}/>
                 </View>
                
                 <FlatList
