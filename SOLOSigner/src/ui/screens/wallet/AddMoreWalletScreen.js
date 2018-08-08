@@ -6,6 +6,7 @@ import {inject} from "mobx-react";
 
 import {CoinItemView, ScreenHeaderActions, Text, TextInput} from "../../components";
 import Constant from '../../../helpers/Constants';
+import { strings } from '../../../helpers/i18nUtils';
 import {
     colorDisable,
     colorPrimary,
@@ -125,12 +126,12 @@ export default class AddMoreWalletScreen extends Component {
         let buttonAddTextColor = hasWalletSelected ? colorPrimary : colorDisable;
         return (
             <View style={styles.container}>
-                <ScreenHeaderActions title='Add More Wallet'/>
+                <ScreenHeaderActions title={strings('add_more_wallet.lbTitle')}/>
 
                 <View style={styles.search_box}>
                     <TextInput
                         style={styles.search_input}
-                        placeholder='Search for wallet you want'
+                        placeholder={strings('add_more_wallet.lbSearch')}
                         multiline={false}
                         numberOfLines={1}
                         returnKeyType='search'
@@ -163,7 +164,7 @@ export default class AddMoreWalletScreen extends Component {
                     style={styles.button_add}
                     onPress={() => this.onAddClicked()}>
                     <Text style={[styles.button_add_text, {color: buttonAddTextColor}]}>
-                        Add
+                        {strings('add_more_wallet.btnAdd')}
                     </Text>
                 </TouchableOpacity>
             </View>
