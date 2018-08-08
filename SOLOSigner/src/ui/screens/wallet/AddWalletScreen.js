@@ -7,6 +7,7 @@ import {CoinItemView, ScreenFooterActions, Text} from "../../components";
 import WalletManager from '../../../services/WalletService';
 import Globals from '../../../services/GlobalService';
 import Constant from "../../../helpers/Constants";
+import { strings } from '../../../helpers/i18nUtils';
 
 import {
     colorPrimary,
@@ -73,10 +74,10 @@ export default class AddWalletScreen extends Component {
         let selectedWallets = this.props.selectedWalletsStore.wallets;
         return (
             <View style={styles.container}>
-                <Text style={styleScreenTitleText}>Add Wallet</Text>
+                <Text style={styleScreenTitleText}>{strings('add_wallet.lbTitle')}</Text>
 
                 <Text style={styleScreenSubTitleText}>
-                    Please select the wallet you wish to active
+                    {strings('add_wallet.lbPlease')}
                 </Text>
 
                 <Text style={
@@ -84,14 +85,13 @@ export default class AddWalletScreen extends Component {
                         styleScreenExplainText,
                         {marginTop: 10, marginBottom: 10}
                     ]}>
-                    We require you to active at least one wallet. Please note that additional wallets can be activated
-                    later time.
+                    {strings('add_wallet.lbWe')}
                 </Text>
 
                 <TouchableOpacity
                     style={styles.button_add_more}
                     onPress={() => Actions.add_more_wallet()}>
-                    <Text style={styles.button_add_more_text}>+ Add more wallet</Text>
+                    <Text style={styles.button_add_more_text}>+ {strings('add_wallet.btnAddMore')}</Text>
                 </TouchableOpacity>
 
                 <FlatList

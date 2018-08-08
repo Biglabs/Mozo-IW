@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import {colorPrimary, colorScreenBackground, colorTitleText, fontBold, icons} from '../../../res';
 import SoloText from "../widgets/SoloText";
 import SvgView from "../widgets/SoloSVG";
+import { strings } from '../../../helpers/i18nUtils';
 
 export default class ScreenHeaderActions extends React.Component {
     constructor(props) {
@@ -40,7 +41,7 @@ export default class ScreenHeaderActions extends React.Component {
                             marginRight: 6,
                         }}
                     />
-                    <SoloText style={[styles.button_text, {color: this.backTextColor}]}>Back</SoloText>
+                    <SoloText style={[styles.button_text, {color: this.backTextColor}]}>{strings('navigation_bar.btnBack')}</SoloText>
                 </TouchableOpacity>
 
                 <SoloText style={[styles.title, {color: this.titleColor}]}>

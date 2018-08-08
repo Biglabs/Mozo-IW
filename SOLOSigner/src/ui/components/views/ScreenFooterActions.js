@@ -13,13 +13,14 @@ import {
     styleButtonContinue
 } from '../../../res';
 import SoloButton from "../widgets/SoloButton";
+import { strings } from '../../../helpers/i18nUtils';
 
 export default class ScreenFooterActions extends React.Component {
     render() {
         let colorBtnBack = (this.props.buttonsColor && this.props.buttonsColor.back) || colorTitleText;
         let colorBtnContinue = (this.props.buttonsColor && this.props.buttonsColor.continue) || colorPrimary;
-        let leftButtonText = this.props.leftButtonText || 'Back';
-        let rightButtonText = this.props.rightButtonText || 'Continue';
+        let leftButtonText = this.props.leftButtonText || strings('navigation_bar.btnBack');
+        let rightButtonText = this.props.rightButtonText || strings('navigation_bar.btnContinue');
         return (
             <View {...this.props} style={[styles.footer_button, this.props.style]}>
                 {
