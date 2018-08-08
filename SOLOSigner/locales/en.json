@@ -38,25 +38,110 @@
       "lbCustomDetail":"Select this option if you’d like to customize your wallet. You’ll be able to select your wallet Tokens and Currencies, set up a security PIN, and back up your wallet."
     },
     "import_wallet": {
+      "lbTitle": "Import/Restore Wallet",
+      "lbType": "Type in your wallet’s Backup Phrase in the correct sequence below to pair.",
+      "lbEnter": "Enter Backup Phrase",
+      "lbBetter": "OR BETTER YET",
+      "btnScan": "Scan QR Code"
     },
     "restore_wallet": {
     },
-    "backup_wallet_menu": {
-      "lbTitle": "BACKUP WALLET",
-      "btnBackup": "Backup Wallet"
-    },
     "backup_wallet": {
     },
-    "paper_wallet": {
+    "backup_wallet_menu": {
+      "lbTitle": "BACKUP WALLET",
+      "btnBackup": "Backup Wallet",
+      "btnView": "View Backup Phrase",
+      "lbViewDetail": "Your Backup Phrase will be displayed as both a QR code and a string of random words.{'\n\n'} Make sure you view your Backup Phrase in private. Anyone with the following QR code and Backup Phrase can gain full access to your funds so DO NOT store them publicly or share with anyone.",
+      "btnHide": "hide"
     },
-    "confirm_backup_phrase": {
+    "paper_wallet": {
+      "lbTitle": "PAPER WALLET",
+      "lbPaper": "Paper Wallet"
+    },
+    "paper_wallet_detail": {
+      "lbTitle": "PAPER WALLET",
+      "lbEnter": "Enter your Private Key or Scan QR code to transfer Paper Wallet faster.",
+      "lbEnterText": "Enter Private Key",
+      "lbBetter": "OR BETTER YET",
+      "btnScan": "Scan QR Code"
+    },
+    "paper_wallet_result": {
+      "lbTitle": "PAPER WALLET",
+      "lbLorem": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "btnPrint": "Print Out"
+    },
+    "backup_phrase_display": {
+      "lbTitle": "Backup Phrase",
+      "lbPleaseWrite": "Please write it down on a paper and keep it in a safe place as you would with paper money",
+      "lbIfYouLose": "If you lose your recovery phase, your wallet cannot be recovered.",
+      "btnStored": "I have safely stored recovery phrase",
+      "btnSkip": "Skip"
+    },
+    "backup_phrase_confirm": {
+      "lbTitle": "Backup Phrase",
+      "lbWhichOne": "Which one is {{wordIndex}} backup phrase?",
+      "lbPleaseTap": "Please tap each word in the correct order."
     },
     "view_backup_phrase": {
+      "lbTitle": "VIEW BACKUP PHRASE",
+      "lbWarning": "Warning",
+      "lbWarningDetail": "Your Backup Phrase will be displayed as both a QR code and a string of random words.{'\n\n'} Make sure you view your Backup Phrase in private. Anyone with the following QR code and Backup Phrase can gain full access to your funds so DO NOT store them publicly or share with anyone.",
+      "btnUnderstand": "I understand",
+      "lbScan": "Scan this QR Code with the camera of the device you wish to pair to, or enter the Backup Phrase below.",
+      "btnCancel": "Cancel"
     },
     "trans_confirm": {
+      "lbTitle": "SEND CONFIRMATION",
+      "lbSend": "Send",
+      "lbMiningFee": "Mining Fee",
+      "lbFrom": "From",
+      "lbTo": "To",
+      "lbChangeAddress": "Change Address",
+      "btnConfirm": "Confirm",
+      "btnReject": "Reject",
+      "lbHold": "Hold 5s to confirm send transaction",
+      "lbPaymentSent": "Payment Sent",
+      "lbBackToWallet": "Back to wallet in"
+    },
+    "change_address": {
+      "lbTitle": "{{type}} ADDRESS",
+      "btnCreate": "Create",
+      "btnChangeName": "Change Address Name",
+      "btnRemove": "Remove Address",
+      "btnCancel": "Cancel"
     },
     "navigation_bar": {
         "btnBack": "Back",
         "btnContinue": "Continue"
+    },
+    "error": {
+      "system": {
+        "title": "System error"
+      },
+      "no_wallet": {
+        "title": "Offline - Wallet info not found",
+        "detail": "User are in offline mode, there is no wallet info at this time."
+      },
+      "cancel_request": {
+        "title": "User cancel request.",
+        "detail": "User click cancel button or back button."
+      },
+      "timeout_confirm": {
+        "title": "Timeout confirmation",
+        "detail": "User wait too long for confirmation."
+      },
+      "invalid_address": {
+        "title": "Invalid address",
+        "detail": "Address(es) is not created by Signer."
+      },
+      "wrong_password": {
+        "title": "Wrong password",
+        "detail": "User input a wrong password."
+      },
+      "incorrect_confirm_password" : {
+        "title": "Failed",
+        "detail": "Confirm PIN does not match."
+      }
     }
 }
