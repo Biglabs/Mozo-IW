@@ -22,7 +22,8 @@ import PaperWalletScreen from './ui/screens/wallet/PaperWalletScreen';
 /* backup screens */
 import BackupWalletScreen from './ui/screens/backup/BackupWalletScreen';
 import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
-import ConfirmBackupPhrase from './ui/screens/backup/ConfirmBackupPhraseScreen';
+import BackupPhraseDisplayScreen from './ui/screens/backup/BackupPhraseDisplayScreen';
+import BackupPhraseConfirmScreen from './ui/screens/backup/BackupPhraseConfirmScreen';
 import ViewBackupPhrase from './ui/screens/backup/ViewBackupPhraseScreen';
 import ConfirmationScreen from './ui/screens/transaction/ConfirmationScreen';
 
@@ -65,7 +66,7 @@ export default () => {
 
                     {/* backup screens */}
                     <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
-                    <Scene key="confirm_backup_phrase" component={ConfirmBackupPhrase} hideNavBar
+                    <Scene key="backup_phrase_display" component={BackupPhraseDisplayScreen} hideNavBar
                            onEnter={() => {
                                this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
                                    /* return true to disable hardware back button */
@@ -75,6 +76,7 @@ export default () => {
                            onExit={() => {
                                this.backHandler.remove();
                            }}/>
+                    <Scene key="backup_phrase_confirm" component={BackupPhraseConfirmScreen} hideNavBar/>
                     <Scene key="view_backup_phrase" component={ViewBackupPhrase} hideNavBar/>
 
                     {/* transaction screens */}

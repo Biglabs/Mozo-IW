@@ -50,7 +50,7 @@ export default class BackupWalletScreen extends React.Component {
                         Alert.alert(
                             Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.title,
                             Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.detail,
-                            [{text: strings('alert.btnOK'), 
+                            [{text: strings('alert.btnOK')}],
                             {cancelable: false}
                         );
                     }
@@ -68,7 +68,7 @@ export default class BackupWalletScreen extends React.Component {
                                 Alert.alert(
                                     Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.title,
                                     Constant.ERROR_TYPE.CANNOT_BACKUP_WALLET.detail,
-                                    [{text: strings('alert.btnOK'), 
+                                    [{text: strings('alert.btnOK')}],
                                     {cancelable: false}
                                 );
                             }

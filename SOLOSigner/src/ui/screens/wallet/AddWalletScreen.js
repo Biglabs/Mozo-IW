@@ -48,7 +48,7 @@ export default class AddWalletScreen extends Component {
             Globals.responseToReceiver({success: true}, this.props.txData);
         } else {
             console.log("Executing create new wallet flow.");
-            Actions.confirm_backup_phrase({coinTypes: selectedWallets});
+            Actions.backup_phrase_display({coinTypes: selectedWallets});
         }
     }
 
