@@ -49,9 +49,9 @@ export default class BackupPhraseConfirmScreen extends React.Component {
             this.openSecurityPin();
         } else {
             Alert.alert(
-                'Incorrect answer!',
-                "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup_wallet to recover your money.\nPlease review your backup_wallet and try again.",
-                [{text: 'OK'},],
+                Constant.ERROR_TYPE.INCORRECT_ANSWER.title,
+                Constant.ERROR_TYPE.INCORRECT_ANSWER.title,
+                [{text: strings('alert.btnOK')}],
                 {cancelable: false}
             )
         }
