@@ -107,7 +107,7 @@ application:
         infuraRopstenUrl: https://ropsten.infura.io/iG52lGijPGJaYTLUtOoY
     ropsten:
         contractAddresses:
-            mozo: "0xf8406a3fd4e7a0ef084eab70a50d6dfb84873b23"
+            mozo: "0xd8120fede9dd1719065a1eb2ce010554ccfcb267"
 blockcypher:
     token: fb87b92b0df94d72a90984c28945f029
     endpoint: https://api.blockcypher.com
