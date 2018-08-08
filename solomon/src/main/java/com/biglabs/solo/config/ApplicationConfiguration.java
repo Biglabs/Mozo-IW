@@ -1,6 +1,7 @@
 package com.biglabs.solo.config;
 
 import com.biglabs.solo.eth.Erc20Contract;
+import com.biglabs.solo.service.util.RoundrobinApiTokens;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
@@ -52,5 +54,12 @@ public class ApplicationConfiguration {
             });
         }
         return ret;
+    }
+
+    @Bean(value = "etherscanTokens")
+    public RoundrobinApiTokens etherscanTokens() {
+        List<String> tokens = this.appProps.getEtherscan().getApiKeys();
+        logger.debug("etherscan tokens: {}", tokens);
+        return new RoundrobinApiTokens(tokens, "etherscan");
     }
 }
