@@ -35,4 +35,12 @@ export function strings(name, params = {}) {
   return I18n.t(name, params);
 };
 
+/**
+ * Change the locale at runtime.
+ * @param {String} A locale name we want to change to.
+ */
+export function changeLocale(locale) {
+    I18n.locale = locale || "en";
+};
+
 export default I18n;
