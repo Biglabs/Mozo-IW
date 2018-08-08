@@ -37,16 +37,16 @@ export default class WelcomeScreen extends React.Component {
                 <Text style={styles.welcome_text}>{strings('welcome.lbWelcome')}</Text>
 
                 <View style={styles.button_container}>
-                    <Button title='Create New Wallet'
+                    <Button title={strings('welcome.btnCreate')}
                             style={styles.buttons}
                             type='solid'
                             onPress={() => Actions.create_wallet()}/>
 
-                    <Button title='Import Wallet'
+                    <Button title={strings('welcome.btnImport')}
                             style={styles.buttons}
                             onPress={() => Actions.import_wallet()}/>
 
-                    <Button title='Restore Encrypted Wallet'
+                    <Button title={strings('welcome.btnRestore')}
                             style={styles.buttons}
                             onPress={() => Actions.restore_wallet()}/>
                 </View>
