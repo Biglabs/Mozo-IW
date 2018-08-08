@@ -2,6 +2,8 @@ import React from "react";
 import {Platform, ScrollView, StyleSheet, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import bip39 from 'bip39';
+import { strings } from '../../../helpers/i18nUtils';
+import Constant from '../../../helpers/Constants';
 
 import {QRCodeScanner, ScreenFooterActions, Text, TextInput} from "../../components";
 import {
@@ -104,7 +106,7 @@ export default class ImportWalletScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Text style={styleScreenTitleText}>Import Wallet</Text>
+                <Text style={styleScreenTitleText}>{strings('import_wallet.lbTitle')}</Text>
 
                 <ScrollView
                     style={styles.scroll_container}
@@ -114,12 +116,12 @@ export default class ImportWalletScreen extends React.Component {
                     overScrollMode='never'>
 
                     <Text style={styleScreenSubTitleText}>
-                        Type in your wallet’s Backup Phrase in the correct sequence below to pair.
+                        {strings('import_wallet.lbType')}
                     </Text>
 
                     <TextInput
                         style={styles.phrase_input}
-                        placeholder='Enter Backup Phrase'
+                        placeholder={strings('import_wallet.lbEnter')}
                         multiline={true}
                         numberOfLines={3}
                         returnKeyType='done'
@@ -133,12 +135,12 @@ export default class ImportWalletScreen extends React.Component {
                         }}/>
 
                     <Text style={[styles.error_text, {opacity: this.state.isShowError ? 1 : 0}]}>
-                        * Backup Phrase is invalid
+                        * {Constant.ERROR_TYPE.INVALID_BACKUP_PHRASE.detail}
                     </Text>
 
                     <View style={styles.separator_container}>
                         <View style={styles.dash}/>
-                        <Text style={styles.separator_text}>OR BETTER YET</Text>
+                        <Text style={styles.separator_text}>{strings('import_wallet.lbBetter')}</Text>
                         <View style={styles.dash}/>
                     </View>
                     <QRCodeScanner

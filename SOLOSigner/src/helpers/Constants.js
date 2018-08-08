@@ -102,6 +102,12 @@ const Constants = {
             title: strings('error.incorrect_confirm_password.title'),
             detail: strings('error.incorrect_confirm_password.detail'),
             type: "Business"
+        },
+        INVALID_BACKUP_PHRASE: {
+            code: "ERR-007",
+            title: strings('error.invalid_backup_phrase.title'),
+            detail: strings('error.invalid_backup_phrase.detail'),
+            type: "Business"
         }
     },
     FLAG_DB_EXISTING: '@DbExisting:key',

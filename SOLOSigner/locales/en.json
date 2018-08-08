@@ -145,6 +145,10 @@
       "incorrect_confirm_password" : {
         "title": "Failed",
         "detail": "Confirm PIN does not match."
+      },
+      "invalid_backup_phrase": {
+        "title": "Invalid backup phrase",
+        "detail": "Backup Phrase is invalid"
       }
     }
 }
