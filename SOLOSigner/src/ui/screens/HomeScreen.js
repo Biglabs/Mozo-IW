@@ -14,6 +14,7 @@ import {
 import {BackupWalletStateIcon, Text} from "../components";
 import {LinkingService, CachingService} from '../../services';
 import AsyncStorage from '../../helpers/AsyncStorageUtils';
+import { strings } from '../../helpers/i18nUtils';
 
 // use for display svg on web
 import SVGInline from "react-svg-inline";
@@ -78,7 +79,7 @@ export default class HomeScreen extends React.Component {
                         fill={colorPrimary}
                         svg={icons.icBackup}
                     /> 
-                    <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
+                    <Text style={[styles.buttons_text, {marginLeft: 7}]}>{strings('home.btnBackup')}</Text>
 
                     <BackupWalletStateIcon/>
 
@@ -101,7 +102,7 @@ export default class HomeScreen extends React.Component {
                         height={20}
                         fill={colorPrimary}
                         svgXmlData={icons.icBackup}/>
-                    <Text style={[styles.buttons_text, {marginLeft: 7}]}>Backup Wallet</Text>
+                    <Text style={[styles.buttons_text, {marginLeft: 7}]}>{strings('home.btnBackup')}</Text>
 
                     <BackupWalletStateIcon/>
 
@@ -125,7 +126,7 @@ export default class HomeScreen extends React.Component {
                         height="20"
                         fill={colorPrimary}
                         svg={icons.icSync}/>
-                    <Text style={styles.buttons_text}>Pair Devices</Text>
+                    <Text style={styles.buttons_text}>{strings('home.btnPair')}</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SVGInline
@@ -143,7 +144,7 @@ export default class HomeScreen extends React.Component {
                         height={20}
                         fill={colorPrimary}
                         svgXmlData={icons.icSync}/>
-                    <Text style={styles.buttons_text}>Pair Devices</Text>
+                    <Text style={styles.buttons_text}>{strings('home.btnPair')}</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
@@ -167,7 +168,7 @@ export default class HomeScreen extends React.Component {
                         height="20"
                         fill={colorPrimary}
                         svg={icons.icNote}/>
-                    <Text style={styles.buttons_text}>Paper Wallet</Text>
+                    <Text style={styles.buttons_text}>{strings('home.btnPaper')}</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SVGInline
@@ -187,7 +188,7 @@ export default class HomeScreen extends React.Component {
                         height={20}
                         fill={colorPrimary}
                         svgXmlData={icons.icNote}/>
-                    <Text style={styles.buttons_text}>Paper Wallet</Text>
+                    <Text style={styles.buttons_text}>{strings('home.btnPaper')}</Text>
 
                     <TouchableOpacity style={styles.buttons_icon}>
                         <SvgUri
