@@ -1,4 +1,5 @@
 import {icCoinBtc, icCoinEth, icCoinMozo, icCoinSolo} from '../res/icons';
+import { strings } from '../helpers/i18nUtils';
 
 const Constants = {
     SATOSHI_UNIT: 100000000,
@@ -61,45 +62,45 @@ const Constants = {
     ERROR_TYPE: {
         UNKNOWN: {
             code: "ERR-000",
-            title: "System error",
+            title: strings('error.system.title'),
             detail: "",
             type: "Infrastructure"
         },
         NONE: {},
         NO_WALLET_INFO: {
             code: "ERR-001",
-            title: "Offline - Wallet info not found",
-            detail: "User are in offline mode, there is no wallet info at this time.",
+            title: strings('error.no_wallet.title'),
+            detail: strings('error.no_wallet.detail'),
             type: "Infrastructure & Business"
         },
         CANCEL_REQUEST: {
             code: "ERR-002",
-            title: "User cancel request.",
-            detail: "User click cancel button or back button.",
+            title: strings('error.cancel_request.title'),
+            detail: strings('error.cancel_request.detail'),
             type: "Business"
         },
         TIME_OUT_CONFIRM: {
             code: "ERR-003",
-            title: "Timeout confirmation",
-            detail: "User wait too long for confirmation.",
+            title: strings('error.timeout_confirm.title'),
+            detail: strings('error.timeout_confirm.detail'),
             type: "Business"
         },
         INVALID_ADDRESS: {
             code: "ERR-004",
-            title: "Invalid address",
-            detail: "Address(es) is not created by Signer.",
+            title: strings('error.invalid_address.title'),
+            detail: strings('error.invalid_address.detail'),
             type: "Business"
         },
         WRONG_PASSWORD: {
             code: "ERR-005",
-            title: "Wrong password",
-            detail: "User input a wrong password",
+            title: strings('error.wrong_password.title'),
+            detail: strings('error.wrong_password.detail'),
             type: "Business"
         },
         INCORRECT_CONFIRM_PASSWORD: {
             code: "ERR-006",
-            title: "Failed",
-            detail: "Confirm PIN does not match.",
+            title: strings('error.incorrect_confirm_password.title'),
+            detail: strings('error.incorrect_confirm_password.detail'),
             type: "Business"
         }
     },
