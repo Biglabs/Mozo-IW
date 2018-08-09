@@ -9,8 +9,9 @@ pipeline {
     stage('Change dir and build') {
       steps {
         dir(path: 'SOLOWallet-android') {
-          sh 'pwd'
+          sh './gradlew build'
         }
+
       }
     }
   }
