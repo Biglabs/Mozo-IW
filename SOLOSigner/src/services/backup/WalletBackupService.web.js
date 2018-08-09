@@ -2,7 +2,7 @@ import {Platform} from "react-native";
 
 import Constant from "../../helpers/Constants";
 import PermissionUtils from "../../helpers/PermissionUtils";
-import { backupWallet as backupWalletDAO }from "../../models/Wallet";
+import AsyncStorage from "../../helpers/AsyncStorageUtils";
 import WalletBackupReference from './WalletBackupReference';
 
 /**
@@ -22,7 +22,7 @@ async function backupWallet(fileType, encryptedData, qrCodeData) {
         fileContent = encryptedData;
     }
     // call model for saving data
-    backupWalletDAO(fileType, fileContent);
+    saveBackupWallet(fileType, fileContent);
 }
 
 /////////////////// RESTORE WALLET ///////////////////
@@ -73,6 +73,30 @@ function loadBackupFile(callback) {
         .catch(e => {
             // ignore error
         });
+}
+
+/**
+ * Save QR Code data to file
+ *
+ * @param {String}              fileType        Export file type. @see Constant.BACKUP_FILE_TYPE
+ * @param {String}              fileContent     Data for saving to file
+ * @returns {Promise<boolean>}                  Result is true if backup success or otherwise
+ */
+function saveBackupWallet(fileType, fileContent) {    
+    try {
+        console.log("saveBackupWallet");
+        //set data for main process
+        AsyncStorage.setItem("file-content",fileContent);
+        // userReference.set("file-content",fileContent);
+        const ipc = require('electron').ipcRenderer;
+        //send message to main process
+        ipc.send('open-save-file-dialog',{fileType: fileType});
+        AsyncStorage.setItem(Constant.FLAG_BACKUP_WALLET, 'true');
+        // userReference.set(Constant.FLAG_BACKUP_WALLET, 'true');
+    } catch (error) {
+        console.log(error);
+        throw err;
+    }
 }
 
 module.exports = {
