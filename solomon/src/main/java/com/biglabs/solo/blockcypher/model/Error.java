@@ -22,6 +22,10 @@ public class Error {
     public Error() {
     }
 
+    public Error(String msg) {
+        this.error = msg;
+    }
+
     @Override
     public String toString() {
         return "Error{" +

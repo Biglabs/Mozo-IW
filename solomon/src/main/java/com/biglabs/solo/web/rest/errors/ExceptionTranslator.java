@@ -51,11 +51,14 @@ public class ExceptionTranslator implements ProblemHandling {
             .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
             .withStatus(problem.getStatus())
             .withTitle(problem.getTitle())
+//            .with("error", problem.getTitle())
             .with("path", request.getNativeRequest(HttpServletRequest.class).getRequestURI());
 
         if (problem instanceof ConstraintViolationProblem) {
+            List<Error> errors = ((ConstraintViolationProblem) problem).getViolations().stream()
+                .map(v -> new Error(v.getField() + " " + v.getMessage())).collect(Collectors.toList());
             builder
-                .with("violations", ((ConstraintViolationProblem) problem).getViolations())
+                .with("errors", errors)
                 .with("message", ErrorConstants.ERR_VALIDATION);
             return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
         } else {
@@ -66,6 +69,9 @@ public class ExceptionTranslator implements ProblemHandling {
             problem.getParameters().forEach(builder::with);
             if (!problem.getParameters().containsKey("message") && problem.getStatus() != null) {
                 builder.with("message", "error.http." + problem.getStatus().getStatusCode());
+            }
+            if (!problem.getParameters().containsKey("errors")) {
+                builder.with("error", problem.getTitle());
             }
             return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
         }
@@ -83,7 +89,7 @@ public class ExceptionTranslator implements ProblemHandling {
             .withTitle("Method argument not valid")
             .withStatus(defaultConstraintViolationStatus())
             .with("message", ErrorConstants.ERR_VALIDATION)
-            .with("fieldErrors", fieldErrors)
+            .with("errors", fieldErrors.stream().map(f -> new Error(f.getField() + " " + f.getMessage())).collect(Collectors.toList()))
             .build();
         return create(ex, problem, request);
     }
