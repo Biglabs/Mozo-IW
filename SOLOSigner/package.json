@@ -15,12 +15,13 @@
     "webpack-server": "webpack-serve",
     "pack": "build --dir",
     "dist": "build",
-    "build:win": "build --win --dir --x64",
-    "build:mac": "build --mac --dir",
+    "build:win": "yarn --cwd './desktop/package.json --cwd '..'  && build --win --dir --x64",
+    "build:mac": "yarn --cwd './desktop/package.json --cwd '..'  && build --mac --dir",
     "build:linux": "build --linux --dir",
     "dist:win": "build --win --x64",
     "dist:linux": "build --linux",
-    "dist:mac": "build --mac"
+    "dist:mac": "build --mac",
+    "test": "yarn --cwd './desktop/package.json'"
   },
   "rnpm": {
     "assets": [
@@ -42,9 +43,7 @@
     "crypto-js": "^3.1.9-1",
     "dns.js": "^1.0.1",
     "domain-browser": "^1.1.1",
-    "electron-builder-squirrel-windows": "^20.27.0",
     "electron-settings": "^3.2.0",
-    "electron-store": "^2.0.0",
     "es6-symbol": "^3.1.1",
     "ethereumjs-tx": "^1.3.4",
     "ethereumjs-wallet-react-native": "^0.6.7",
@@ -186,6 +185,15 @@
   "build": {
     "appId": "signer.biglabs.com",
     "asar": true,
+    "compression": "store",
+    "files": [
+      "desktop/",
+      "!node_modules/",
+      {
+        "from": "desktop/node_modules",
+        "to":   "node_modules"
+      }
+    ],
     "win": {
       "target": [
         "nsis"

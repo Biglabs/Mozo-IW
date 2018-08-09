@@ -21,9 +21,9 @@ if (typeof localStorage !== 'undefined') {
     localStorage.debug = isDev ? '*' : '';
 }
 
-/* let crypto = global.crypto || global.msCrypto;
+let crypto = global.crypto || global.msCrypto;
 if (typeof crypto === 'undefined') {
     crypto = require('react-native-crypto');
-} */
+}
 
 window.btoa = window.btoa || require('Base64').btoa;
