@@ -26,5 +26,5 @@ module.exports = {
     SelectionGroup: SelectionGroup,
     SvgView: SoloSVG,
     Text: SoloText,
-    TextInput: SoloTextInput,
+    TextInput: SoloTextInput
 };
