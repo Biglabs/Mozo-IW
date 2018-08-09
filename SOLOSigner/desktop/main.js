@@ -1,3 +1,18 @@
+/**
+ * load package json for build
+ */
+// given this file is: /src/browser/main.js
+
+const path = require('path')
+const devMode = (process.argv || []).indexOf('--dev') !== -1
+
+// load the app dependencies for development mode
+console.log("__dirname: " + __dirname);
+const PATH_APP_NODE_MODULES = path.join(__dirname, 'node_modules');
+require('module').globalPaths.push(PATH_APP_NODE_MODULES);
+console.log("PATH_APP_NODE_MODULES: " + PATH_APP_NODE_MODULES);
+
+
 const { app, BrowserWindow } = require('electron');
 
 /**
@@ -83,7 +98,7 @@ ipc.on('open-save-file-dialog', function (event, fileExtenstion) {
             QRCode.toFile(fileName, fileContent);
           } else if(fileType === 'txt'){
             var fs = require('fs');
-            fs.writeFileSync(fileName, fileContent, 'utf-8');
+            fs.writeFileSync(fileName, fileContent);
           } else {
             throw "Invalid file extension";
           }
