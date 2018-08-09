@@ -1,7 +1,5 @@
 package com.biglabs.solo.eth;
 
-import com.biglabs.solo.blockcypher.model.transaction.TX_ACTION;
-import com.biglabs.solo.blockcypher.model.transaction.TxHistory;
 import com.biglabs.solo.config.ApplicationProperties;
 import com.biglabs.solo.eth.etherscan.EscanResponse;
 import com.biglabs.solo.eth.etherscan.EscanTransaction;
@@ -15,8 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.web3j.abi.TypeDecoder;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.utils.Numeric;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,23 +36,26 @@ public class EtherscanRopsten {
     private final String ropstenURL;
     private final RestOperations restTemplate;
     private final ETHRopstenClient ethClient;
+    private final Map<String, Erc20Contract> address2Contracts;
 
     public EtherscanRopsten(
         @Qualifier("etherscanTokens") RoundrobinApiTokens tokens,
         ApplicationProperties appProps,
         RestOperations restTemplate,
-        ETHRopstenClient ethRopstenClient) {
+        ETHRopstenClient ethRopstenClient,
+        @Qualifier("ropstenAddress2Contracts") Map<String, Erc20Contract> address2Contracts) {
         this.tokens = tokens;
         this.appProps = appProps;
         this.restTemplate = restTemplate;
         this.ethClient = ethRopstenClient;
+        this.address2Contracts = address2Contracts;
         this.ropstenURL = appProps.getEtherscan().getRopstenURL();
         logger.info("# Initialized EtherscanRopsten");
         logger.info("# \tropsten URL:  {}", ropstenURL);
         logger.info("# \ttokens     :  {}", tokens.toString());
     }
 
-    public List<TxHistory> getNormalTxs(String address,  BigDecimal beforeHeight) {
+    public List<EthTxHistory> getNormalTxs(String address,  BigDecimal beforeHeight) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(ropstenURL)
             .queryParam("module", "account")
             .queryParam("action", "txlist")
@@ -64,11 +71,9 @@ public class EtherscanRopsten {
 
         try {
             ResponseEntity<EscanResponse> ret = restTemplate.getForEntity(builder.toUriString(), EscanResponse.class);
-            List<TxHistory> txHistories = new ArrayList<>();
+            List<EthTxHistory> txHistories = new ArrayList<>();
             for (EscanTransaction e: ret.getBody().getResult()) {
-                TxHistory txHistory = new TxHistory();
-                txHistory.setAddressTo(e.getTo());
-                txHistory.setAmount(e.getValue());
+                EthTxHistory txHistory = new EthTxHistory();
                 txHistory.setBlockHeight(e.getBlockNumber());
                 txHistory.setConfirmations(e.getConfirmations());
                 BigDecimal fees = e.getGasPrice().multiply(e.getGasUsed());
@@ -76,16 +81,113 @@ public class EtherscanRopsten {
                 txHistory.setTime(e.getTimeStamp());
                 txHistory.setTxHash(e.getHash());
 
-                if (txHistory.getAddressTo().equalsIgnoreCase(address)) {
-                    txHistory.setAction(TX_ACTION.RECEIVED);
+
+                TokenTx t = decodeInput(e.getInput());
+                // if input is not of type transfer or create considering
+                // this is an ETH transaction
+                if (t == null) {
+                    txHistory.setAddressTo(e.getTo());
+                    txHistory.setAmount(e.getValue());
+                    txHistories.add(txHistory);
+                    if (txHistory.getAddressTo().equalsIgnoreCase(address)) {
+                        txHistory.setAction(ETH_TX_ACTION.RECEIVED);
+                    } else {
+                        txHistory.setAction(ETH_TX_ACTION.SENT);
+                    }
                 } else {
-                    txHistory.setAction(TX_ACTION.SENT);
+                    if (t.action == CONTRACT_ACTION.TRANSFER) {
+                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+                        txHistory.setAmount(t.value);
+                        txHistory.setAddressTo(t.to);
+                        txHistory.setContractAction(t.action);
+                    } else if (t.action == CONTRACT_ACTION.CREATE) {
+                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+                        txHistory.setAddressTo(address);
+                        txHistory.setContractAction(t.action);
+                    }
+//                    else if (t.action == CONTRACT_ACTION.APPROVE) {
+//                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+//                        txHistory.setContractAction(t.action);
+//                    } else if (t.action == CONTRACT_ACTION.TRANSFER_FROM) {
+//                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+//                        txHistory.setContractAction(t.action);
+//                    }
+                    Erc20Contract contract = address2Contracts.get(e.getTo());
+                    if (contract != null) {
+                        txHistory.setSymbol(contract.getSymbol());
+                        txHistory.setDecimal(contract.getDecimals());
+                        txHistory.setContractAddress(contract.getContractAddress());
+                    }
                 }
                 txHistories.add(txHistory);
             }
+
             return txHistories;
         } catch (HttpStatusCodeException ex) {
             throw ex;
         }
+    }
+
+    public enum CONTRACT_ACTION {
+        CREATE, TRANSFER, APPROVE, TRANSFER_FROM
+    }
+    private static class TokenTx {
+        String to;
+        BigDecimal value;
+        CONTRACT_ACTION action;
+    }
+
+    public TokenTx decodeInput(String inputData) {
+        try {
+            if ( inputData == null || inputData.equalsIgnoreCase("0x") || inputData.length() < 10) {
+                return null;
+            }
+            final String TRANSFER_CODE = "0xa9059cbb";
+            final String CREATE_CODE = "0x60806040";
+            final String APPROVE_CODE = "0x095ea7b3";
+            final String TRANSFER_FROM_CODE = "0x01c6adc3";
+            final short ADDRESS_LEN = 40;
+
+            String method = inputData.substring(0,10);
+            if (method.equalsIgnoreCase(TRANSFER_CODE)) {
+                String to = inputData.substring(10, 74);
+//                to = "0x" + to.substring(to.length() - 40, to.length());
+                String value = inputData.substring(74);
+                Method refMethod = TypeDecoder.class.getDeclaredMethod("decode", String.class, int.class, Class.class);
+                refMethod.setAccessible(true);
+                Address address = (Address) refMethod.invoke(null, to, 0, Address.class);
+                Uint256 amount = (Uint256) refMethod.invoke(null, value, 0, Uint256.class);
+                logger.debug("# decodeInput for {}:", inputData);
+                logger.debug("\tMethod  {}", method);
+                logger.debug("\tMethod  {}", new String(Numeric.hexStringToByteArray(method)), Charset.forName("UTF-8"));
+                logger.debug("\tAddress {}", address.toString());
+                logger.debug("\tValue {}", amount.getValue());
+                TokenTx ret = new TokenTx();
+                ret.to = address.toString();
+                ret.value = new BigDecimal(amount.getValue());
+                ret.action = CONTRACT_ACTION.TRANSFER;
+                return ret;
+            } else if (method.equalsIgnoreCase(CREATE_CODE)) {
+                TokenTx ret = new TokenTx();
+                ret.action = CONTRACT_ACTION.CREATE;
+                return ret;
+            }
+            else if (method.equalsIgnoreCase(APPROVE_CODE)) {
+                logger.info("Approve transaction");
+//                TokenTx ret = new TokenTx();
+//                ret.action = CONTRACT_ACTION.APPROVE;
+//                return ret;
+            } else if (method.equalsIgnoreCase(TRANSFER_FROM_CODE)) {
+                logger.info("TransferFrom transaction");
+//                TokenTx ret = new TokenTx();
+//                ret.action = CONTRACT_ACTION.TRANSFER_FROM;
+//                return ret;
+            }
+            logger.info("decodeInput - Not recognize function code {}", method);
+            return null;
+        } catch (Exception ex) {
+            logger.error("Decode {} fail: {}", inputData, ex.getMessage());
+        }
+        return null;
     }
 }

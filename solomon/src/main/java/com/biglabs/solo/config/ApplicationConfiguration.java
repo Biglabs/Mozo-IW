@@ -37,7 +37,7 @@ public class ApplicationConfiguration {
         return Web3j.build(new HttpService(appProps.web3j.infuraRopstenUrl));
     }
 
-    @Bean(value = "ropstenContracts")
+    @Bean(value = "ropstenAddress2Contracts")
     public Map<String, Erc20Contract> ropstenContracts() {
         Map<String, String> addresses = appProps.getRopsten().getContractAddresses();
         Map<String, Erc20Contract> ret = new ConcurrentHashMap<>();
@@ -47,7 +47,7 @@ public class ApplicationConfiguration {
             threadPool.submit(() -> {
                 if (c.init()) {
                     logger.info("SUCCEEDED creating contract: {}-{}", token, addresses.get(token));
-                    ret.put(c.getSymbol().toLowerCase(), c);
+                    ret.put(c.getContractAddress(), c);
                 } else {
                     logger.info("FAILED creating contract: {}-{}", token, addresses.get(token));
                 }

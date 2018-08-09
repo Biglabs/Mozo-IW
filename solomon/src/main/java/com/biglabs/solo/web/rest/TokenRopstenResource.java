@@ -1,16 +1,16 @@
 package com.biglabs.solo.web.rest;
 
-import com.biglabs.solo.blockcypher.exception.BlockCypherException;
 import com.biglabs.solo.blockcypher.model.BCYAddress;
-import com.biglabs.solo.blockcypher.model.blockchain.EthBlockchain;
-import com.biglabs.solo.blockcypher.model.transaction.TxHistory;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.eth.Erc20Contract;
 import com.biglabs.solo.repository.WalletAddressRepository;
 import com.biglabs.solo.ropsten.ETHRopstenClient;
 import com.biglabs.solo.web.rest.errors.BadRequestAlertException;
 import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
+import com.biglabs.solo.web.rest.vm.TokenTransactionRequest;
 import com.codahale.metrics.annotation.Timed;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +19,8 @@ import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.Optional;
 
 /**
  * BitcoinResource controller
@@ -42,16 +39,28 @@ public class TokenRopstenResource {
     }
 
     /**
+     * GET getBalance
+     */
+    @GetMapping("/")
+    @Timed
+    public ResponseEntity<Erc20Contract> tokenInfo(@RequestParam(value = "contractAddress") String contractAddress) throws Exception {
+//        if (!"MOZO".equalsIgnoreCase(symbol)) {
+//            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
+//        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ethClient.tokenInfo(contractAddress)));
+    }
+
+    /**
     * GET getBalance
     */
     @GetMapping("/{address}/balance")
     @Timed
     public BCYAddress getBalance(@PathVariable String address,
-                                 @RequestParam(value = "symbol") String symbol) throws Exception {
-        if (!"MOZO".equalsIgnoreCase(symbol)) {
-            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
-        }
-        return ethClient.tokenBalance(symbol, address);
+                                 @RequestParam(value = "contractAddress") String contractAddress) throws Exception {
+//        if (!"MOZO".equalsIgnoreCase(symbol)) {
+//            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
+//        }
+        return ethClient.tokenBalance(contractAddress, address);
     }
 //
 //    /**
@@ -77,11 +86,11 @@ public class TokenRopstenResource {
 //
     @PostMapping("/txs/transfer")
     @Timed
-    public ResponseEntity<EthIntermediaryTx> createTransaction(@Valid @RequestBody EthTransactionRequest txReq) throws Exception {
-        if (!"MOZO".equalsIgnoreCase(txReq.getSymbol())) {
+    public ResponseEntity<EthIntermediaryTx> createTransaction(@Valid @RequestBody TokenTransactionRequest txReq) throws Exception {
+        if (!"MOZO".equalsIgnoreCase(txReq.getContractAddress())) {
             throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
         }
-        EthIntermediaryTx tx = ethClient.prepareTransfer(txReq.getSymbol(), txReq);
+        EthIntermediaryTx tx = ethClient.prepareTransfer(txReq.getContractAddress(), txReq);
         return ResponseEntity.ok().body(tx);
     }
 

@@ -12,11 +12,9 @@ import com.biglabs.solo.eth.EthHelpers;
 import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
 import com.biglabs.solo.web.rest.errors.JsonRpcException;
 import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
-import com.biglabs.solo.web.rest.vm.TransactionRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.token.Token;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 import org.web3j.crypto.*;
@@ -24,9 +22,6 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.*;
-import org.web3j.rlp.RlpEncoder;
-import org.web3j.rlp.RlpList;
-import org.web3j.rlp.RlpType;
 import org.web3j.utils.Numeric;
 
 import java.io.IOException;
@@ -37,7 +32,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -52,17 +46,17 @@ public class ETHRopstenClient  {
     private final RestOperations restTemplate;
     private final Web3j web3j;
 //    private final ApplicationProperties appProps;
-    private final Map<String, Erc20Contract> ropstenContracts;
+    private final Map<String, Erc20Contract> address2Contracts;
 //    private final ApplicationProperties.Ropsten ropsten;
 
     public ETHRopstenClient(RestOperations restTemplate,
                             Web3j web3j,
                             ApplicationProperties appProps,
-                            @Qualifier("ropstenContracts") Map<String, Erc20Contract> r) {
+                            @Qualifier("ropstenAddress2Contracts") Map<String, Erc20Contract> r) {
         this.restTemplate = restTemplate;
         this.web3j = web3j;
 //        this.appProps = appProps;
-        this.ropstenContracts = r;
+        this.address2Contracts = r;
     }
 
     public BCYAddress balance(String address) {
@@ -165,46 +159,50 @@ public class ETHRopstenClient  {
         return txReq;
     }
 
-    public TokenInfo tokenBalance(String symbol, String address) throws Exception {
-        logger.info("[{}] Balance of {}", symbol, address);
+    public TokenInfo tokenBalance(String contractAddress, String address) throws Exception {
+        logger.info("[{}] Balance of {}", contractAddress, address);
         TokenInfo tokenInfo = new TokenInfo();
-        Erc20Contract contract = ropstenContracts.get(symbol.toLowerCase());
+        Erc20Contract contract = address2Contracts.get(contractAddress.toLowerCase());
         if (contract == null) {
-            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", symbol));
+            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", contractAddress));
         }
 
         BigInteger result = contract.balanceOf(address).send();
 //
 //        if (response.hasError()) {
-//            String msg = MessageFormat.format("{0}: Cannot get balance of address {1}", symbol.toUpperCase(), address);
+//            String msg = MessageFormat.format("{0}: Cannot get balance of address {1}", contractAddress.toUpperCase(), address);
 //            throw new JsonRpcException(msg, response.getError());
 //        }
 //        Uint256 b = (Uint256) types.get(0).getValue();
         tokenInfo.setAddress(address);
         tokenInfo.setBalance(new BigDecimal(result));
-        tokenInfo.setSymbol(symbol);
+        tokenInfo.setSymbol(contractAddress);
         tokenInfo.setDecimals(contract.getDecimals());
         tokenInfo.setContractAddress(contract.getContractAddress());
         return tokenInfo;
     }
 
-    public EthIntermediaryTx prepareTransfer(String symbol, EthTransactionRequest txRequest) throws Exception {
-        Erc20Contract contract = ropstenContracts.get(symbol.toLowerCase());
+    public EthIntermediaryTx prepareTransfer(String contractAddress, EthTransactionRequest txRequest) throws Exception {
+        Erc20Contract contract = address2Contracts.get(contractAddress.toLowerCase());
         if (contract == null) {
-            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", symbol));
+            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", contractAddress));
         }
         String from = txRequest.getInputs().get(0).getAddresses().get(0);
         String to = txRequest.getOutputs().get(0).getAddresses().get(0);
         BigDecimal value = txRequest.getOutputs().get(0).getValue();
 
-        return contract.prepareTransfer(symbol, txRequest.getGasLimit(), txRequest.getGasPrice(), from, to, value.toBigInteger());
+        return contract.prepareTransfer(contractAddress, txRequest.getGasLimit(), txRequest.getGasPrice(), from, to, value.toBigInteger());
     }
 
     public RemoteCall<EthSendTransaction> transfer(EthIntermediaryTx txReq) {
-        Erc20Contract contract = ropstenContracts.get(txReq.getSymbol().toLowerCase());
+        Erc20Contract contract = address2Contracts.get(txReq.getContractAddress().toLowerCase());
         if (contract == null) {
-            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", txReq.getSymbol()));
+            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", txReq.getContractAddress()));
         }
         return contract.transfer(txReq);
+    }
+
+    public Erc20Contract tokenInfo(String contractAddress) {
+        return address2Contracts.get(contractAddress);
     }
 }

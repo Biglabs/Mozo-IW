@@ -5,6 +5,7 @@ import com.biglabs.solo.blockcypher.model.transaction.input.Input;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
 import com.biglabs.solo.blockcypher.model.transaction.output.Output;
 import com.biglabs.solo.web.rest.errors.JsonRpcException;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.abi.FunctionEncoder;
@@ -17,13 +18,11 @@ import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.abi.datatypes.generated.Uint8;
 import org.web3j.crypto.RawTransaction;
-import org.web3j.crypto.Sign;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthCall;
-import org.web3j.protocol.core.methods.response.EthSendRawTransaction;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.tx.exceptions.ContractCallException;
 import org.web3j.tx.gas.DefaultGasProvider;
@@ -36,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Erc20Contract {
     private static final Logger logger = LoggerFactory.getLogger(Erc20Contract.class);
 
@@ -47,7 +47,8 @@ public class Erc20Contract {
     public static final String FUNC_TRANSFERFROM = "transferFrom";
     public static final String FUNC_TRANSFER = "transfer";
 
-    public final Web3j web3j;
+
+    private final Web3j web3j;
 
     private final String contractAddress;
     private String symbol;
@@ -74,6 +75,18 @@ public class Erc20Contract {
             logger.error("Failed to init contract at address {}: {}", contractAddress, e.getMessage());
             return false;
         }
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public void setDecimals(BigInteger decimals) {
+        this.decimals = decimals;
+    }
+
+    public void setTotalSupply(BigInteger totalSupply) {
+        this.totalSupply = totalSupply;
     }
 
     public String getContractAddress() {
@@ -127,7 +140,7 @@ public class Erc20Contract {
     }
 
     public EthIntermediaryTx prepareTransfer(
-        String symbol, BigInteger gasLimit, BigInteger gasPrice,
+        String contractAddress, BigInteger gasLimit, BigInteger gasPrice,
         String from, String to,
         BigInteger value) throws Exception {
 
@@ -161,7 +174,7 @@ public class Erc20Contract {
         itx.setNonce(nonce);
         itx.setTx(tx);
         itx.setTosign(Arrays.asList(EthHelpers.encodeRawTxToSign(rawTx)));
-        itx.setSymbol(symbol);
+        itx.setContractAddress(contractAddress);
         return itx;
     }
 

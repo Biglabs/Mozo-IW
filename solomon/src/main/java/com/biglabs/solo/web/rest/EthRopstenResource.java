@@ -6,6 +6,7 @@ import com.biglabs.solo.blockcypher.model.blockchain.EthBlockchain;
 import com.biglabs.solo.blockcypher.model.transaction.TxHistory;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
+import com.biglabs.solo.eth.EthTxHistory;
 import com.biglabs.solo.eth.EtherscanRopsten;
 import com.biglabs.solo.repository.WalletAddressRepository;
 import com.biglabs.solo.ropsten.ETHRopstenClient;
@@ -56,8 +57,8 @@ public class EthRopstenResource {
      */
     @GetMapping("/addrs/{address}/txhistory")
     @Timed
-    public List<TxHistory> getTxHistory(@PathVariable String address,
-                                        @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight) throws BlockCypherException {
+    public List<EthTxHistory> getTxHistory(@PathVariable String address,
+                                           @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight) throws BlockCypherException {
 //        log.debug("REST request to get transaction history of an address");
 //        Optional<WalletAddress> wa = waRepo.findFirstByAddress_Address(address);
 //        if (!wa.isPresent()) {
