@@ -5,6 +5,8 @@ import { strings } from '../../../helpers/i18nUtils';
 
 import {CreateWalletOptionItem, ScreenFooterActions, SelectionGroup, Text} from "../../components";
 import {colorScreenBackground, dimenScreenPaddingHorizontal, icons, styleScreenTitleText} from '../../../res';
+import AsyncStorage from "../../../helpers/AsyncStorageUtils";
+import Constant from "../../../helpers/Constants";
 
 export default class CreateWalletScreen extends React.Component {
     constructor(props) {
@@ -13,6 +15,7 @@ export default class CreateWalletScreen extends React.Component {
     }
 
     onContinueClick = () => {
+        AsyncStorage.setItem(Constant.FLAG_BACKUP_WALLET, 'false');
         switch (this.state.selectedIndex) {
             case 0:
                 Actions.security_pin({isNewPIN: true});

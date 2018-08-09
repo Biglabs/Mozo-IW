@@ -89,6 +89,6 @@ xcuserdata
 # expo
 .expo/
 
-SOLOSigner/desktop/dist/
+dist
 
 SOLOSigner/\.idea/inspectionProfiles/
