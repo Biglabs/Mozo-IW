@@ -20,6 +20,8 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,11 +45,18 @@ public class TokenRopstenResource {
      */
     @GetMapping("/")
     @Timed
-    public ResponseEntity<Erc20Contract> tokenInfo(@RequestParam(value = "contractAddress") String contractAddress) throws Exception {
+    public ResponseEntity<List<Erc20Contract>> tokenInfo(
+        @RequestParam(value = "contractAddress", required = false) String contractAddress) throws Exception {
 //        if (!"MOZO".equalsIgnoreCase(symbol)) {
 //            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
 //        }
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ethClient.tokenInfo(contractAddress)));
+        List<Erc20Contract> ret;
+        if (contractAddress == null) {
+            ret = ethClient.tokens();
+        } else {
+            ret = ethClient.tokenInfo(contractAddress) == null ? null : Arrays.asList(ethClient.tokenInfo(contractAddress));
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ret));
     }
 
     /**

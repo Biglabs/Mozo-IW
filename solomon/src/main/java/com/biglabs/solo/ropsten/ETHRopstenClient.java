@@ -31,7 +31,9 @@ import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -204,5 +206,9 @@ public class ETHRopstenClient  {
 
     public Erc20Contract tokenInfo(String contractAddress) {
         return address2Contracts.get(contractAddress);
+    }
+
+    public List<Erc20Contract> tokens() {
+        return new ArrayList<>(address2Contracts.values());
     }
 }
