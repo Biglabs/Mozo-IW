@@ -20,7 +20,6 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ import java.util.Optional;
  * BitcoinResource controller
  */
 @RestController
-@RequestMapping("/api/token/ropsten")
+@RequestMapping("/api/contract/ropsten")
 public class TokenRopstenResource {
 
     private final Logger log = LoggerFactory.getLogger(TokenRopstenResource.class);
@@ -45,30 +44,29 @@ public class TokenRopstenResource {
      */
     @GetMapping("/")
     @Timed
-    public ResponseEntity<List<Erc20Contract>> tokenInfo(
-        @RequestParam(value = "contractAddress", required = false) String contractAddress) throws Exception {
-//        if (!"MOZO".equalsIgnoreCase(symbol)) {
-//            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
-//        }
-        List<Erc20Contract> ret;
-        if (contractAddress == null) {
-            ret = ethClient.tokens();
-        } else {
-            ret = ethClient.tokenInfo(contractAddress) == null ? null : Arrays.asList(ethClient.tokenInfo(contractAddress));
-        }
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ret));
+    public ResponseEntity<List<Erc20Contract>> getAll() throws Exception {
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ethClient.tokens()));
+    }
+
+    /**
+     * GET getBalance
+     */
+    @GetMapping("/{contractAddress}")
+    @Timed
+    public ResponseEntity<Erc20Contract> contractInfo(
+        @PathVariable String contractAddress) throws Exception {
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(
+            ethClient.tokenInfo(contractAddress)));
     }
 
     /**
     * GET getBalance
     */
-    @GetMapping("/{address}/balance")
+    @GetMapping("/{contractAddress}/balance")
     @Timed
-    public BCYAddress getBalance(@PathVariable String address,
-                                 @RequestParam(value = "contractAddress") String contractAddress) throws Exception {
-//        if (!"MOZO".equalsIgnoreCase(symbol)) {
-//            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
-//        }
+    public BCYAddress getBalance(@PathVariable String contractAddress,
+                                 @RequestParam(value = "address") String address) throws Exception {
+
         return ethClient.tokenBalance(contractAddress, address);
     }
 //
@@ -92,21 +90,23 @@ public class TokenRopstenResource {
 //        //TODO:
 //        return Collections.emptyList();
 //    }
-//
-    @PostMapping("/txs/transfer")
+
+    @PostMapping("/{contractAddress}/transfer")
     @Timed
-    public ResponseEntity<EthIntermediaryTx> createTransaction(@Valid @RequestBody TokenTransactionRequest txReq) throws Exception {
-        if (!"MOZO".equalsIgnoreCase(txReq.getContractAddress())) {
-            throw new BadRequestAlertException("Token not supported", "Token", "wrongToken");
-        }
-        EthIntermediaryTx tx = ethClient.prepareTransfer(txReq.getContractAddress(), txReq);
+    public ResponseEntity<EthIntermediaryTx> createTransaction(
+        @PathVariable String contractAddress,
+        @Valid @RequestBody TokenTransactionRequest txReq) throws Exception {
+
+        EthIntermediaryTx tx = ethClient.prepareTransfer(contractAddress, txReq);
         return ResponseEntity.ok().body(tx);
     }
 
-    @PostMapping("/txs/send-transfer-tx")
+    @PostMapping("/{contractAddress}/send-transfer-tx")
     @Timed
-    public ResponseEntity<IntermediaryTransaction> sendTransferTx(@Valid @RequestBody EthIntermediaryTx txReq) throws Exception {
-        RemoteCall<EthSendTransaction> ethRespon = ethClient.transfer(txReq);
+    public ResponseEntity<EthIntermediaryTx> sendTransferTx(
+        @PathVariable String contractAddress,
+        @Valid @RequestBody EthIntermediaryTx txReq) throws Exception {
+        RemoteCall<EthSendTransaction> ethRespon = ethClient.transfer(contractAddress, txReq);
         txReq.getTx().setHash(ethRespon.send().getTransactionHash());
         return ResponseEntity.created(new URI("/api/btc/test/txs/" + txReq.getTx().getHash()))
             .body(txReq);

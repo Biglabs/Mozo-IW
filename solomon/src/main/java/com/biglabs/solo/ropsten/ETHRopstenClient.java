@@ -9,8 +9,10 @@ import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryT
 import com.biglabs.solo.config.ApplicationProperties;
 import com.biglabs.solo.eth.Erc20Contract;
 import com.biglabs.solo.eth.EthHelpers;
+import com.biglabs.solo.web.rest.errors.ErrorConstants;
 import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
 import com.biglabs.solo.web.rest.errors.JsonRpcException;
+import com.biglabs.solo.web.rest.errors.NotFoundException;
 import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,7 +168,8 @@ public class ETHRopstenClient  {
         TokenInfo tokenInfo = new TokenInfo();
         Erc20Contract contract = address2Contracts.get(contractAddress.toLowerCase());
         if (contract == null) {
-            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", contractAddress));
+            throw new NotFoundException(MessageFormat.format("Cannot find contract at address {0}", contractAddress),
+                ErrorConstants.ErrorCode.CONTRACT_NOTFOUND);
         }
 
         BigInteger result = contract.balanceOf(address).send();
@@ -187,7 +190,8 @@ public class ETHRopstenClient  {
     public EthIntermediaryTx prepareTransfer(String contractAddress, EthTransactionRequest txRequest) throws Exception {
         Erc20Contract contract = address2Contracts.get(contractAddress.toLowerCase());
         if (contract == null) {
-            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", contractAddress));
+            throw new NotFoundException(MessageFormat.format("Cannot find contract at address {0}", contractAddress),
+                ErrorConstants.ErrorCode.CONTRACT_NOTFOUND);
         }
         String from = txRequest.getInputs().get(0).getAddresses().get(0);
         String to = txRequest.getOutputs().get(0).getAddresses().get(0);
@@ -196,10 +200,11 @@ public class ETHRopstenClient  {
         return contract.prepareTransfer(contractAddress, txRequest.getGasLimit(), txRequest.getGasPrice(), from, to, value.toBigInteger());
     }
 
-    public RemoteCall<EthSendTransaction> transfer(EthIntermediaryTx txReq) {
-        Erc20Contract contract = address2Contracts.get(txReq.getContractAddress().toLowerCase());
+    public RemoteCall<EthSendTransaction> transfer(String contractAddress, EthIntermediaryTx txReq) {
+        Erc20Contract contract = address2Contracts.get(contractAddress.toLowerCase());
         if (contract == null) {
-            throw new InternalServerErrorException(MessageFormat.format("Cannot find contract of token {0}", txReq.getContractAddress()));
+            throw new NotFoundException(MessageFormat.format("Cannot find contract at address {0}", contractAddress),
+                ErrorConstants.ErrorCode.CONTRACT_NOTFOUND);
         }
         return contract.transfer(txReq);
     }

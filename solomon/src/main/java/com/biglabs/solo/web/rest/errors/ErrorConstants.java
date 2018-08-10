@@ -17,4 +17,8 @@ public final class ErrorConstants {
 
     private ErrorConstants() {
     }
+
+    public static class ErrorCode {
+        public static final long CONTRACT_NOTFOUND = 1000;
+    }
 }

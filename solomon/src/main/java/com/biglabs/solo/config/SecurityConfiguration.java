@@ -101,7 +101,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/btc/test/**").permitAll()
             .antMatchers("/api/eth/test/**").permitAll()
             .antMatchers("/api/eth/ropsten/**").permitAll()
-            .antMatchers("/api/token/ropsten/**").permitAll()
+            .antMatchers("/api/contract/ropsten/**").permitAll()
             .antMatchers("/api/wallet-addresses/**").permitAll()
             .antMatchers("/api/addresses").permitAll()
             .antMatchers("/api/register").permitAll()

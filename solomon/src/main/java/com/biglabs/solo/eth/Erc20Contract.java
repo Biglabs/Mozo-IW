@@ -174,7 +174,6 @@ public class Erc20Contract {
         itx.setNonce(nonce);
         itx.setTx(tx);
         itx.setTosign(Arrays.asList(EthHelpers.encodeRawTxToSign(rawTx)));
-        itx.setContractAddress(contractAddress);
         return itx;
     }
 

@@ -70,7 +70,8 @@ public class ExceptionTranslator implements ProblemHandling {
             if (!problem.getParameters().containsKey("message") && problem.getStatus() != null) {
                 builder.with("message", "error.http." + problem.getStatus().getStatusCode());
             }
-            if (!problem.getParameters().containsKey("errors")) {
+            if (!problem.getParameters().containsKey("errors") &&
+                !problem.getParameters().containsKey("error")) {
                 builder.with("error", problem.getTitle());
             }
             return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
@@ -99,11 +100,23 @@ public class ExceptionTranslator implements ProblemHandling {
         return create(ex, request, HeaderUtil.createFailureAlert(ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Problem> handleNotFoundException(NotFoundException ex, NativeWebRequest request) {
+        Problem p = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with("message", ex.getMessage())
+            .with("error", ex.getMessage())
+            .build();
+
+        return create(ex, p, request);
+    }
+
     @ExceptionHandler(ConcurrencyFailureException.class)
     public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
             .withStatus(Status.CONFLICT)
             .with("message", ErrorConstants.ERR_CONCURRENCY_FAILURE)
+            .with("error", ex.getMessage())
             .build();
         return create(ex, problem, request);
     }
