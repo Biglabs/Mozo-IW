@@ -25,13 +25,7 @@ extension SendViewController {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.soloSDK?.api?.createNewEthTransaction(transaction, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let connectionError = error {
-                    Utils.showError(connectionError)
-                }
-                return
-            }
-            completion(value, nil)
+            completion(value, error)
         }
     }
     
@@ -39,13 +33,7 @@ extension SendViewController {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.soloSDK?.api?.sendEthTransaction(signedTx, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let connectionError = error {
-                    Utils.showError(connectionError)
-                }
-                return
-            }
-            completion(value, nil)
+            completion(value, error)
         }
     }
 }

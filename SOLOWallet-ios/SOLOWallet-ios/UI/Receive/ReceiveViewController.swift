@@ -97,7 +97,12 @@ class ReceiveViewController: AbstractViewController {
         self.coverView.isHidden = false
         if let trans = transaction.outputs?.first {
             var tx = (self.currentCoin?.coin?.lowercased())! + ":" + (trans.addresses?.first)!
-            let value = Utils.convertOutputValue(coinType: self.currentCoin?.coin, value: trans.value!)
+            var value = Double(0)
+            if self.currentCoin?.isChild == true {
+                value = Utils.convertOutputValueForToken(value: trans.value!, decimal: (self.currentCoin?.contract?.decimals)!)
+            } else {
+                value = Utils.convertOutputValue(coinType: self.currentCoin?.coin, value: trans.value!)
+            }
             tx += "?amount=" + String(value)
             self.imgView.image = Utils.generateQRCode(from: tx)
         }
@@ -122,7 +127,12 @@ class ReceiveViewController: AbstractViewController {
                 if !(temp.inputCoinTextField.text?.isEmpty)! {
                     value = Double(temp.inputCoinTextField.text!)!
                 }
-                let txValue = value > 0.0 ? Utils.convertCoinValue(coinType: self.currentCoin?.coin, value: value) : 0
+                var txValue = NSNumber(value: 0)
+                if self.currentCoin?.isChild == true {
+                    txValue = value > 0.0 ? Utils.convertTokenValue(value: value, decimal: (self.currentCoin?.contract?.decimals)!) : 0
+                } else {
+                    txValue = value > 0.0 ? Utils.convertCoinValue(coinType: self.currentCoin?.coin, value: value) : 0
+                }
                 output.value = txValue
             }
             if let outputs = tx.outputs, outputs.count > 0 {

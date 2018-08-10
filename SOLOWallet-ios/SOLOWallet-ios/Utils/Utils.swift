@@ -20,9 +20,6 @@ public class Utils {
         } else if coinType == CoinType.BTC.key {
             //Convert value from ether to satoshis
             retValue = NSNumber(value: value * 1E+8)
-        } else if coinType == CoinType.MOZO.key {
-            //Convert value from mozo to mozo junior
-            retValue = NSNumber(value: value * 1E+2)
         }
         return retValue
     }
@@ -31,14 +28,21 @@ public class Utils {
         var retValue = Double(0)
         if coinType == CoinType.ETH.key {
             //Convert value from ether to wei
-            retValue = Double(value) / 1E+18
+            retValue = Double(truncating: value) / 1E+18
         } else if coinType == CoinType.BTC.key {
             //Convert value from ether to satoshis
-            retValue = Double(value) / 1E+8
-        }  else if coinType == CoinType.MOZO.key {
-            //Convert value from junior mozo to mozo
-            retValue = Double(value) / 1E+2
+            retValue = Double(truncating: value) / 1E+8
         }
+        return retValue
+    }
+    
+    public static func convertTokenValue(value: Double, decimal: Int) -> NSNumber{
+        let retValue = NSNumber(value: value * Double(truncating: pow(10, decimal) as NSNumber))
+        return retValue
+    }
+    
+    public static func convertOutputValueForToken(value: NSNumber, decimal: Int) -> Double{
+        let retValue = Double(truncating: value) / Double(truncating: pow(10, decimal) as NSNumber)
         return retValue
     }
     
@@ -80,6 +84,10 @@ public class Utils {
             JDStatusBarNotification.show(withStatus: ConnectionError.requestNotFound.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
         case ConnectionError.authenticationRequired:
             JDStatusBarNotification.show(withStatus: ConnectionError.authenticationRequired.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+        case ConnectionError.badRequest:
+            JDStatusBarNotification.show(withStatus: ConnectionError.badRequest.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
+        case ConnectionError.internalServerError:
+            JDStatusBarNotification.show(withStatus: ConnectionError.internalServerError.localizedDescription, dismissAfter: notificationDismissAfter, styleName: JDStatusBarStyleError)
         case ConnectionError.network(let error):
             print("Error: \(error)")
         default:

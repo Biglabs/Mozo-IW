@@ -11,6 +11,8 @@ import SwiftyJSON
 
 public class TransactionDTO: ResponseObjectSerializable {
     
+    public var block_hash: String?
+    
     /// Height of the block that contains this transaction. If this is an unconfirmed transaction, it will equal -1.
     public var block_height: Int64?
     
@@ -45,6 +47,8 @@ public class TransactionDTO: ResponseObjectSerializable {
     /// ETH: Address of the peer that sent BlockCypher’s servers this transaction. May be empty.
     public var relayed_by: String?
     
+    public var receive_count: Int64?
+    
     /// Time this transaction was received by BlockCypher’s servers.
     public var received: String?
     
@@ -55,6 +59,10 @@ public class TransactionDTO: ResponseObjectSerializable {
     /// BTC only: Time when transaction can be valid. Can be interpreted in two ways: if less than 500 million, refers to block height. If more, refers to Unix epoch time.
     public var lock_time: Int64?
     
+    public var data: String?
+    
+    public var doubleSpendTx: String?
+    
     /// true if this is an attempted double spend; false otherwise.
     public var double_spend: Bool?
     
@@ -64,8 +72,12 @@ public class TransactionDTO: ResponseObjectSerializable {
     /// Total number of outputs in the transaction.
     public var vout_sz: Int64?
     
+    public var confidence: NSNumber?
+    
     /// Number of subsequent blocks, including the block the transaction is in. Unconfirmed transactions have 0 confirmations.
     public var confirmations: Int64?
+    
+    public var confirmed: String?
     
     /// TXInput Array, limited to 20 by default.
     public var inputs: [InputDTO]?
@@ -102,6 +114,12 @@ public class TransactionDTO: ResponseObjectSerializable {
         self.inputs = json["inputs"].array?.filter({ InputDTO(json: $0) != nil }).map({ InputDTO(json: $0)! })
         self.outputs = json["outputs"].array?.filter({ OutputDTO(json: $0) != nil }).map({ OutputDTO(json: $0)! })
         self.gas_limit = json["gas_limit"].int64
+        self.block_hash = json["block_hash"].string
+        self.confidence = json["confidence"].number
+        self.confirmed = json["confirmed"].string
+        self.data = json["data"].string
+        self.doubleSpendTx = json["doubleSpendTx"].string
+        self.receive_count = json["receive_count"].int64
     }
     
     public required init?(){}
@@ -167,6 +185,24 @@ public class TransactionDTO: ResponseObjectSerializable {
         }
         if let gas_limit = self.gas_limit {
             json["gas_limit"] = gas_limit
+        }
+        if let block_hash = self.block_hash {
+            json["block_hash"] = block_hash
+        }
+        if let confidence = self.confidence {
+            json["confidence"] = confidence
+        }
+        if let confirmed = self.confirmed {
+            json["confirmed"] = confirmed
+        }
+        if let data = self.data {
+            json["data"] = data
+        }
+        if let doubleSpendTx = self.doubleSpendTx {
+            json["doubleSpendTx"] = doubleSpendTx
+        }
+        if let receive_count = self.receive_count {
+            json["receive_count"] = receive_count
         }
         return json
     }

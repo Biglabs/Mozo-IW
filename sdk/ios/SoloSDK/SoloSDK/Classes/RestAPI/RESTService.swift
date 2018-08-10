@@ -111,7 +111,7 @@ public final class RESTService {
     private func checkResponse(url: String, method: Alamofire.HTTPMethod, response: DataResponse<Any>,completion: completion = nil, completionProgress: completionProgress = nil){
         var connectionError: ConnectionError?
         let error = response.result.error
-        if error != nil || response.response?.statusCode != 200 {
+        if error != nil || (response.response?.statusCode)! < 200 || (response.response?.statusCode)! > 299  {
             connectionError = self.mappingConnectionError(response.response, error: error)
             if let completionHandler = completion {
                 completionHandler(nil, connectionError)
@@ -163,10 +163,14 @@ public final class RESTService {
         } else if let error = error, (error as NSError).domain == NSURLErrorDomain
             && (error as NSError).code == NSURLErrorTimedOut {
             connectionError = ConnectionError.requestTimedOut
+        } else if response?.statusCode == 500 {
+            connectionError = ConnectionError.internalServerError
         } else if response?.statusCode == 404 {
             connectionError = ConnectionError.requestNotFound
         } else if response?.statusCode == 401 {
             connectionError = ConnectionError.authenticationRequired
+        } else if response?.statusCode == 400 {
+            connectionError = ConnectionError.badRequest
         } else if let error = error {
             connectionError = ConnectionError.network(error: error)
         }

@@ -20,13 +20,7 @@ extension SendViewController {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.soloSDK?.api?.createNewBtcTransaction(transaction, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let connectionError = error {
-                    Utils.showError(connectionError)
-                }
-                return
-            }
-            completion(value, nil)
+            completion(value, error)
         }
     }
     
@@ -34,13 +28,7 @@ extension SendViewController {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.soloSDK?.api?.sendBtcTransaction(signedTx, network: network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            guard let value = value, error == nil else {
-                if let connectionError = error {
-                    Utils.showError(connectionError)
-                }
-                return
-            }
-            completion(value, nil)
+            completion(value, error)
         }
     }
 }

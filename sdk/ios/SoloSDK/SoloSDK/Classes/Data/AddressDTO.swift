@@ -22,6 +22,7 @@ public class AddressDTO: Equatable, ResponseObjectSerializable {
     public var isChild: Bool = false
     public var isCurrentAddress: Bool = false
     public var transactions: [TransactionHistoryDTO]?
+    public var contract: ContractDTO?
     
     // 1 coin = usd
     public var usd: Double?

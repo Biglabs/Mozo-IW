@@ -15,6 +15,7 @@ class SoloWalletViewController: UIViewController {
     
     let tabBarCtr = UITabBarController()
     internal var feed: AddressFeed?
+    internal var contractFeed: ContractFeed?
     var currentCoin: AddressDTO!
     var soloSDK: SoloSDK!
     /// All addresses
@@ -61,10 +62,16 @@ class SoloWalletViewController: UIViewController {
         // TODO: Check connection status here
         
         self.feed = AddressFeed.init(walletId, soloSDK: self.soloSDK)
+        self.contractFeed = ContractFeed.init(walletId, network: CoinNetwork.ETH_ROPSTEN.value, soloSDK: self.soloSDK)
         self.refreshAddress()
     }
     
     @objc func refreshAddress(_ sender: Any? = nil) {
+        self.contractFeed?.refresh(){ content, error in
+            if let connectionError = error {
+                Utils.showError(connectionError)
+            }
+        }
         self.feed?.refresh(){ content, error in
             self.completion(error: error)
         }
@@ -81,16 +88,16 @@ class SoloWalletViewController: UIViewController {
     
     private func completion(error: Error?){
         guard error == nil else {
-            // handle error screen
-            
+            if let connectionError = error {
+                Utils.showError(connectionError)
+            }
             return
         }
         if self.feed?.zeroData == true {
             // handle no data
             return
         }
-        
-        self.currentCoin = self.feed?.addresses?[1]
+        self.currentCoin = self.feed?.addresses?[0]
         self.getBalance()
         self.getTransactionHistories(blockHeight: nil)
 
@@ -99,6 +106,8 @@ class SoloWalletViewController: UIViewController {
         self.createMenuBarButton()
         self.createTabBarController()
     }
+    
+    // MARK: UI Initialization
     
     func createTitleView() {
         if let name = self.currentCoin?.coin {
@@ -150,11 +159,19 @@ class SoloWalletViewController: UIViewController {
                     child.network = address.network?.replace(address.coin!, withString: child.coin!)
                     child.isChild = true
                     child.transactions = []
+                    child.contract = self.getContractToken(coinType: child.coin!)
                     filterAddresses.append(child)
                 }
             }
         })
         return filterAddresses
+    }
+    
+    func getContractToken(coinType: String) -> ContractDTO?{
+        if let contracts = self.contractFeed?.contracts, contracts.count > 0 {
+            return contracts.first(where: { $0.symbol == coinType })!
+        }
+        return nil
     }
     
     func createSoloBarButton() {
@@ -249,7 +266,11 @@ class SoloWalletViewController: UIViewController {
         var amount = 0.0
         
         if let result = json["balance"].number {
-            amount = Utils.convertOutputValue(coinType: self.currentCoin.coin, value: result)
+            if self.currentCoin.isChild {
+                amount = Utils.convertOutputValueForToken(value: result, decimal: (self.currentCoin.contract?.decimals)!)
+            } else {
+                amount = Utils.convertOutputValue(coinType: self.currentCoin.coin, value: result)
+            }
         } else {return}
 
         self.currentCoin?.balance = amount
@@ -289,18 +310,18 @@ class SoloWalletViewController: UIViewController {
         }
     }
     
-    // MARK: Call APIs to get balance
+    // MARK: Call APIs to get balance and transaction hitory
     
     func getBalance(){
         switch self.currentCoin.coin {
-        case CoinType.ETH.key:
-            self.getETHBalance()
-        case CoinType.BTC.key:
-            self.getBTCBalance()
-        case CoinType.MOZO.key:
-            self.getTokenBalance()
-        default:
-            self.getUSD()
+            case CoinType.ETH.key:
+                self.getETHBalance()
+            case CoinType.BTC.key:
+                self.getBTCBalance()
+            case CoinType.MOZO.key:
+                self.getTokenBalance()
+            default:
+                self.getUSD()
         }
     }
     
@@ -341,7 +362,7 @@ class SoloWalletViewController: UIViewController {
         guard let address = self.currentCoin.address else {
             return
         }
-        self.soloSDK?.api?.getTokenBalance(address, network: self.currentCoin.network!, symbol: CoinType.MOZO.value) { (value, error) in
+        self.soloSDK?.api?.getTokenBalance(address, network: self.currentCoin.network!, contractAddress: (self.currentCoin.contract?.contractAddress)!) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {

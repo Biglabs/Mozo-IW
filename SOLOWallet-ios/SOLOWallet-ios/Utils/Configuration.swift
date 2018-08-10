@@ -40,6 +40,8 @@ public class Configuration {
                     return ROPSTEN_ETHERSCAN_URL
                 }
                 return BLOCK_CYPHER_ETH_VIEW_TRANSACTION
+            } else if coinType == CoinType.MOZO.key {
+                return ROPSTEN_ETHERSCAN_URL
             }
         }
         return ""

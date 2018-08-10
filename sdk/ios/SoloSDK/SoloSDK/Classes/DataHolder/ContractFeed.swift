@@ -1,41 +1,38 @@
 //
-//  AddressFeed.swift
-//  SOLOWallet-ios
+//  ContractFeed.swift
+//  SoloSDK
 //
-//  Created by Tam Nguyen on 6/27/18.
-//  Copyright © 2018 biglabs. All rights reserved.
+//  Created by Hoang Nguyen on 8/9/18.
 //
 
-
-import SoloSDK
 import SwiftyJSON
 
-public class AddressFeed: ContentFeed {
-    public private(set) var addresses: [AddressDTO]?
+public class ContractFeed: ContentFeed {
+    public private(set) var contracts: [ContractDTO]?
     private var soloSDK: SoloSDK!
+    private var network: String!
     
-    public init(_ id: String, soloSDK: SoloSDK) {
+    public init(_ id: String, network: String, soloSDK: SoloSDK) {
         super.init(id)
         self.soloSDK = soloSDK
+        self.network = network
     }
     
     override public func reset(){
         super.reset()
-        self.addresses = nil
+        self.contracts = nil
     }
     
     override public func getContent() -> Any? {
-        return self.addresses
+        return self.contracts
     }
     
     public override func loadContent(contentAndErrorCompletion: @escaping (Any?, Error?) -> ()){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.soloSDK?.api?.getAddresses(id) { value, error in
+        self.soloSDK?.api?.getAllTokenContracts(network) { value, error in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
-                if let connectionError = error {
-                    Utils.showError(connectionError)
-                }
+                contentAndErrorCompletion(nil, error)
                 return
             }
             
@@ -43,17 +40,14 @@ public class AddressFeed: ContentFeed {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
                 let json = SwiftyJSON.JSON(value)
                 
-                var items = [AddressDTO]()
+                var items = [ContractDTO]()
                 if let arr = json.array {
-                    items = arr.filter({ AddressDTO(json: $0) != nil }).map({ AddressDTO(json: $0)! })
+                    items = arr.filter({ ContractDTO(json: $0) != nil }).map({ ContractDTO(json: $0)! })
                 }
                 if items.count > 0 {
-                    self.addresses = items
+                    self.contracts = items
                 }
-                DispatchQueue.main.async {
-                    contentAndErrorCompletion(self.addresses, nil)
-                    
-                }
+                contentAndErrorCompletion(self.contracts, nil)
             }
         }
     }

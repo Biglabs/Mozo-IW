@@ -1,6 +1,6 @@
 //
 //  FeedProtocol.swift
-//  SOLOWallet-ios
+//  SoloSDK
 //
 //  Created by Tam Nguyen on 6/27/18.
 //  Copyright © 2018 biglabs. All rights reserved.

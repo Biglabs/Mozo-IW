@@ -1,13 +1,12 @@
 //
 //  ContentFeed.swift
-//  SOLOWallet-ios
+//  SoloSDK
 //
 //  Created by Tam Nguyen on 6/27/18.
 //  Copyright © 2018 biglabs. All rights reserved.
 //
 
 import Foundation
-import JDStatusBarNotification
 import SwiftyJSON
 
 open class ContentFeed: NSObject, FeedProtocol {
@@ -79,14 +78,6 @@ open class ContentFeed: NSObject, FeedProtocol {
                 self.zeroData = false
             }
             
-            guard error == nil else {
-                self.error = error
-                contentAndErrorCompletion(nil, error)
-                if let connectionError = error {
-                    Utils.showError(connectionError)
-                }
-                return
-            }
             contentAndErrorCompletion(content, error)
         }
     }

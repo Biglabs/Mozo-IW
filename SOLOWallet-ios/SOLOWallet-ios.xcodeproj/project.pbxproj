@@ -10,6 +10,7 @@
 		2050D26F21097BCE009A0ACF /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2050D26E21097BCD009A0ACF /* WalletListViewController.swift */; };
 		205DF05A211064E900A69141 /* MozoWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */; };
 		205DF05C211064FF00A69141 /* MozoWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */; };
+		2086DD8E211BF4B600063924 /* Token+SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2086DD8D211BF4B600063924 /* Token+SendViewController.swift */; };
 		2093A1B72100760600965D30 /* ReceiveTransactionValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A1B62100760600965D30 /* ReceiveTransactionValueCell.xib */; };
 		2093A1B92100767C00965D30 /* ReceiveTransactionValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093A1B82100767C00965D30 /* ReceiveTransactionValueCell.swift */; };
 		2093A1BB2100899B00965D30 /* GenerateTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2093A1BA2100899B00965D30 /* GenerateTransactionCell.xib */; };
@@ -19,7 +20,6 @@
 		C6134A2D20E3F4D300A5FE50 /* CoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6134A2C20E3F4D300A5FE50 /* CoinTableViewCell.xib */; };
 		C6134A4020E4843C00A5FE50 /* HandshakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A3F20E4843C00A5FE50 /* HandshakeView.swift */; };
 		C6134A4220E4844400A5FE50 /* HandshakeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6134A4120E4844400A5FE50 /* HandshakeView.xib */; };
-		C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6134A4320E49BA500A5FE50 /* AddressFeed.swift */; };
 		C616DEEF20D8BFA400258ACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C616DEEE20D8BFA400258ACE /* AppDelegate.swift */; };
 		C616DEF720D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C616DEF520D8BFA400258ACE /* SOLOWallet_ios.xcdatamodeld */; };
 		C616DEF920D8BFA700258ACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C616DEF820D8BFA700258ACE /* Assets.xcassets */; };
@@ -50,8 +50,6 @@
 		C69AF7CD20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7CC20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift */; };
 		C69AF7CF20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */; };
 		C69AF7D120DA602400C61FA4 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69AF7D020DA602400C61FA4 /* WalletViewController.swift */; };
-		C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */; };
-		C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */; };
 		C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5520DCB1BA009112FC /* Extensions.swift */; };
 		C6CD7F5A20DCB532009112FC /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CD7F5920DCB532009112FC /* Protocols.swift */; };
 		C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DC687520DE26E800000665 /* ScannerViewController.swift */; };
@@ -63,6 +61,7 @@
 		2050D26E21097BCD009A0ACF /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletListViewController.swift; sourceTree = "<group>"; };
 		205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MozoWalletTableViewCell.swift; sourceTree = "<group>"; };
 		205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MozoWalletTableViewCell.xib; sourceTree = "<group>"; };
+		2086DD8D211BF4B600063924 /* Token+SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Token+SendViewController.swift"; sourceTree = "<group>"; };
 		2093A1B62100760600965D30 /* ReceiveTransactionValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReceiveTransactionValueCell.xib; sourceTree = "<group>"; };
 		2093A1B82100767C00965D30 /* ReceiveTransactionValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveTransactionValueCell.swift; sourceTree = "<group>"; };
 		2093A1BA2100899B00965D30 /* GenerateTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenerateTransactionCell.xib; sourceTree = "<group>"; };
@@ -74,7 +73,6 @@
 		C6134A2C20E3F4D300A5FE50 /* CoinTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinTableViewCell.xib; sourceTree = "<group>"; };
 		C6134A3F20E4843C00A5FE50 /* HandshakeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeView.swift; sourceTree = "<group>"; };
 		C6134A4120E4844400A5FE50 /* HandshakeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HandshakeView.xib; sourceTree = "<group>"; };
-		C6134A4320E49BA500A5FE50 /* AddressFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressFeed.swift; sourceTree = "<group>"; };
 		C616DEEB20D8BFA400258ACE /* SOLOWallet-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOLOWallet-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C616DEEE20D8BFA400258ACE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C616DEF620D8BFA400258ACE /* SOLOWallet_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SOLOWallet_ios.xcdatamodel; sourceTree = "<group>"; };
@@ -108,8 +106,6 @@
 		C69AF7CC20DA5F8300C61FA4 /* ChangeWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeWalletTableViewCell.swift; sourceTree = "<group>"; };
 		C69AF7CE20DA5F8F00C61FA4 /* ChangeWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeWalletTableViewCell.xib; sourceTree = "<group>"; };
 		C69AF7D020DA602400C61FA4 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
-		C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFeed.swift; sourceTree = "<group>"; };
-		C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedProtocol.swift; sourceTree = "<group>"; };
 		C6CD7F5520DCB1BA009112FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C6CD7F5920DCB532009112FC /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		C6CD7F6120DCEC60009112FC /* SOLOWallet-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SOLOWallet-ios.entitlements"; sourceTree = "<group>"; };
@@ -156,7 +152,6 @@
 		C6134A2720E3F1EE00A5FE50 /* Portfolio */ = {
 			isa = PBXGroup;
 			children = (
-				C6134A4320E49BA500A5FE50 /* AddressFeed.swift */,
 				C6134A2820E3F31800A5FE50 /* PortfolioViewController.swift */,
 				C6134A2A20E3F4CA00A5FE50 /* CoinTableViewCell.swift */,
 				C6134A2C20E3F4D300A5FE50 /* CoinTableViewCell.xib */,
@@ -230,7 +225,6 @@
 				C616DF0620D8D86C00258ACE /* Send */,
 				C616DF0820D8D86C00258ACE /* Menu */,
 				C616DF4F20D9167200258ACE /* Common */,
-				C6D4F69D20E0C1F000A6EFE3 /* Extended */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -253,6 +247,7 @@
 				C616DF0C20D8D93400258ACE /* SendViewController.swift */,
 				C63080D320ECA3F1002E638E /* ETH+SendViewController.swift */,
 				C63080D520ECA582002E638E /* BTC+SendViewController.swift */,
+				2086DD8D211BF4B600063924 /* Token+SendViewController.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -322,15 +317,6 @@
 				C69AF7BC20DA142E00C61FA4 /* CoinDTO.swift */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		C6D4F69D20E0C1F000A6EFE3 /* Extended */ = {
-			isa = PBXGroup;
-			children = (
-				C6AF8A4E20E376BD00B61FAC /* ContentFeed.swift */,
-				C6AF8A5420E38B3400B61FAC /* FeedProtocol.swift */,
-			);
-			path = Extended;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -480,7 +466,6 @@
 				C6134A2920E3F31800A5FE50 /* PortfolioViewController.swift in Sources */,
 				2050D26F21097BCE009A0ACF /* WalletListViewController.swift in Sources */,
 				C6CD7F5620DCB1BA009112FC /* Extensions.swift in Sources */,
-				C6AF8A4F20E376BD00B61FAC /* ContentFeed.swift in Sources */,
 				C616DF1120D8D95800258ACE /* ExchangeViewController.swift in Sources */,
 				C63A844920DB88580073EB08 /* TransactionWalletTableViewCell.swift in Sources */,
 				C6134A2B20E3F4CA00A5FE50 /* CoinTableViewCell.swift in Sources */,
@@ -488,10 +473,9 @@
 				C616DF0D20D8D93400258ACE /* SendViewController.swift in Sources */,
 				C6DC687620DE26E800000665 /* ScannerViewController.swift in Sources */,
 				2093A1B92100767C00965D30 /* ReceiveTransactionValueCell.swift in Sources */,
-				C6134A4420E49BA600A5FE50 /* AddressFeed.swift in Sources */,
 				C616DF0F20D8D94500258ACE /* ReceiveViewController.swift in Sources */,
-				C6AF8A5520E38B3400B61FAC /* FeedProtocol.swift in Sources */,
 				C63A843F20DB42BB0073EB08 /* UILabel+Extension.swift in Sources */,
+				2086DD8E211BF4B600063924 /* Token+SendViewController.swift in Sources */,
 				C6228E5320EB2D1A004C37C2 /* Typealias.swift in Sources */,
 				C69AF7BD20DA142E00C61FA4 /* CoinDTO.swift in Sources */,
 				C63080D420ECA3F1002E638E /* ETH+SendViewController.swift in Sources */,

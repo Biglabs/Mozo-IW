@@ -49,8 +49,12 @@ public class TransactionWalletTableViewCell: UITableViewCell {
         if transaction.confirmations! <  6 {
             self.typeLabel.addTextWithColor(text: " - Unconfirmed", color: .red)
         }
-        
-        let value = Utils.convertOutputValue(coinType: address.coin, value: transaction.amount!)
+        var value = Double(0)
+        if address.isChild {
+            value = Utils.convertOutputValueForToken(value: transaction.amount!, decimal: (address.contract?.decimals)!)
+        } else {
+            value = Utils.convertOutputValue(coinType: address.coin, value: transaction.amount!)
+        }
         self.valueLabel.text = "\(value) \(address.coin ?? "")"
         self.valueHighlightLabel.text = "\(value) \(address.coin ?? "")"
         

@@ -124,7 +124,6 @@ class SendViewController: AbstractViewController {
     }
     
     @objc func addressTextFieldDidChange(_ textField: UITextField) {
-//        self.validateCurrentTransaction(isSigning: false)
     }
     
     override func updateAddress(_ sender: Any? = nil) {
@@ -184,57 +183,70 @@ class SendViewController: AbstractViewController {
             return
         }
         
-        self.validateCurrentTransaction(isSigning: true)
+        self.validateCurrentTransaction()
     }
     
-    func validateCurrentTransaction(isSigning: Bool){
+    func validateCurrentTransaction(){
         let input = InputDTO.init(addresses: [(self.currentCoin?.address)!])!
         let trimToAddress = self.addressTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         var value = 0.0
         if !(self.inputCoinTextField.text?.isEmpty)! {
             value = Double(self.inputCoinTextField.text!)!
         }
-        let txValue = value > 0.0 ? Utils.convertCoinValue(coinType: self.currentCoin?.coin, value: value) : 0
+        var txValue = NSNumber(value: 0)
+        if self.currentCoin?.isChild == true {
+            txValue = value > 0.0 ? Utils.convertTokenValue(value: value, decimal: (self.currentCoin?.contract?.decimals)!) : 0
+        } else {
+            txValue = value > 0.0 ? Utils.convertCoinValue(coinType: self.currentCoin?.coin, value: value) : 0
+        }
+        
         let output = OutputDTO.init(addresses: [trimToAddress!], value: txValue)!
         let transaction = TransactionDTO.init(inputs: [input], outputs: [output])
         
-        self.validateTransaction(transaction: transaction!, isSigning: isSigning)
+        self.validateTransaction(transaction: transaction!)
     }
         
-    func validateTransaction(transaction: TransactionDTO, isSigning: Bool){
+    func validateTransaction(transaction: TransactionDTO){
         let sv = self.displaySpinner(onView: self.view)
-        if self.currentCoin?.coin == CoinType.ETH.key {
-            self.createNewEthTx(transaction, network: (self.currentCoin?.network)!){value, error in
+        if self.currentCoin?.isChild == true {
+            self.createNewTokenTx(transaction, network: (self.currentCoin?.network)!, contractAddress: (self.currentCoin?.contract?.contractAddress)!){value, error in
                 self.removeSpinner(spinner: sv)
-                self.handleValidationResult(value: value, isSigning: isSigning)
+                self.handleValidationResult(value: value, error: error)
             }
-        } else if self.currentCoin?.coin == CoinType.BTC.key {
-            self.createNewBtcTx(transaction, network: (self.currentCoin?.network)!){value, error in
-                self.removeSpinner(spinner: sv)
-                self.handleValidationResult(value: value, isSigning: isSigning)
+        } else {
+            if self.currentCoin?.coin == CoinType.ETH.key {
+                self.createNewEthTx(transaction, network: (self.currentCoin?.network)!){value, error in
+                    self.removeSpinner(spinner: sv)
+                    self.handleValidationResult(value: value, error: error)
+                }
+            } else if self.currentCoin?.coin == CoinType.BTC.key {
+                self.createNewBtcTx(transaction, network: (self.currentCoin?.network)!){value, error in
+                    self.removeSpinner(spinner: sv)
+                    self.handleValidationResult(value: value, error: error)
+                }
             }
         }
     }
     
-    func handleValidationResult(value: Any?, isSigning: Bool){
-        if value != nil {
-            let json = SwiftyJSON.JSON(value!)
-            let interTx = IntermediaryTransactionDTO.init(json: json)!
-            if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
-                let error = ErrorDTO()
-                error?.detail = interTx.errors?.first
-                self.displayErrorAlert(error: error!)
-                return
+    func handleValidationResult(value: Any?, error: Error?){
+        guard let value = value, error == nil else {
+            if let connectionError = error {
+                Utils.showError(connectionError)
             }
-            if isSigning {
-                self.soloSDK.singner?.signTransaction(transaction: interTx, coinType: (self.currentCoin?.coin!)!, network: (self.currentCoin?.network)!){ result in
-                    self.handleSignResult(result:result)
-                }
-            } else {
-                let value = (interTx.tx?.fees)!
-                let fee = Utils.convertOutputValue(coinType: self.currentCoin?.coin, value: value)
-                self.gasTextField?.text = String(format: "%f", fee)
-            }
+            return
+        }
+        
+        let json = SwiftyJSON.JSON(value)
+        let interTx = IntermediaryTransactionDTO.init(json: json)!
+        if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
+            let error = ErrorDTO()
+            error?.detail = interTx.errors?.first
+            self.displayErrorAlert(error: error!)
+            return
+        }
+        
+        self.soloSDK.singner?.signTransaction(transaction: interTx, coinType: (self.currentCoin?.coin!)!, network: (self.currentCoin?.network)!){ result in
+            self.handleSignResult(result:result)
         }
     }
     
@@ -256,20 +268,33 @@ class SendViewController: AbstractViewController {
     private func sendFund(_ signedTx: String) {
         self.resetValue()
         let sv = self.displaySpinner(onView: self.view)
-        if self.currentCoin?.coin == CoinType.ETH.key {
-            self.sendETH(signedTx, network: (self.currentCoin?.network)!){value, error in
+        if self.currentCoin?.isChild == true {
+            self.sendTokenTx(signedTx, network: (self.currentCoin?.network)!, contractAddress: (self.currentCoin?.contract?.contractAddress)!){value, error in
                 self.removeSpinner(spinner: sv)
-                self.handleSendTxResponse(value: value!)
+                self.handleSendTxResponse(value: value!, error: error)
             }
-        } else if self.currentCoin?.coin == CoinType.BTC.key {
-            self.sendBTC(signedTx, network: (self.currentCoin?.network)!){value, error in
-                self.removeSpinner(spinner: sv)
-                self.handleSendTxResponse(value: value!)
+        } else {
+            if self.currentCoin?.coin == CoinType.ETH.key {
+                self.sendETH(signedTx, network: (self.currentCoin?.network)!){value, error in
+                    self.removeSpinner(spinner: sv)
+                    self.handleSendTxResponse(value: value!, error: error)
+                }
+            } else if self.currentCoin?.coin == CoinType.BTC.key {
+                self.sendBTC(signedTx, network: (self.currentCoin?.network)!){value, error in
+                    self.removeSpinner(spinner: sv)
+                    self.handleSendTxResponse(value: value!, error: error)
+                }
             }
         }
     }
     
-    func handleSendTxResponse(value: Any){
+    func handleSendTxResponse(value: Any?, error: Error?){
+        guard let value = value, error == nil else {
+            if let connectionError = error {
+                Utils.showError(connectionError)
+            }
+            return
+        }
         let json = SwiftyJSON.JSON(value)
         let interTx = IntermediaryTransactionDTO.init(json: json)!
         if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {

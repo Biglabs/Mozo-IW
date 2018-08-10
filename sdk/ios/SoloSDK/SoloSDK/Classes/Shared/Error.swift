@@ -15,6 +15,8 @@ public enum ConnectionError: Error {
     case requestNotFound
     case unknowError
     case authenticationRequired
+    case internalServerError
+    case badRequest
 }
 
 extension ConnectionError: LocalizedError {
@@ -32,6 +34,10 @@ extension ConnectionError: LocalizedError {
             return "Unknow error"
         case .authenticationRequired:
             return "Authentication Required"
+        case .internalServerError:
+            return "Internal Server error"
+        case .badRequest:
+            return "Bad request"
         }
     }
 }

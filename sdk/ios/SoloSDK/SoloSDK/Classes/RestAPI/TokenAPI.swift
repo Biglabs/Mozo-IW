@@ -8,16 +8,23 @@
 import Foundation
 
 public extension RESTService {
+    /// Call API to get all tokens in Ropsten.
+    public func getAllTokenContracts(_ network: String, completionHandler: completion = nil) {
+        let networkPath = self.extractNetworkPathFromText(network: network)
+        let url = Configuration.BASE_URL + "/api/contract/\(networkPath)"
+        return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
+    }
+    
     /// Call API to get token balance.
     ///
     /// - Parameters:
     ///   - address: the address
     ///   - network: the network
-    ///   - symbol: the symbol of token
+    ///   - contractAddress: the contract address of token
     ///   - completionHandler: handle after completed
-    public func getTokenBalance(_ address: String, network: String, symbol: String, completionHandler: completion = nil) {
+    public func getTokenBalance(_ address: String, network: String, contractAddress: String, completionHandler: completion = nil) {
         let networkPath = self.extractNetworkPathFromText(network: network)
-        let url = Configuration.BASE_URL + "/api/token/\(networkPath)/\(address)/balance?symbol=\(symbol)"
+        let url = Configuration.BASE_URL + "/api/contract/\(networkPath)/\(contractAddress)/balance?address=\(address)"
         return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
     }
     
@@ -25,10 +32,12 @@ public extension RESTService {
     ///
     /// - Parameters:
     ///   - transaction: the original transaction
+    ///   - network: the network
+    ///   - contractAddress: the contract address of token
     ///   - completionHandler: handle after completed
-    public func createNewTokenTransaction(_ transaction: TransactionDTO, network: String, completionHandler: completion = nil) {
+    public func createNewTokenTransaction(_ transaction: TransactionDTO, network: String, contractAddress: String, completionHandler: completion = nil) {
         let networkPath = self.extractNetworkPathFromText(network: network)
-        let url = Configuration.BASE_URL + "/api/token/\(networkPath)/txs/transfer"
+        let url = Configuration.BASE_URL + "/api/contract/\(networkPath)/\(contractAddress)/transfer"
         let param = transaction.toJSON()
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
     }
@@ -38,10 +47,11 @@ public extension RESTService {
     /// - Parameters:
     ///   - param: the parameters
     ///   - network: the network
+    ///   - contractAddress: the contract address of token
     ///   - completionHandler: handle after completed
-    public func sendTokenTransaction(_ param: Any, network: String, completionHandler: completion = nil) {
+    public func sendTokenTransaction(_ param: Any, network: String, contractAddress: String, completionHandler: completion = nil) {
         let networkPath = self.extractNetworkPathFromText(network: network)
-        let url = Configuration.BASE_URL + "/api/token/\(networkPath)/txs/send-transfer-tx"
+        let url = Configuration.BASE_URL + "/api/contract/\(networkPath)/\(contractAddress)/send-transfer-tx"
         return self.execute(.post, url: url, parameters: param, completionHandler: completionHandler)
     }
     
@@ -54,7 +64,7 @@ public extension RESTService {
     ///   - completionHandler: handle after completed
     public func getTokenTransactionHistories(_ address: String, network: String, blockHeight: Int64?, completionHandler: completion = nil) {
         let networkPath = self.extractNetworkPathFromText(network: network)
-        var url = Configuration.BASE_URL + "/api/token/\(networkPath)/addrs/\(address)/txhistory"
+        var url = Configuration.BASE_URL + "/api/contract/\(networkPath)/addrs/\(address)/txhistory"
         if blockHeight != nil {
             url += "?beforeHeight=" + String(blockHeight ?? 0)
         }
