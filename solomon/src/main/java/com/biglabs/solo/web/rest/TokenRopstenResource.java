@@ -13,6 +13,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -20,7 +21,6 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,16 +65,16 @@ public class TokenRopstenResource {
     /**
     * GET getBalance
     */
-    @GetMapping("/{contractAddress}/balance")
+    @GetMapping("/{contractAddress}/balance/{address}")
     @Timed
     public BCYAddress getBalance(@PathVariable String contractAddress,
-                                 @RequestParam(value = "address") String address) throws Exception {
+                                 @PathVariable String address) throws Exception {
 
         return ethClient.tokenBalance(contractAddress, address);
     }
 
     /**
-     * GET  /addrs/{address}/txhistory : get all the transaction history of an address.
+     * GET  /{contractAddress}/txhistory : get all the transaction history of an address.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of transaction history in body
      */
@@ -82,16 +82,20 @@ public class TokenRopstenResource {
     @Timed
     public List<EthTxHistory> getTxHistory(@PathVariable String contractAddress,
                                            @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight)  {
-//        log.debug("REST request to get transaction history of an address");
-//        Optional<WalletAddress> wa = waRepo.findFirstByAddress_Address(address);
-//        if (!wa.isPresent()) {
-//            throw new BadRequestAlertException("Address does not link to any wallet", "WalletAddress", "addressnotlinked");
-//        }
-//        List<WalletAddress> was = waRepo.findWalletAddressByWallet_WalletId(wa.get().getWallet().getWalletId());
-//        List<String> adrs = was.stream().map(e -> e.getAddress().getAddress()).collect(Collectors.toList());
-//        return ethClient.getAddressTxHistory(address, adrs, beforeHeight);
-        //TODO:
         return etherscanRopsten.getTokenTxs(contractAddress, beforeHeight);
+    }
+
+    /**
+     * GET  /{contractAddress}/txhistory/{address} : get all the transaction history of an address.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of transaction history in body
+     */
+    @GetMapping("/{contractAddress}/txhistory/{address}")
+    @Timed
+    public List<EthTxHistory> getTxHistoryByAddress(@PathVariable String contractAddress,
+                                                  @PathVariable String address,
+                                           @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight)  {
+        return etherscanRopsten.getTokenTxsByAddress(contractAddress, address, beforeHeight);
     }
 
     @PostMapping("/{contractAddress}/transfer")
