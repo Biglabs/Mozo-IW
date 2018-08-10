@@ -104,6 +104,53 @@ public class EtherscanRopsten {
         }
     }
 
+    public List<EthTxHistory> getTokenTxsByAddress(String contractAddress, String address, BigDecimal beforeHeight) {
+        if (!address2Contracts.containsKey(contractAddress)) {
+            throw new NotFoundException(MessageFormat.format("Cannot find contract at address {0}", contractAddress),
+                ErrorConstants.ErrorCode.CONTRACT_NOTFOUND);
+        }
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(ropstenURL)
+            .queryParam("module", "account")
+            .queryParam("action", "tokentx")
+            .queryParam("page", 1)
+            .queryParam("offset", 20)
+            .queryParam("sort", "desc")
+            .queryParam("apiKey", tokens.getToken())
+            .queryParam("contractaddress", contractAddress)
+            .queryParam("address", address);
+
+        if (beforeHeight != null) {
+            builder.queryParam("endblock", beforeHeight.subtract(BigDecimal.ONE));
+        }
+
+        try {
+            ResponseEntity<EscanResponse> ret = restTemplate.getForEntity(builder.toUriString(), EscanResponse.class);
+            List<EthTxHistory> txHistories = new ArrayList<>();
+            if (ret.getBody() == null) {
+                return txHistories;
+            }
+
+            for (EscanTransaction e: ret.getBody().getResult()) {
+                TokenTx t = decodeInput(e.getInput());
+                EthTxHistory txHistory;
+                // if input is not of type transfer or create considering
+                // this is an ETH transaction
+                if (t == null) {
+                    logger.info("Unrecognized contract transaction type of tx {}", e.getHash());
+                } else {
+                    Erc20Contract contract = address2Contracts.get(contractAddress);
+                    txHistory = transformTokenTx(e, t);
+                    txHistories.add(txHistory);
+                }
+            }
+
+            return txHistories;
+        } catch (HttpStatusCodeException ex) {
+            throw ex;
+        }
+    }
+
     public List<EthTxHistory> getNormalTxs(String address,  BigDecimal beforeHeight) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(ropstenURL)
             .queryParam("module", "account")
@@ -149,6 +196,7 @@ public class EtherscanRopsten {
         txHistory.setFees(fees);
         txHistory.setTime(e.getTimeStamp());
         txHistory.setTxHash(e.getHash());
+        txHistory.setAddressFrom(e.getFrom());
         if (t.action == CONTRACT_ACTION.TRANSFER) {
             txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
             txHistory.setAmount(t.value);
