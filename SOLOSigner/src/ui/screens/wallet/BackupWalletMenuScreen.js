@@ -15,7 +15,7 @@ export default class BackupWalletMenuScreen extends React.Component {
 
                 <TouchableOpacity
                     style={[styles.buttons, {marginTop: 20}]}
-                    onPress={() => Actions.backup_wallet({pin: this.props.pin})}>
+                    onPress={() => Actions.backup_wallet_encrypt({pin: this.props.pin})}>
                     <Text style={styles.buttons_text}>{strings('backup_wallet_menu.btnBackup')}</Text>
 
                     <BackupWalletStateIcon/>

@@ -20,7 +20,8 @@ import BackupWalletMenuScreen from './ui/screens/wallet/BackupWalletMenuScreen';
 import PaperWalletScreen from './ui/screens/wallet/PaperWalletScreen';
 
 /* backup screens */
-import BackupWalletScreen from './ui/screens/backup/BackupWalletScreen';
+import BackupWalletEncryptScreen from './ui/screens/backup/BackupWalletEncryptScreen';
+import BackupWalletExportScreen from './ui/screens/backup/BackupWalletExportScreen';
 import RestoreWalletScreen from './ui/screens/backup/RestoreWalletScreen';
 import BackupPhraseDisplayScreen from './ui/screens/backup/BackupPhraseDisplayScreen';
 import BackupPhraseConfirmScreen from './ui/screens/backup/BackupPhraseConfirmScreen';
@@ -65,7 +66,8 @@ export default () => {
                     <Scene key="paper_wallet" component={PaperWalletScreen} hideNavBar/>
 
                     {/* backup screens */}
-                    <Scene key="backup_wallet" component={BackupWalletScreen} hideNavBar/>
+                    <Scene key="backup_wallet_encrypt" component={BackupWalletEncryptScreen} hideNavBar/>
+                    <Scene key="backup_wallet_export" component={BackupWalletExportScreen} hideNavBar/>
                     <Scene key="backup_phrase_display" component={BackupPhraseDisplayScreen} hideNavBar
                            onEnter={() => {
                                this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {

@@ -1,3 +1,4 @@
+import {Platform} from "react-native";
 import RNFileSystem from "react-native-fs";
 import RNShare from "react-native-share";
 import RNFileSelector from "react-native-file-selector";
@@ -13,17 +14,13 @@ let ANDROID_BACKUP_FOLDER = `${RNFileSystem.ExternalStorageDirectoryPath}/Docume
 /**
  * Encrypt backup phrase (seed words) with password and save it to file
  *
- * @param {string}              pin             Security Pin for unlock local data
- * @param {string}              encryptPassword Password to encrypt wallet
  * @param {BACKUP_FILE_TYPE}    fileType        Export file type. @see Constant.BACKUP_FILE_TYPE
+ * @param {String}              encryptedData   Data for QR Code in encrypted status
  * @param {string}              qrCodeBase64    Base64 content for export QRCode image file
  * @returns {Promise<boolean>}                  Result is true if backup success or otherwise
  */
-async function backupWallet(pin, encryptPassword, fileType, qrCodeBase64 = null) {
-    if (!this.encryptedData) {
-        this.encryptedData = WalletBackupReference.encryptWallet(pin, encryptPassword);
-        if (!this.encryptedData) throw new Error(WalletBackupReference.ERROR.ENCRYPT_FAILED);
-    }
+async function backupWallet(fileType, encryptedData, qrCodeBase64 = null) {
+    if (!encryptedData) throw new Error(WalletBackupReference.ERROR.ENCRYPT_FAILED);
 
     const today = new Date();
     const filePath = `${ANDROID_BACKUP_FOLDER}/backup_wallet_${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}.${fileType}`;
@@ -45,7 +42,7 @@ async function backupWallet(pin, encryptPassword, fileType, qrCodeBase64 = null)
                 case Constant.BACKUP_FILE_TYPE.PNG:
                     return isIOS || RNFileSystem.writeFile(filePath, qrCodeBase64, 'base64');
                 case Constant.BACKUP_FILE_TYPE.TXT:
-                    return RNFileSystem.writeFile(filePath, this.encryptedData);
+                    return RNFileSystem.writeFile(filePath, encryptedData);
             }
         })
         .then(() => {

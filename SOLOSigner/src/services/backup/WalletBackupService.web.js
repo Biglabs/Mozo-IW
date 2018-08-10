@@ -8,24 +8,16 @@ import WalletBackupReference from './WalletBackupReference';
 /**
  * Encrypt backup phrase (seed words) with password and save it to file
  *
- * @param {String}              encryptedData   Data for QR Code in encrypted status
- * @param {String}              pin             Security Pin for unlock local data
- * @param {String}              encryptPassword Password to encrypt wallet
  * @param {String}              fileType        Export file type. @see Constant.BACKUP_FILE_TYPE
+ * @param {String}              encryptedData   Data for QR Code in encrypted status
  * @param {String}              qrCodeData      Data for generating QRCode image file
  * @returns {Promise<Boolean>}                  Result is true if backup success or otherwise
  */
-async function backupWallet(encryptedData, pin, encryptPassword, fileType, qrCodeData) {
+async function backupWallet(fileType, encryptedData, qrCodeData) {
     let fileContent = qrCodeData.props.value;
-    console.log(fileType.toUpperCase() === Constant.BACKUP_FILE_TYPE.TXT.toUpperCase());
-    if(fileType.toUpperCase() === Constant.BACKUP_FILE_TYPE.TXT.toUpperCase()) {
-        console.log("!encryptedData:" + encryptedData);
+    if(fileType === Constant.BACKUP_FILE_TYPE.TXT) {
         if (!encryptedData) {
-            encryptedData = WalletBackupReference.encryptWallet(pin, encryptPassword);
-            console.log("encryptedData: " + encryptedData)
-            if (!encryptedData){
-                throw new Error(WalletBackupReference.ERROR.ENCRYPT_FAILED);
-            }
+            throw new Error(WalletBackupReference.ERROR.ENCRYPT_FAILED);
         }
         fileContent = encryptedData;
     }
@@ -90,4 +82,3 @@ module.exports = {
     backupWallet: backupWallet,
     loadBackupFile: loadBackupFile,
 };
-
