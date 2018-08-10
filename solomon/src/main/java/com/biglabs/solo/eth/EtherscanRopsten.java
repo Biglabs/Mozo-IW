@@ -5,6 +5,8 @@ import com.biglabs.solo.eth.etherscan.EscanResponse;
 import com.biglabs.solo.eth.etherscan.EscanTransaction;
 import com.biglabs.solo.ropsten.ETHRopstenClient;
 import com.biglabs.solo.service.util.RoundrobinApiTokens;
+import com.biglabs.solo.web.rest.errors.ErrorConstants;
+import com.biglabs.solo.web.rest.errors.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +23,7 @@ import org.web3j.utils.Numeric;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +58,52 @@ public class EtherscanRopsten {
         logger.info("# \ttokens     :  {}", tokens.toString());
     }
 
+    public List<EthTxHistory> getTokenTxs(String contractAddress, BigDecimal beforeHeight) {
+        if (!address2Contracts.containsKey(contractAddress)) {
+            throw new NotFoundException(MessageFormat.format("Cannot find contract at address {0}", contractAddress),
+                ErrorConstants.ErrorCode.CONTRACT_NOTFOUND);
+        }
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(ropstenURL)
+            .queryParam("module", "account")
+            .queryParam("action", "tokentx")
+            .queryParam("page", 1)
+            .queryParam("offset", 20)
+            .queryParam("sort", "desc")
+            .queryParam("apiKey", tokens.getToken())
+            .queryParam("contractaddress", contractAddress);
+
+        if (beforeHeight != null) {
+            builder.queryParam("endblock", beforeHeight.subtract(BigDecimal.ONE));
+        }
+
+        try {
+            ResponseEntity<EscanResponse> ret = restTemplate.getForEntity(builder.toUriString(), EscanResponse.class);
+            List<EthTxHistory> txHistories = new ArrayList<>();
+            if (ret.getBody() == null) {
+                return txHistories;
+            }
+
+            for (EscanTransaction e: ret.getBody().getResult()) {
+                TokenTx t = decodeInput(e.getInput());
+                EthTxHistory txHistory;
+                // if input is not of type transfer or create considering
+                // this is an ETH transaction
+                if (t == null) {
+                    logger.info("Unrecognized contract transaction type of tx {}", e.getHash());
+                } else {
+                    Erc20Contract contract = address2Contracts.get(contractAddress);
+                    txHistory = transformTokenTx(e, t);
+                    txHistories.add(txHistory);
+                }
+            }
+
+            return txHistories;
+        } catch (HttpStatusCodeException ex) {
+            throw ex;
+        }
+    }
+
     public List<EthTxHistory> getNormalTxs(String address,  BigDecimal beforeHeight) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(ropstenURL)
             .queryParam("module", "account")
@@ -73,51 +122,14 @@ public class EtherscanRopsten {
             ResponseEntity<EscanResponse> ret = restTemplate.getForEntity(builder.toUriString(), EscanResponse.class);
             List<EthTxHistory> txHistories = new ArrayList<>();
             for (EscanTransaction e: ret.getBody().getResult()) {
-                EthTxHistory txHistory = new EthTxHistory();
-                txHistory.setBlockHeight(e.getBlockNumber());
-                txHistory.setConfirmations(e.getConfirmations());
-                BigDecimal fees = e.getGasPrice().multiply(e.getGasUsed());
-                txHistory.setFees(fees);
-                txHistory.setTime(e.getTimeStamp());
-                txHistory.setTxHash(e.getHash());
-
-
                 TokenTx t = decodeInput(e.getInput());
+                EthTxHistory txHistory ;
                 // if input is not of type transfer or create considering
                 // this is an ETH transaction
                 if (t == null) {
-                    txHistory.setAddressTo(e.getTo());
-                    txHistory.setAmount(e.getValue());
-                    txHistories.add(txHistory);
-                    if (txHistory.getAddressTo().equalsIgnoreCase(address)) {
-                        txHistory.setAction(ETH_TX_ACTION.RECEIVED);
-                    } else {
-                        txHistory.setAction(ETH_TX_ACTION.SENT);
-                    }
+                    txHistory = transfromNormalTx(address, e);
                 } else {
-                    if (t.action == CONTRACT_ACTION.TRANSFER) {
-                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
-                        txHistory.setAmount(t.value);
-                        txHistory.setAddressTo(t.to);
-                        txHistory.setContractAction(t.action);
-                    } else if (t.action == CONTRACT_ACTION.CREATE) {
-                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
-                        txHistory.setAddressTo(address);
-                        txHistory.setContractAction(t.action);
-                    }
-//                    else if (t.action == CONTRACT_ACTION.APPROVE) {
-//                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
-//                        txHistory.setContractAction(t.action);
-//                    } else if (t.action == CONTRACT_ACTION.TRANSFER_FROM) {
-//                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
-//                        txHistory.setContractAction(t.action);
-//                    }
-                    Erc20Contract contract = address2Contracts.get(e.getTo());
-                    if (contract != null) {
-                        txHistory.setSymbol(contract.getSymbol());
-                        txHistory.setDecimal(contract.getDecimals());
-                        txHistory.setContractAddress(contract.getContractAddress());
-                    }
+                    txHistory = transformTokenTx(e, t);
                 }
                 txHistories.add(txHistory);
             }
@@ -126,6 +138,59 @@ public class EtherscanRopsten {
         } catch (HttpStatusCodeException ex) {
             throw ex;
         }
+    }
+
+
+    private EthTxHistory transformTokenTx(EscanTransaction e, TokenTx t) {
+        EthTxHistory txHistory = new EthTxHistory();
+        txHistory.setBlockHeight(e.getBlockNumber());
+        txHistory.setConfirmations(e.getConfirmations());
+        BigDecimal fees = e.getGasPrice().multiply(e.getGasUsed());
+        txHistory.setFees(fees);
+        txHistory.setTime(e.getTimeStamp());
+        txHistory.setTxHash(e.getHash());
+        if (t.action == CONTRACT_ACTION.TRANSFER) {
+            txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+            txHistory.setAmount(t.value);
+            txHistory.setAddressTo(t.to);
+            txHistory.setContractAction(t.action);
+        } else if (t.action == CONTRACT_ACTION.CREATE) {
+            txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+            txHistory.setAddressTo(e.getTo());
+            txHistory.setContractAction(t.action);
+        }
+//                    else if (t.action == CONTRACT_ACTION.APPROVE) {
+//                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+//                        txHistory.setContractAction(t.action);
+//                    } else if (t.action == CONTRACT_ACTION.TRANSFER_FROM) {
+//                        txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
+//                        txHistory.setContractAction(t.action);
+//                    }
+        Erc20Contract contract = address2Contracts.get(e.getContractAddress());
+        if (contract != null) {
+            txHistory.setSymbol(contract.getSymbol());
+            txHistory.setDecimal(contract.getDecimals());
+            txHistory.setContractAddress(contract.getContractAddress());
+        }
+        return txHistory;
+    }
+
+    private EthTxHistory transfromNormalTx(String address, EscanTransaction e) {
+        EthTxHistory txHistory = new EthTxHistory();
+        txHistory.setBlockHeight(e.getBlockNumber());
+        txHistory.setConfirmations(e.getConfirmations());
+        BigDecimal fees = e.getGasPrice().multiply(e.getGasUsed());
+        txHistory.setFees(fees);
+        txHistory.setTime(e.getTimeStamp());
+        txHistory.setTxHash(e.getHash());
+        txHistory.setAddressTo(e.getTo());
+        txHistory.setAmount(e.getValue());
+        if (txHistory.getAddressTo().equalsIgnoreCase(address)) {
+            txHistory.setAction(ETH_TX_ACTION.RECEIVED);
+        } else {
+            txHistory.setAction(ETH_TX_ACTION.SENT);
+        }
+        return txHistory;
     }
 
     public enum CONTRACT_ACTION {

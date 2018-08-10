@@ -13,7 +13,7 @@ import java.math.BigInteger;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class EscanTransaction extends BCYAddress{
+public class EscanTransaction {
     private String from;
     private String to;
     private BigDecimal value;
