@@ -46,7 +46,10 @@
     },
     "restore_wallet": {
     },
-    "backup_wallet": {
+    "backup_wallet_encrypt": {
+
+    },
+    "backup_wallet_export": {
 
     },
     "backup_wallet_menu": {

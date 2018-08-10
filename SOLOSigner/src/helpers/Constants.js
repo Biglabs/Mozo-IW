@@ -59,6 +59,20 @@ const Constants = {
             icon: icCoinSolo
         },
     },
+    TOKEN_TYPE: {
+        MOZO: {
+            displayName: "MOZO",
+            name: "MOZO",
+            network: "MOZO",
+            icon: icCoinMozo
+        },
+        MOZO_ROPSTEN: {
+            displayName: "MOZO",
+            name: "MOZO",
+            network: "MOZO_ROPSTEN",
+            icon: icCoinMozo
+        }
+    },
     ERROR_TYPE: {
         UNKNOWN: {
             code: "ERR-000",

@@ -133,7 +133,7 @@ export default class ConfirmationScreen extends React.Component {
             );
         else {
             let toAddressCoinType = '';
-            let coin = Constant.COIN_TYPE[this.props.txData.coinType];
+            let coin = Constant.COIN_TYPE[this.props.txData.coinType] || Constant.TOKEN_TYPE[this.props.txData.coinType];
             if (coin) {
                 toAddressCoinType = coin.icon;
             }
