@@ -17,22 +17,16 @@ public class EthTxHistory {
     public BigDecimal fees;
     public BigDecimal amount;
     public Long time;
+    public String addressFrom;
     public String addressTo;
     public Long confirmations;
     public String message;
     public String contractAddress;
     public String symbol; //ETH or Token symbol
+    public EtherscanRopsten.CONTRACT_ACTION contractAction;
     public BigInteger decimal;
 
-    public EtherscanRopsten.CONTRACT_ACTION getContractAction() {
-        return contractAction;
-    }
 
-    public void setContractAction(EtherscanRopsten.CONTRACT_ACTION contractAction) {
-        this.contractAction = contractAction;
-    }
-
-    public EtherscanRopsten.CONTRACT_ACTION contractAction;
     @Override
     public String toString() {
         return "EthTxHistory{" +
@@ -49,6 +43,22 @@ public class EthTxHistory {
             ", symbol='" + symbol + '\'' +
             ", decimal=" + decimal +
             '}';
+    }
+
+    public EtherscanRopsten.CONTRACT_ACTION getContractAction() {
+        return contractAction;
+    }
+
+    public void setContractAction(EtherscanRopsten.CONTRACT_ACTION contractAction) {
+        this.contractAction = contractAction;
+    }
+
+    public String getAddressFrom() {
+        return addressFrom;
+    }
+
+    public void setAddressFrom(String addressFrom) {
+        this.addressFrom = addressFrom;
     }
 
     public String getTxHash() {

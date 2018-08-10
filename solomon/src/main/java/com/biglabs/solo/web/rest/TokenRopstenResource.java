@@ -2,12 +2,11 @@ package com.biglabs.solo.web.rest;
 
 import com.biglabs.solo.blockcypher.model.BCYAddress;
 import com.biglabs.solo.blockcypher.model.transaction.intermediary.EthIntermediaryTx;
-import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryTransaction;
 import com.biglabs.solo.eth.Erc20Contract;
+import com.biglabs.solo.eth.EthTxHistory;
+import com.biglabs.solo.eth.EtherscanRopsten;
 import com.biglabs.solo.repository.WalletAddressRepository;
 import com.biglabs.solo.ropsten.ETHRopstenClient;
-import com.biglabs.solo.web.rest.errors.BadRequestAlertException;
-import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
 import com.biglabs.solo.web.rest.vm.TokenTransactionRequest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -19,7 +18,9 @@ import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,10 +34,12 @@ public class TokenRopstenResource {
     private final Logger log = LoggerFactory.getLogger(TokenRopstenResource.class);
     private final ETHRopstenClient ethClient;
     private final WalletAddressRepository waRepo;
+    private final EtherscanRopsten etherscanRopsten;
 
-    public TokenRopstenResource(ETHRopstenClient ethTestnetClient, WalletAddressRepository waRepo) {
+    public TokenRopstenResource(ETHRopstenClient ethTestnetClient, WalletAddressRepository waRepo, EtherscanRopsten etherscanRopsten) {
         this.ethClient = ethTestnetClient;
         this.waRepo = waRepo;
+        this.etherscanRopsten = etherscanRopsten;
     }
 
     /**
@@ -69,27 +72,27 @@ public class TokenRopstenResource {
 
         return ethClient.tokenBalance(contractAddress, address);
     }
-//
-//    /**
-//     * GET  /addrs/{address}/txhistory : get all the transaction history of an address.
-//     *
-//     * @return the ResponseEntity with status 200 (OK) and the list of transaction history in body
-//     */
-//    @GetMapping("/addrs/{address}/txhistory")
-//    @Timed
-//    public List<TxHistory> getTxHistory(@PathVariable String address,
-//                                        @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight) throws BlockCypherException {
-////        log.debug("REST request to get transaction history of an address");
-////        Optional<WalletAddress> wa = waRepo.findFirstByAddress_Address(address);
-////        if (!wa.isPresent()) {
-////            throw new BadRequestAlertException("Address does not link to any wallet", "WalletAddress", "addressnotlinked");
-////        }
-////        List<WalletAddress> was = waRepo.findWalletAddressByWallet_WalletId(wa.get().getWallet().getWalletId());
-////        List<String> adrs = was.stream().map(e -> e.getAddress().getAddress()).collect(Collectors.toList());
-////        return ethClient.getAddressTxHistory(address, adrs, beforeHeight);
-//        //TODO:
-//        return Collections.emptyList();
-//    }
+
+    /**
+     * GET  /addrs/{address}/txhistory : get all the transaction history of an address.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of transaction history in body
+     */
+    @GetMapping("/{contractAddress}/txhistory")
+    @Timed
+    public List<EthTxHistory> getTxHistory(@PathVariable String contractAddress,
+                                           @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight)  {
+//        log.debug("REST request to get transaction history of an address");
+//        Optional<WalletAddress> wa = waRepo.findFirstByAddress_Address(address);
+//        if (!wa.isPresent()) {
+//            throw new BadRequestAlertException("Address does not link to any wallet", "WalletAddress", "addressnotlinked");
+//        }
+//        List<WalletAddress> was = waRepo.findWalletAddressByWallet_WalletId(wa.get().getWallet().getWalletId());
+//        List<String> adrs = was.stream().map(e -> e.getAddress().getAddress()).collect(Collectors.toList());
+//        return ethClient.getAddressTxHistory(address, adrs, beforeHeight);
+        //TODO:
+        return etherscanRopsten.getTokenTxs(contractAddress, beforeHeight);
+    }
 
     @PostMapping("/{contractAddress}/transfer")
     @Timed
