@@ -196,6 +196,7 @@ public class EtherscanRopsten {
         txHistory.setFees(fees);
         txHistory.setTime(e.getTimeStamp());
         txHistory.setTxHash(e.getHash());
+        txHistory.setAddressFrom(e.getFrom());
         if (t.action == CONTRACT_ACTION.TRANSFER) {
             txHistory.setAction(ETH_TX_ACTION.CALL_CONTRACT);
             txHistory.setAmount(t.value);
