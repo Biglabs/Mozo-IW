@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,8 +26,8 @@ public class BCYAddress {
     private Long n_tx;
     private Long unconfirmed_n_tx;
     private String tx_url;
-    private List<Transaction> txs;
-    private List<TransactionSummary> txrefs;
+    private List<Transaction> txs = new ArrayList<>();
+    private List<TransactionSummary> txrefs = new ArrayList<>();
 
     public String getAddress() {
         return address;

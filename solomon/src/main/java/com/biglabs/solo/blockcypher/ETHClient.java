@@ -28,10 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static  com.biglabs.solo.blockcypher.BlockCypherProperties.*;
@@ -205,7 +202,10 @@ public class ETHClient {
             }
             ResponseEntity<BCYAddress> ret = restTemplate.getForEntity(builder.toUriString(), BCYAddress.class);
             BCYAddress bcyAddress = ret.getBody();
-            List<Transaction> txs = bcyAddress.getTxs();
+            if (bcyAddress == null || bcyAddress.getTxrefs() == null) {
+                logger.info("No transaction found for address {} before height {}", addresses, beforeHeight);
+                return Collections.emptyList();
+            }
             logger.debug("Number of tx {}", bcyAddress.getTxrefs().size());
             return bcyAddress.getTxrefs().stream().map(tx -> fromTx(addresses, tx, siblingAddrs)).collect(Collectors.toList());
         } catch (HttpStatusCodeException ex) {

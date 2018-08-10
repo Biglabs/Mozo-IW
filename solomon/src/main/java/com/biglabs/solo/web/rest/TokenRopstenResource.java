@@ -42,7 +42,7 @@ public class TokenRopstenResource {
     /**
      * GET getBalance
      */
-    @GetMapping("/")
+    @GetMapping("")
     @Timed
     public ResponseEntity<List<Erc20Contract>> getAll() throws Exception {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ethClient.tokens()));
