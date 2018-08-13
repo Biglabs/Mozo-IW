@@ -40,11 +40,25 @@ public class TransactionWalletTableViewCell: UITableViewCell {
             self.monthLabel.text = Utils.convertInt64ToStringWithFormat(time, format: "MMM")
         }
         
-        if transaction.action == "SENT" {
+        var action = ""
+        
+        if address.isChild {
+            if address.address == transaction.addressTo {
+                // RECEIVED
+                action = "RECEIVED"
+            } else {
+                // TRANSFERRED
+                action = "TRANSFERRED"
+            }
+        } else {
+            action = transaction.action!
+        }
+        
+        if action != "RECEIVED" {
             self.valueHighlightLabel.textColor = ThemeManager.shared.title
         }
         
-        self.typeLabel.text = transaction.action?.lowercased().capitalizingFirstLetter()
+        self.typeLabel.text = action.lowercased().capitalizingFirstLetter()
         
         if transaction.confirmations! <  6 {
             self.typeLabel.addTextWithColor(text: " - Unconfirmed", color: .red)

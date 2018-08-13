@@ -310,7 +310,7 @@ class SoloWalletViewController: UIViewController {
         }
     }
     
-    // MARK: Call APIs to get balance and transaction hitory
+    // MARK: Call APIs to get balance
     
     func getBalance(){
         switch self.currentCoin.coin {
@@ -382,6 +382,8 @@ class SoloWalletViewController: UIViewController {
             self.getEthTransactionHistories(blockHeight: blockHeight)
         case CoinType.BTC.key:
             self.getBtcTransactionHistories(blockHeight: blockHeight)
+        case CoinType.MOZO.key:
+            self.getTokenTransactionHistories(blockHeight: blockHeight)
         default:
             break
         }
@@ -409,6 +411,23 @@ class SoloWalletViewController: UIViewController {
             return
         }
         self.soloSDK?.api?.getEthTransactionHistories(address, network: self.currentCoin.network!, blockHeight: blockHeight) { (value, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            guard let value = value, error == nil else {
+                if let connectionError = error {
+                    Utils.showError(connectionError)
+                }
+                return
+            }
+            let beginning = blockHeight == nil
+            self.displayTH(jsonStr: value, beginning: beginning)
+        }
+    }
+    
+    func getTokenTransactionHistories(blockHeight: Int64?){
+        guard let address = self.currentCoin.address else {
+            return
+        }
+        self.soloSDK?.api?.getTokenTransactionHistories(address, network: self.currentCoin.network!, contractAddress: (self.currentCoin.contract?.contractAddress)!, blockHeight: blockHeight) { (value, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let value = value, error == nil else {
                 if let connectionError = error {

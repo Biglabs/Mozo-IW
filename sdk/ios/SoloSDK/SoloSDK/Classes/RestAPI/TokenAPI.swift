@@ -24,7 +24,7 @@ public extension RESTService {
     ///   - completionHandler: handle after completed
     public func getTokenBalance(_ address: String, network: String, contractAddress: String, completionHandler: completion = nil) {
         let networkPath = self.extractNetworkPathFromText(network: network)
-        let url = Configuration.BASE_URL + "/api/contract/\(networkPath)/\(contractAddress)/balance?address=\(address)"
+        let url = Configuration.BASE_URL + "/api/contract/\(networkPath)/\(contractAddress)/balance/\(address)"
         return self.execute(.get, url: url, parameters: nil, completionHandler: completionHandler)
     }
     
@@ -62,9 +62,9 @@ public extension RESTService {
     ///   - network: the network
     ///   - blockHeight: the block height of a transaction history.
     ///   - completionHandler: handle after completed
-    public func getTokenTransactionHistories(_ address: String, network: String, blockHeight: Int64?, completionHandler: completion = nil) {
+    public func getTokenTransactionHistories(_ address: String, network: String, contractAddress: String, blockHeight: Int64?, completionHandler: completion = nil) {
         let networkPath = self.extractNetworkPathFromText(network: network)
-        var url = Configuration.BASE_URL + "/api/contract/\(networkPath)/addrs/\(address)/txhistory"
+        var url = Configuration.BASE_URL + "/api/contract/\(networkPath)/\(contractAddress)/txhistory/\(address)"
         if blockHeight != nil {
             url += "?beforeHeight=" + String(blockHeight ?? 0)
         }
