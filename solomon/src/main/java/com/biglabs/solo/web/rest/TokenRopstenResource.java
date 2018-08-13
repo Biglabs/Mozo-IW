@@ -7,13 +7,14 @@ import com.biglabs.solo.eth.EthTxHistory;
 import com.biglabs.solo.eth.EtherscanRopsten;
 import com.biglabs.solo.repository.WalletAddressRepository;
 import com.biglabs.solo.ropsten.ETHRopstenClient;
+import com.biglabs.solo.web.rest.errors.BadRequestAlertException;
 import com.biglabs.solo.web.rest.vm.TokenTransactionRequest;
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.base.Strings;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -35,6 +36,7 @@ public class TokenRopstenResource {
     private final ETHRopstenClient ethClient;
     private final WalletAddressRepository waRepo;
     private final EtherscanRopsten etherscanRopsten;
+    private final int ETH_HEX_ADDRESS_LEN = 40;
 
     public TokenRopstenResource(ETHRopstenClient ethTestnetClient, WalletAddressRepository waRepo, EtherscanRopsten etherscanRopsten) {
         this.ethClient = ethTestnetClient;
@@ -92,9 +94,10 @@ public class TokenRopstenResource {
      */
     @GetMapping("/{contractAddress}/txhistory/{address}")
     @Timed
-    public List<EthTxHistory> getTxHistoryByAddress(@PathVariable String contractAddress,
-                                                  @PathVariable String address,
-                                           @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight)  {
+    public List<EthTxHistory> getTxHistoryByAddress(
+            @PathVariable String contractAddress,
+            @PathVariable  String address,
+            @RequestParam(value = "beforeHeight", required = false) BigDecimal beforeHeight)  {
         return etherscanRopsten.getTokenTxsByAddress(contractAddress, address, beforeHeight);
     }
 
@@ -111,12 +114,24 @@ public class TokenRopstenResource {
     @PostMapping("/{contractAddress}/send-transfer-tx")
     @Timed
     public ResponseEntity<EthIntermediaryTx> sendTransferTx(
-        @PathVariable String contractAddress,
-        @Valid @RequestBody EthIntermediaryTx txReq) throws Exception {
+            @PathVariable String contractAddress,
+            @Valid @RequestBody EthIntermediaryTx txReq) throws Exception {
+        validateTokenTx(txReq);
         RemoteCall<EthSendTransaction> ethRespon = ethClient.transfer(contractAddress, txReq);
         txReq.getTx().setHash(ethRespon.send().getTransactionHash());
         return ResponseEntity.created(new URI("/api/btc/test/txs/" + txReq.getTx().getHash()))
             .body(txReq);
     }
 
+
+    private void validateTokenTx(EthIntermediaryTx txReq) {
+        if (null == txReq.getTx()) {
+            throw new BadRequestAlertException("Transaction object should not be null or empty", "transaction", "badrequest");
+        }
+
+        String data  = txReq.getTx().getData();
+        if (Strings.isNullOrEmpty(data) || data.equalsIgnoreCase("0x")) {
+            throw new BadRequestAlertException("Transaction data field should not be null or empty", "transaction", "badrequest");
+        }
+    }
 }

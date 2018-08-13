@@ -9,11 +9,9 @@ import com.biglabs.solo.blockcypher.model.transaction.intermediary.IntermediaryT
 import com.biglabs.solo.config.ApplicationProperties;
 import com.biglabs.solo.eth.Erc20Contract;
 import com.biglabs.solo.eth.EthHelpers;
-import com.biglabs.solo.web.rest.errors.ErrorConstants;
-import com.biglabs.solo.web.rest.errors.InternalServerErrorException;
-import com.biglabs.solo.web.rest.errors.JsonRpcException;
-import com.biglabs.solo.web.rest.errors.NotFoundException;
+import com.biglabs.solo.web.rest.errors.*;
 import com.biglabs.solo.web.rest.vm.EthTransactionRequest;
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

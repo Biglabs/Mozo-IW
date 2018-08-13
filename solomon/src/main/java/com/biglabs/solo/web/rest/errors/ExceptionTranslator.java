@@ -104,7 +104,6 @@ public class ExceptionTranslator implements ProblemHandling {
     public ResponseEntity<Problem> handleNotFoundException(NotFoundException ex, NativeWebRequest request) {
         Problem p = Problem.builder()
             .withStatus(Status.BAD_REQUEST)
-            .with("message", ex.getMessage())
             .with("error", ex.getMessage())
             .build();
 
@@ -115,7 +114,7 @@ public class ExceptionTranslator implements ProblemHandling {
     public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
             .withStatus(Status.CONFLICT)
-            .with("message", ErrorConstants.ERR_CONCURRENCY_FAILURE)
+//            .with("message", ErrorConstants.ERR_CONCURRENCY_FAILURE)
             .with("error", ex.getMessage())
             .build();
         return create(ex, problem, request);
