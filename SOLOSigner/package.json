@@ -4,24 +4,25 @@
   "private": true,
   "main": "./desktop/main.js",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "reset-cache": "react-native start --config=rn-cli.config.js --reset-cache",
+    "start": "node node_modules/react-native/local-cli/cli.js start --config=rn-cli.config.js --resetCache",
     "android": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android",
     "android-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android --variant=release",
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
     "ios-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios --configuration Release",
-    "test": "jest",
+    "test": "yarn --cwd './desktop/package.json'",
     "desktop": "yarn && webpack && electron ./desktop/main.js",
     "webpack": "webpack --progress",
     "webpack-server": "webpack-serve",
     "pack": "build --dir",
     "dist": "build",
     "build:win": "yarn --cwd './desktop/package.json --cwd '..'  && build --win --dir --x64",
-    "build:mac": "yarn --cwd './desktop/package.json --cwd '..'  && build --mac --dir",
+    "build:mac": "build --mac --dir",
     "build:linux": "build --linux --dir",
     "dist:win": "build --win --x64",
     "dist:linux": "build --linux",
     "dist:mac": "build --mac",
-    "test": "yarn --cwd './desktop/package.json'"
+    "zip": "cross-zip ./dist/SOLOSigner-0.0.1.dmg"
   },
   "rnpm": {
     "assets": [
@@ -116,10 +117,13 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-native": "4.0.0",
     "babel-preset-stage-3": "^6.24.1",
-    "electron": "^2.0.6",
-    "electron-builder": "^20.27.1",
+    "cross-zip-cli": "^1.0.0",
+    "electron": "2.0.2",
+    "electron-builder": "20.24.4",
     "eslint": "^5.2.0",
     "jest": "23.1.0",
+    "metro": "^0.43.5",
+    "metro-core": "^0.43.5",
     "react-test-renderer": "16.3.1",
     "rn-nodeify": "mvayngrib/rn-nodeify",
     "url-loader": "^1.0.1",
@@ -191,7 +195,7 @@
       "!node_modules/",
       {
         "from": "desktop/node_modules",
-        "to":   "node_modules"
+        "to": "node_modules"
       }
     ],
     "win": {
@@ -199,6 +203,9 @@
         "nsis"
       ],
       "icon": "./assets/icon/currency_yuan_yellow.ico"
+    },
+    "mac": {
+      "category": "signer.biglabs.com.crypto"
     },
     "linux": {
       "target": "deb",
