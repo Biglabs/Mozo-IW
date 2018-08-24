@@ -94,6 +94,7 @@
     "readable-stream": "1.0.33",
     "realm": "2.13.0",
     "save": "^2.3.2",
+    "simple-jsonrpc-js": "^0.0.10",
     "stream-browserify": "^1.0.0",
     "string_decoder": "~0.10.25",
     "svgs": "^3.2.1",
