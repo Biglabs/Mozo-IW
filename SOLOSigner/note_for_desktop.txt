@@ -105,6 +105,12 @@ desktop
   ]
 }
 
-8. To ensure your native dependencies are always matched electron version, simply add script "postinstall": "electron-builder install-app-deps" to your package.json.
+9. To ensure your native dependencies are always matched electron version, simply add script "postinstall": "electron-builder install-app-deps" to your package.json.
+
+10. In case of, build or package has error relate to not found "./build/Release/scrypt". Please open file node_modules/scrypt/index.js :
+Change: var scryptNative = require("./build/Release/scrypt")
+To: var scryptNative = require("scrypt")
+A better way is fork this repository and point to fork repository.
+
 
 
