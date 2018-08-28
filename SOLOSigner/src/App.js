@@ -1,6 +1,6 @@
 import React from 'react';
 import {BackHandler, Linking} from 'react-native';
-import {Modal, Router, Scene} from 'react-native-router-flux';
+import {Modal, Router, Scene, Actions} from 'react-native-router-flux';
 import {Provider} from "mobx-react";
 
 import stores from "./stores";
@@ -35,7 +35,17 @@ import {isWebPlatform} from "./helpers/PlatformUtils";
  */
 (function initServices() {
     if (isWebPlatform()) {
-
+        var {ipcRenderer, remote} = require('electron');
+        var main = remote.require("./main.js");
+        console.log("ipcRenderer: " + ipcRenderer);
+        // Listen for main message
+        ipcRenderer.on('open-import-wallet-screen', (event, arg) => {  
+            console.log("isWebPlatform: " + arg);
+            Actions.import_wallet();
+            // call method on main process
+            main.sendMessageToRender('Import wallet screen has been opened');
+        });
+        
     } else {
         const LinkingService = require("./services/LinkingService");
         Linking.getInitialURL().then((url) => {
