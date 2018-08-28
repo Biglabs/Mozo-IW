@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		201AFEA22133E23900651CCD /* WalletManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201AFEA12133E23900651CCD /* WalletManager.swift */; };
+		201AFEA62133E38400651CCD /* ModuleDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201AFEA52133E38400651CCD /* ModuleDependencies.swift */; };
+		201AFEA92134126600651CCD /* Mozo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 201AFEA82134126600651CCD /* Mozo.storyboard */; };
+		201AFEAB2134E62700651CCD /* WalletWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201AFEAA2134E62700651CCD /* WalletWireframe.swift */; };
+		201AFEAD2134F38D00651CCD /* StoryboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201AFEAC2134F38D00651CCD /* StoryboardManager.swift */; };
+		201AFEB12135037000651CCD /* MozoSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201AFEB02135037000651CCD /* MozoSDK.swift */; };
+		201F59352135354D00F925E8 /* PINViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F59342135354D00F925E8 /* PINViewController.swift */; };
+		201F59372135357900F925E8 /* PINViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F59362135357900F925E8 /* PINViewInterface.swift */; };
+		201F59392135398800F925E8 /* RootWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F59382135398700F925E8 /* RootWireframe.swift */; };
+		201F593B213539BE00F925E8 /* WalletPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593A213539BE00F925E8 /* WalletPresenter.swift */; };
+		201F593D21353ACD00F925E8 /* PINInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593C21353ACD00F925E8 /* PINInteractor.swift */; };
+		201F593F21353B4B00F925E8 /* PINInteractorIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593E21353B4B00F925E8 /* PINInteractorIO.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		201AFE7B2133A73A00651CCD /* MozoSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MozoSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		201AFE7F2133A73A00651CCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		201AFEA12133E23900651CCD /* WalletManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManager.swift; sourceTree = "<group>"; };
+		201AFEA52133E38400651CCD /* ModuleDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModuleDependencies.swift; sourceTree = "<group>"; };
+		201AFEA82134126600651CCD /* Mozo.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Mozo.storyboard; sourceTree = "<group>"; };
+		201AFEAA2134E62700651CCD /* WalletWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletWireframe.swift; sourceTree = "<group>"; };
+		201AFEAC2134F38D00651CCD /* StoryboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardManager.swift; sourceTree = "<group>"; };
+		201AFEB02135037000651CCD /* MozoSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MozoSDK.swift; sourceTree = "<group>"; };
+		201F59342135354D00F925E8 /* PINViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINViewController.swift; sourceTree = "<group>"; };
+		201F59362135357900F925E8 /* PINViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINViewInterface.swift; sourceTree = "<group>"; };
+		201F59382135398700F925E8 /* RootWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWireframe.swift; sourceTree = "<group>"; };
+		201F593A213539BE00F925E8 /* WalletPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletPresenter.swift; sourceTree = "<group>"; };
+		201F593C21353ACD00F925E8 /* PINInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINInteractor.swift; sourceTree = "<group>"; };
+		201F593E21353B4B00F925E8 /* PINInteractorIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINInteractorIO.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		201AFE772133A73A00651CCD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		201AFE712133A73A00651CCD = {
+			isa = PBXGroup;
+			children = (
+				201AFE7D2133A73A00651CCD /* MozoSDK */,
+				201AFE7C2133A73A00651CCD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		201AFE7C2133A73A00651CCD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE7B2133A73A00651CCD /* MozoSDK.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		201AFE7D2133A73A00651CCD /* MozoSDK */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE7F2133A73A00651CCD /* Info.plist */,
+				201AFE862133B1A800651CCD /* Classes */,
+			);
+			path = MozoSDK;
+			sourceTree = "<group>";
+		};
+		201AFE862133B1A800651CCD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				201AFEB02135037000651CCD /* MozoSDK.swift */,
+				201AFEA52133E38400651CCD /* ModuleDependencies.swift */,
+				201AFE882133B1EA00651CCD /* Common */,
+				201AFE872133B1D600651CCD /* Modules */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		201AFE872133B1D600651CCD /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE8E2133B72F00651CCD /* Auth */,
+				201AFE8D2133B72700651CCD /* Core */,
+				201AFE8F2133B74700651CCD /* Transaction */,
+				201AFE972133D1EE00651CCD /* Wallet */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		201AFE882133B1EA00651CCD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE8C2133B6DF00651CCD /* Model */,
+				201AFE8B2133B6B100651CCD /* View */,
+				201AFE892133B1F700651CCD /* Store */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		201AFE892133B1F700651CCD /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE8A2133B69300651CCD /* Entities */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		201AFE8A2133B69300651CCD /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		201AFE8B2133B6B100651CCD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				201F59382135398700F925E8 /* RootWireframe.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		201AFE8C2133B6DF00651CCD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		201AFE8D2133B72700651CCD /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				201AFEA72134025800651CCD /* User Interface */,
+				201AFE962133BAE300651CCD /* Module Interface */,
+				201AFE942133BA3100651CCD /* Business Logic */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		201AFE8E2133B72F00651CCD /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		201AFE8F2133B74700651CCD /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		201AFE942133BA3100651CCD /* Business Logic */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Business Logic";
+			sourceTree = "<group>";
+		};
+		201AFE962133BAE300651CCD /* Module Interface */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Module Interface";
+			sourceTree = "<group>";
+		};
+		201AFE972133D1EE00651CCD /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE9A2133D25200651CCD /* Business Logic */,
+				201AFE982133D1FF00651CCD /* Module Interface */,
+				201AFE992133D21000651CCD /* User Interface */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		201AFE982133D1FF00651CCD /* Module Interface */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Module Interface";
+			sourceTree = "<group>";
+		};
+		201AFE992133D21000651CCD /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE9D2133D28700651CCD /* Presenter */,
+				201AFE9E2133D28700651CCD /* Transition */,
+				201AFE9F2133D28700651CCD /* View */,
+				201AFEA02133D28700651CCD /* Wireframe */,
+			);
+			path = "User Interface";
+			sourceTree = "<group>";
+		};
+		201AFE9A2133D25200651CCD /* Business Logic */ = {
+			isa = PBXGroup;
+			children = (
+				201AFE9C2133D27200651CCD /* Interactor */,
+				201AFE9B2133D27200651CCD /* Manager */,
+			);
+			path = "Business Logic";
+			sourceTree = "<group>";
+		};
+		201AFE9B2133D27200651CCD /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				201AFEA12133E23900651CCD /* WalletManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		201AFE9C2133D27200651CCD /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				201F593C21353ACD00F925E8 /* PINInteractor.swift */,
+				201F593E21353B4B00F925E8 /* PINInteractorIO.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		201AFE9D2133D28700651CCD /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				201F593A213539BE00F925E8 /* WalletPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		201AFE9E2133D28700651CCD /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		201AFE9F2133D28700651CCD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				201F59342135354D00F925E8 /* PINViewController.swift */,
+				201F59362135357900F925E8 /* PINViewInterface.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		201AFEA02133D28700651CCD /* Wireframe */ = {
+			isa = PBXGroup;
+			children = (
+				201AFEAA2134E62700651CCD /* WalletWireframe.swift */,
+			);
+			path = Wireframe;
+			sourceTree = "<group>";
+		};
+		201AFEA72134025800651CCD /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				201AFEA82134126600651CCD /* Mozo.storyboard */,
+				201AFEAC2134F38D00651CCD /* StoryboardManager.swift */,
+			);
+			path = "User Interface";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		201AFE782133A73A00651CCD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		201AFE7A2133A73A00651CCD /* MozoSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 201AFE832133A73A00651CCD /* Build configuration list for PBXNativeTarget "MozoSDK" */;
+			buildPhases = (
+				201AFE762133A73A00651CCD /* Sources */,
+				201AFE772133A73A00651CCD /* Frameworks */,
+				201AFE782133A73A00651CCD /* Headers */,
+				201AFE792133A73A00651CCD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MozoSDK;
+			productName = MozoSDK;
+			productReference = 201AFE7B2133A73A00651CCD /* MozoSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		201AFE722133A73A00651CCD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = "Hoang Nguyen";
+				TargetAttributes = {
+					201AFE7A2133A73A00651CCD = {
+						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 0940;
+					};
+				};
+			};
+			buildConfigurationList = 201AFE752133A73A00651CCD /* Build configuration list for PBXProject "MozoSDK" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 201AFE712133A73A00651CCD;
+			productRefGroup = 201AFE7C2133A73A00651CCD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				201AFE7A2133A73A00651CCD /* MozoSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		201AFE792133A73A00651CCD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				201AFEA92134126600651CCD /* Mozo.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		201AFE762133A73A00651CCD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				201F59352135354D00F925E8 /* PINViewController.swift in Sources */,
+				201AFEA22133E23900651CCD /* WalletManager.swift in Sources */,
+				201F593B213539BE00F925E8 /* WalletPresenter.swift in Sources */,
+				201F59372135357900F925E8 /* PINViewInterface.swift in Sources */,
+				201AFEA62133E38400651CCD /* ModuleDependencies.swift in Sources */,
+				201F59392135398800F925E8 /* RootWireframe.swift in Sources */,
+				201F593D21353ACD00F925E8 /* PINInteractor.swift in Sources */,
+				201AFEAB2134E62700651CCD /* WalletWireframe.swift in Sources */,
+				201AFEB12135037000651CCD /* MozoSDK.swift in Sources */,
+				201AFEAD2134F38D00651CCD /* StoryboardManager.swift in Sources */,
+				201F593F21353B4B00F925E8 /* PINInteractorIO.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		201AFE812133A73A00651CCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		201AFE822133A73A00651CCD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		201AFE842133A73A00651CCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = MozoSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.mozo.shopper.MozoSDK;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		201AFE852133A73A00651CCD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = MozoSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.mozo.shopper.MozoSDK;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		201AFE752133A73A00651CCD /* Build configuration list for PBXProject "MozoSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				201AFE812133A73A00651CCD /* Debug */,
+				201AFE822133A73A00651CCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		201AFE832133A73A00651CCD /* Build configuration list for PBXNativeTarget "MozoSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				201AFE842133A73A00651CCD /* Debug */,
+				201AFE852133A73A00651CCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 201AFE722133A73A00651CCD /* Project object */;
+}
