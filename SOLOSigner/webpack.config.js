@@ -54,7 +54,6 @@ module.exports = {
             path.resolve(__dirname, './node_modules/realm'),
             path.resolve(__dirname, './node_modules/any-promise'),
             path.resolve(__dirname, './node_modules/react-native-router-flux'),
-  
           ],
       },
       {

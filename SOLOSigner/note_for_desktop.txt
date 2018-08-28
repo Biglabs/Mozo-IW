@@ -112,5 +112,8 @@ Change: var scryptNative = require("./build/Release/scrypt")
 To: var scryptNative = require("scrypt")
 A better way is fork this repository and point to fork repository.
 
+11. "postinstall": "npm rebuild grpc --runtime=electron --target=2.0.2 --dist-url=https://atom.io/download/electron"
+
+
 
 

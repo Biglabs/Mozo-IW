@@ -12,6 +12,14 @@ const PATH_APP_NODE_MODULES = path.join(__dirname, 'node_modules');
 require('module').globalPaths.push(PATH_APP_NODE_MODULES);
 console.log("PATH_APP_NODE_MODULES: " + PATH_APP_NODE_MODULES); */
 
+// start grpc server
+const grpcServer = require('./grpcserver/SignerGrpcServer');
+grpcServer.start();
+
+// start proxy server
+const proxy = require('./proxy/GrpcProxy');
+proxy.start();
+
 
 const { app, BrowserWindow } = require('electron');
 
@@ -53,6 +61,11 @@ const createWindow = () => {
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
+
+  /**
+   * expose mainWindow for outside
+   */
+  exports.mainWindow = mainWindow;
 }
 
 app.on('ready', () => {
@@ -139,30 +152,20 @@ function showErrorDialog() {
   })
 }
 
-function add(x, y){
-  console.log("Add function in main");
-  return x + y;
-}
+/**
+ * Demo for send message from main to render
+ * @param {*} param 
+ */
+exports.sendMessageToRender = (param) => {  
+  console.log("send-message-to-render: " + param);
+};
 
-//over ws
-var WebSocketServer = new require('ws');
-var JsonRPC = require('simple-jsonrpc-js');
- 
-var webSocketServer = new WebSocketServer.Server({
-    host: '0.0.0.0',
-    port: 8090
-}).on('connection', function(ws) {
-    var jrpc = new JsonRPC();
-    ws.jrpc = jrpc;
- 
-    ws.jrpc.toStream = function(message){
-        ws.send(message);
-    };
- 
-    ws.on('message', function(message) {
-        jrpc.messageHandler(message);
-    });
- 
-    jrpc.on('add', ['x', 'y'], add);
-    
-});
+/**
+ * sample for calling using rest client like Postman
+ * Method: POST
+ * Header: 
+ *  Accept: application/json
+ *  Content-Type: application/json
+ * Body content json with following format 
+ *  {"txId": "09011984"} 
+ */
