@@ -10,4 +10,5 @@
 #define SoloWalletHeader_h
 
 #import <MMDrawerController/MMDrawerController.h>
+#import <EstimoteSDK/EstimoteSDK.h>
 #endif /* SoloWalletHeader_h */

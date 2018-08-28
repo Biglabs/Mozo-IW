@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20116C552123D14B00541649 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20116C542123D14B00541649 /* SystemConfiguration.framework */; };
+		20116C572123D15300541649 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20116C562123D15300541649 /* CoreGraphics.framework */; };
 		2050D26F21097BCE009A0ACF /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2050D26E21097BCD009A0ACF /* WalletListViewController.swift */; };
 		205DF05A211064E900A69141 /* MozoWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */; };
 		205DF05C211064FF00A69141 /* MozoWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */; };
@@ -58,6 +60,8 @@
 
 /* Begin PBXFileReference section */
 		0045EC37FBFDDC830B859C64 /* Pods-SOLOWallet-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SOLOWallet-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-SOLOWallet-ios/Pods-SOLOWallet-ios.release.xcconfig"; sourceTree = "<group>"; };
+		20116C542123D14B00541649 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		20116C562123D15300541649 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2050D26E21097BCD009A0ACF /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletListViewController.swift; sourceTree = "<group>"; };
 		205DF059211064E900A69141 /* MozoWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MozoWalletTableViewCell.swift; sourceTree = "<group>"; };
 		205DF05B211064FF00A69141 /* MozoWalletTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MozoWalletTableViewCell.xib; sourceTree = "<group>"; };
@@ -117,6 +121,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20116C572123D15300541649 /* CoreGraphics.framework in Frameworks */,
+				20116C552123D14B00541649 /* SystemConfiguration.framework in Frameworks */,
 				F878161EA0161FDCA14FCAB3 /* Pods_SOLOWallet_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +141,8 @@
 		72A9A5814D0A3E2DFCAB009F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				20116C562123D15300541649 /* CoreGraphics.framework */,
+				20116C542123D14B00541649 /* SystemConfiguration.framework */,
 				79B0F5CBE6041892091DADBC /* Pods_SOLOWallet_ios.framework */,
 			);
 			name = Frameworks;
@@ -431,6 +439,7 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/JDStatusBarNotification/JDStatusBarNotification.framework",
 				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SoloSDK/SoloSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -440,6 +449,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JDStatusBarNotification.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SoloSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -635,6 +645,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.solowallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT_NAME}/SoloWalletHeader.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -655,6 +666,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.biglabs.solowallet.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT_NAME}/SoloWalletHeader.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

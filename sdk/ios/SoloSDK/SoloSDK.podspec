@@ -9,7 +9,11 @@
 Pod::Spec.new do |s|
   s.name             = 'SoloSDK'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of SoloSDK.'
+  s.summary = 'Mozo protocol toolkit for Swift'
+  s.description = <<-DESC
+                        The Mozo SDK is a Swift implementation of the Mozo protocol. This SDK was originally made by Hoang Nguyen. It allows maintaining authentication/authorization with Mozo Services, receiving Mozo lucky coins via beacons and buying/selling/transferring Mozo. It is also supporting UI components for authentication and buying/selling/transferring Mozo.
+                        ```
+                    DESC
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,14 +21,10 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
-
   s.homepage         = 'https://www.mozocoin.io/'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'tam.nguyen@big-labs.com' => 'tam.nguyen@big-labs.com' }
+  s.author           = { 'Mozo developers' => 'developer@mozocoin.io' }
   s.source           = { :git => 'https://github.com/Biglabs/Mozo-IW.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
@@ -40,5 +40,7 @@ TODO: Add long description of the pod here.
     s.dependency 'Alamofire', '~> 4.5.1'
     s.dependency 'Result', '~> 3.0.0'
     s.dependency 'SwiftyJSON', '~> 3.1.4'
-    
+    s.dependency 'PromiseKit/Alamofire', '~> 6.0'
+    s.dependency 'EstimoteSDK'
+    s.static_framework = true
 end

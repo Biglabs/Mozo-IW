@@ -34,7 +34,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Used to scan barcodes</string>
+	<string>Enable camera feature to scan QR Code.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This feature enables to detect that you are in a store.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Access user&apos;s location to determine the nearest store.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Access user&apos;s location to determine the nearest store.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>utm-avo.ttf</string>

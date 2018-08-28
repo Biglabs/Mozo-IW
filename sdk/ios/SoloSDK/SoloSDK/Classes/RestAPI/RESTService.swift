@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 import Alamofire
 
 public final class RESTService {
@@ -78,7 +79,7 @@ public final class RESTService {
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = headers
         request.httpBody = try! JSONSerialization.data(withJSONObject: body, options: [])
-        
+                
         self.client.request(request).responseJSON { response in
             guard let completionHandler = completionHandler else {return}
             self.checkResponse(url: url, method: method, response: response, completion: completionHandler)

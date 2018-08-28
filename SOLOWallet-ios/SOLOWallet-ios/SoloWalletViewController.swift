@@ -20,10 +20,11 @@ class SoloWalletViewController: UIViewController {
     var soloSDK: SoloSDK!
     /// All addresses
     var addresses: [AddressDTO]!
+    var iBeaconService: iBeaconService?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        iBeaconService = .init()
         self.buildCoverView()
     }
     
