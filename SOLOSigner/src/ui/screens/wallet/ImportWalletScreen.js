@@ -86,7 +86,7 @@ export default class ImportWalletScreen extends React.Component {
                         * {Constant.ERROR_TYPE.INVALID_BACKUP_PHRASE.detail}
                     </Text>
 
-                    <View style={styles.separator_container}>
+                    {/* <View style={styles.separator_container}>
                         <View style={styles.dash}/>
                         <Text style={styles.separator_text}>{strings('import_wallet.lbBetter')}</Text>
                         <View style={styles.dash}/>
@@ -94,7 +94,7 @@ export default class ImportWalletScreen extends React.Component {
                     <QRCodeScanner
                         cameraSize={180}
                         scanning={this.state.isScanningQRCode}
-                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/>
+                        onCodeRead={phrase => this.onSubmitPhrase(phrase)}/> */}
                 </ScrollView>
 
                 <ScreenFooterActions

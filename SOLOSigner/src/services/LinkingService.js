@@ -70,9 +70,17 @@ function manageScheme(data, pin){
 
 }
 
+function sendJsonDataToConfirm(jsonData) {
+    if (jsonData) {
+        CachingService.getInstance().setSchemeData(jsonData);
+        Globals.checkWalletExisting();
+    }
+}
+
 module.exports = {
     handleEventOpenUrl: handleEventOpenUrl,
     handleOpenURL: handleOpenURL,
     manageScheme: manageScheme,
-    checkScheme: checkScheme
+    checkScheme: checkScheme,
+    sendJsonDataToConfirm: sendJsonDataToConfirm
 };
