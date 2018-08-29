@@ -19,7 +19,7 @@
     "dist": "build",
     "build:win": "yarn --cwd './desktop/package.json --cwd '..'  && build --win --dir --x64",
     "build:mac": "build --mac --dir",
-    "build:linux": "build --linux --dir",
+    "build:linux": "cd desktop && yarn && cd .. && build --linux --dir",
     "dist:win": "build --win --x64",
     "dist:linux": "build --linux",
     "dist:mac": "build --mac",
