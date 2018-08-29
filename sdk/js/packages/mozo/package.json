@@ -1,0 +1,29 @@
+{
+  "name": "mozo",
+  "version": "0.0.1",
+  "description": "MOZO sdk for web app",
+  "keywords": [
+    "MOZO"
+  ],
+  "author": "Tuan Nguyen",
+  "homepage": "https://github.com/Biglabs/Mozo-IW#readme",
+  "license": "ISC",
+  "main": "lib/mozo.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Biglabs/Mozo-IW.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/Biglabs/Mozo-IW/issues"
+  }
+}
