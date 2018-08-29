@@ -32,16 +32,17 @@ var packageDefinition = protoLoader.loadSync(
 var sign_service_proto = grpc.loadPackageDefinition(packageDefinition).signService;
 
 /**
- * Implements the SayHello RPC method.
+ * Implements the sign RPC method.
  */
 
 function sign(call, callback) {
-  console.log("sign: " + call.request.txId);
+  let request_data = call.request;
+  request_data.action = "SIGN";
   const main = require('../main');
-  main.mainWindow.webContents.send('open-import-wallet-screen', call.request.txId);
+  main.mainWindow.webContents.send('open-confirm-transaction-screen', request_data);
   //require('electron').remote.getCurrentWindow().webContents.send('ping', 5);
 
-  callback(null, {result: "Your transaction id is " + call.request.txId});
+  callback(null, {result: "Your transaction id is aa"});
 }
 
 
@@ -54,7 +55,7 @@ module.exports.start = function () {
   grpcServer.addService(sign_service_proto.Transaction.service, {
     sign:sign
   });
-  grpcServer.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
+  grpcServer.bind('127.0.0.1:50051', grpc.ServerCredentials.createInsecure());
   grpcServer.start();
   console.log('GRPC Server is listening...');
 }

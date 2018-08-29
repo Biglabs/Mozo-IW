@@ -28,9 +28,9 @@ const { app, BrowserWindow } = require('electron');
  * In order to ensure ensuring that no more than one unique electron-settings instances don't exist simultaneously.
  * You must require electron-settings in the renderer process, use require('electron').remote.require('electron-settings').
  */
-const userReference = require('electron-settings');
+// const userReference = require('electron-settings');
 
-userReference.deleteAll();
+// userReference.deleteAll();
 
 let mainWindow = null;
 
@@ -167,5 +167,6 @@ exports.sendMessageToRender = (param) => {
  *  Accept: application/json
  *  Content-Type: application/json
  * Body content json with following format 
- *  {"txId": "09011984"} 
+ *  Proxy is listening on port 3000!
+ * {"coinType":"ETH","network":"ETH_TEST","params":{"tosign":["97d81abd54cae1648951f49..."],"tx":{"inputs":[{"addresses":["0x1a9acviads88"]}],"outputs":[{"addresses":["0x1234hjfnak"],"value":0.3}],"gas_price":2100,"gas_limit":300}},"action":"SIGN"}
  */

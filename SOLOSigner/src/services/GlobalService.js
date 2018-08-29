@@ -21,10 +21,10 @@ function responseToReceiver(result, jsonData) {
         action: jsonData.action,
         result: result,
     };
-    const responseUrl = `${jsonData.receiver}://${JSON.stringify(responseData)}`;
-    Linking.openURL(responseUrl).then().catch(error => 
-        console.log(error)
-    );
+    // const responseUrl = `${jsonData.receiver}://${JSON.stringify(responseData)}`;
+    // Linking.openURL(responseUrl).then().catch(error =>
+    //     console.log(error)
+    // );
 }
 
 function convertToHash(inputPIN){
