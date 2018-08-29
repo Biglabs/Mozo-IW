@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "main": "./desktop/main.js",
+  "homepage": "https://github.com/Biglabs/Mozo-IW",
   "scripts": {
     "reset-cache": "react-native start --config=rn-cli.config.js --reset-cache",
     "start": "node node_modules/react-native/local-cli/cli.js start --config=rn-cli.config.js --resetCache",
