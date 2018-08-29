@@ -35,13 +35,14 @@ import {isWebPlatform} from "./helpers/PlatformUtils";
  */
 (function initServices() {
     if (isWebPlatform()) {
+        const LinkingService = require("./services/LinkingService");
         var {ipcRenderer, remote} = require('electron');
         var main = remote.require("./main.js");
         console.log("ipcRenderer: " + ipcRenderer);
         // Listen for main message
-        ipcRenderer.on('open-import-wallet-screen', (event, arg) => {  
-            console.log("isWebPlatform: " + arg);
-            Actions.import_wallet();
+        ipcRenderer.on('open-confirm-transaction-screen', (event, arg) => {
+            let json_data = JSON.stringify(arg);
+            LinkingService.sendJsonDataToConfirm(json_data);
             // call method on main process
             main.sendMessageToRender('Import wallet screen has been opened');
         });

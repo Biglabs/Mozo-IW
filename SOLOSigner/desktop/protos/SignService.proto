@@ -18,13 +18,51 @@ package signService;
 
 // The greeting service definition.
 service Transaction {
-  // Sends a greeting
+  // Sends a request sign
   rpc sign (SignRequest) returns (SignReply) {}
 }
 
-// The request message containing the user's name.
+enum CoinType {
+  BTC = 0;
+  ETH = 1;
+  MOZO = 2;
+}
+
+enum NetworkType {
+  BTC = 0;
+  BTC_TEST = 1;
+  ETH = 2;
+  ETH_TEST = 3;
+  OFFCHAIN = 4;
+  OFFCHAIN_TEST = 5;
+}
+
+message Input {
+  repeated string addresses = 1;
+}
+
+message Output {
+  repeated string addresses = 1;
+  double value = 2;
+}
+
+message Tx {
+  repeated Input inputs = 1;
+  repeated Output outputs = 2;
+  uint32 gas_price = 3;
+  uint32 gas_limit = 4;
+}
+
+message Param {
+  Tx tx = 1;
+  repeated string tosign = 2;
+}
+
+// The request message containing the user's transaction.
 message SignRequest {
-  string txId = 1;
+  CoinType coinType = 1;
+  NetworkType network = 2;
+  Param params = 3;
 }
 
 // The response message containing the greetings
