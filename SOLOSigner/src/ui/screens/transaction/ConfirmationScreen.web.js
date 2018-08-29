@@ -1,5 +1,6 @@
 import React from "react";
 import {ActivityIndicator, Alert, AppState, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {SvgView} from "../../components"
 import {Actions} from 'react-native-router-flux';
 // import CountDown from 'react-native-countdown-component';
 

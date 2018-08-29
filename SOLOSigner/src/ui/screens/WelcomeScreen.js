@@ -46,9 +46,9 @@ export default class WelcomeScreen extends React.Component {
                             style={styles.buttons}
                             onPress={() => Actions.import_wallet()}/>
 
-                    <Button title={strings('welcome.btnRestore')}
+                    {/*<Button title={strings('welcome.btnRestore')}
                             style={styles.buttons}
-                            onPress={() => Actions.restore_wallet()}/>
+                            onPress={() => Actions.restore_wallet()}/> */}
                 </View>
             </View>
         );
