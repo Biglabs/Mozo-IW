@@ -1,14 +1,17 @@
 {
-  "name": "mozo",
+  "name": "mozo-js",
   "version": "0.0.1",
-  "description": "MOZO sdk for web app",
+  "description": "MOZO JS API",
   "keywords": [
-    "MOZO"
+    "MOZO",
+    "BTC",
+    "ETH",
+    "TOKEN-ERC20"
   ],
   "author": "Tuan Nguyen",
   "homepage": "https://github.com/Biglabs/Mozo-IW#readme",
-  "license": "ISC",
-  "main": "lib/mozo.js",
+  "license": "MIT",
+  "main": "lib/mozo-js.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
