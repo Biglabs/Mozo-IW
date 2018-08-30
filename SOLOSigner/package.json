@@ -7,11 +7,11 @@
   "scripts": {
     "reset-cache": "react-native start --config=rn-cli.config.js --reset-cache",
     "start": "node node_modules/react-native/local-cli/cli.js start --config=rn-cli.config.js --resetCache",
+    "postinstall": "npm rebuild --target=2.0.2 --runtime=electron --dist-url=https://atom.io/download/electron grpc",
     "android": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android",
     "android-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android --variant=release",
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
     "ios-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios --configuration Release",
-    "test": "yarn --cwd './desktop/package.json'",
     "desktop": "yarn && webpack && electron ./desktop/main.js",
     "webpack": "webpack --progress",
     "webpack-server": "webpack-serve",
