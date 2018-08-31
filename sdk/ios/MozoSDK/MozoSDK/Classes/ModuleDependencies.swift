@@ -28,7 +28,7 @@ class ModuleDependencies {
     }
     
     func installRootViewControllerIntoWindow(_ window: UIWindow) {
-        walletWireframe.presentPINInterfaceFromWindow(window)
+        walletWireframe.presentPassPhraseInterface()
     }
     
     func configureDependencies() {
@@ -40,11 +40,11 @@ class ModuleDependencies {
         
         let walletPresenter = WalletPresenter()
         
-        let pinInteractor = PINInteractor()
+        let walletInteractor = WalletInteractor()
         
-        pinInteractor.output = walletPresenter
+        walletInteractor.output = walletPresenter
         
-        walletPresenter.pinInteractor = pinInteractor
+        walletPresenter.walletInteractor = walletInteractor
         walletPresenter.walletWireframe = walletWireframe
         
         walletWireframe.walletPresenter = walletPresenter

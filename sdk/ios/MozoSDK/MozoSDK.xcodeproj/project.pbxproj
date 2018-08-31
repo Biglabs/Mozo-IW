@@ -17,8 +17,19 @@
 		201F59372135357900F925E8 /* PINViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F59362135357900F925E8 /* PINViewInterface.swift */; };
 		201F59392135398800F925E8 /* RootWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F59382135398700F925E8 /* RootWireframe.swift */; };
 		201F593B213539BE00F925E8 /* WalletPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593A213539BE00F925E8 /* WalletPresenter.swift */; };
-		201F593D21353ACD00F925E8 /* PINInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593C21353ACD00F925E8 /* PINInteractor.swift */; };
-		201F593F21353B4B00F925E8 /* PINInteractorIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593E21353B4B00F925E8 /* PINInteractorIO.swift */; };
+		201F593D21353ACD00F925E8 /* WalletInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593C21353ACD00F925E8 /* WalletInteractor.swift */; };
+		201F593F21353B4B00F925E8 /* WalletInteractorIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F593E21353B4B00F925E8 /* WalletInteractorIO.swift */; };
+		201F597A2135584100F925E8 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F59792135584100F925E8 /* ThemeManager.swift */; };
+		201F597D21355DA700F925E8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201F597C21355DA700F925E8 /* Extensions.swift */; };
+		208D579C2136858500C3444B /* ManagedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D579A2136858400C3444B /* ManagedUser.swift */; };
+		208D579D2136858500C3444B /* ManagedWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D579B2136858500C3444B /* ManagedWallet.swift */; };
+		208D57A921379A3200C3444B /* MozoBasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D57A821379A3200C3444B /* MozoBasicViewController.swift */; };
+		208D57AB21379A3F00C3444B /* MozoNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D57AA21379A3F00C3444B /* MozoNavigationController.swift */; };
+		20E4C61C2136383D006C58DE /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4C61B2136383D006C58DE /* CoreDataStore.swift */; };
+		20E4C61F21363D2A006C58DE /* Mozo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 20E4C61D21363D2A006C58DE /* Mozo.xcdatamodeld */; };
+		20E4C62521365934006C58DE /* WalletDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4C62421365934006C58DE /* WalletDataManager.swift */; };
+		20E4C627213659E2006C58DE /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4C626213659E2006C58DE /* WalletModel.swift */; };
+		20E4C62A21367678006C58DE /* WalletModuleInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4C62921367678006C58DE /* WalletModuleInterface.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,8 +45,19 @@
 		201F59362135357900F925E8 /* PINViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINViewInterface.swift; sourceTree = "<group>"; };
 		201F59382135398700F925E8 /* RootWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWireframe.swift; sourceTree = "<group>"; };
 		201F593A213539BE00F925E8 /* WalletPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletPresenter.swift; sourceTree = "<group>"; };
-		201F593C21353ACD00F925E8 /* PINInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINInteractor.swift; sourceTree = "<group>"; };
-		201F593E21353B4B00F925E8 /* PINInteractorIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINInteractorIO.swift; sourceTree = "<group>"; };
+		201F593C21353ACD00F925E8 /* WalletInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletInteractor.swift; sourceTree = "<group>"; };
+		201F593E21353B4B00F925E8 /* WalletInteractorIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletInteractorIO.swift; sourceTree = "<group>"; };
+		201F59792135584100F925E8 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		201F597C21355DA700F925E8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		208D579A2136858400C3444B /* ManagedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedUser.swift; sourceTree = "<group>"; };
+		208D579B2136858500C3444B /* ManagedWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedWallet.swift; sourceTree = "<group>"; };
+		208D57A821379A3200C3444B /* MozoBasicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MozoBasicViewController.swift; sourceTree = "<group>"; };
+		208D57AA21379A3F00C3444B /* MozoNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MozoNavigationController.swift; sourceTree = "<group>"; };
+		20E4C61B2136383D006C58DE /* CoreDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
+		20E4C61E21363D2A006C58DE /* Mozo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mozo.xcdatamodel; sourceTree = "<group>"; };
+		20E4C62421365934006C58DE /* WalletDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDataManager.swift; sourceTree = "<group>"; };
+		20E4C626213659E2006C58DE /* WalletModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletModel.swift; sourceTree = "<group>"; };
+		20E4C62921367678006C58DE /* WalletModuleInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletModuleInterface.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +121,8 @@
 		201AFE882133B1EA00651CCD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				201F597B21355D6D00F925E8 /* Extension */,
+				201F59782135582900F925E8 /* Theme */,
 				201AFE8C2133B6DF00651CCD /* Model */,
 				201AFE8B2133B6B100651CCD /* View */,
 				201AFE892133B1F700651CCD /* Store */,
@@ -110,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				201AFE8A2133B69300651CCD /* Entities */,
+				20E4C61B2136383D006C58DE /* CoreDataStore.swift */,
+				20E4C61D21363D2A006C58DE /* Mozo.xcdatamodeld */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -117,6 +143,8 @@
 		201AFE8A2133B69300651CCD /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				208D579A2136858400C3444B /* ManagedUser.swift */,
+				208D579B2136858500C3444B /* ManagedWallet.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -132,6 +160,7 @@
 		201AFE8C2133B6DF00651CCD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				20E4C626213659E2006C58DE /* WalletModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -187,6 +216,7 @@
 		201AFE982133D1FF00651CCD /* Module Interface */ = {
 			isa = PBXGroup;
 			children = (
+				20E4C62921367678006C58DE /* WalletModuleInterface.swift */,
 			);
 			path = "Module Interface";
 			sourceTree = "<group>";
@@ -215,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				201AFEA12133E23900651CCD /* WalletManager.swift */,
+				20E4C62421365934006C58DE /* WalletDataManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -222,8 +253,8 @@
 		201AFE9C2133D27200651CCD /* Interactor */ = {
 			isa = PBXGroup;
 			children = (
-				201F593C21353ACD00F925E8 /* PINInteractor.swift */,
-				201F593E21353B4B00F925E8 /* PINInteractorIO.swift */,
+				201F593C21353ACD00F925E8 /* WalletInteractor.swift */,
+				201F593E21353B4B00F925E8 /* WalletInteractorIO.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -263,10 +294,36 @@
 		201AFEA72134025800651CCD /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				208D57A5213799C500C3444B /* Base */,
 				201AFEA82134126600651CCD /* Mozo.storyboard */,
 				201AFEAC2134F38D00651CCD /* StoryboardManager.swift */,
 			);
 			path = "User Interface";
+			sourceTree = "<group>";
+		};
+		201F59782135582900F925E8 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				201F59792135584100F925E8 /* ThemeManager.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		201F597B21355D6D00F925E8 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				201F597C21355DA700F925E8 /* Extensions.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		208D57A5213799C500C3444B /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				208D57A821379A3200C3444B /* MozoBasicViewController.swift */,
+				208D57AA21379A3F00C3444B /* MozoNavigationController.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -348,17 +405,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208D579D2136858500C3444B /* ManagedWallet.swift in Sources */,
+				20E4C62521365934006C58DE /* WalletDataManager.swift in Sources */,
+				20E4C61C2136383D006C58DE /* CoreDataStore.swift in Sources */,
+				20E4C62A21367678006C58DE /* WalletModuleInterface.swift in Sources */,
+				208D579C2136858500C3444B /* ManagedUser.swift in Sources */,
+				20E4C627213659E2006C58DE /* WalletModel.swift in Sources */,
 				201F59352135354D00F925E8 /* PINViewController.swift in Sources */,
 				201AFEA22133E23900651CCD /* WalletManager.swift in Sources */,
+				208D57AB21379A3F00C3444B /* MozoNavigationController.swift in Sources */,
 				201F593B213539BE00F925E8 /* WalletPresenter.swift in Sources */,
 				201F59372135357900F925E8 /* PINViewInterface.swift in Sources */,
 				201AFEA62133E38400651CCD /* ModuleDependencies.swift in Sources */,
 				201F59392135398800F925E8 /* RootWireframe.swift in Sources */,
-				201F593D21353ACD00F925E8 /* PINInteractor.swift in Sources */,
+				201F593D21353ACD00F925E8 /* WalletInteractor.swift in Sources */,
+				208D57A921379A3200C3444B /* MozoBasicViewController.swift in Sources */,
+				20E4C61F21363D2A006C58DE /* Mozo.xcdatamodeld in Sources */,
 				201AFEAB2134E62700651CCD /* WalletWireframe.swift in Sources */,
+				201F597D21355DA700F925E8 /* Extensions.swift in Sources */,
 				201AFEB12135037000651CCD /* MozoSDK.swift in Sources */,
 				201AFEAD2134F38D00651CCD /* StoryboardManager.swift in Sources */,
-				201F593F21353B4B00F925E8 /* PINInteractorIO.swift in Sources */,
+				201F593F21353B4B00F925E8 /* WalletInteractorIO.swift in Sources */,
+				201F597A2135584100F925E8 /* ThemeManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +626,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		20E4C61D21363D2A006C58DE /* Mozo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				20E4C61E21363D2A006C58DE /* Mozo.xcdatamodel */,
+			);
+			currentVersion = 20E4C61E21363D2A006C58DE /* Mozo.xcdatamodel */;
+			path = Mozo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 201AFE722133A73A00651CCD /* Project object */;
 }

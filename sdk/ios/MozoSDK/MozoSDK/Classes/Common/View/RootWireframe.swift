@@ -10,18 +10,21 @@ import Foundation
 import UIKit
 
 class RootWireframe : NSObject {
-    func showViewController(_ viewController: UIViewController, inWindow: UIWindow) {
-        inWindow.rootViewController = viewController
-    }
+    let mozoNavigationController = MozoNavigationController()
     
     func showRootViewController(_ viewController: UIViewController, inWindow: UIWindow) {
-        let navigationController = navigationControllerFromWindow(inWindow)
-        navigationController.viewControllers = [viewController]
-//        navigationController.pushViewController(viewController, animated: true)
+        mozoNavigationController.viewControllers = [viewController]
+        if inWindow.rootViewController != nil {
+            let top = getTopViewController()
+            top?.present(mozoNavigationController, animated: true, completion: nil)
+        } else {
+            inWindow.rootViewController = mozoNavigationController
+        }
     }
     
-    func navigationControllerFromWindow(_ window: UIWindow) -> UINavigationController {
-        let navigationController = window.rootViewController as! UINavigationController
-        return navigationController
+    func getTopViewController() -> UIViewController! {
+        let appDelegate = UIApplication.shared.delegate
+        if let window = appDelegate!.window { return window?.visibleViewController }
+        return nil
     }
 }

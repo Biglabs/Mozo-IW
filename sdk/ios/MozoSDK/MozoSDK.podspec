@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = 'https://www.mozocoin.io/'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = "MIT"
+  s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Mozo developers' => 'developer@mozocoin.io' }
   s.source           = { :git => 'https://github.com/Biglabs/Mozo-IW.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
@@ -47,7 +47,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "MozoSDK/Classes/**/*.{swift}"
+  s.source_files  = "MozoSDK/Classes/**/*.{swift,xcdatamodeld,h}"
   s.resource_bundles = {
       'MozoSDK' => ['MozoSDK/Classes/**/*.{storyboard,xib}']
   }
@@ -77,11 +77,13 @@ Pod::Spec.new do |s|
   #
 
   # s.framework  = "SomeFramework"
+#  s.framework = 'MozoSDK/Classes/Framework/BitcoinKit.framework'
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
+#  s.vendored_frameworks = 'MozoSDK/Classes/Framework/BitcoinKit.framework'
   # s.library   = "iconv"
   # s.libraries = "iconv", "xml2"
-
+#  s.vendored_libraries = 'Libraries/openssl/lib/libcrypto.a', 'Libraries/secp256k1/lib/libsecp256k1.a'
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -90,13 +92,21 @@ Pod::Spec.new do |s|
   #  you can include multiple dependencies to ensure it works.
 
   # s.requires_arc = true
-
-  # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
+#  s.pod_target_xcconfig = { 'SWIFT_WHOLE_MODULE_OPTIMIZATION' => 'YES',
+#      'APPLICATION_EXTENSION_API_ONLY' => 'YES',
+#      'SWIFT_INCLUDE_PATHS' => '${PODS_ROOT}/Libraries',
+#      'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/Libraries/openssl/include" "${PODS_ROOT}/Libraries/secp256k1/include"',
+#      'LIBRARY_SEARCH_PATHS' => '"${PODS_ROOT}/Libraries/openssl/lib" "${PODS_ROOT}/Libraries/secp256k1/lib"' }
+#  s.preserve_paths = ['setup', 'Libraries']
+#  s.prepare_command = 'sh setup/build_libraries.sh'
+#  s.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => 'MozoSDK/Classes/Bridging-Header.h' }
   # s.dependency 'Alamofire', '~> 4.5.1'
   # s.dependency 'Result', '~> 3.0.0'
   # s.dependency 'SwiftyJSON', '~> 3.1.4'
   # s.dependency 'PromiseKit/Alamofire', '~> 6.0'
   # s.dependency 'EstimoteSDK'
   # s.static_framework = true
+  # s.dependency 'BitcoinKit'
   s.dependency 'SmileLock'
+  s.dependency 'web3swift'
 end

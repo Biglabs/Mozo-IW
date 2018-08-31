@@ -1,5 +1,5 @@
 //
-//  PINInteractorIO.swift
+//  WalletInteractorIO.swift
 //  MozoSDK
 //
 //  Created by Hoang Nguyen on 8/28/18.
@@ -8,12 +8,11 @@
 
 import Foundation
 
-
-protocol PINInteractorInput {
+protocol WalletInteractorInput {
     func savePIN(pin: String)
     func verifyPIN(rawPIN: String)
 }
 
-protocol PINInteractorOutput {
+protocol WalletInteractorOutput {
     func pinVerificationResult(result: Bool)
 }
