@@ -28,9 +28,9 @@ class WalletWireframe: NSObject {
     
     func presentPassPhraseInterface() {
         let viewController = PassPhraseViewControllerFromStoryboard()
-        //        viewController.eventHandler = walletPresenter
+        viewController.eventHandler = walletPresenter
         passPhraseViewController = viewController
-        //        walletPresenter?.userInterface = viewController
+        walletPresenter?.passPharseUserInterface = viewController
         rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
     }
     

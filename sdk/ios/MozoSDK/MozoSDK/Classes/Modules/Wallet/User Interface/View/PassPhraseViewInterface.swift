@@ -12,5 +12,5 @@ protocol PassPhraseViewInterface {
     //    func showNoContentMessage()
     //    func showUpcomingDisplayData(_ data: UpcomingDisplayData)
     //    func reloadEntries()
-    func showPassPhrase()
+    func showPassPhrase(passPharse: String)
 }

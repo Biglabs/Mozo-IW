@@ -57,14 +57,13 @@ class PassPhraseViewController: MozoBasicViewController {
     }
     
     @IBAction fileprivate func cancel(_ sender:AnyObject) {
-        self.passPhraseTextView!.resignFirstResponder()
-        self.dismiss(animated: true, completion:nil)
+        
     }
 }
 
 extension PassPhraseViewController: PassPhraseViewInterface {
-    func showPassPhrase() {
-        
+    func showPassPhrase(passPharse: String) {
+        self.passPhraseTextView?.text = passPharse
     }
     
     

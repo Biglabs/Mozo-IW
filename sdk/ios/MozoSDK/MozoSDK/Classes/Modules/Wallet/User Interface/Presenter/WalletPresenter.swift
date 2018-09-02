@@ -9,20 +9,25 @@
 import Foundation
 import UIKit
 
-class WalletPresenter : NSObject, WalletInteractorOutput {
+class WalletPresenter : NSObject {
     var walletInteractor : WalletInteractor?
     var walletWireframe : WalletWireframe?
     var pinUserInterface : PINViewInterface?
-    
-    // MARK: WalletInteractorOutput
-    
-    func pinVerificationResult(result: Bool) {
-        
-    }
+    var passPharseUserInterface : PassPhraseViewInterface?
 }
 
 extension WalletPresenter: WalletModuleInterface {
     func generateMnemonics() {
         walletInteractor?.generateMnemonics()
+    }
+}
+
+extension WalletPresenter: WalletInteractorOutput {
+    func pinVerificationResult(result: Bool) {
+        
+    }
+    
+    func generatedMnemonics(mnemonic: String) {
+        passPharseUserInterface?.showPassPhrase(passPharse: mnemonic)
     }
 }

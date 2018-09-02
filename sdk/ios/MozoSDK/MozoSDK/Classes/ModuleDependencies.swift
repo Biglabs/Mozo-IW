@@ -40,7 +40,9 @@ class ModuleDependencies {
         
         let walletPresenter = WalletPresenter()
         
-        let walletInteractor = WalletInteractor()
+        let walletManager = WalletManager()
+        let walletDataManager = WalletDataManager()
+        let walletInteractor = WalletInteractor(walletManager: walletManager, dataManager: walletDataManager)
         
         walletInteractor.output = walletPresenter
         

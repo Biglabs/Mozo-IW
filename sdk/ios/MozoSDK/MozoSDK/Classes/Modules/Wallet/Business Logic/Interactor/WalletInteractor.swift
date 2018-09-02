@@ -7,11 +7,20 @@
 //
 
 import Foundation
-import web3swift
 
-class WalletInteractor : NSObject, WalletInteractorInput {
+class WalletInteractor : NSObject {
     var output : WalletInteractorOutput?
     
+    let walletManager : WalletManager
+    let dataManager : WalletDataManager
+    
+    init(walletManager: WalletManager, dataManager: WalletDataManager) {
+        self.walletManager = walletManager
+        self.dataManager = dataManager
+    }
+}
+
+extension WalletInteractor : WalletInteractorInput {
     func savePIN(pin: String) {
         
     }
@@ -20,19 +29,8 @@ class WalletInteractor : NSObject, WalletInteractorInput {
         
     }
     
-    func generateMnemonics() {
-        let mnemonics = try! BIP39.generateMnemonics(bitsOfEntropy: 128)
-        let importedMnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo"
-        let seed = BIP39.seedFromMmemonics(importedMnemonic)
-        print("Seed: [\(seed?.toHexString())]")
-        
-        let path = "m/44'/60'/0'/0"
-        let keystore = try! BIP32Keystore(mnemonics: importedMnemonic, password: "", mnemonicsPassword: "", prefixPath: path)
-        let account = keystore!.addresses![0]
-        print("Address: [\(account.address)]")
-        let key = try! keystore!.UNSAFE_getPrivateKeyData(password: "", account: account)
-        print("Private key: [\(key.toHexString())]")
-        let pubKey = Web3.Utils.privateToPublic(key, compressed: true)
-        print("Public key: [\(pubKey?.toHexString())]")
+    func generateMnemonics(){
+        let mnemonics = walletManager.generateMnemonics()
+        output?.generatedMnemonics(mnemonic: mnemonics!)
     }
 }
