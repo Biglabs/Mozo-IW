@@ -9,8 +9,5 @@ import Foundation
 
 
 protocol PassPhraseViewInterface {
-    //    func showNoContentMessage()
-    //    func showUpcomingDisplayData(_ data: UpcomingDisplayData)
-    //    func reloadEntries()
     func showPassPhrase(passPharse: String)
 }

@@ -18,12 +18,13 @@ class WalletWireframe: NSObject {
     var pinViewController : PINViewController?
     var passPhraseViewController: PassPhraseViewController?
     
-    func presentPINInterfaceFromWindow(_ window: UIWindow) {
+    func presentPINInterface(passPharse: String?) {
         let viewController = PINViewControllerFromStoryboard()
-//        viewController.eventHandler = walletPresenter
+        viewController.eventHandler = walletPresenter
+        viewController.passPhrase = passPharse
         pinViewController = viewController
-//        walletPresenter?.userInterface = viewController
-//        rootWireframe?.showViewController(viewController, inWindow: window)
+        walletPresenter?.pinUserInterface = viewController
+        rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
     }
     
     func presentPassPhraseInterface() {
@@ -32,6 +33,10 @@ class WalletWireframe: NSObject {
         passPhraseViewController = viewController
         walletPresenter?.passPharseUserInterface = viewController
         rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
+    }
+    
+    func dismissWalletInterface() {
+        
     }
     
     func PINViewControllerFromStoryboard() -> PINViewController {

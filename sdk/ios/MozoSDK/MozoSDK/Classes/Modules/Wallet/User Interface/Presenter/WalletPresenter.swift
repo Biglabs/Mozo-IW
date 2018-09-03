@@ -17,17 +17,49 @@ class WalletPresenter : NSObject {
 }
 
 extension WalletPresenter: WalletModuleInterface {
+    func enterPIN(pin: String) {
+        walletInteractor?.handleEnterPIN(pin: pin)
+    }
+    
+    func verifyPIN(pin: String) {
+        walletInteractor?.verifyPIN(rawPIN: pin)
+    }
+    
+    func manageWallet(passPhrase: String?, pin: String) {
+        walletInteractor?.manageWallet(passPhrase, pin: pin)
+    }
+    
+    func verifyConfirmPIN(pin: String, confirmPin: String) {
+        walletInteractor?.verifyConfirmPIN(pin: pin, confirmPin: confirmPin)
+    }
+    
     func generateMnemonics() {
         walletInteractor?.generateMnemonics()
+    }
+    
+    func skipShowPassPharse(passPharse: String) {
+        walletWireframe?.presentPINInterface(passPharse: passPharse)
     }
 }
 
 extension WalletPresenter: WalletInteractorOutput {
-    func pinVerificationResult(result: Bool) {
-        
+    func showConfirmPIN() {
+        pinUserInterface?.showConfirmPIN()
+    }
+    
+    func showCreatingInterface() {
+        pinUserInterface?.showCreatingInterface()
+    }
+    
+    func showVerificationFailed() {
+        pinUserInterface?.showVerificationFailed()
     }
     
     func generatedMnemonics(mnemonic: String) {
         passPharseUserInterface?.showPassPhrase(passPharse: mnemonic)
+    }
+    
+    func dismissWalletInterface() {
+        walletWireframe?.dismissWalletInterface()
     }
 }

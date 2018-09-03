@@ -10,11 +10,8 @@ import UIKit
 
 public class StoryboardManager {
     public static func mozoStoryboard() -> UIStoryboard{
-        let podBundle = Bundle.init(for: MozoSDK.self)
-        
-        let bundleURL = podBundle.url(forResource: "MozoSDK", withExtension: "bundle")
-        let bundle = Bundle.init(url: bundleURL!)!
-        let storyboard = UIStoryboard(name: "Mozo", bundle: bundle)
+        let mozoBundle = BundleManager.mozoBundle()
+        let storyboard = UIStoryboard(name: "Mozo", bundle: mozoBundle)
         
         return storyboard
     }

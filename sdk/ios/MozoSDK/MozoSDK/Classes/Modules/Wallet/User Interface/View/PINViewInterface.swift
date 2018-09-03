@@ -9,7 +9,7 @@
 import Foundation
 
 protocol PINViewInterface {
-//    func showNoContentMessage()
-//    func showUpcomingDisplayData(_ data: UpcomingDisplayData)
-//    func reloadEntries()
+    func showConfirmPIN()
+    func showVerificationFailed()
+    func showCreatingInterface()
 }

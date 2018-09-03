@@ -57,7 +57,9 @@ class PassPhraseViewController: MozoBasicViewController {
     }
     
     @IBAction fileprivate func cancel(_ sender:AnyObject) {
-        
+        if let passPhrase = self.passPhraseTextView?.text {
+            eventHandler?.skipShowPassPharse(passPharse: passPhrase)
+        }
     }
 }
 

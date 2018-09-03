@@ -10,6 +10,6 @@ import Foundation
 public class MozoBasicViewController : UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
-        //        self.view.backgroundColor = ThemeManager.shared.background
+        self.navigationController?.navigationBar.isHidden = true
     }
 }

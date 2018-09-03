@@ -47,7 +47,8 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "MozoSDK/Classes/**/*.{swift,xcdatamodeld,h}"
+  s.source_files  = "MozoSDK/Classes/**/*.{swift}"
+  s.resources = 'MozoSDK/Classes/**/*.xcdatamodeld'
   s.resource_bundles = {
       'MozoSDK' => ['MozoSDK/Classes/**/*.{storyboard,xib}']
   }

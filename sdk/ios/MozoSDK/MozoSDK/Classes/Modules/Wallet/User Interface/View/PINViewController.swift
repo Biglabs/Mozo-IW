@@ -10,11 +10,14 @@ import Foundation
 import UIKit
 import SmileLock
 
-class PINViewController : MozoBasicViewController, PINViewInterface {
+class PINViewController : MozoBasicViewController {
     @IBOutlet weak var passwordStackView: UIStackView!
     @IBOutlet weak var enterPINLabel: UILabel!
     
     var eventHandler : WalletModuleInterface?
+    var passPhrase : String?
+    private var pin : String?
+    private var isConfirm = false
     
     //MARK: Property
     var passwordContainerView: PasswordContainerView!
@@ -33,15 +36,67 @@ class PINViewController : MozoBasicViewController, PINViewInterface {
         passwordContainerView.delegate = self
         
         passwordContainerView.highlightedColor = UIColor.blue
+        
+        if self.passPhrase != nil {
+            // Enter new pin and confirm new pin
+            enterPINLabel.text = "Enter new PIN"
+        }
+    }
+}
+
+extension PINViewController : PINViewInterface {
+    func showCreatingInterface() {
+        eventHandler?.manageWallet(passPhrase: passPhrase, pin: pin!)
+        
+        var activityIndicator = UIActivityIndicatorView()
+        var strLabel = UILabel()
+        
+        let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        
+//        strLabel.removeFromSuperview()
+//        activityIndicator.removeFromSuperview()
+//        effectView.removeFromSuperview()
+        
+        strLabel = UILabel(frame: CGRect(x: 40, y: 0, width: 180, height: 46))
+        strLabel.text = "Creating Interfaces"
+        strLabel.font = .systemFont(ofSize: 14)
+        strLabel.textColor = UIColor(white: 0.9, alpha: 0.7)
+        
+        effectView.frame = CGRect(x: view.frame.midX - strLabel.frame.width/2, y: view.frame.midY - strLabel.frame.height/2 , width: 180, height: 46)
+        effectView.layer.cornerRadius = 15
+        effectView.layer.masksToBounds = true
+        
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        activityIndicator.frame = CGRect(x: 0, y: 0, width: 46, height: 46)
+        activityIndicator.startAnimating()
+        
+        effectView.contentView.addSubview(activityIndicator)
+        effectView.contentView.addSubview(strLabel)
+        view.addSubview(effectView)
+    }
+    
+    func showVerificationFailed() {
+        validationFail()
+    }
+    
+    func showConfirmPIN() {
+        passwordContainerView.clearInput()
+        enterPINLabel.text = "Confirm PIN"
+        isConfirm = true
     }
 }
 
 extension PINViewController: PasswordInputCompleteProtocol {
     func passwordInputComplete(_ passwordContainerView: PasswordContainerView, input: String) {
-        if validation(input) {
-            validationSuccess()
+        if !isConfirm {
+            if self.passPhrase != nil {
+                pin = input
+                eventHandler?.enterPIN(pin: input)
+            } else {
+                eventHandler?.verifyPIN(pin: input)
+            }
         } else {
-            validationFail()
+            eventHandler?.verifyConfirmPIN(pin: pin!, confirmPin: input)
         }
     }
     
@@ -55,13 +110,17 @@ extension PINViewController: PasswordInputCompleteProtocol {
 }
 
 private extension PINViewController {
+    func pinValidation(_ input: String) -> Bool {
+        return true
+    }
+    
     func validation(_ input: String) -> Bool {
-        return input == "123456"
+        return input == self.pin
     }
     
     func validationSuccess() {
         print("*️⃣ success!")
-        dismiss(animated: true, completion: nil)
+        
     }
     
     func validationFail() {

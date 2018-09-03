@@ -43,6 +43,15 @@ class WalletManager : NSObject {
         return mnemonics
     }
     
+    func createNewWallet(mnemonics: String) -> WalletModel {
+        let path = "m/44'/60'/0'/0"
+        let keystore = try! BIP32Keystore(mnemonics: mnemonics, password: "", mnemonicsPassword: "", prefixPath: path)
+        let account = keystore!.addresses![0]
+        let key = try! keystore!.UNSAFE_getPrivateKeyData(password: "", account: account)
+        let wallet = WalletModel.init(address: account.address, privateKey: key.toHexString())
+        return wallet
+    }
+    
     func printTest() {
         let importedMnemonic = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo"
         let seed = BIP39.seedFromMmemonics(importedMnemonic)

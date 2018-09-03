@@ -9,6 +9,10 @@
 import Foundation
 import CoreData
 
+@objc(ManagedUser)
 class ManagedUser : NSManagedObject {
-    
+    @NSManaged var id : String?
+    @NSManaged var mnemonics : String?
+    @NSManaged var pin : String?
+    @NSManaged var wallets: NSSet?
 }

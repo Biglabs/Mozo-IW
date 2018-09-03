@@ -18,4 +18,20 @@ class WalletDataManager : NSObject {
         
         coreDataStore?.save()
     }
+    
+    func getWallet(completion: (([WalletModel]) -> Void)!){
+        
+        coreDataStore?.fetchWalletsWithPredicate(completionBlock: { entries in
+            let walletModels = self.walletFromDataStoreEntries(entries)
+            completion(walletModels)
+         })
+    }
+    
+    func walletFromDataStoreEntries(_ entries: [ManagedWallet]) -> [WalletModel] {
+        let walletModels : [WalletModel] = entries.map { entry in
+            WalletModel(address: entry.address!, privateKey: entry.privateKey!)
+        }
+        
+        return walletModels
+    }
 }

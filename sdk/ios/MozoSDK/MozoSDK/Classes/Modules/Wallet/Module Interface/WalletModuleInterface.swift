@@ -10,5 +10,10 @@ import Foundation
 
 protocol WalletModuleInterface {
     func generateMnemonics()
-//    func updateView()
+    func skipShowPassPharse(passPharse : String)
+    
+    func enterPIN(pin: String)
+    func verifyPIN(pin: String)
+    func manageWallet(passPhrase: String?, pin: String)
+    func verifyConfirmPIN(pin: String, confirmPin: String)
 }

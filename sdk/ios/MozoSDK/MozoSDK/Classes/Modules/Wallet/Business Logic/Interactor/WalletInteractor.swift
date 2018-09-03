@@ -21,12 +21,34 @@ class WalletInteractor : NSObject {
 }
 
 extension WalletInteractor : WalletInteractorInput {
-    func savePIN(pin: String) {
-        
+    func handleEnterPIN(pin: String) {
+        output?.showConfirmPIN()
     }
     
     func verifyPIN(rawPIN: String) {
         
+    }
+    
+    func manageWallet(_ mnemonics: String?, pin: String) {
+        if let m = mnemonics {
+            let wallet = walletManager.createNewWallet(mnemonics: m)
+            dataManager.addNewWallet(wallet)
+        } else {
+            
+        }
+        dataManager.getWallet { (wallets) in
+            let wallet = wallets.first
+            print(wallet)
+        }
+        output?.dismissWalletInterface()
+    }
+    
+    func verifyConfirmPIN(pin: String, confirmPin: String) {
+        if pin == confirmPin {
+            output?.showCreatingInterface()
+        } else {
+            output?.showVerificationFailed()
+        }
     }
     
     func generateMnemonics(){

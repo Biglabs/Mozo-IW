@@ -9,7 +9,9 @@
 import Foundation
 import CoreData
 
+@objc(ManagedWallet)
 class ManagedWallet : NSManagedObject {
-    @NSManaged var address : String
-    @NSManaged var privateKey : String
+    @NSManaged var address : String?
+    @NSManaged var privateKey : String?
+    @NSManaged var user : ManagedUser?
 }

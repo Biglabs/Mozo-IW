@@ -9,12 +9,17 @@
 import Foundation
 
 protocol WalletInteractorInput {
-    func savePIN(pin: String)
+    func handleEnterPIN(pin: String)
+    func manageWallet(_ mnemonics: String?, pin: String)
     func verifyPIN(rawPIN: String)
     func generateMnemonics()
+    func verifyConfirmPIN(pin: String, confirmPin: String)
 }
 
 protocol WalletInteractorOutput {
-    func pinVerificationResult(result: Bool)
+    func showConfirmPIN()
+    func showVerificationFailed()
     func generatedMnemonics(mnemonic: String)
+    func showCreatingInterface()
+    func dismissWalletInterface()
 }
