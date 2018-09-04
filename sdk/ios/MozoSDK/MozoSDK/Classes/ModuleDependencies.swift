@@ -32,6 +32,7 @@ class ModuleDependencies {
     }
     
     func configureDependencies() {
+        // MARK: Wallet
         walletDependencies()
     }
     
@@ -44,9 +45,7 @@ class ModuleDependencies {
         let walletManager = WalletManager()
         let walletDataManager = WalletDataManager()
         
-        
         walletDataManager.coreDataStore = coreDataStore
-        walletDataManager.addNewWallet(WalletModel(address: "", privateKey: ""))
         let walletInteractor = WalletInteractor(walletManager: walletManager, dataManager: walletDataManager)
         
         walletInteractor.output = walletPresenter

@@ -46,7 +46,7 @@ class CoreDataStore : NSObject {
             return nil
         }
         let managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
+        managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
     

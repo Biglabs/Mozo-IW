@@ -26,7 +26,13 @@ extension WalletInteractor : WalletInteractorInput {
     }
     
     func verifyPIN(rawPIN: String) {
-        
+        // Get User from UserDefaults
+        // Get ManagedUser from User.id
+        // Compare PIN
+//        dataManager.getWallet { (wallets) in
+//            let wallet = wallets.first
+//            print(wallet)
+//        }
     }
     
     func manageWallet(_ mnemonics: String?, pin: String) {
@@ -35,10 +41,6 @@ extension WalletInteractor : WalletInteractorInput {
             dataManager.addNewWallet(wallet)
         } else {
             
-        }
-        dataManager.getWallet { (wallets) in
-            let wallet = wallets.first
-            print(wallet)
         }
         output?.dismissWalletInterface()
     }
