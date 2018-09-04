@@ -110,4 +110,5 @@ Pod::Spec.new do |s|
   # s.dependency 'BitcoinKit'
   s.dependency 'SmileLock'
   s.dependency 'web3swift'
+  s.dependency 'RNCryptor'
 end

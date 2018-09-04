@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CryptoSwift
 
 class WalletInteractor : NSObject {
     var output : WalletInteractorOutput?
@@ -38,6 +39,7 @@ extension WalletInteractor : WalletInteractorInput {
     func manageWallet(_ mnemonics: String?, pin: String) {
         if let m = mnemonics {
             let wallet = walletManager.createNewWallet(mnemonics: m)
+            
             dataManager.addNewWallet(wallet)
         } else {
             
