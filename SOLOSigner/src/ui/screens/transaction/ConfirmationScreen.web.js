@@ -19,7 +19,7 @@ import {
 import {ScreenHeaderActions, SvgView, Text} from "../../components";
 import Constant from '../../../helpers/Constants';
 import Globals from '../../../services/GlobalService';
-// import SignService from '../../../services/SignService';
+import SignService from '../../../services/SignService';
 
 export default class ConfirmationScreen extends React.Component {
 
@@ -65,21 +65,21 @@ export default class ConfirmationScreen extends React.Component {
     onConfirmTransaction() {
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
-                // SignService.signTransaction(this.props.txData, this.props.pin, (error, result) => {
-                //     if (result) {
-                //         Actions.pop();
-                //         Globals.responseToReceiver({signedTransaction: result}, this.props.txData);
-                //     } else {
-                //         this.setState({isShowingLoading: false});
-                //         console.log(error.message || error.detail);
-                //         var returnError = null;
-                //         if (error.message) {
-                //             returnError = Constant.ERROR_TYPE.UNKNOWN;
-                //             returnError.detail = error.message;
-                //         }
-                //         this.cancelTransaction(returnError);
-                //     }
-                // });
+                SignService.signTransaction(this.props.txData, this.props.pin, (error, result) => {
+                    if (result) {
+                        Actions.pop();
+                        Globals.responseToReceiver({signedTransaction: result}, this.props.txData);
+                    } else {
+                        this.setState({isShowingLoading: false});
+                        console.log(error.message || error.detail);
+                        var returnError = null;
+                        if (error.message) {
+                            returnError = Constant.ERROR_TYPE.UNKNOWN;
+                            returnError.detail = error.message;
+                        }
+                        this.cancelTransaction(returnError);
+                    }
+                });
             }, 5);
         });
     }

@@ -2,6 +2,7 @@ import {Linking, Platform} from "react-native";
 import {Actions} from "react-native-router-flux";
 import {FLAG_DB_EXISTING} from '../helpers/Constants';
 import AsyncStorage from '../helpers/AsyncStorageUtils';
+import {isWebPlatform} from "../helpers/PlatformUtils";
 
 function checkWalletExisting() {
     AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
@@ -21,10 +22,16 @@ function responseToReceiver(result, jsonData) {
         action: jsonData.action,
         result: result,
     };
-    // const responseUrl = `${jsonData.receiver}://${JSON.stringify(responseData)}`;
-    // Linking.openURL(responseUrl).then().catch(error =>
-    //     console.log(error)
-    // );
+    let responseUrl = '';
+    if (isWebPlatform()) {
+      responseUrl = "solosigner";
+    } else {
+      responseUrl = `${jsonData.receiver}`;
+    }
+    responseUrl = responseUrl + `://${JSON.stringify(responseData)}`;
+    Linking.openURL(responseUrl).then().catch(error =>
+                                              console.log(error)
+                                             );
 }
 
 function convertToHash(inputPIN){
