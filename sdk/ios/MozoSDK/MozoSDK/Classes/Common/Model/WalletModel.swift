@@ -9,6 +9,6 @@
 import Foundation
 
 struct WalletModel {
-    let address : String
-    let privateKey : String
+    var address : String
+    var privateKey : String
 }

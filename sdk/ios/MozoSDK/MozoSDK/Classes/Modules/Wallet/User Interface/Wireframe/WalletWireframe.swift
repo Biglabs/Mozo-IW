@@ -18,6 +18,10 @@ class WalletWireframe: NSObject {
     var pinViewController : PINViewController?
     var passPhraseViewController: PassPhraseViewController?
     
+    func presentInitialWalletInterface() {
+        walletPresenter?.processInitialWalletInterface()
+    }
+    
     func presentPINInterface(passPharse: String?) {
         let viewController = PINViewControllerFromStoryboard()
         viewController.eventHandler = walletPresenter

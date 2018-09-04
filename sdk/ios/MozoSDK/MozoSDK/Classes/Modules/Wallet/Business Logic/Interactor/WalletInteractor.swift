@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CryptoSwift
 
 class WalletInteractor : NSObject {
     var output : WalletInteractorOutput?
@@ -22,24 +21,46 @@ class WalletInteractor : NSObject {
 }
 
 extension WalletInteractor : WalletInteractorInput {
+    func checkLocalWalletExisting() {
+        // Check local wallet is existing or not
+        dataManager.getWallet { (wallets) in
+            let isExisting = wallets.count > 0
+            if isExisting {
+                self.output?.presentPINInterface()
+            } else {
+                self.output?.presentPassPhraseInterface()
+            }
+        }
+    }
+    
     func handleEnterPIN(pin: String) {
         output?.showConfirmPIN()
     }
     
-    func verifyPIN(rawPIN: String) {
+    func verifyPIN(pin: String) {
         // Get User from UserDefaults
-        // Get ManagedUser from User.id
-        // Compare PIN
-//        dataManager.getWallet { (wallets) in
-//            let wallet = wallets.first
-//            print(wallet)
-//        }
+        if let userObj = UserDefaults.standard.object(forKey: Configuration.USER_INFO) {
+            let userInfo = userObj as! UserModel
+            // Get ManagedUser from User.id
+            dataManager.getUserById(userInfo.id) { (user) in
+                // Compare PIN
+                if pin.toSHA512() == user.pin {
+                    // Input PIN is correct
+                    self.output?.showCreatingInterface()
+                } else {
+                    // Input PIN is NOT correct
+                    self.output?.showVerificationFailed()
+                }
+            }
+        } else {
+            print("Not found User Info")
+        }
     }
     
     func manageWallet(_ mnemonics: String?, pin: String) {
         if let m = mnemonics {
-            let wallet = walletManager.createNewWallet(mnemonics: m)
-            
+            var wallet = walletManager.createNewWallet(mnemonics: m)
+            wallet.privateKey = wallet.privateKey.encrypt(key: pin)
             dataManager.addNewWallet(wallet)
         } else {
             

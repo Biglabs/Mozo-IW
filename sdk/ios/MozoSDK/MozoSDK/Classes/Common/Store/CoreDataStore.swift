@@ -66,7 +66,7 @@ class CoreDataStore : NSObject {
         }
     }
     
-    func fetchWalletsWithPredicate(completionBlock: (([ManagedWallet]) -> Void)!) {
+    func fetchWallets(completionBlock: (([ManagedWallet]) -> Void)!) {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult>  = NSFetchRequest(entityName: "Wallet")
         
         managedObjectContext?.perform {

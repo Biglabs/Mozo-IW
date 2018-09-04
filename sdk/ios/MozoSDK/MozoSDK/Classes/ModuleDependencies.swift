@@ -28,7 +28,8 @@ class ModuleDependencies {
     }
     
     func installRootViewControllerIntoWindow(_ window: UIWindow) {
-        walletWireframe.presentPassPhraseInterface()
+//        walletWireframe.presentPassPhraseInterface()
+        walletWireframe.presentInitialWalletInterface()
     }
     
     func configureDependencies() {

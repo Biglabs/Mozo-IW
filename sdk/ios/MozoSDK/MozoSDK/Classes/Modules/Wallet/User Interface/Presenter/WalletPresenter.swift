@@ -17,12 +17,16 @@ class WalletPresenter : NSObject {
 }
 
 extension WalletPresenter: WalletModuleInterface {
+    func processInitialWalletInterface() {
+        walletInteractor?.checkLocalWalletExisting()
+    }
+    
     func enterPIN(pin: String) {
         walletInteractor?.handleEnterPIN(pin: pin)
     }
     
     func verifyPIN(pin: String) {
-        walletInteractor?.verifyPIN(rawPIN: pin)
+        walletInteractor?.verifyPIN(pin: pin)
     }
     
     func manageWallet(passPhrase: String?, pin: String) {
@@ -43,6 +47,14 @@ extension WalletPresenter: WalletModuleInterface {
 }
 
 extension WalletPresenter: WalletInteractorOutput {
+    func presentPassPhraseInterface() {
+        walletWireframe?.presentPassPhraseInterface()
+    }
+    
+    func presentPINInterface() {
+        walletWireframe?.presentPINInterface(passPharse: nil)
+    }
+    
     func showConfirmPIN() {
         pinUserInterface?.showConfirmPIN()
     }
