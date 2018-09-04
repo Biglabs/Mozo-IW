@@ -29,9 +29,9 @@ const PROTOCOL_PREFIX = "solosigner";
  * In order to ensure ensuring that no more than one unique electron-settings instances don't exist simultaneously.
  * You must require electron-settings in the renderer process, use require('electron').remote.require('electron-settings').
  */
-// const userReference = require('electron-settings');
+const userReference = require('electron-settings');
 
-// userReference.deleteAll();
+userReference.deleteAll();
 
 let mainWindow = null;
 let deeplinkingUrl = null;
@@ -80,13 +80,21 @@ const createWindow = () => {
 
   protocol.registerHttpProtocol(PROTOCOL_PREFIX, (req, cb) => {
     console.log("Protocol log: %s", req.url);
-    let json_str = req.url.split("://");
-    let request_data = JSON.parse(json_str[1]);
+    let split_array = req.url.split("://");
 
-    if (request_data.action == "SIGN") {
-      grpcServer.returnSignRequest(request_data);
+    // Handle case we have an empty string after splitting
+    if (split_array[1] && split_array[1] != "") {
+      let request_data = JSON.parse(split_array[1]);
+
+      // Stop the function if the data cannot be parse
+      if (!request_data) {
+        return;
+      }
+
+      if (request_data.action == "SIGN") {
+        grpcServer.returnSignRequest(request_data);
+      }
     }
-
   });
 
   //hide default menu of browser
