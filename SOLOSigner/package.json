@@ -12,7 +12,7 @@
     "android-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android --variant=release",
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
     "ios-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios --configuration Release",
-    "desktop": "yarn && webpack && electron ./desktop/main.js",
+    "desktop": "webpack && electron ./desktop/main.js",
     "webpack": "webpack --progress",
     "webpack-server": "webpack-serve",
     "pack": "build --dir",

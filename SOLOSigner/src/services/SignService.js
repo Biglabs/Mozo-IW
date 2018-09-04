@@ -148,7 +148,7 @@ module.exports.signTransaction = function(txData, pin, callback){
 
     try {
         var validateTx = txData.params;
-        var network = txData.network; 
+        var network = txData.network;
         const net = (network == Constant.COIN_TYPE.BTC.network ? Bitcoin.networks.bitcoin : Bitcoin.networks.testnet);
         // signing each of the hex-encoded string required to finalize the transaction
         validateTx.pubkeys = [];

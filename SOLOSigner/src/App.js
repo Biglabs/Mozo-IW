@@ -34,25 +34,24 @@ import {isWebPlatform} from "./helpers/PlatformUtils";
  * Load services base on running platform
  */
 (function initServices() {
-    if (isWebPlatform()) {
-        const LinkingService = require("./services/LinkingService");
-        var {ipcRenderer, remote} = require('electron');
-        var main = remote.require("./main.js");
-        console.log("ipcRenderer: " + ipcRenderer);
-        // Listen for main message
-        ipcRenderer.on('open-confirm-transaction-screen', (event, arg) => {
-            let json_data = JSON.stringify(arg);
-            LinkingService.sendJsonDataToConfirm(json_data);
-            // call method on main process
-            main.sendMessageToRender('Import wallet screen has been opened');
-        });
-        
-    } else {
-        const LinkingService = require("./services/LinkingService");
-        Linking.getInitialURL().then((url) => {
-            LinkingService.checkScheme(url);
-        });
-        Linking.addEventListener('url', LinkingService.handleEventOpenUrl);
+  const LinkingService = require("./services/LinkingService");
+  if (isWebPlatform()) {
+    var {ipcRenderer, remote} = require('electron');
+    var main = remote.require("./main.js");
+    console.log("ipcRenderer: " + ipcRenderer);
+    // Listen for main message
+    ipcRenderer.on('open-confirm-transaction-screen', (event, arg) => {
+      let json_data = JSON.stringify(arg);
+      LinkingService.sendJsonDataToConfirm(json_data);
+      // call method on main process
+      main.sendMessageToRender('Open confirm transaction screen has been opened');
+    });
+
+  } else {
+    Linking.getInitialURL().then((url) => {
+      LinkingService.checkScheme(url);
+    });
+    Linking.addEventListener('url', LinkingService.handleEventOpenUrl);
     }
 }());
 

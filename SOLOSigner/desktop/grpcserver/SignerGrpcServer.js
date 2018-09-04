@@ -16,43 +16,37 @@
  *
  */
 
-var PROTO_PATH = __dirname + './../protos/SignService.proto';
-
-var grpc = require('grpc');
-const grpcServer = new grpc.Server();
-var protoLoader = require('@grpc/proto-loader');
-var packageDefinition = protoLoader.loadSync(
-    PROTO_PATH,
-    {keepCase: true,
-     longs: String,
-     enums: String,
-     defaults: true,
-     oneofs: true
-    });
-var sign_service_proto = grpc.loadPackageDefinition(packageDefinition).signService;
-
 /**
  * Implements the sign RPC method.
  */
+var grpc = require('grpc');
+const grpcServer = new grpc.Server();
+var grpcLoader = require("./GrpcLoader");
+var signServiceProto = grpcLoader.sign_service_proto;
+
+/**
+ * Global variable for callback, work around in
+ * waiting confirmation screen case
+ * Currently can only handle 1 transaction at 1 time only
+ */
+var signHttpCallback = null;
 
 function sign(call, callback) {
   let request_data = call.request;
+  console.log(JSON.stringify(request_data));
   request_data.action = "SIGN";
   const main = require('../main');
   main.mainWindow.webContents.send('open-confirm-transaction-screen', request_data);
   //require('electron').remote.getCurrentWindow().webContents.send('ping', 5);
-
-  callback(null, {result: "Your transaction id is aa"});
+  signHttpCallback = callback;
 }
 
-
-
 /**
- * Starts an RPC server that receives requests for the Greeter service at the
- * sample server port
+ * Starts an RPC server that receives requests for the Sign service at the
+ * server port
  */
 module.exports.start = function () {
-  grpcServer.addService(sign_service_proto.Transaction.service, {
+  grpcServer.addService(signServiceProto.Transaction.service, {
     sign:sign
   });
   grpcServer.bind('127.0.0.1:50051', grpc.ServerCredentials.createInsecure());
@@ -60,3 +54,18 @@ module.exports.start = function () {
   console.log('GRPC Server is listening...');
 }
 
+module.exports.returnSignRequest = function (req) {
+  let result_data = {
+    result: req.result
+  };
+  console.log(JSON.stringify(signServiceProto.Transaction));
+  if (req.result.error) {
+    result_data.result.status = "ERROR";
+  } else {
+    result_data.result.status = "SUCESS";
+  }
+  if (signHttpCallback) {
+    signHttpCallback(null, result_data);
+    signHttpCallback = null;
+  }
+}

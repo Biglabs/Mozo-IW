@@ -37,6 +37,11 @@ enum NetworkType {
   OFFCHAIN_TEST = 5;
 }
 
+enum Status {
+  SUCCESS = 1;
+  ERROR = 2;
+}
+
 message Input {
   repeated string addresses = 1;
 }
@@ -65,7 +70,20 @@ message SignRequest {
   Param params = 3;
 }
 
+message ErrorMsg {
+  string code = 1;
+  string title = 2;
+  string detail = 3;
+  string type = 4;
+}
+
+message Result {
+  Status status = 1;
+  string signedTransaction = 2;
+  ErrorMsg error = 3;
+}
+
 // The response message containing the greetings
 message SignReply {
-  string result = 1;
+  Result result = 1;
 }
