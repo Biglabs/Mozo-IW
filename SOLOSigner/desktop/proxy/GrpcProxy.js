@@ -21,7 +21,6 @@ const grpcExpress = require('grpc-express');
 const express = require('express');
 const app = express();
 const port = 3000;
-var timeout = require('connect-timeout');
 
 let httpServer = null;
 
@@ -38,7 +37,7 @@ app.post('/signService.transaction/sign', (req, res) => {
         status: "ERROR",
         signedTransaction: null,
         error: {
-          code: "ERROR-099",
+          code: "ERR-099",
           title: "Internal error request",
           detail: "Internal error",
           type: "Infrastructure"
