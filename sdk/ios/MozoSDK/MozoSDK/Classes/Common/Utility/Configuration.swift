@@ -18,6 +18,8 @@ public class Configuration {
     public static let DEVICE_TOKEN = "DEVICE_TOKEN"
     // User info
     public static let USER_INFO = "Mozo@UserInfo"
+    // User profile
+    public static let USER_PROFILE = "Mozo@UserProfile"
     
     //Wallet
     public static let WALLLET_ID = "WalletId"

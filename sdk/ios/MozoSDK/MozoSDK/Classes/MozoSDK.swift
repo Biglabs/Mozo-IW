@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 public class MozoSDK {
-    static var moduleDependencies = ModuleDependencies()
+    private static var moduleDependencies = ModuleDependencies()
     
     public static func configure(key: String) {
         moduleDependencies.apiKey = key

@@ -11,6 +11,7 @@ import UIKit
 
 let PINViewControllerIdentifier = "PINViewController"
 let PassPhraseViewControllerIdentifier = "PassPhraseViewController"
+let WaitingViewControllerIdentifier = "WaitingViewController"
 
 class WalletWireframe: NSObject {
     var walletPresenter : WalletPresenter?
@@ -19,6 +20,7 @@ class WalletWireframe: NSObject {
     var passPhraseViewController: PassPhraseViewController?
     
     func presentInitialWalletInterface() {
+        presentWaitingInterface()
         walletPresenter?.processInitialWalletInterface()
     }
     
@@ -39,8 +41,17 @@ class WalletWireframe: NSObject {
         rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
     }
     
+    func presentWaitingInterface() {
+        let viewController = WaitingViewControllerFromStoryboard()
+//        viewController.eventHandler = walletPresenter
+//        passPhraseViewController = viewController
+//        walletPresenter?.passPharseUserInterface = viewController
+        rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
+    }
+    
     func dismissWalletInterface() {
-        
+        let viewController = WaitingViewControllerFromStoryboard()
+        rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
     }
     
     func PINViewControllerFromStoryboard() -> PINViewController {
@@ -52,6 +63,12 @@ class WalletWireframe: NSObject {
     func PassPhraseViewControllerFromStoryboard() -> PassPhraseViewController {
         let storyboard = StoryboardManager.mozoStoryboard()
         let viewController = storyboard.instantiateViewController(withIdentifier: PassPhraseViewControllerIdentifier) as! PassPhraseViewController
+        return viewController
+    }
+    
+    func WaitingViewControllerFromStoryboard() -> MozoBasicViewController {
+        let storyboard = StoryboardManager.mozoStoryboard()
+        let viewController = storyboard.instantiateViewController(withIdentifier: WaitingViewControllerIdentifier) as! MozoBasicViewController
         return viewController
     }
 }

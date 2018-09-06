@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17F77" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="User" representedClassName="MozoSDK.ManagedUser" syncable="YES">
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="mnemonic" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pin" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="mnemonic" attributeType="String" syncable="YES"/>
+        <attribute name="pin" attributeType="String" syncable="YES"/>
         <relationship name="wallets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Wallet" inverseName="user" inverseEntity="Wallet" syncable="YES"/>
     </entity>
     <entity name="Wallet" representedClassName="MozoSDK.ManagedWallet" syncable="YES">

@@ -11,7 +11,7 @@ import CoreData
 
 public class ManagedUser : NSManagedObject {
     @NSManaged var id : String
-    @NSManaged var mnemonic : String
-    @NSManaged var pin : String
-    @NSManaged var wallets: NSSet
+    @NSManaged var mnemonic : String?
+    @NSManaged var pin : String?
+    @NSManaged var wallets: NSSet?
 }

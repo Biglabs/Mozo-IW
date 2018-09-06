@@ -8,7 +8,8 @@
 import Foundation
 
 struct UserModel {
-    let id : String
-    let mnemonic : String
-    let pin : String
+    let id : String?
+    let mnemonic : String?
+    let pin : String?
+    let wallets: NSSet?
 }

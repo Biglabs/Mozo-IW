@@ -103,12 +103,11 @@ Pod::Spec.new do |s|
 #  s.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => 'MozoSDK/Classes/Bridging-Header.h' }
   # s.dependency 'Alamofire', '~> 4.5.1'
   # s.dependency 'Result', '~> 3.0.0'
-  # s.dependency 'SwiftyJSON', '~> 3.1.4'
-  # s.dependency 'PromiseKit/Alamofire', '~> 6.0'
+   s.dependency 'SwiftyJSON', '~> 3.1.4'
   # s.dependency 'EstimoteSDK'
   # s.static_framework = true
-  # s.dependency 'BitcoinKit'
   s.dependency 'SmileLock'
-  s.dependency 'web3swift'
-  s.dependency 'RNCryptor'
+  s.dependency 'web3swift', '~> 0.8.1'
+  s.dependency 'RNCryptor', '~> 5.0.3'
+  s.dependency 'PromiseKit/Alamofire', '~> 6.0'
 end

@@ -12,7 +12,7 @@ import Alamofire
 
 public final class RESTService {
     
-    public private (set) var client:  SessionManager
+    public private (set) var client: SessionManager
     
     public init() {
         // Create a shared URL cache

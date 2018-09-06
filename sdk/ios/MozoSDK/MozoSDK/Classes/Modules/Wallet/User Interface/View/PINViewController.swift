@@ -89,8 +89,8 @@ extension PINViewController : PINViewInterface {
 extension PINViewController: PasswordInputCompleteProtocol {
     func passwordInputComplete(_ passwordContainerView: PasswordContainerView, input: String) {
         if !isConfirm {
+            pin = input
             if self.passPhrase != nil {
-                pin = input
                 eventHandler?.enterPIN(pin: input)
             } else {
                 eventHandler?.verifyPIN(pin: input)

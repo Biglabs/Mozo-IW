@@ -54,10 +54,9 @@ class CoreDataStore : NSObject {
         super.init()
     }
     
-    func fetchEntriesWithPredicate(_ predicate: NSPredicate, sortDescriptors: [NSSortDescriptor], completionBlock: (([ManagedUser]) -> Void)!) {
+    func fetchEntriesWithPredicate(_ predicate: NSPredicate, completionBlock: (([ManagedUser]) -> Void)!) {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult>  = NSFetchRequest(entityName: "User")
         fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = sortDescriptors
         
         managedObjectContext?.perform {
             let queryResults = try? self.managedObjectContext?.fetch(fetchRequest)
@@ -91,7 +90,8 @@ class CoreDataStore : NSObject {
     func save() {
         do {
             try managedObjectContext?.save()
-        } catch _ {
+        } catch {
+            print("Core data save error: [\(error)]")
         }
     }
 }
