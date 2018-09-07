@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 class WalletDataManager : NSObject {
     var coreDataStore : CoreDataStore?
@@ -27,21 +28,10 @@ class WalletDataManager : NSObject {
      0.1
      */
     func updateWallet(_ wallet: WalletModel, id : String) {
-        let predicate = NSPredicate(format: "id == %@", id as CVarArg)
-        coreDataStore?.fetchEntriesWithPredicate(predicate, completionBlock: { (users) in
-            if users.count > 0 {
-                let user = users.first
-                
-                let newWallet = self.coreDataStore?.newWallet()
-                newWallet?.address = wallet.address
-                newWallet?.privateKey = wallet.privateKey
-                newWallet?.user = user
-                
-                user?.wallets?.adding(newWallet!)
-                
-                self.coreDataStore?.save()
-            }
-        })
+        let count = coreDataStore?.countById(id)
+        if count != nil && count! > 0 {
+            _ = coreDataStore?.updateWallet(wallet, toUser: id)
+        }
     }
     
     /**
@@ -61,40 +51,23 @@ class WalletDataManager : NSObject {
      0.1
      */
     func updateMnemonic(_ mnemonic: String, id: String, pin: String) {
-        let predicate = NSPredicate(format: "id == %@", id as CVarArg)
-        coreDataStore?.fetchEntriesWithPredicate(predicate, completionBlock: { (users) in
-            if users.count > 0 {
-                let user = users.first
-                user?.pin = pin
-                user?.mnemonic = mnemonic.encrypt(key: pin)
-                self.coreDataStore?.save()
-            }
-        })
+        let count = coreDataStore?.countById(id)
+        if count != nil && count! > 0 {
+            let userModel = UserModel(id: id,
+                                      mnemonic: mnemonic,
+                                      pin: pin.toSHA512(),
+                                      wallets: nil)
+            _ = coreDataStore?.updateUser(userModel)
+        }
     }
     
-    func getUserById(_ id: String, completion: ((UserModel) -> Void)!) {
-        let predicate = NSPredicate(format: "id == %@", id as CVarArg)
-        coreDataStore?.fetchEntriesWithPredicate(predicate, completionBlock: { (users) in
-            if users.count > 0 {
-                let user : UserModel = users.map { entry in
-                    UserModel(id: entry.id, mnemonic: entry.mnemonic, pin: entry.pin, wallets: entry.wallets)
-                    }.first!
-                completion(user)
-            }
-        })
-    }
-    
-    func getWallet(completion: (([WalletModel]) -> Void)!){
-        
-        coreDataStore?.fetchWallets(completionBlock: { entries in
-            let walletModels = self.walletFromDataStoreEntries(entries)
-            completion(walletModels)
-         })
+    func getUserById(_ id: String) -> Promise<UserModel> {
+        return (coreDataStore?.getUserById(id))!
     }
     
     func walletFromDataStoreEntries(_ entries: [ManagedWallet]) -> [WalletModel] {
         let walletModels : [WalletModel] = entries.map { entry in
-            WalletModel(address: entry.address!, privateKey: entry.privateKey!)
+            WalletModel(address: entry.address, privateKey: entry.privateKey)
         }
         
         return walletModels

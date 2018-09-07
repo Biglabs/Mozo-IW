@@ -52,6 +52,13 @@ class ModuleDependencies {
         let userDataManager = UserDataManager()
         userDataManager.coreDataStore = coreDataStore
         testWalletFlow(userDataManager: userDataManager)
+        
+//        walletDataManager.getUserById("1")
+//            .done { (user) in
+//                print("User: [\(user)]")
+//            }.catch({ (error) in
+//                print("Error: [\(error)]")
+//            })
         // TEST
         
         let walletInteractor = WalletInteractor(walletManager: walletManager, dataManager: walletDataManager, apiManager: apiManager)
@@ -75,9 +82,9 @@ class ModuleDependencies {
         let user = UserDTO()
         user?.id = profile?.id
         user?.profile = profile
-        
+
         let userModel = UserModel(id: user?.id, mnemonic: nil, pin: nil, wallets: nil)
-        userDataManager.addNewUser(userModel)
+        _ = userDataManager.addNewUserSync(userModel)
         SessionStoreManager.saveCurrentUser(user: user!)
     }
     

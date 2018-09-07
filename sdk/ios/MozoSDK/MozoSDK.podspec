@@ -110,4 +110,5 @@ Pod::Spec.new do |s|
   s.dependency 'web3swift', '~> 0.8.1'
   s.dependency 'RNCryptor', '~> 5.0.3'
   s.dependency 'PromiseKit/Alamofire', '~> 6.0'
+  s.dependency 'CoreStore', '~> 5.0'
 end

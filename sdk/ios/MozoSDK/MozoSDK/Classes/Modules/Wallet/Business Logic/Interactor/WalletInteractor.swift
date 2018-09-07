@@ -22,22 +22,28 @@ class WalletInteractor : NSObject {
         self.apiManager = apiManager
     }
     
-    func addNewWallet(_ wallet: WalletModel){
+    func updateWalletForCurrentUser(_ wallet: WalletModel){
         if let userObj = SessionStoreManager.loadCurrentUser() {
             dataManager.updateWallet(wallet, id: userObj.id!)
         }
     }
     
+    func updateMnemonicAndPinForCurrentUser(mnemonic: String, pin: String) {
+        if let userObj = SessionStoreManager.loadCurrentUser() {
+            dataManager.updateMnemonic(mnemonic, id: userObj.id!, pin: pin)
+        }
+    }
+    
     func updateWalletToUserProfile(){
         if let userObj = SessionStoreManager.loadCurrentUser() {
-            dataManager.getUserById(userObj.id!) { (user) in
+            dataManager.getUserById(userObj.id!).done { (user) in
                 let profile = userObj.profile
                 if profile?.wallet == nil {
                     profile?.wallet = user.mnemonic
                     _ = self.apiManager.updateUserProfile(userProfile: profile!)
                         .done { result -> Void in
                             print("Update Wallet To User Profile result: [\(result)]")
-                        }
+                    }
                 }
             }
         }
@@ -47,7 +53,7 @@ class WalletInteractor : NSObject {
 extension WalletInteractor : WalletInteractorInput {
     func checkLocalWalletExisting() {
         if let userObj = SessionStoreManager.loadCurrentUser() {
-            dataManager.getUserById(userObj.id!) { (user) in
+            dataManager.getUserById(userObj.id!).done { (user) in
                 // Check local wallet is existing or not
                 if (user.wallets?.count)! > 0 {
                     // Existing
@@ -77,7 +83,7 @@ extension WalletInteractor : WalletInteractorInput {
         // Get User from UserDefaults
         if let userObj = SessionStoreManager.loadCurrentUser() {
             // Get ManagedUser from User.id
-            dataManager.getUserById(userObj.id!) { (user) in
+            dataManager.getUserById(userObj.id!).done { (user) in
                 var compareResult = false
                 if user.pin?.isEmpty == false {
                     // Compare PIN
@@ -90,7 +96,7 @@ extension WalletInteractor : WalletInteractorInput {
                         print("Invalid mnemonics")
                         compareResult = false
                     } else {
-                        self.dataManager.updateMnemonic(mnemonic!, id: user.id!, pin: pin)
+                        self.updateMnemonicAndPinForCurrentUser(mnemonic: mnemonic!, pin: pin)
                         compareResult = true
                     }
                 }
@@ -116,10 +122,13 @@ extension WalletInteractor : WalletInteractorInput {
                 // Get wallet - mnemonics
                 mne = profile?.wallet?.decrypt(key: pin)
             }
+        } else {
+            // A new wallet has just been created.
+            updateMnemonicAndPinForCurrentUser(mnemonic: (mne?.encrypt(key: pin))!, pin: pin)
         }
         var wallet = walletManager.createNewWallet(mnemonics: mne!)
         wallet.privateKey = wallet.privateKey.encrypt(key: pin)
-        addNewWallet(wallet)
+        updateWalletForCurrentUser(wallet)
         updateWalletToUserProfile()
         output?.dismissWalletInterface()
     }

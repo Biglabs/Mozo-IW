@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import PromiseKit
 
 class UserDataManager : NSObject {
-    var coreDataStore : CoreDataStore?
+    var coreDataStore : CoreDataStore!
     
     /**
      Save an user to localDB.
@@ -23,11 +24,23 @@ class UserDataManager : NSObject {
      
      - Version:
      0.1
+     
+     CoreData does no uniquing by itself. It has no notion of two entries being identical.
+     To enable such a behavior we have to implement it ourself by doing a 'search before insert' aka a 'fetch before create'.
      */
-    func addNewUser(_ user: UserModel) {
-        let newUser = coreDataStore?.newUser()
-        newUser?.id = user.id!
-        
-        coreDataStore?.save()
+    func addNewUser(_ user: UserModel) -> Promise<Any?>? {
+        let count = coreDataStore.countById(user.id!)
+        if count != nil && count! == 0 {
+            return coreDataStore.newUser(userModel: user)
+        }
+        return nil
+    }
+    
+    func addNewUserSync(_ user: UserModel) -> Bool {
+        let count = coreDataStore.countById(user.id!)
+        if count != nil && count! == 0 {
+            return coreDataStore.addNewUser(userModel: user)
+        }
+        return false
     }
 }
