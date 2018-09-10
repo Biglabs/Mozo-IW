@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+let PINViewControllerIdentifier = "PINViewController"
+let PassPhraseViewControllerIdentifier = "PassPhraseViewController"
+let WaitingViewControllerIdentifier = "WaitingViewController"
+
 class RootWireframe : NSObject {
     let mozoNavigationController = MozoNavigationController()
     

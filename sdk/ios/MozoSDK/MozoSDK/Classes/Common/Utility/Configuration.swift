@@ -10,8 +10,6 @@ import UIKit
 
 public class Configuration {
     public static let DEBUG = false
-    public static let OAUTH_CLIENT_ID = ""
-    public static let OAUTH_SECRET = ""
     public static let GRANT_TYPE = "password"
     public static let MIN_PASSWORD_LENGTH = 6
     public static var FONT_SIZE: UIFontTextSize = UIFontTextSize(.xSmall)
@@ -25,5 +23,29 @@ public class Configuration {
     public static let WALLLET_ID = "WalletId"
     
     //development
-    public static var BASE_URL = "http://192.168.1.98:9000"
+    public static let BASE_URL = "http://192.168.1.98:9000"
+    
+    // MARK: Auth
+    /**
+     The OIDC issuer from which the configuration will be discovered.
+     */
+    public static let AUTH_ISSSUER = "https://issuer.example.com"
+    
+    /**
+     The OAuth client ID.
+     For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+     Set to nil to use dynamic registration with this example.
+     */
+    public static let AUTH_CLIENT_ID = "YOUR_CLIENT_ID"
+    
+    /**
+     The OAuth redirect URI for the client @c kClientID.
+     For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+     */
+    public static let AUTH_REDIRECT_URL = "com.example.app:/oauth2redirect/example-provider"
+    
+    /**
+     NSCoding key for the authState property.
+     */
+    public static let AUTH_STATE_KEY = "authState"
 }

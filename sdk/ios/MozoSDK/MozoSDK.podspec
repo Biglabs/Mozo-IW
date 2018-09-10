@@ -91,15 +91,25 @@ Pod::Spec.new do |s|
   #  If your library depends on compiler flags you can set them in the xcconfig hash
   #  where they will only apply to your library. If you depend on other Podspecs
   #  you can include multiple dependencies to ensure it works.
-
   # s.requires_arc = true
+  
 #  s.pod_target_xcconfig = { 'SWIFT_WHOLE_MODULE_OPTIMIZATION' => 'YES',
 #      'APPLICATION_EXTENSION_API_ONLY' => 'YES',
 #      'SWIFT_INCLUDE_PATHS' => '${PODS_ROOT}/Libraries',
-#      'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/Libraries/openssl/include" "${PODS_ROOT}/Libraries/secp256k1/include"',
+#      'HEADER_SEARCH_PATHS' =>. '"${PODS_ROOT}/Libraries/openssl/include" "${PODS_ROOT}/Libraries/secp256k1/include"',
 #      'LIBRARY_SEARCH_PATHS' => '"${PODS_ROOT}/Libraries/openssl/lib" "${PODS_ROOT}/Libraries/secp256k1/lib"' }
 #  s.preserve_paths = ['setup', 'Libraries']
-#  s.prepare_command = 'sh setup/build_libraries.sh'
+  s.preserve_path = 'module.map'
+  s.prepare_command = <<-CMD
+  cat > "module.map" << MAP
+  module AppAuth [system] {
+      header "${PODS_ROOT}/AppAuth/Source/AppAuth.h"
+      link "AppAuth"
+      export *
+  }
+  MAP
+  CMD
+
 #  s.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => 'MozoSDK/Classes/Bridging-Header.h' }
   # s.dependency 'Alamofire', '~> 4.5.1'
   # s.dependency 'Result', '~> 3.0.0'
@@ -111,4 +121,5 @@ Pod::Spec.new do |s|
   s.dependency 'RNCryptor', '~> 5.0.3'
   s.dependency 'PromiseKit/Alamofire', '~> 6.0'
   s.dependency 'CoreStore', '~> 5.0'
+  s.dependency 'AppAuth', '~> 0.92.0'
 end

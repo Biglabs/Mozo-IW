@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-let PINViewControllerIdentifier = "PINViewController"
-let PassPhraseViewControllerIdentifier = "PassPhraseViewController"
-let WaitingViewControllerIdentifier = "WaitingViewController"
-
 class WalletWireframe: NSObject {
     var walletPresenter : WalletPresenter?
     var rootWireframe : RootWireframe?
