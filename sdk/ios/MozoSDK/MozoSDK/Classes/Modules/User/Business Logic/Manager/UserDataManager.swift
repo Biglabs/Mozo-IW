@@ -12,7 +12,7 @@ class UserDataManager : NSObject {
     var coreDataStore : CoreDataStore!
     
     /**
-     Save an user to localDB.
+     Save an user to localDB synchronously.
      - Author:
      Hoang Nguyen
      
@@ -28,15 +28,7 @@ class UserDataManager : NSObject {
      CoreData does no uniquing by itself. It has no notion of two entries being identical.
      To enable such a behavior we have to implement it ourself by doing a 'search before insert' aka a 'fetch before create'.
      */
-    func addNewUser(_ user: UserModel) -> Promise<Any?>? {
-        let count = coreDataStore.countById(user.id!)
-        if count != nil && count! == 0 {
-            return coreDataStore.newUser(userModel: user)
-        }
-        return nil
-    }
-    
-    func addNewUserSync(_ user: UserModel) -> Bool {
+    func addNewUser(_ user: UserModel) -> Bool {
         let count = coreDataStore.countById(user.id!)
         if count != nil && count! == 0 {
             return coreDataStore.addNewUser(userModel: user)

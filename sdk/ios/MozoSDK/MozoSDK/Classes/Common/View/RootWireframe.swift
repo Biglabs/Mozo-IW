@@ -24,7 +24,7 @@ class RootWireframe : NSObject {
     
     func replaceRootViewController(_ viewController: UIViewController, inWindow: UIWindow) {
         mozoNavigationController.viewControllers = [viewController]
-        inWindow.rootViewController = mozoNavigationController
+//        inWindow.rootViewController = mozoNavigationController
     }
     
     func getTopViewController() -> UIViewController! {

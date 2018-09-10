@@ -178,7 +178,7 @@ public final class ApiManager {
     
     private func checkResponse(response: DataResponse<Any>, error: Error) -> ConnectionError {
         var connectionError = ConnectionError.unknowError
-        if (response.response?.statusCode)! < 200 || (response.response?.statusCode)! > 299  {
+        if response.result.error != nil || (response.response?.statusCode)! < 200 || (response.response?.statusCode)! > 299  {
             connectionError = self.mappingConnectionError(response.response, error: error)!
         }
         return connectionError

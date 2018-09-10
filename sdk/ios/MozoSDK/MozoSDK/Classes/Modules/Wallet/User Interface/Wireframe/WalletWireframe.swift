@@ -38,7 +38,7 @@ class WalletWireframe: NSObject {
         viewController.eventHandler = walletPresenter
         passPhraseViewController = viewController
         walletPresenter?.passPharseUserInterface = viewController
-        rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
+        rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
     }
     
     func presentWaitingInterface() {

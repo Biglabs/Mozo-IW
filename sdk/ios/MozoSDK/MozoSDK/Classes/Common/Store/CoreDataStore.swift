@@ -137,7 +137,7 @@ class CoreDataStore : NSObject {
                 userEntity.id = userModel.id!
                 return userEntity
             }, success: { (userTransaction) in
-                let newUser = CoreStore.fetchExisting(userTransaction)!
+                let newUser = self.stack.fetchExisting(userTransaction)!
                 print("Success to add new user, id: [\(newUser.id)]")
                 seal.fulfill(true)
             }, failure: { (csError) in
@@ -163,11 +163,11 @@ class CoreDataStore : NSObject {
         
                 return userEntity!
             }, success: { (userTransaction) in
-                let newUser = CoreStore.fetchExisting(userTransaction)!
-                print("Success to update wallet to user, wallet count: [\(newUser.wallets?.count ?? 0)]")
+                let newUser = self.stack.fetchExisting(userTransaction)!
+                print("😁 Success to update wallet to user, wallet count: [\(newUser.wallets?.count ?? 0)]")
                 seal.fulfill(true)
             }, failure: { (csError) in
-                print("Failed to aupdate wallet to user, error: [\(csError)]")
+                print("😞 Failed to update wallet to user, error: [\(csError)]")
                 seal.reject(csError)
             })
         }
@@ -185,11 +185,11 @@ class CoreDataStore : NSObject {
                 
                 return userEntity!
             }, success: { (userTransaction) in
-                let newUser = CoreStore.fetchExisting(userTransaction)!
-                print("Success to update user, mnemonic: [\(newUser.mnemonic ?? "")]")
+                let newUser = self.stack.fetchExisting(userTransaction)!
+                print("😁 Success to update user, mnemonic: [\(newUser.mnemonic ?? "")]")
                 seal.fulfill(true)
             }, failure: { (csError) in
-                print("Failed to aupdate user, error: [\(csError)]")
+                print("😞 Failed to update user, error: [\(csError)]")
                 seal.reject(csError)
             })
         }

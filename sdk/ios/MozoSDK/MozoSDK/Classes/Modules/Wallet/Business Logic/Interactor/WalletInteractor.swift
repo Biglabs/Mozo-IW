@@ -93,7 +93,7 @@ extension WalletInteractor : WalletInteractorInput {
                     let mnemonic = userObj.profile?.wallet?.decrypt(key: pin)
                     
                     if BIP39.mnemonicsToEntropy(mnemonic!) == nil {
-                        print("Invalid mnemonics")
+                        print("😞 Invalid mnemonics")
                         compareResult = false
                     } else {
                         self.updateMnemonicAndPinForCurrentUser(mnemonic: mnemonic!, pin: pin)
