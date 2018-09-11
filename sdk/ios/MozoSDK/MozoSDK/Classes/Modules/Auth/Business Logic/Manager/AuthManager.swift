@@ -7,6 +7,7 @@
 
 import Foundation
 import AppAuth
+import PromiseKit
 
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
@@ -20,39 +21,58 @@ class AuthManager : NSObject {
         self.currentAuthorizationFlow = authorizationFlow
     }
     
-    func buildAuthRequest() -> OIDAuthorizationRequest? {
-        guard let issuer = URL(string: Configuration.AUTH_ISSSUER) else {
-            print("😞 Error creating URL for : \(Configuration.AUTH_ISSSUER)")
-            return nil
+    func handleRedirectUrl(_ url: URL) -> Bool {
+        if currentAuthorizationFlow?.resumeAuthorizationFlow(with: url) == true {
+            setCurrentAuthorizationFlow(nil)
+            return true
         }
-        
-        print("Fetching configuration for issuer: \(issuer)")
-        
-        // discovers endpoints
-        OIDAuthorizationService.discoverConfiguration(forIssuer: issuer){ configuration, error in
-            guard let config = configuration else {
-                print("😞 Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.authState = nil
-                return
+        return false
+    }
+    
+    func buildAuthRequest() -> Promise<OIDAuthorizationRequest?> {
+        return Promise { seal in
+            guard let issuer = URL(string: Configuration.AUTH_ISSSUER) else {
+                print("😞 Error creating URL for : \(Configuration.AUTH_ISSSUER)")
+                return seal.reject(SystemError.incorrectURL)
             }
+            print("Fetching configuration for issuer: \(issuer)")
             
-            print("Got configuration: \(config)")
-        
-            let clientId = Configuration.AUTH_CLIENT_ID
-            self.doClientRegistration(configuration: config) { configuration, response in
-                
-                guard let configuration = configuration, let clientID = response?.clientID else {
-                    print("Error retrieving configuration OR clientID")
+            // discovers endpoints
+            OIDAuthorizationService.discoverConfiguration(forIssuer: issuer){ configuration, error in
+                guard let config = configuration else {
+                    print("😞 Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                    self.setAuthState(nil)
                     return
                 }
                 
-                self.doAuthWithAutoCodeExchange(configuration: configuration,
-                                                clientID: clientID,
-                                                clientSecret: response?.clientSecret)
+                print("Got configuration: \(config)")
+                
+//                let clientId = Configuration.AUTH_CLIENT_ID
+                self.doClientRegistration(configuration: config) { configuration, response in
+                    
+                    guard let configuration = configuration, let clientID = response?.clientID else {
+                        print("Error retrieving configuration OR clientID")
+                        return
+                    }
+                    
+                    guard let redirectURI = URL(string: Configuration.AUTH_REDIRECT_URL) else {
+                        print("Error creating URL for : \(Configuration.AUTH_REDIRECT_URL)")
+                        return
+                    }
+                    
+                    // builds authentication request
+                    let request = OIDAuthorizationRequest(configuration: configuration,
+                                                          clientId: clientID,
+                                                          clientSecret: response?.clientSecret,
+                                                          scopes: [OIDScopeOpenID, OIDScopeProfile],
+                                                          redirectURL: redirectURI,
+                                                          responseType: OIDResponseTypeCode,
+                                                          additionalParameters: nil)
+                    
+                    seal.fulfill(request)
+                }
             }
         }
-        
-        return nil
     }
 }
 
@@ -80,12 +100,12 @@ extension AuthManager {
         OIDAuthorizationService.perform(request) { response, error in
             
             if let regResponse = response {
-                self.authState = OIDAuthState(registrationResponse: regResponse)
+                self.setAuthState(OIDAuthState(registrationResponse: regResponse))
                 print("Got registration response: \(regResponse)")
                 callback(configuration, regResponse)
             } else {
                 print("Registration error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.authState = nil
+                self.setAuthState(nil)
             }
         }
     }
@@ -133,14 +153,6 @@ extension AuthManager {
 
 //MARK: Helper Methods
 extension AuthManager {
-    func saveState() {
-        
-    }
-    
-    func loadState() {
-        
-    }
-    
     func setAuthState(_ authState: OIDAuthState?) {
         if (self.authState == authState) {
             return
@@ -151,7 +163,7 @@ extension AuthManager {
     }
     
     func stateChanged() {
-        self.saveState()
+        AuthDataManager.saveAuthState(self.authState)
     }
 }
 

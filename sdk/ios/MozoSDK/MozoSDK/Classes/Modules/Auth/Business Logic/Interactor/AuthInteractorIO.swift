@@ -9,13 +9,13 @@ import Foundation
 import AppAuth
 
 protocol AuthInteractorInput {
-    func performAuthentication()
+    func buildAuthRequest()
     func setCurrentAuthorizationFlow(_ authorizationFlow : OIDAuthorizationFlowSession?)
     func handleAuthorizationResponse(_ response: OIDAuthorizationResponse?, error: Error?)
-    func handleRedirectUrl(_ url: URL)
+    func handleRedirectUrl(_ url: URL) -> Bool
 }
 
 protocol AuthInteractorOutput {
-    func presentAuthInterface(request: OIDAuthorizationRequest)
+    func finishedBuildAuthRequest(_ request: OIDAuthorizationRequest)
     func dismissAuthInterface()
 }

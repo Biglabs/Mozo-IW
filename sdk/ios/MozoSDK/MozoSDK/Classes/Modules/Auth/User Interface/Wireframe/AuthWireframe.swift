@@ -7,9 +7,8 @@
 
 import Foundation
 
-class AuthWireframe: NSObject {
+class AuthWireframe: MozoWireframe {
     var authPresenter : AuthPresenter?
-    var rootWireframe : RootWireframe?
     
     func presentInitialAuthInterface(){
         presentWaitingInterface()
@@ -18,16 +17,5 @@ class AuthWireframe: NSObject {
     
     func dismissAuthInterface(){
         
-    }
-    
-    func presentWaitingInterface() {
-        let viewController = WaitingViewControllerFromStoryboard()
-        rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
-    }
-    
-    func WaitingViewControllerFromStoryboard() -> MozoBasicViewController {
-        let storyboard = StoryboardManager.mozoStoryboard()
-        let viewController = storyboard.instantiateViewController(withIdentifier: WaitingViewControllerIdentifier) as! MozoBasicViewController
-        return viewController
     }
 }

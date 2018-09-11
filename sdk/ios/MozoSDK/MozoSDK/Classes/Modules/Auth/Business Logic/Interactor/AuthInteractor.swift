@@ -30,14 +30,16 @@ extension AuthInteractor : AuthInteractorInput {
         }
     }
     
-    func handleRedirectUrl(_ url: URL) {
-        
+    func handleRedirectUrl(_ url: URL) -> Bool {
+        return authManager?.handleRedirectUrl(url) ?? false
     }
     
-    func performAuthentication() {
-        if let request = authManager?.buildAuthRequest() {
-            output?.presentAuthInterface(request: request)
-        }
+    func buildAuthRequest() {
+        _ = authManager?.buildAuthRequest().done({ (request) in
+            if let rq = request {
+                self.output?.finishedBuildAuthRequest(rq)
+            }
+        })
     }
     
     func setCurrentAuthorizationFlow(_ authorizationFlow : OIDAuthorizationFlowSession?) {

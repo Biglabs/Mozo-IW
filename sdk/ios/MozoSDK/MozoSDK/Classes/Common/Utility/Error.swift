@@ -39,3 +39,16 @@ extension ConnectionError: LocalizedError {
         }
     }
 }
+
+public enum SystemError: Error {
+    case incorrectURL
+}
+
+extension SystemError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .incorrectURL:
+            return "Incorrect URL"
+        }
+    }
+}

@@ -9,9 +9,8 @@
 import Foundation
 import UIKit
 
-class WalletWireframe: NSObject {
+class WalletWireframe: MozoWireframe {
     var walletPresenter : WalletPresenter?
-    var rootWireframe : RootWireframe?
     var pinViewController : PINViewController?
     var passPhraseViewController: PassPhraseViewController?
     
@@ -37,14 +36,6 @@ class WalletWireframe: NSObject {
         rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
     }
     
-    func presentWaitingInterface() {
-        let viewController = WaitingViewControllerFromStoryboard()
-//        viewController.eventHandler = walletPresenter
-//        passPhraseViewController = viewController
-//        walletPresenter?.passPharseUserInterface = viewController
-        rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
-    }
-    
     func dismissWalletInterface() {
         let viewController = WaitingViewControllerFromStoryboard()
         rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
@@ -59,12 +50,6 @@ class WalletWireframe: NSObject {
     func PassPhraseViewControllerFromStoryboard() -> PassPhraseViewController {
         let storyboard = StoryboardManager.mozoStoryboard()
         let viewController = storyboard.instantiateViewController(withIdentifier: PassPhraseViewControllerIdentifier) as! PassPhraseViewController
-        return viewController
-    }
-    
-    func WaitingViewControllerFromStoryboard() -> MozoBasicViewController {
-        let storyboard = StoryboardManager.mozoStoryboard()
-        let viewController = storyboard.instantiateViewController(withIdentifier: WaitingViewControllerIdentifier) as! MozoBasicViewController
         return viewController
     }
 }

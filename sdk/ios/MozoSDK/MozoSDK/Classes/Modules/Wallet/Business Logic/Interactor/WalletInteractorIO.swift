@@ -10,21 +10,23 @@ import Foundation
 
 protocol WalletInteractorInput {
     func checkLocalWalletExisting()
+    func checkServerWalletExisting()
     
-    func handleEnterPIN(pin: String)
-    func manageWallet(_ mnemonics: String?, pin: String)
     func verifyPIN(pin: String)
+    
+    func manageWallet(_ mnemonics: String?, pin: String)
+    
     func generateMnemonics()
     func verifyConfirmPIN(pin: String, confirmPin: String)
 }
 
 protocol WalletInteractorOutput {
-    func presentPassPhraseInterface()
-    func presentPINInterface()
+    func finishedCheckLocal(result: Bool)
+    func finishedCheckServer(result: Bool)
     
-    func showConfirmPIN()
-    func showVerificationFailed()
+    func verifiedPIN(result: Bool)
+    
     func generatedMnemonics(mnemonic: String)
-    func showCreatingInterface()
-    func dismissWalletInterface()
+    
+    func updatedWallet()
 }

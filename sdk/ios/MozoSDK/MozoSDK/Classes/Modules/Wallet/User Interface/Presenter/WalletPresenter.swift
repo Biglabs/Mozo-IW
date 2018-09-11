@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class WalletPresenter : NSObject {
-    var walletInteractor : WalletInteractor?
+    var walletInteractor : WalletInteractorInput?
     var walletWireframe : WalletWireframe?
     var pinUserInterface : PINViewInterface?
     var passPharseUserInterface : PassPhraseViewInterface?
@@ -22,7 +22,7 @@ extension WalletPresenter: WalletModuleInterface {
     }
     
     func enterPIN(pin: String) {
-        walletInteractor?.handleEnterPIN(pin: pin)
+        pinUserInterface?.showConfirmPIN()
     }
     
     func verifyPIN(pin: String) {
@@ -47,31 +47,38 @@ extension WalletPresenter: WalletModuleInterface {
 }
 
 extension WalletPresenter: WalletInteractorOutput {
-    func presentPassPhraseInterface() {
-        walletWireframe?.presentPassPhraseInterface()
+    func updatedWallet() {
+        walletWireframe?.dismissWalletInterface()
     }
     
-    func presentPINInterface() {
-        walletWireframe?.presentPINInterface(passPharse: nil)
+    func finishedCheckServer(result: Bool) {
+        if result {
+            walletWireframe?.dismissWalletInterface()
+        } else {
+            walletInteractor?.checkServerWalletExisting()
+        }
     }
     
-    func showConfirmPIN() {
-        pinUserInterface?.showConfirmPIN()
+    func finishedCheckLocal(result: Bool) {
+        if result {
+            walletWireframe?.presentPINInterface(passPharse: nil)
+        } else {
+            walletWireframe?.presentPassPhraseInterface()
+        }
     }
     
-    func showCreatingInterface() {
-        pinUserInterface?.showCreatingInterface()
-    }
-    
-    func showVerificationFailed() {
-        pinUserInterface?.showVerificationFailed()
+    func verifiedPIN(result: Bool) {
+        if result {
+            // Input PIN is correct
+            pinUserInterface?.showCreatingInterface()
+            // -> Manage wallet
+        } else {
+            // Input PIN is NOT correct
+            pinUserInterface?.showVerificationFailed()
+        }
     }
     
     func generatedMnemonics(mnemonic: String) {
         passPharseUserInterface?.showPassPhrase(passPharse: mnemonic)
-    }
-    
-    func dismissWalletInterface() {
-        walletWireframe?.dismissWalletInterface()
     }
 }

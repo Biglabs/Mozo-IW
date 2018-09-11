@@ -31,7 +31,7 @@ class RootWireframe : NSObject {
 //        inWindow.rootViewController = mozoNavigationController
     }
     
-    func getTopViewController() -> UIViewController! {
+    public func getTopViewController() -> UIViewController! {
         let appDelegate = UIApplication.shared.delegate
         if let window = appDelegate!.window { return window?.visibleViewController }
         return nil

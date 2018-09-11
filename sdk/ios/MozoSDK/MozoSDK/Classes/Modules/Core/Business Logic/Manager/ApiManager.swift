@@ -9,8 +9,8 @@ import Foundation
 import Alamofire
 import PromiseKit
 
-public final class ApiManager {
-    public private (set) var client: SessionManager
+public class ApiManager {
+    private (set) var client: SessionManager
     
     public init() {
         // Create a shared URL cache
@@ -33,6 +33,7 @@ public final class ApiManager {
     
     private func buildHTTPHeaders() ->HTTPHeaders {
         let headers: HTTPHeaders = [
+            "API-Key": "no_apiKey",
             "Authorization": "no_token",
             "Content-Type": MediaType.APPLICATION_JSON.rawValue,
             "Accept": MediaType.APPLICATION_JSON.rawValue,

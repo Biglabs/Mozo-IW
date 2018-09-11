@@ -36,7 +36,7 @@ class WalletInteractor : NSObject {
     
     func updateWalletToUserProfile(){
         if let userObj = SessionStoreManager.loadCurrentUser() {
-            dataManager.getUserById(userObj.id!).done { (user) in
+            _ = dataManager.getUserById(userObj.id!).done { (user) in
                 let profile = userObj.profile
                 if profile?.wallet == nil {
                     profile?.wallet = user.mnemonic
@@ -53,37 +53,25 @@ class WalletInteractor : NSObject {
 extension WalletInteractor : WalletInteractorInput {
     func checkLocalWalletExisting() {
         if let userObj = SessionStoreManager.loadCurrentUser() {
-            dataManager.getUserById(userObj.id!).done { (user) in
-                // Check local wallet is existing or not
-                if (user.wallets?.count)! > 0 {
-                    // Existing
-                    self.output?.dismissWalletInterface()
-                } else {
-                    // Not existing in local
-                    // Get UserProfile
-                    let profile = userObj.profile
-                    // Get wallet - mnemonics
-                    if profile?.wallet != nil {
-                        // Input PIN
-                        self.output?.presentPINInterface()
-                    } else {
-                        // Create new wallet
-                        self.output?.presentPassPhraseInterface()
-                    }
-                }
+            _ = dataManager.getUserById(userObj.id!).done { (user) in
+                self.output?.finishedCheckLocal(result: (user.wallets?.count)! > 0)
             }
         }
     }
     
-    func handleEnterPIN(pin: String) {
-        output?.showConfirmPIN()
+    func checkServerWalletExisting() {
+        if let userObj = SessionStoreManager.loadCurrentUser() {
+            // Get UserProfile
+            let profile = userObj.profile
+            self.output?.finishedCheckServer(result: profile?.wallet != nil)
+        }
     }
     
     func verifyPIN(pin: String) {
         // Get User from UserDefaults
         if let userObj = SessionStoreManager.loadCurrentUser() {
             // Get ManagedUser from User.id
-            dataManager.getUserById(userObj.id!).done { (user) in
+            _ = dataManager.getUserById(userObj.id!).done { (user) in
                 var compareResult = false
                 if user.pin?.isEmpty == false {
                     // Compare PIN
@@ -100,14 +88,7 @@ extension WalletInteractor : WalletInteractorInput {
                         compareResult = true
                     }
                 }
-                if compareResult {
-                    // Input PIN is correct
-                    self.output?.showCreatingInterface()
-                    // -> Manage wallet
-                } else {
-                    // Input PIN is NOT correct
-                    self.output?.showVerificationFailed()
-                }
+                self.output?.verifiedPIN(result: compareResult)
             }
         }
     }
@@ -130,15 +111,12 @@ extension WalletInteractor : WalletInteractorInput {
         wallet.privateKey = wallet.privateKey.encrypt(key: pin)
         updateWalletForCurrentUser(wallet)
         updateWalletToUserProfile()
-        output?.dismissWalletInterface()
+        output?.updatedWallet()
     }
     
     func verifyConfirmPIN(pin: String, confirmPin: String) {
-        if pin == confirmPin {
-            output?.showCreatingInterface()
-        } else {
-            output?.showVerificationFailed()
-        }
+        let compareResult = (pin == confirmPin)
+        self.output?.verifiedPIN(result: compareResult)
     }
     
     func generateMnemonics(){
