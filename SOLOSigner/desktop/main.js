@@ -29,9 +29,9 @@ const PROTOCOL_PREFIX = "solosigner";
  * In order to ensure ensuring that no more than one unique electron-settings instances don't exist simultaneously.
  * You must require electron-settings in the renderer process, use require('electron').remote.require('electron-settings').
  */
-const userReference = require('electron-settings');
+//const userReference = require('electron-settings');
 
-userReference.deleteAll();
+//userReference.deleteAll();
 
 let mainWindow = null;
 let deeplinkingUrl = null;

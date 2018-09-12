@@ -22,11 +22,33 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+const userReference = require('electron-settings');
+
 let httpServer = null;
 
 app.use(express.json());
 
-app.post('/signService.transaction/sign', (req, res) => {
+app.get('/checkWallet', (req, res) => {
+  let wallet = userReference.get("Address");
+  let response_data = {
+    status: "ERROR",
+    error: {
+      code: "ERR-098",
+      title: "No wallet",
+      detail: "User has not logined",
+      type: "Business"
+    }
+  }
+  if (wallet) {
+    response_data = {
+      status: "SUCCESS",
+      error: {}
+    }
+  }
+  res.send({ result : response_data });
+});
+
+app.post('/transaction/sign', (req, res) => {
   console.log(JSON.stringify(req.body));
   grpcClient.sign(req.body, function(err, grpc_res) {
     if (err) {
