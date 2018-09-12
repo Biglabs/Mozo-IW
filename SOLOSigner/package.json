@@ -2,16 +2,28 @@
   "name": "SOLOSigner",
   "version": "0.0.1",
   "private": true,
+  "main": "./desktop/main.js",
+  "homepage": "https://github.com/Biglabs/Mozo-IW",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "reset-cache": "react-native start --config=rn-cli.config.js --reset-cache",
+    "start": "node node_modules/react-native/local-cli/cli.js start --config=rn-cli.config.js --resetCache",
+    "postinstall": "npm rebuild --target=2.0.2 --runtime=electron --dist-url=https://atom.io/download/electron grpc",
     "android": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android",
     "android-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-android --variant=release",
     "ios": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios",
     "ios-release": "yarn && ./node_modules/.bin/rn-nodeify --hack --install && react-native run-ios --configuration Release",
-    "test": "jest",
-    "desktop": "yarn && webpack && electron ./desktop/main.js",
+    "desktop": "webpack && electron ./desktop/main.js",
     "webpack": "webpack --progress",
-    "webpack-server": "webpack-serve"
+    "webpack-server": "webpack-serve",
+    "pack": "build --dir",
+    "dist": "build",
+    "build:win": "yarn --cwd './desktop/package.json --cwd '..'  && build --win --dir --x64",
+    "build:mac": "build --mac --dir",
+    "build:linux": "cd desktop && yarn && cd .. && build --linux --dir",
+    "dist:win": "build --win --x64",
+    "dist:linux": "build --linux",
+    "dist:mac": "build --mac",
+    "zip": "cross-zip ./dist/SOLOSigner-0.0.1.dmg"
   },
   "rnpm": {
     "assets": [
@@ -19,6 +31,7 @@
     ]
   },
   "dependencies": {
+    "@grpc/proto-loader": "^0.3.0",
     "assert": "^1.1.1",
     "asyncstorage-down": "^4.0.1",
     "babel-preset-es2015": "^6.24.1",
@@ -33,13 +46,14 @@
     "crypto-js": "^3.1.9-1",
     "dns.js": "^1.0.1",
     "domain-browser": "^1.1.1",
-    "electron": "2.0.2",
     "electron-settings": "^3.2.0",
-    "electron-store": "^2.0.0",
     "es6-symbol": "^3.1.1",
     "ethereumjs-tx": "^1.3.4",
     "ethereumjs-wallet-react-native": "^0.6.7",
     "events": "^1.0.0",
+    "global": "^4.3.2",
+    "grpc": "^1.14.1",
+    "grpc-express": "^1.0.1-beta",
     "https-browserify": "~0.0.0",
     "inherits": "^2.0.1",
     "js-sha512": "^0.7.1",
@@ -84,6 +98,7 @@
     "readable-stream": "1.0.33",
     "realm": "2.13.0",
     "save": "^2.3.2",
+    "simple-jsonrpc-js": "^0.0.10",
     "stream-browserify": "^1.0.0",
     "string_decoder": "~0.10.25",
     "svgs": "^3.2.1",
@@ -107,13 +122,17 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-native": "4.0.0",
     "babel-preset-stage-3": "^6.24.1",
-    "electron-builder": "^20.24.4",
+    "cross-zip-cli": "^1.0.0",
+    "electron": "2.0.2",
+    "electron-builder": "20.24.4",
     "eslint": "^5.2.0",
     "jest": "23.1.0",
+    "metro": "^0.43.5",
+    "metro-core": "^0.43.5",
     "react-test-renderer": "16.3.1",
     "rn-nodeify": "mvayngrib/rn-nodeify",
     "url-loader": "^1.0.1",
-    "webpack": "4.12.0",
+    "webpack": "^4.12.0",
     "webpack-cli": "3.0.3",
     "webpack-serve": "1.0.4"
   },
@@ -171,5 +190,41 @@
     "tty": "tty-browserify",
     "vm": "vm-browserify",
     "tls": false
+  },
+  "build": {
+    "appId": "signer.biglabs.com",
+    "asar": true,
+    "compression": "store",
+    "files": [
+      "desktop/",
+      "!node_modules/",
+      {
+        "from": "desktop/node_modules",
+        "to": "node_modules"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "./assets/icon/currency_yuan_yellow.ico"
+    },
+    "mac": {
+      "category": "signer.biglabs.com.crypto"
+    },
+    "linux": {
+      "target": "deb",
+      "category": "Development"
+    },
+    "protocols": {
+      "name": "solosigner",
+      "schemes": [
+        "solosigner"
+      ]
+    }
+  },
+  "author": {
+    "name": "biglabs",
+    "email": "hoang.pvm@big-labs.com"
   }
 }

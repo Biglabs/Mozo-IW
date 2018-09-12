@@ -90,5 +90,6 @@ xcuserdata
 .expo/
 
 dist
-
 SOLOSigner/\.idea/inspectionProfiles/
+SOLOSigner/desktop/dist/
+SOLOSigner/dist/
