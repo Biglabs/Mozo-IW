@@ -42,6 +42,7 @@ extension ConnectionError: LocalizedError {
 
 public enum SystemError: Error {
     case incorrectURL
+    case incorrectCodeExchangeRequest
 }
 
 extension SystemError: LocalizedError {
@@ -49,6 +50,8 @@ extension SystemError: LocalizedError {
         switch self {
         case .incorrectURL:
             return "Incorrect URL"
+        case .incorrectCodeExchangeRequest:
+            return "Incorrect Code Exchange Request"
         }
     }
 }

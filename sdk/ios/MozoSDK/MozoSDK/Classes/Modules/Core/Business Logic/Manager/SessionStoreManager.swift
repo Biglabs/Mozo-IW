@@ -23,4 +23,12 @@ public class SessionStoreManager {
             UserDefaults.standard.set(encoded, forKey: Configuration.USER_INFO)
         }
     }
+    
+    public static func loadAnonymousUUID() -> String? {
+        return UserDefaults.standard.value(forKey: Configuration.USER_ID_ANONYMOUS) as? String
+    }
+    
+    public static func saveAnonymousUUID(_ UUID: String?) {
+        UserDefaults.standard.setValue(UUID, forKey: Configuration.USER_ID_ANONYMOUS)
+    }
 }

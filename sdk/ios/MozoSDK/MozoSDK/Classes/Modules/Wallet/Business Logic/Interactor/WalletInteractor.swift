@@ -38,8 +38,8 @@ class WalletInteractor : NSObject {
         if let userObj = SessionStoreManager.loadCurrentUser() {
             _ = dataManager.getUserById(userObj.id!).done { (user) in
                 let profile = userObj.profile
-                if profile?.wallet == nil {
-                    profile?.wallet = user.mnemonic
+                if profile?.walletInfo == nil {
+                    profile?.walletInfo = user.mnemonic
                     _ = self.apiManager.updateUserProfile(userProfile: profile!)
                         .done { result -> Void in
                             print("Update Wallet To User Profile result: [\(result)]")
@@ -63,7 +63,7 @@ extension WalletInteractor : WalletInteractorInput {
         if let userObj = SessionStoreManager.loadCurrentUser() {
             // Get UserProfile
             let profile = userObj.profile
-            self.output?.finishedCheckServer(result: profile?.wallet != nil)
+            self.output?.finishedCheckServer(result: profile?.walletInfo != nil)
         }
     }
     
@@ -78,7 +78,7 @@ extension WalletInteractor : WalletInteractorInput {
                     compareResult = pin.toSHA512() == user.pin
                 } else {
                     // Incase: restore wallet from server mnemonics
-                    let mnemonic = userObj.profile?.wallet?.decrypt(key: pin)
+                    let mnemonic = userObj.profile?.walletInfo?.decrypt(key: pin)
                     
                     if BIP39.mnemonicsToEntropy(mnemonic!) == nil {
                         print("😞 Invalid mnemonics")
@@ -101,7 +101,7 @@ extension WalletInteractor : WalletInteractorInput {
                 // Get UserProfile
                 let profile = userObj.profile
                 // Get wallet - mnemonics
-                mne = profile?.wallet?.decrypt(key: pin)
+                mne = profile?.walletInfo?.decrypt(key: pin)
             }
         } else {
             // A new wallet has just been created.

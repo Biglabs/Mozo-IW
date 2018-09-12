@@ -11,6 +11,7 @@ import AppAuth
 class AuthPresenter : NSObject {
     var authInteractor : AuthInteractorInput?
     var authWireframe : AuthWireframe?
+    var authModuleDelegate : AuthModuleDelegate?
 }
 
 extension AuthPresenter : AuthModuleInterface {
@@ -32,6 +33,10 @@ extension AuthPresenter : AuthInteractorOutput {
             self.authInteractor?.handleAuthorizationResponse(response, error: error)
         }
         authInteractor?.setCurrentAuthorizationFlow(currentAuthorizationFlow)
+    }
+    
+    func finishedAuthenticate(accessToken: String?) {
+        authModuleDelegate?.authModuleDidFinishAuthentication(accessToken: accessToken)
     }
     
     func dismissAuthInterface() {

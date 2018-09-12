@@ -15,50 +15,79 @@ class ModuleDependencies {
     public var apiKey: String {
         didSet {
             // Call API to check key
+            apiManager.apiKey = apiKey
         }
     }
     
-    var walletWireframe = WalletWireframe()
+    let coreDataStore = CoreDataStore()
+    let rootWireframe = RootWireframe()
     
-    // Initialization
+    let walletWireframe = WalletWireframe()
+    let authWireframe = AuthWireframe()
     
+    let apiManager = ApiManager()
+    
+    // MARK: Initialization
     init() {
         apiKey = ""
         configureDependencies()
     }
     
     func installRootViewControllerIntoWindow(_ window: UIWindow) {
-        walletWireframe.presentInitialWalletInterface()
+        authWireframe.presentInitialAuthInterface()
+    }
+    
+    func authenticate() {
+        authWireframe.presentInitialAuthInterface()
     }
     
     func configureDependencies() {
+        // MARK: Auth
+        authDependencies()
         // MARK: Wallet
         walletDependencies()
     }
     
-    func walletDependencies() {
-        let coreDataStore = CoreDataStore()
-        let rootWireframe = RootWireframe()
+    func authDependencies() {
+        let authPresenter = AuthPresenter()
         
+        let authManager = AuthManager()
+        let anonymousManager = AnonManager(apiManager: apiManager)
+        
+        let authInteractor = AuthInteractor(authManager: authManager, anonManager: anonymousManager)
+        authInteractor.output = authPresenter
+        
+        authPresenter.authInteractor = authInteractor
+        authPresenter.authWireframe = authWireframe
+        
+        authWireframe.authPresenter = authPresenter
+        authWireframe.rootWireframe = rootWireframe
+    }
+    
+    func walletDependencies() {
         let walletPresenter = WalletPresenter()
         
         let walletManager = WalletManager()
         let walletDataManager = WalletDataManager()
-        let apiManager = ApiManager()
+        
         
         walletDataManager.coreDataStore = coreDataStore
         
         // TEST
         let userDataManager = UserDataManager()
         userDataManager.coreDataStore = coreDataStore
-        testWalletFlow(userDataManager: userDataManager)
+//        testWalletFlow(userDataManager: userDataManager)
+//        testWalletFlow1(userDataManager: userDataManager)
         
-//        walletDataManager.getUserById("1")
-//            .done { (user) in
-//                print("User: [\(user)]")
-//            }.catch({ (error) in
-//                print("Error: [\(error)]")
-//            })
+        walletDataManager.getUserById("2")
+            .done { (user) in
+                print("User: [\(user)]")
+            }.catch({ (error) in
+                print("Error: [\(error)]")
+            })
+        apiManager.getUserProfile().catch { (error) in
+            print("Error: [\(error)]")
+        }
         // TEST
         
         let walletInteractor = WalletInteractor(walletManager: walletManager, dataManager: walletDataManager, apiManager: apiManager)
@@ -76,33 +105,35 @@ class ModuleDependencies {
     func testWalletFlow(userDataManager : UserDataManager){
         // Presiquites
         let profile = UserProfileDTO()
-        profile?.id = "1"
-        profile?.wallet = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo".encrypt(key: "000000")
+        profile?.userId = "1"
+        profile?.walletInfo = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo".encrypt(key: "000000")
         
         let user = UserDTO()
-        user?.id = profile?.id
+        user?.id = profile?.userId
         user?.profile = profile
 
         let userModel = UserModel(id: user?.id, mnemonic: nil, pin: nil, wallets: nil)
-        _ = userDataManager.addNewUserSync(userModel)
+        _ = userDataManager.addNewUser(userModel)
         SessionStoreManager.saveCurrentUser(user: user!)
     }
     
     // User have no wallet before. -> create wallet
-    func testWalletFlow1(){
+    func testWalletFlow1(userDataManager : UserDataManager){
         // Presiquites
         let profile = UserProfileDTO()
-        profile?.id = "1"
+        profile?.userId = "2"
         
         let user = UserDTO()
-        user?.id = profile?.id
+        user?.id = profile?.userId
         user?.profile = profile
         
+        let userModel = UserModel(id: user?.id, mnemonic: nil, pin: nil, wallets: nil)
+        _ = userDataManager.addNewUser(userModel)
         SessionStoreManager.saveCurrentUser(user: user!)
     }
     
     // User have a local wallet before. -> do nothing
     func testWalletFlow2(){
-        testWalletFlow1()
+//        testWalletFlow1()
     }
 }

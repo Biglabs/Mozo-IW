@@ -11,6 +11,7 @@ import PromiseKit
 
 public class ApiManager {
     private (set) var client: SessionManager
+    var apiKey: String?
     
     public init() {
         // Create a shared URL cache
@@ -31,10 +32,17 @@ public class ApiManager {
         client = Alamofire.SessionManager(configuration: configuration)
     }
     
+    private func getToken() -> String{
+        if let accessToken = AccessTokenManager.loadToken() {
+            return "bearer " + accessToken
+        }
+        return ""
+    }
+    
     private func buildHTTPHeaders() ->HTTPHeaders {
         let headers: HTTPHeaders = [
-            "API-Key": "no_apiKey",
-            "Authorization": "no_token",
+            "API-Key": apiKey ?? "",
+            "Authorization": getToken(),
             "Content-Type": MediaType.APPLICATION_JSON.rawValue,
             "Accept": MediaType.APPLICATION_JSON.rawValue,
             "Cache-Control": "private",

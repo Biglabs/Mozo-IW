@@ -16,6 +16,5 @@ class AuthWireframe: MozoWireframe {
     }
     
     func dismissAuthInterface(){
-        
     }
 }

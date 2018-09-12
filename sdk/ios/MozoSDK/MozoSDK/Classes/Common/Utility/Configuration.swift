@@ -14,6 +14,9 @@ public class Configuration {
     public static let MIN_PASSWORD_LENGTH = 6
     public static var FONT_SIZE: UIFontTextSize = UIFontTextSize(.xSmall)
     public static let DEVICE_TOKEN = "DEVICE_TOKEN"
+    // User id for anonymous user
+    public static let USER_ID_ANONYMOUS = "Mozo@UserId@Anonymous"
+    
     // Access token for anonymous user
     public static let ACCESS_TOKEN_ANONYMOUS = "Mozo@AccessToken@Anonymous"
     // Access token
@@ -27,7 +30,7 @@ public class Configuration {
     public static let WALLLET_ID = "WalletId"
     
     //development
-    public static let BASE_URL = "http://192.168.1.98:9000"
+    public static let BASE_URL = "http://18.136.55.245:8080"
     
     // MARK: Auth
     /**

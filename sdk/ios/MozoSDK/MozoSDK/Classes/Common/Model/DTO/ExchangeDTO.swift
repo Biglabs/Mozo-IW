@@ -8,13 +8,19 @@
 import Foundation
 import SwiftyJSON
 
-public class ExchangeDTO: ResponseObjectSerializable {
+public class ExchangeInfoDTO: Codable, ResponseObjectSerializable {
     public var apiKey: String?
     public var secretKey: String?
+    public var depositAddress: String?
+    public var exchangeId: String?
+    public var exchangePlatform: String?
     
     public required init?(json: SwiftyJSON.JSON) {
         self.apiKey = json["apiKey"].string
         self.secretKey = json["secretKey"].string
+        self.depositAddress = json["depositAddress"].string
+        self.exchangeId = json["exchangeId"].string
+        self.exchangePlatform = json["exchangePlatform"].string
     }
     
     public required init?(){}
@@ -26,6 +32,15 @@ public class ExchangeDTO: ResponseObjectSerializable {
         }
         if let secretKey = self.secretKey {
             json["secretKey"] = secretKey
+        }
+        if let depositAddress = self.depositAddress {
+            json["depositAddress"] = depositAddress
+        }
+        if let exchangeId = self.exchangeId {
+            json["exchangeId"] = exchangeId
+        }
+        if let exchangePlatform = self.exchangePlatform {
+            json["exchangePlatform"] = exchangePlatform
         }
         return json
     }

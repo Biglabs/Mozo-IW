@@ -9,12 +9,14 @@ import Foundation
 import AppAuth
 
 class AuthInteractor : NSObject {
-    private var output : AuthInteractorOutput?
+    var output : AuthInteractorOutput?
     
     private var authManager: AuthManager?
+    private var anonManager: AnonManager?
     
-    init(authManager: AuthManager) {
+    init(authManager: AuthManager, anonManager: AnonManager) {
         self.authManager = authManager
+        self.anonManager = anonManager
     }
 }
 
@@ -24,7 +26,11 @@ extension AuthInteractor : AuthInteractorInput {
             let authState = OIDAuthState(authorizationResponse: response)
             authManager?.setAuthState(authState)
             print("Authorization response with code: \(response.authorizationCode ?? "DEFAULT_CODE")")
-            // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
+            _ = authManager?.codeExchange().done({ (accessToken) in
+                self.output?.finishedAuthenticate(accessToken: accessToken)
+                AccessTokenManager.saveToken(accessToken)
+                self.anonManager?.linkCoinFromAnonymousToCurrentUser()
+            })
         } else {
             print("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
         }

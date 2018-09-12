@@ -9,10 +9,11 @@ import Foundation
 import PromiseKit
 import SwiftyJSON
 
+let USER_API_PATH = "/api/user-profile"
 public extension ApiManager {
     public func getUserProfile() -> Promise<UserProfileDTO> {
         return Promise { seal in
-            let url = Configuration.BASE_URL + ""
+            let url = Configuration.BASE_URL + USER_API_PATH
             self.execute(.get, url: url)
                 .done { json -> Void in
                     // JSON info
@@ -35,8 +36,8 @@ public extension ApiManager {
     
     public func updateUserProfile(userProfile: UserProfileDTO) -> Promise<[String : Any]> {
         return Promise { seal in
-            let url = Configuration.BASE_URL + ""
-            self.execute(.get, url: url)
+            let url = Configuration.BASE_URL + USER_API_PATH
+            self.execute(.put, url: url)
                 .done { json -> Void in
                     // JSON info
                     print(json)

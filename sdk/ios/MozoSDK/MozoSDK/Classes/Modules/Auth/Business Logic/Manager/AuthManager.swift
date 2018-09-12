@@ -47,30 +47,22 @@ class AuthManager : NSObject {
                 
                 print("Got configuration: \(config)")
                 
-//                let clientId = Configuration.AUTH_CLIENT_ID
-                self.doClientRegistration(configuration: config) { configuration, response in
-                    
-                    guard let configuration = configuration, let clientID = response?.clientID else {
-                        print("Error retrieving configuration OR clientID")
-                        return
-                    }
-                    
-                    guard let redirectURI = URL(string: Configuration.AUTH_REDIRECT_URL) else {
-                        print("Error creating URL for : \(Configuration.AUTH_REDIRECT_URL)")
-                        return
-                    }
-                    
-                    // builds authentication request
-                    let request = OIDAuthorizationRequest(configuration: configuration,
-                                                          clientId: clientID,
-                                                          clientSecret: response?.clientSecret,
-                                                          scopes: [OIDScopeOpenID, OIDScopeProfile],
-                                                          redirectURL: redirectURI,
-                                                          responseType: OIDResponseTypeCode,
-                                                          additionalParameters: nil)
-                    
-                    seal.fulfill(request)
+                let clientId = Configuration.AUTH_CLIENT_ID
+                guard let redirectURI = URL(string: Configuration.AUTH_REDIRECT_URL) else {
+                    print("Error creating URL for : \(Configuration.AUTH_REDIRECT_URL)")
+                    return
                 }
+                
+                // builds authentication request
+                let request = OIDAuthorizationRequest(configuration: config,
+                                                      clientId: clientId,
+                                                      clientSecret: nil,
+                                                      scopes: [OIDScopeOpenID, OIDScopeProfile],
+                                                      redirectURL: redirectURI,
+                                                      responseType: OIDResponseTypeCode,
+                                                      additionalParameters: nil)
+                
+                seal.fulfill(request)
             }
         }
     }
@@ -164,6 +156,27 @@ extension AuthManager {
     
     func stateChanged() {
         AuthDataManager.saveAuthState(self.authState)
+    }
+    
+    func codeExchange() -> Promise<String> {
+        return Promise { seal in
+            guard let tokenExchangeRequest = self.authState?.lastAuthorizationResponse.tokenExchangeRequest() else {
+                print("Error creating authorization code exchange request")
+                return seal.reject(SystemError.incorrectCodeExchangeRequest)
+            }
+            print("Performing authorization code exchange with request: [\(tokenExchangeRequest)]")
+            
+            OIDAuthorizationService.perform(tokenExchangeRequest){ response, error in
+                if let tokenResponse = response {
+                    print("Received token response with accessToken: \(tokenResponse.accessToken ?? "DEFAULT_TOKEN")")
+                    seal.fulfill(tokenResponse.accessToken ?? "")
+                } else {
+                    print("Token exchange error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                    seal.reject(error!)
+                }
+                self.authState?.update(with: response, error: error)
+            }
+        }
     }
 }
 
