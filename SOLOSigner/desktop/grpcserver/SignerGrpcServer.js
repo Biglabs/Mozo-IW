@@ -54,7 +54,6 @@ function sign(call, callback) {
   }
 
   let request_data = call.request;
-  console.log(JSON.stringify(request_data));
   request_data.action = "SIGN";
   const main = require('../main');
   main.mainWindow.webContents.send('open-confirm-transaction-screen', request_data);
@@ -89,7 +88,7 @@ function returnSignRequest(req) {
   let result_data = {
     result: req.result
   };
-  console.log(JSON.stringify(signServiceProto.Transaction));
+
   if (req.result.error) {
     result_data.result.status = "ERROR";
   } else {

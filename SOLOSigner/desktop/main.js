@@ -46,7 +46,6 @@ const shouldQuit = app.makeSingleInstance((argv, workingDirectory) => {
     // Keep only command line / deep linked arguments
     deeplinkingUrl = argv.slice(1);
   }
-  logEverywhere("app.makeSingleInstance# " + deeplinkingUrl);
 
   if (mainWindow) {
     if (mainWindow.isMinimized())
@@ -88,6 +87,8 @@ const createWindow = () => {
 
       // Stop the function if the data cannot be parse
       if (!request_data) {
+        // Show the mainwindow when calling from deep link
+        mainWindow.show();
         return;
       }
 
@@ -148,7 +149,6 @@ app.on('open-url', function (event, url) {
   //dialog.showErrorBox('Welcome Back', `You arrived from: ${url}`);
   deeplinkingUrl = url;
   //console.log("in open-url handler........");
-  //logEverywhere("open-url# " + deeplinkingUrl);
 })
 
 
@@ -238,6 +238,13 @@ function showErrorDialog() {
 exports.sendMessageToRender = (param) => {
   console.log("send-message-to-render: " + param);
 };
+
+
+exports.handleMainRequest = (param) => {
+  if (param.action == "SIGN") {
+    grpcServer.returnSignRequest(param);
+  }
+}
 
 /**
  * sample for calling using rest client like Postman

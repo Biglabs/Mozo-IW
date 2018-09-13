@@ -20,7 +20,7 @@ const grpcClient = new grpcLoader.sign_service_proto.Transaction(
 const grpcExpress = require('grpc-express');
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 33013;
 
 const userReference = require('electron-settings');
 
@@ -48,13 +48,42 @@ app.get('/checkWallet', (req, res) => {
   res.send({ result : response_data });
 });
 
+app.get('/getWalletAddress', (req, res) => {
+  let wallet = userReference.get("Address");
+  let response_data = {
+    status: "ERROR",
+    error: {
+      code: "ERR-098",
+      title: "No wallet",
+      detail: "User has not logined",
+      type: "Business"
+    }
+  }
+  if (wallet) {
+    let addr_network = req.query.network;
+    response_data["error"]["detail"] = "No wallet address with `" +
+      addr_network + "` network";
+
+    for (var index = 0; index < wallet.length; ++index) {
+      let wallet_obj = wallet[index];
+      if (wallet_obj.network == addr_network) {
+        response_data = {
+          status: "SUCCESS",
+          wallet_address: wallet_obj.address,
+          error: {}
+        };
+        break;
+      }
+    }
+  }
+  res.send({ result : response_data });
+});
+
 app.post('/transaction/sign', (req, res) => {
-  console.log(JSON.stringify(req.body));
   grpcClient.sign(req.body, function(err, grpc_res) {
     if (err) {
       console.log(err);
       let signServiceProto = grpcLoader.sign_service_proto;
-      console.log(JSON.stringify(signServiceProto));
       let error_obj = {
         status: "ERROR",
         signedTransaction: null,
@@ -76,11 +105,10 @@ app.post('/transaction/sign', (req, res) => {
  * export start proxy server to outside
  */
 module.exports.start = function(){
-    /**
-     * forward rest call to grpc and vice versal
-     */
-    httpServer = app.listen(port, async () => {
-        console.log('Proxy is listening on port 3000!');
-        //app.use(grpcExpress(grpcClient));
-    });
+  /**
+   * forward rest call to grpc and vice versal
+   */
+  httpServer = app.listen(port, "127.0.0.1", async () => {
+    console.log("Proxy is listening on port " + port + "!");
+  });
 };
