@@ -18,5 +18,5 @@ protocol AuthInteractorInput {
 protocol AuthInteractorOutput {
     func finishedBuildAuthRequest(_ request: OIDAuthorizationRequest)
     func finishedAuthenticate(accessToken: String?)
-    func dismissAuthInterface()
+    func cancelledAuthenticateByUser()
 }

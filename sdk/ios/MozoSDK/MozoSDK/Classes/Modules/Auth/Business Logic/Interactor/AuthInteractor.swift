@@ -12,11 +12,9 @@ class AuthInteractor : NSObject {
     var output : AuthInteractorOutput?
     
     private var authManager: AuthManager?
-    private var anonManager: AnonManager?
     
-    init(authManager: AuthManager, anonManager: AnonManager) {
+    init(authManager: AuthManager) {
         self.authManager = authManager
-        self.anonManager = anonManager
     }
 }
 
@@ -28,11 +26,10 @@ extension AuthInteractor : AuthInteractorInput {
             print("Authorization response with code: \(response.authorizationCode ?? "DEFAULT_CODE")")
             _ = authManager?.codeExchange().done({ (accessToken) in
                 self.output?.finishedAuthenticate(accessToken: accessToken)
-                AccessTokenManager.saveToken(accessToken)
-                self.anonManager?.linkCoinFromAnonymousToCurrentUser()
             })
         } else {
             print("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+            output?.cancelledAuthenticateByUser()
         }
     }
     

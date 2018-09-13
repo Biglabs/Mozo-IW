@@ -34,15 +34,18 @@ class WalletInteractor : NSObject {
         }
     }
     
-    func updateWalletToUserProfile(){
+    func updateWalletToUserProfile(offchainAddress: String) {
         if let userObj = SessionStoreManager.loadCurrentUser() {
             _ = dataManager.getUserById(userObj.id!).done { (user) in
                 let profile = userObj.profile
-                if profile?.walletInfo == nil {
-                    profile?.walletInfo = user.mnemonic
+                if profile?.walletInfo?.encryptSeedPhrase == nil || profile?.walletInfo?.offchainAddress == nil {
+                    let walletInfo = WalletInfoDTO(encryptSeedPhrase: user.mnemonic, offchainAddress: offchainAddress)
+                    profile?.walletInfo = walletInfo
                     _ = self.apiManager.updateUserProfile(userProfile: profile!)
-                        .done { result -> Void in
-                            print("Update Wallet To User Profile result: [\(result)]")
+                        .done { uProfile -> Void in
+                            let userDto = UserDTO(id: uProfile.userId, profile: uProfile)
+                            SessionStoreManager.saveCurrentUser(user: userDto)
+                            print("Update Wallet To User Profile result: [\(uProfile)]")
                     }
                 }
             }
@@ -78,7 +81,7 @@ extension WalletInteractor : WalletInteractorInput {
                     compareResult = pin.toSHA512() == user.pin
                 } else {
                     // Incase: restore wallet from server mnemonics
-                    let mnemonic = userObj.profile?.walletInfo?.decrypt(key: pin)
+                    let mnemonic = userObj.profile?.walletInfo?.encryptSeedPhrase?.decrypt(key: pin)
                     
                     if BIP39.mnemonicsToEntropy(mnemonic!) == nil {
                         print("😞 Invalid mnemonics")
@@ -101,7 +104,7 @@ extension WalletInteractor : WalletInteractorInput {
                 // Get UserProfile
                 let profile = userObj.profile
                 // Get wallet - mnemonics
-                mne = profile?.walletInfo?.decrypt(key: pin)
+                mne = profile?.walletInfo?.encryptSeedPhrase?.decrypt(key: pin)
             }
         } else {
             // A new wallet has just been created.
@@ -110,7 +113,7 @@ extension WalletInteractor : WalletInteractorInput {
         var wallet = walletManager.createNewWallet(mnemonics: mne!)
         wallet.privateKey = wallet.privateKey.encrypt(key: pin)
         updateWalletForCurrentUser(wallet)
-        updateWalletToUserProfile()
+        updateWalletToUserProfile(offchainAddress: wallet.address)
         output?.updatedWallet()
     }
     

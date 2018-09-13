@@ -39,7 +39,7 @@ extension AuthPresenter : AuthInteractorOutput {
         authModuleDelegate?.authModuleDidFinishAuthentication(accessToken: accessToken)
     }
     
-    func dismissAuthInterface() {
+    func cancelledAuthenticateByUser() {
         authWireframe?.dismissAuthInterface()
     }
 }

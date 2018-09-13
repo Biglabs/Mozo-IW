@@ -34,14 +34,17 @@ public extension ApiManager {
         }
     }
     
-    public func updateUserProfile(userProfile: UserProfileDTO) -> Promise<[String : Any]> {
+    public func updateUserProfile(userProfile: UserProfileDTO) -> Promise<UserProfileDTO> {
         return Promise { seal in
             let url = Configuration.BASE_URL + USER_API_PATH
-            self.execute(.put, url: url)
+            let param = userProfile.toJSON()
+            self.execute(.put, url: url, parameters: param)
                 .done { json -> Void in
                     // JSON info
                     print(json)
-                    seal.fulfill(json)
+                    let jobj = SwiftyJSON.JSON(json)
+                    let userProfile = UserProfileDTO.init(json: jobj)
+                    seal.fulfill(userProfile!)
                 }
                 .catch { error in
                     //Handle error or give feedback to the user

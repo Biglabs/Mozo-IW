@@ -14,6 +14,7 @@ class WalletPresenter : NSObject {
     var walletWireframe : WalletWireframe?
     var pinUserInterface : PINViewInterface?
     var passPharseUserInterface : PassPhraseViewInterface?
+    var walletModuleDelegate : WalletModuleDelegate?
 }
 
 extension WalletPresenter: WalletModuleInterface {
@@ -49,11 +50,13 @@ extension WalletPresenter: WalletModuleInterface {
 extension WalletPresenter: WalletInteractorOutput {
     func updatedWallet() {
         walletWireframe?.dismissWalletInterface()
+        walletModuleDelegate?.walletModuleDidFinish()
     }
     
     func finishedCheckServer(result: Bool) {
         if result {
             walletWireframe?.dismissWalletInterface()
+            walletModuleDelegate?.walletModuleDidFinish()
         } else {
             walletInteractor?.checkServerWalletExisting()
         }

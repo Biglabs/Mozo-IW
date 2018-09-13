@@ -13,6 +13,12 @@ public class UserDTO: Codable, ResponseObjectSerializable {
     public var name: String?
     public var profile: UserProfileDTO?
     
+    public required init(id: String?, name: String? = nil, profile: UserProfileDTO?){
+        self.id = id
+        self.name = name
+        self.profile = profile
+    }
+    
     public required init?(json: SwiftyJSON.JSON) {
         self.id = json["id"].string
         self.name = json["name"].string

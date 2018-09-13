@@ -20,4 +20,8 @@ public class MozoSDK {
         
         moduleDependencies.installRootViewControllerIntoWindow(window)
     }
+    
+    public static func authenticate() {
+        moduleDependencies.authenticate()
+    }
 }

@@ -33,6 +33,6 @@ class UserDataManager : NSObject {
         if count != nil && count! == 0 {
             return coreDataStore.addNewUser(userModel: user)
         }
-        return false
+        return true
     }
 }

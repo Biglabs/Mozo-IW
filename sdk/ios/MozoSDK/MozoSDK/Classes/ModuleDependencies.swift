@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
 class ModuleDependencies {
     // MARK: - Properties
@@ -22,6 +23,7 @@ class ModuleDependencies {
     let coreDataStore = CoreDataStore()
     let rootWireframe = RootWireframe()
     
+    let coreWireframe = CoreWireframe()
     let walletWireframe = WalletWireframe()
     let authWireframe = AuthWireframe()
     
@@ -38,27 +40,49 @@ class ModuleDependencies {
     }
     
     func authenticate() {
-        authWireframe.presentInitialAuthInterface()
+        testUpdateProfile()
+//        coreWireframe.requestForAuthentication()
     }
     
     func configureDependencies() {
+        // MARK: Core
+        coreDependencies()
         // MARK: Auth
         authDependencies()
         // MARK: Wallet
         walletDependencies()
     }
     
+    func coreDependencies() {
+        let corePresenter = CorePresenter()
+        
+        let anonManager = AnonManager()
+        anonManager.apiManager = apiManager
+        let userDataManager = UserDataManager()
+        userDataManager.coreDataStore = coreDataStore
+        
+        let coreInteractor = CoreInteractor(anonManager: anonManager, apiManager: apiManager, userDataManager: userDataManager)
+        coreInteractor.output = corePresenter
+        
+        corePresenter.coreInteractor = coreInteractor
+        corePresenter.coreWireframe = coreWireframe
+        
+        coreWireframe.corePresenter = corePresenter
+        coreWireframe.authWireframe = authWireframe
+        coreWireframe.walletWireframe = walletWireframe
+        coreWireframe.rootWireframe = rootWireframe
+    }
+    
     func authDependencies() {
         let authPresenter = AuthPresenter()
         
         let authManager = AuthManager()
-        let anonymousManager = AnonManager(apiManager: apiManager)
-        
-        let authInteractor = AuthInteractor(authManager: authManager, anonManager: anonymousManager)
+        let authInteractor = AuthInteractor(authManager: authManager)
         authInteractor.output = authPresenter
         
         authPresenter.authInteractor = authInteractor
         authPresenter.authWireframe = authWireframe
+        authPresenter.authModuleDelegate = coreWireframe.corePresenter
         
         authWireframe.authPresenter = authPresenter
         authWireframe.rootWireframe = rootWireframe
@@ -69,29 +93,9 @@ class ModuleDependencies {
         
         let walletManager = WalletManager()
         let walletDataManager = WalletDataManager()
-        
-        
         walletDataManager.coreDataStore = coreDataStore
         
-        // TEST
-        let userDataManager = UserDataManager()
-        userDataManager.coreDataStore = coreDataStore
-//        testWalletFlow(userDataManager: userDataManager)
-//        testWalletFlow1(userDataManager: userDataManager)
-        
-        walletDataManager.getUserById("2")
-            .done { (user) in
-                print("User: [\(user)]")
-            }.catch({ (error) in
-                print("Error: [\(error)]")
-            })
-        apiManager.getUserProfile().catch { (error) in
-            print("Error: [\(error)]")
-        }
-        // TEST
-        
         let walletInteractor = WalletInteractor(walletManager: walletManager, dataManager: walletDataManager, apiManager: apiManager)
-        
         walletInteractor.output = walletPresenter
         
         walletPresenter.walletInteractor = walletInteractor
@@ -101,39 +105,21 @@ class ModuleDependencies {
         walletWireframe.rootWireframe = rootWireframe
     }
     
-    // User have a wallet before. -> restore wallet
-    func testWalletFlow(userDataManager : UserDataManager){
-        // Presiquites
-        let profile = UserProfileDTO()
-        profile?.userId = "1"
-        profile?.walletInfo = "test pizza drift whip rebel empower flame mother service grace sweet kangaroo".encrypt(key: "000000")
+    func testUpdateProfile() {
+        let testStr = "{\"id\":1251,\"userId\":\"bbf400f4-cae1-40fa-88d1-a0faafaf12c9\",\"status\" : \"CONFIRMED\",\"exchangeInfo\" : null,\"walletInfo\" : null,\"settings\" : null}"
+        let json = SwiftyJSON.JSON(testStr)
+        let profile = UserProfileDTO(json: json)
+        let walletInfo = WalletInfoDTO(encryptSeedPhrase: "", offchainAddress: "")
+        profile?.walletInfo = walletInfo
         
-        let user = UserDTO()
-        user?.id = profile?.userId
-        user?.profile = profile
-
-        let userModel = UserModel(id: user?.id, mnemonic: nil, pin: nil, wallets: nil)
-        _ = userDataManager.addNewUser(userModel)
-        SessionStoreManager.saveCurrentUser(user: user!)
-    }
-    
-    // User have no wallet before. -> create wallet
-    func testWalletFlow1(userDataManager : UserDataManager){
-        // Presiquites
-        let profile = UserProfileDTO()
-        profile?.userId = "2"
+        if (!JSONSerialization.isValidJSONObject(profile)) {
+            print("is not a valid json object")
+        }
+        let httpBody = try! JSONSerialization.data(withJSONObject: profile, options: [])
         
-        let user = UserDTO()
-        user?.id = profile?.userId
-        user?.profile = profile
-        
-        let userModel = UserModel(id: user?.id, mnemonic: nil, pin: nil, wallets: nil)
-        _ = userDataManager.addNewUser(userModel)
-        SessionStoreManager.saveCurrentUser(user: user!)
-    }
-    
-    // User have a local wallet before. -> do nothing
-    func testWalletFlow2(){
-//        testWalletFlow1()
+        _ = apiManager.updateUserProfile(userProfile: profile!)
+            .done { uProfile -> Void in
+                print("Update Wallet To User Profile result: [\(uProfile)]")
+        }
     }
 }

@@ -11,7 +11,6 @@ class AuthWireframe: MozoWireframe {
     var authPresenter : AuthPresenter?
     
     func presentInitialAuthInterface(){
-        presentWaitingInterface()
         authPresenter?.performAuthentication()
     }
     

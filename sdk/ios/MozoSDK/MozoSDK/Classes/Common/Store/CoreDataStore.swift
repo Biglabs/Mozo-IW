@@ -79,6 +79,7 @@ class CoreDataStore : NSObject {
     func getUserById(_ id: String) -> Promise<UserModel>{
         return Promise { seal in
             if let userEntity = stack.fetchOne(From<ManagedUser>().where(\.id == id)) {
+                print("Wallets count: [\(userEntity.wallets?.count ?? -1)]")
                 let wallets = userEntity.wallets?.map {
                     let wallet = $0 as! ManagedWallet
                     _ = WalletModel(address: wallet.address, privateKey: wallet.privateKey)

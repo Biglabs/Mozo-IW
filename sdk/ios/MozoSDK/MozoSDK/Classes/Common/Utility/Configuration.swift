@@ -30,7 +30,7 @@ public class Configuration {
     public static let WALLLET_ID = "WalletId"
     
     //development
-    public static let BASE_URL = "http://18.136.55.245:8080"
+    public static let BASE_URL = "http://18.136.55.245:8080/solomon"
     
     // MARK: Auth
     /**

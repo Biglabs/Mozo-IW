@@ -8,14 +8,10 @@
 import Foundation
 
 class AnonManager : NSObject {
-    var apiManager : ApiManager {
+    var apiManager : ApiManager? {
         didSet {
             handleAnonymousAuthenticate()
         }
-    }
-    
-    init(apiManager: ApiManager) {
-        self.apiManager = apiManager
     }
     
     private func handleAnonymousAuthenticate() {
@@ -26,7 +22,7 @@ class AnonManager : NSObject {
                 isNew = true
                 UUID = NSUUID().uuidString
             }
-            _ = apiManager.anonymousAuthenticate(UUID: UUID!).done { (result) in
+            _ = apiManager?.anonymousAuthenticate(UUID: UUID!).done { (result) in
                 let anonToken = ""
                 AccessTokenManager.saveAnonymousToken(anonToken)
                 if isNew {
@@ -46,6 +42,6 @@ class AnonManager : NSObject {
         guard let userId = user.id else {
             return
         }
-        _ = apiManager.linkAnonymousUser(UUID: UUID, userId: userId)
+        _ = apiManager?.linkAnonymousUser(UUID: UUID, userId: userId)
     }
 }

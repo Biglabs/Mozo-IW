@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         MozoSDK.configure(key: "")
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        MozoSDK.installRootViewControllerIntoWindow(self.window!)
+//        MozoSDK.installRootViewControllerIntoWindow(self.window!)
+        MozoSDK.authenticate()
         
         self.window?.makeKeyAndVisible()
         return true

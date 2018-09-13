@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 
-let ANONYMOUS_API_PATH = "/api/"
+let ANONYMOUS_API_PATH = "/api/anonymous/"
 extension ApiManager {
     public func anonymousAuthenticate(UUID: String) -> Promise<[String : Any?]> {
         return Promise { seal in

@@ -15,7 +15,6 @@ class WalletWireframe: MozoWireframe {
     var passPhraseViewController: PassPhraseViewController?
     
     func presentInitialWalletInterface() {
-        presentWaitingInterface()
         walletPresenter?.processInitialWalletInterface()
     }
     
@@ -25,7 +24,7 @@ class WalletWireframe: MozoWireframe {
         viewController.passPhrase = passPharse
         pinViewController = viewController
         walletPresenter?.pinUserInterface = viewController
-        rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
+        rootWireframe?.replaceTopViewController(viewController)
     }
     
     func presentPassPhraseInterface() {
@@ -33,12 +32,11 @@ class WalletWireframe: MozoWireframe {
         viewController.eventHandler = walletPresenter
         passPhraseViewController = viewController
         walletPresenter?.passPharseUserInterface = viewController
-        rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
+        rootWireframe?.replaceTopViewController(viewController)
     }
     
     func dismissWalletInterface() {
-        let viewController = WaitingViewControllerFromStoryboard()
-        rootWireframe?.replaceRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
+        pinViewController?.dismiss(animated: false, completion: nil)
     }
     
     func PINViewControllerFromStoryboard() -> PINViewController {
