@@ -41,6 +41,7 @@ import {isWebPlatform} from "./helpers/PlatformUtils";
     console.log("ipcRenderer: " + ipcRenderer);
     // Listen for main message
     ipcRenderer.on('open-confirm-transaction-screen', (event, arg) => {
+      remote.getCurrentWindow().show();
       let json_data = JSON.stringify(arg);
       LinkingService.sendJsonDataToConfirm(json_data);
       // call method on main process
