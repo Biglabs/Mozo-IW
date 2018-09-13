@@ -239,6 +239,13 @@ exports.sendMessageToRender = (param) => {
   console.log("send-message-to-render: " + param);
 };
 
+
+exports.handleMainRequest = (param) => {
+  if (param.action == "SIGN") {
+    grpcServer.returnSignRequest(param);
+  }
+}
+
 /**
  * sample for calling using rest client like Postman
  * Method: POST

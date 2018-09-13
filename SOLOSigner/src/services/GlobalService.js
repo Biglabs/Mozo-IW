@@ -24,14 +24,14 @@ function responseToReceiver(result, jsonData) {
     };
     let responseUrl = '';
     if (isWebPlatform()) {
-      responseUrl = "solosigner";
+        var main = require('electron').remote.require("./main.js");
+        main.handleMainRequest(responseData);
     } else {
-      responseUrl = `${jsonData.receiver}`;
+      responseUrl = `${jsonData.receiver}://${JSON.stringify(responseData)}`;
+      Linking.openURL(responseUrl).then().catch(error =>
+                                                console.log(error)
+                                               );
     }
-    responseUrl = responseUrl + `://${JSON.stringify(responseData)}`;
-    Linking.openURL(responseUrl).then().catch(error =>
-                                              console.log(error)
-                                             );
 }
 
 function convertToHash(inputPIN){
