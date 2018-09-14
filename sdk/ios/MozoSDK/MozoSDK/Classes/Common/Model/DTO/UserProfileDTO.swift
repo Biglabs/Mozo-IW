@@ -50,4 +50,9 @@ public class UserProfileDTO: Codable, ResponseObjectSerializable {
         }
         return json
     }
+    
+    func rawData() -> Data? {
+        let json = JSON(self.toJSON())
+        return try? json.rawData()
+    }
 }

@@ -7,17 +7,21 @@
 
 import Foundation
 import PromiseKit
+import SwiftyJSON
 
-let ANONYMOUS_API_PATH = "/api/anonymous/"
+let ANONYMOUS_API_PATH = "/api/anonymous"
 extension ApiManager {
-    public func anonymousAuthenticate(UUID: String) -> Promise<[String : Any?]> {
+    public func anonymousAuthenticate(anonymousUser: AnonymousUserDTO) -> Promise<AnonymousUserDTO?> {
         return Promise { seal in
             let url = Configuration.BASE_URL + ANONYMOUS_API_PATH
-            self.execute(.post, url: url)
+            let data = anonymousUser.rawData()
+            self.execute(.post, url: url, parameters: data)
                 .done { json -> Void in
                     // JSON info
                     print(json)
-                    seal.fulfill(json)
+                    let jObj = SwiftyJSON.JSON(json)
+                    let anonUser = AnonymousUserDTO.init(json: jObj)
+                    seal.fulfill(anonUser)
                 }
                 .catch { error in
                     //Handle error or give feedback to the user

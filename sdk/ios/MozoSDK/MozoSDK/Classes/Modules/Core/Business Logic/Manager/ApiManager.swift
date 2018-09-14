@@ -39,10 +39,10 @@ public class ApiManager {
         return ""
     }
     
-    private func buildHTTPHeaders() ->HTTPHeaders {
+    private func buildHTTPHeaders(withToken: Bool) ->HTTPHeaders {
         let headers: HTTPHeaders = [
             "API-Key": apiKey ?? "",
-            "Authorization": getToken(),
+            "Authorization": withToken ? getToken() : "",
             "Content-Type": MediaType.APPLICATION_JSON.rawValue,
             "Accept": MediaType.APPLICATION_JSON.rawValue,
             "Cache-Control": "private",
@@ -100,27 +100,42 @@ public class ApiManager {
         return connectionError
     }
     
+    func executeWithoutToken(_ method: Alamofire.HTTPMethod, url: String, parameters: Any? = nil) -> Promise<[String: Any]> {
+        print("Execute url: " + url)
+        let headers = self.buildHTTPHeaders(withToken: false)
+        return self.execute(method, url: url, headers: headers, body: parameters!)
+    }
+    
+    
+    
     func execute(_ method: Alamofire.HTTPMethod, url: String, parameters: Any? = nil) -> Promise<[String: Any]> {
         print("Execute url: " + url)
+        let headers = self.buildHTTPHeaders(withToken: true)
         if parameters == nil {
-            return self.execute(method, url: url, params: nil)
+            return self.execute(method, url: url, headers: headers, params: nil)
         } else if let params = parameters as? [String: Any] {
-            return self.execute(method, url: url, params: params)
+            return self.execute(method, url: url, headers: headers, params: params)
         } else if let param = parameters as? String {
-            return self.execute(method, url: url, param: param)
+            return self.execute(method, url: url, headers: headers, param: param)
         } else {
-            return self.execute(method, url: url, body: parameters!)
+            return self.execute(method, url: url, headers: headers, body: parameters!)
         }
     }
 
-    private func execute(_ method: Alamofire.HTTPMethod, url: String, body: Any) -> Promise<[String: Any]> {
+    private func execute(_ method: Alamofire.HTTPMethod, url: String, headers: HTTPHeaders, body: Any) -> Promise<[String: Any]> {
         return Promise { seal in
-            let headers = self.buildHTTPHeaders()
             guard let URL = URL(string: url) else {return}
             var request = URLRequest(url: URL)
             request.httpMethod = method.rawValue
             request.allHTTPHeaderFields = headers
-            request.httpBody = try! JSONSerialization.data(withJSONObject: body, options: [])
+            var httpBody : Data? = nil
+            
+            if ((body as? Data) != nil) {
+                httpBody = body as? Data
+            } else {
+                httpBody = try! JSONSerialization.data(withJSONObject: body, options: [])
+            }
+            request.httpBody = httpBody
 
             self.client.request(request)
                 .validate()
@@ -139,9 +154,8 @@ public class ApiManager {
         }
     }
 
-    private func execute(_ method: Alamofire.HTTPMethod, url: String, param: String) -> Promise<[String: Any]> {
+    private func execute(_ method: Alamofire.HTTPMethod, url: String, headers: HTTPHeaders, param: String) -> Promise<[String: Any]> {
         return Promise { seal in
-            let headers = self.buildHTTPHeaders()
             guard let URL = URL(string: url) else {return}
             var request = URLRequest(url: URL)
             request.httpMethod = method.rawValue
@@ -165,9 +179,8 @@ public class ApiManager {
         }
     }
 
-    private func execute(_ method: Alamofire.HTTPMethod, url: String, params: [String: Any]?) -> Promise<[String: Any]>{
+    private func execute(_ method: Alamofire.HTTPMethod, url: String, headers: HTTPHeaders, params: [String: Any]?) -> Promise<[String: Any]>{
         return Promise { seal in
-            let headers = self.buildHTTPHeaders()
             self.client.request(url, method: method, parameters: params, encoding: JSONEncoding.default, headers: headers)
                 .validate()
                 .responseJSON { response in

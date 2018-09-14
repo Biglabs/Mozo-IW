@@ -12,7 +12,6 @@ protocol AuthInteractorInput {
     func buildAuthRequest()
     func setCurrentAuthorizationFlow(_ authorizationFlow : OIDAuthorizationFlowSession?)
     func handleAuthorizationResponse(_ response: OIDAuthorizationResponse?, error: Error?)
-    func handleRedirectUrl(_ url: URL) -> Bool
 }
 
 protocol AuthInteractorOutput {

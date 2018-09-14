@@ -9,4 +9,6 @@ import Foundation
 
 protocol AuthenticationDelegate {
     func mozoAuthenticationDidFinish()
+    func mozoLogoutDidFinish()
+    func mozoUIDidCloseAll()
 }

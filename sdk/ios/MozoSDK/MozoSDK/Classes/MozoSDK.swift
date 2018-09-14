@@ -24,4 +24,8 @@ public class MozoSDK {
     public static func authenticate() {
         moduleDependencies.authenticate()
     }
+    
+    public static func logout() {
+        moduleDependencies.logout()
+    }
 }

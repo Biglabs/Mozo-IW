@@ -10,6 +10,7 @@ import Foundation
 protocol CoreInteractorInput {
     func checkForAuthentication()
     func handleAferAuth(accessToken: String?)
+    func logout()
 }
 
 protocol CoreInteractorOutput {

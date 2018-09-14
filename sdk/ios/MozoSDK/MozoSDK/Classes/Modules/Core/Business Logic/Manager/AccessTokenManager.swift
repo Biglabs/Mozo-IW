@@ -19,6 +19,10 @@ public class AccessTokenManager {
         UserDefaults.standard.set(token, forKey: Configuration.ACCESS_TOKEN)
     }
     
+    public static func clearToken() {
+        UserDefaults.standard.removeObject(forKey: Configuration.ACCESS_TOKEN)
+    }
+    
     public static func saveAnonymousToken(_ token: String?) {
         UserDefaults.standard.set(token, forKey: Configuration.ACCESS_TOKEN_ANONYMOUS)
     }

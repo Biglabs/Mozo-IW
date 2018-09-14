@@ -32,9 +32,17 @@ class RootWireframe : NSObject {
         mozoNavigationController.viewControllers = newViewControllers
     }
     
+    func dismissTopViewController() {
+        _ = mozoNavigationController.viewControllers.popLast()
+    }
+    
     public func getTopViewController() -> UIViewController! {
         let appDelegate = UIApplication.shared.delegate
         if let window = appDelegate!.window { return window?.visibleViewController }
         return nil
+    }
+    
+    public func closeAllMozoUIs() {
+        
     }
 }

@@ -40,8 +40,7 @@ class WalletInteractor : NSObject {
                 let profile = userObj.profile
                 if profile?.walletInfo?.encryptSeedPhrase == nil || profile?.walletInfo?.offchainAddress == nil {
                     let walletInfo = WalletInfoDTO(encryptSeedPhrase: user.mnemonic, offchainAddress: offchainAddress)
-                    profile?.walletInfo = walletInfo
-                    _ = self.apiManager.updateUserProfile(userProfile: profile!)
+                    _ = self.apiManager.updateWalletToUserProfile(walletInfo: walletInfo)
                         .done { uProfile -> Void in
                             let userDto = UserDTO(id: uProfile.userId, profile: uProfile)
                             SessionStoreManager.saveCurrentUser(user: userDto)

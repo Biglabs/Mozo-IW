@@ -59,4 +59,10 @@ extension CoreInteractor: CoreInteractorInput {
             self.output?.finishedHandleAferAuth()
         })
     }
+    
+    func logout() {
+        // Maybe: Call logout API to revoke token
+        SessionStoreManager.clearCurrentUser()
+        AccessTokenManager.clearToken()
+    }
 }

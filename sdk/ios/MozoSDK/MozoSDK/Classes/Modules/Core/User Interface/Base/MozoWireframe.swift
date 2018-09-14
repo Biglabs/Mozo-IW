@@ -16,6 +16,7 @@ class MozoWireframe: NSObject {
     
     func presentWaitingInterface() {
         let viewController = WaitingViewControllerFromStoryboard()
+        viewController.addCloseBtn()
         rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
     }
     

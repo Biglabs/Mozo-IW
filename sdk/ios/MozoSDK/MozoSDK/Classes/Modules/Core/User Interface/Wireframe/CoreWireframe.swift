@@ -14,7 +14,15 @@ class CoreWireframe : MozoWireframe {
     
     func requestForAuthentication() {
         presentWaitingInterface()
-        corePresenter?.requestForAuthentication()
+//        corePresenter?.requestForAuthentication()
+    }
+    
+    func requestForLogout() {
+        corePresenter?.requestForLogout()
+    }
+    
+    func requestForCloseAllMozoUIs() {
+        rootWireframe?.closeAllMozoUIs()
     }
     
     func authenticate() {

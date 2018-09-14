@@ -10,5 +10,4 @@ import Foundation
 
 protocol AuthModuleInterface {
     func performAuthentication()
-    func handleRedirectUrl(_ url: URL) -> Bool
 }

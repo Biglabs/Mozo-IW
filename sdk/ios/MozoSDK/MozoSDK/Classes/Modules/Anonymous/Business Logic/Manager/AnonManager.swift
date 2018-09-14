@@ -22,8 +22,9 @@ class AnonManager : NSObject {
                 isNew = true
                 UUID = NSUUID().uuidString
             }
-            _ = apiManager?.anonymousAuthenticate(UUID: UUID!).done { (result) in
-                let anonToken = ""
+            let anonymousUser = AnonymousUserDTO(uuid: UUID)
+            _ = apiManager?.anonymousAuthenticate(anonymousUser: anonymousUser).done { (anonUser) in
+                let anonToken = anonUser?.token
                 AccessTokenManager.saveAnonymousToken(anonToken)
                 if isNew {
                     SessionStoreManager.saveAnonymousUUID(UUID)

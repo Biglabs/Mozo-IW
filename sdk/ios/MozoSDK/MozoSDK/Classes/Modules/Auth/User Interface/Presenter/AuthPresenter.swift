@@ -18,10 +18,6 @@ extension AuthPresenter : AuthModuleInterface {
     func performAuthentication() {
         authInteractor?.buildAuthRequest()
     }
-    
-    func handleRedirectUrl(_ url: URL) -> Bool {
-        return authInteractor?.handleRedirectUrl(url) ?? false
-    }
 }
 
 extension AuthPresenter : AuthInteractorOutput {

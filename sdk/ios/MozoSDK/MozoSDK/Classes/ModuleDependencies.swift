@@ -40,8 +40,11 @@ class ModuleDependencies {
     }
     
     func authenticate() {
-        testUpdateProfile()
-//        coreWireframe.requestForAuthentication()
+        coreWireframe.requestForAuthentication()
+    }
+    
+    func logout() {
+        coreWireframe.requestForLogout()
     }
     
     func configureDependencies() {
@@ -111,11 +114,6 @@ class ModuleDependencies {
         let profile = UserProfileDTO(json: json)
         let walletInfo = WalletInfoDTO(encryptSeedPhrase: "", offchainAddress: "")
         profile?.walletInfo = walletInfo
-        
-        if (!JSONSerialization.isValidJSONObject(profile)) {
-            print("is not a valid json object")
-        }
-        let httpBody = try! JSONSerialization.data(withJSONObject: profile, options: [])
         
         _ = apiManager.updateUserProfile(userProfile: profile!)
             .done { uProfile -> Void in

@@ -17,11 +17,27 @@ extension CorePresenter : CoreModuleInterface {
     func requestForAuthentication() {
         coreInteractor?.checkForAuthentication()
     }
+    
+    func requestForLogout() {
+        coreInteractor?.logout()
+        sdkDelegate?.mozoLogoutDidFinish()
+    }
+    
+    func requestForCloseAllMozoUIs() {
+        coreWireframe?.requestForCloseAllMozoUIs()
+        sdkDelegate?.mozoUIDidCloseAll()
+    }
 }
 
 extension CorePresenter : AuthModuleDelegate {
     func authModuleDidFinishAuthentication(accessToken: String?) {
         coreInteractor?.handleAferAuth(accessToken: accessToken)
+    }
+    
+    func authModuleDidFinishLogout() {
+        // Maybe: Close all existing Mozo's UIs
+        // Send delegate back to the app
+        sdkDelegate?.mozoLogoutDidFinish()
     }
 }
 

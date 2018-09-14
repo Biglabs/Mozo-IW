@@ -36,7 +36,7 @@ class WalletWireframe: MozoWireframe {
     }
     
     func dismissWalletInterface() {
-        pinViewController?.dismiss(animated: false, completion: nil)
+        rootWireframe?.dismissTopViewController()
     }
     
     func PINViewControllerFromStoryboard() -> PINViewController {

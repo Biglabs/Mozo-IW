@@ -24,6 +24,10 @@ public class SessionStoreManager {
         }
     }
     
+    public static func clearCurrentUser() {
+        UserDefaults.standard.removeObject(forKey: Configuration.USER_INFO)
+    }
+    
     public static func loadAnonymousUUID() -> String? {
         return UserDefaults.standard.value(forKey: Configuration.USER_ID_ANONYMOUS) as? String
     }
