@@ -26,9 +26,16 @@ const userReference = require('electron-settings');
 
 let httpServer = null;
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
 app.use(express.json());
 
-app.get('/checkWallet', (req, res) => {
+app.get('/checkWallet', (req, res, next) => {
   let wallet = userReference.get("Address");
   let response_data = {
     status: "ERROR",
@@ -48,7 +55,7 @@ app.get('/checkWallet', (req, res) => {
   res.send({ result : response_data });
 });
 
-app.get('/getWalletAddress', (req, res) => {
+app.get('/getWalletAddress', (req, res, next) => {
   let wallet = userReference.get("Address");
   let response_data = {
     status: "ERROR",
@@ -79,7 +86,12 @@ app.get('/getWalletAddress', (req, res) => {
   res.send({ result : response_data });
 });
 
-app.post('/transaction/sign', (req, res) => {
+app.get('/cleanUpWalletAddress', (req, res, next) => {
+  userReference.deleteAll();
+  res.send({ result : "SUCCESS" });
+});
+
+app.post('/transaction/sign', (req, res, next) => {
   grpcClient.sign(req.body, function(err, grpc_res) {
     if (err) {
       console.log(err);
