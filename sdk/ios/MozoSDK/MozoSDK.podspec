@@ -29,7 +29,9 @@ Pod::Spec.new do |s|
   
   s.resources = ['MozoSDK/Classes/**/*.xcdatamodeld']
   s.resource_bundles = {
-      'MozoSDK' => ['MozoSDK/Classes/**/*.{storyboard,xib}', 'MozoSDK/Assets/*.xcassets']
+      'MozoSDK' => ['MozoSDK/Classes/**/*.{storyboard,xib}',
+                    'MozoSDK/Assets/*.xcassets',
+                    'MozoSDK/Localization/*.lproj']
   }
 
   s.preserve_path = 'module.map'
