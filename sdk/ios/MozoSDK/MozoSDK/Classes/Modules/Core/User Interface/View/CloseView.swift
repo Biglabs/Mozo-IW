@@ -11,7 +11,5 @@ import UIKit
 class CloseView : UIView {
     @IBOutlet weak var imgClose: UIImageView!
     override func awakeFromNib() {
-//        let img = UIImage(named: "ic_SOLO", in: BundleManager.podBundle(), compatibleWith: nil)
-//        imgClose.image = img
     }
 }

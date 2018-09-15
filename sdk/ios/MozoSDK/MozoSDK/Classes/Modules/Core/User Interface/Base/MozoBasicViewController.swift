@@ -33,7 +33,7 @@ public class MozoBasicViewController : UIViewController {
     }
     
     func loadViewFromNib() -> UIView! {
-        let bundle = BundleManager.podBundle()
+        let bundle = BundleManager.mozoBundle()
         let nib = UINib(nibName: "CloseView", bundle: bundle)
         let view = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
         
