@@ -8,10 +8,8 @@
 
 import Foundation
 import UIKit
-import SmileLock
 
 class PINViewController : MozoBasicViewController {
-    @IBOutlet weak var passwordStackView: UIStackView!
     @IBOutlet weak var enterPINLabel: UILabel!
     
     var eventHandler : WalletModuleInterface?
@@ -20,7 +18,6 @@ class PINViewController : MozoBasicViewController {
     private var isConfirm = false
     
     //MARK: Property
-    var passwordContainerView: PasswordContainerView!
     let kPasswordDigit = 6
     
     override func viewDidLoad() {
@@ -30,16 +27,9 @@ class PINViewController : MozoBasicViewController {
     }
     
     func configureView() {
-        self.view.backgroundColor = ThemeManager.shared.main
-        //create PasswordContainerView
-        passwordContainerView = PasswordContainerView.create(in: passwordStackView, digit: kPasswordDigit)
-        passwordContainerView.delegate = self
-        
-        passwordContainerView.highlightedColor = UIColor.blue
-        
         if self.passPhrase != nil {
             // Enter new pin and confirm new pin
-            enterPINLabel.text = "Enter new PIN"
+//            enterPINLabel.text = "Enter new PIN"
         }
     }
 }
@@ -80,34 +70,34 @@ extension PINViewController : PINViewInterface {
     }
     
     func showConfirmPIN() {
-        passwordContainerView.clearInput()
+//        passwordContainerView.clearInput()
         enterPINLabel.text = "Confirm PIN"
         isConfirm = true
     }
 }
 
-extension PINViewController: PasswordInputCompleteProtocol {
-    func passwordInputComplete(_ passwordContainerView: PasswordContainerView, input: String) {
-        if !isConfirm {
-            pin = input
-            if self.passPhrase != nil {
-                eventHandler?.enterPIN(pin: input)
-            } else {
-                eventHandler?.verifyPIN(pin: input)
-            }
-        } else {
-            eventHandler?.verifyConfirmPIN(pin: pin!, confirmPin: input)
-        }
-    }
-    
-    func touchAuthenticationComplete(_ passwordContainerView: PasswordContainerView, success: Bool, error: Error?) {
-        if success {
-            self.validationSuccess()
-        } else {
-            passwordContainerView.clearInput()
-        }
-    }
-}
+//extension PINViewController: PasswordInputCompleteProtocol {
+//    func passwordInputComplete(_ passwordContainerView: PasswordContainerView, input: String) {
+//        if !isConfirm {
+//            pin = input
+//            if self.passPhrase != nil {
+//                eventHandler?.enterPIN(pin: input)
+//            } else {
+//                eventHandler?.verifyPIN(pin: input)
+//            }
+//        } else {
+//            eventHandler?.verifyConfirmPIN(pin: pin!, confirmPin: input)
+//        }
+//    }
+//
+//    func touchAuthenticationComplete(_ passwordContainerView: PasswordContainerView, success: Bool, error: Error?) {
+//        if success {
+//            self.validationSuccess()
+//        } else {
+//            passwordContainerView.clearInput()
+//        }
+//    }
+//}
 
 private extension PINViewController {
     func pinValidation(_ input: String) -> Bool {
@@ -125,6 +115,6 @@ private extension PINViewController {
     
     func validationFail() {
         print("*️⃣ failure!")
-        passwordContainerView.wrongPassword()
+//        passwordContainerView.wrongPassword()
     }
 }

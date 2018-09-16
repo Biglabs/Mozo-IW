@@ -61,6 +61,12 @@ public extension String {
     }
 }
 
+internal extension String {
+    var hasOnlyNewlineSymbols: Bool {
+        return trimmingCharacters(in: CharacterSet.newlines).isEmpty
+    }
+}
+
 public extension Data {
     public var deviceToken: String {
         return self.reduce("", {$0 + String(format: "%02X", $1)})
@@ -190,5 +196,23 @@ public extension Array {
     //MARK: - using this method to avoid out of index
     public func getElement(_ index: Int) -> Element? {
         return (0 <= index && index < self.count ? self[index] : nil)
+    }
+}
+
+internal extension Int {
+    func times(f: () -> ()) {
+        if self > 0 {
+            for _ in 0..<self {
+                f()
+            }
+        }
+    }
+    
+    func times( f: @autoclosure () -> ()) {
+        if self > 0 {
+            for _ in 0..<self {
+                f()
+            }
+        }
     }
 }
