@@ -16,7 +16,7 @@ public struct Theme {
     public var placeholder: UIColor = UIColor(hexString: "c1c1c1")
     public var disable: UIColor = UIColor(hexString: "d1d7dd")
     public var highlight: UIColor = UIColor(hexString: "003c8d")
-    public var main: UIColor = UIColor(hexString: "006dff")
+    public var main: UIColor = UIColor(hexString: "5a9cf5")
     public var border: UIColor = UIColor(hexString: "e0e0e0")
     public var background: UIColor = UIColor(hexString: "fff")
     public var menu: UIColor = UIColor(hexString: "f3f3f3")

@@ -15,6 +15,8 @@ public class MozoNavigationController : UINavigationController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         for viewController in self.viewControllers {
+            // TODO: Apply translation according to localizaion
+            print("Controller title: \(viewController.navigationItem.title ?? "DEFAULT")")
             if viewController.navigationItem.rightBarButtonItem == nil {
                 addCloseBtn(item: viewController.navigationItem)
             }

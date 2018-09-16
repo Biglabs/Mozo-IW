@@ -10,63 +10,53 @@ import UIKit
 
 class PassPhraseViewController: MozoBasicViewController {
     var eventHandler : WalletModuleInterface?
+    var passPharse : String? = nil
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet fileprivate var navigationBar:UINavigationBar?
-    @IBOutlet weak var walletBackupPassphraseLabel: UILabel!
-    @IBOutlet fileprivate var  backupPassphraseExplanation:UILabel?
     @IBOutlet fileprivate var passPhraseTextView:UITextView?
-    @IBOutlet fileprivate var masterSeedHexTitleLabel:UILabel?
-    @IBOutlet fileprivate var masterSeedHexTitleExplanation:UILabel?
-    @IBOutlet fileprivate var masterSeedHexTextView:UITextView?
-    
-    override var preferredStatusBarStyle : (UIStatusBarStyle) {
-        return UIStatusBarStyle.lightContent
-    }
+    @IBOutlet weak var checkImg: UIImageView!
+    @IBOutlet weak var checkLabel: UILabel!
+    @IBOutlet weak var continueBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.passPhraseTextView!.isSelectable = false
-        self.masterSeedHexTextView!.isSelectable = false
-        let passPhraseTextViewGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(self.passPhraseTextViewTapped(_:)))
-        self.passPhraseTextView!.addGestureRecognizer(passPhraseTextViewGestureRecognizer)
-        let masterSeedHexGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(self.masterSeedHexTextViewTapped(_:)))
-        self.masterSeedHexTextView!.addGestureRecognizer(masterSeedHexGestureRecognizer)
-        
+        addTapForLabel()
         // Generate mnemonic
         eventHandler?.generateMnemonics()
-
-        self.masterSeedHexTitleLabel!.isHidden = true
-        self.masterSeedHexTitleExplanation!.isHidden = true
-        self.masterSeedHexTextView!.isHidden = true
-        self.masterSeedHexTextView!.text = ("")
     }
     
-    @objc func passPhraseTextViewTapped(_ sender:AnyObject) {
+    func addTapForLabel() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.checkLabelTapped))
+        tap.numberOfTapsRequired = 1
+        checkLabel?.isUserInteractionEnabled = true
+        checkLabel?.addGestureRecognizer(tap)
     }
     
-    @objc func masterSeedHexTextViewTapped(_ sender:AnyObject) {
+    @objc func checkLabelTapped() {
+        if !continueBtn.isEnabled {
+            checkLabel.textColor = ThemeManager.shared.main
+            continueBtn.isEnabled = true
+            continueBtn.backgroundColor = ThemeManager.shared.main
+        }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    @IBAction fileprivate func cancel(_ sender:AnyObject) {
-        if let passPhrase = self.passPhraseTextView?.text {
+    @IBAction fileprivate func continueBtnTapped(_ sender:AnyObject) {
+        if let passPhrase = self.passPharse {
             eventHandler?.skipShowPassPharse(passPharse: passPhrase)
         }
+    }
+    
+    func addWordSpace(str: String) -> String {
+        return str.replace(" ", withString: "  ")
     }
 }
 
 extension PassPhraseViewController: PassPhraseViewInterface {
     func showPassPhrase(passPharse: String) {
-        self.passPhraseTextView?.text = passPharse
+        self.passPharse = passPharse
+        self.passPhraseTextView?.text = addWordSpace(str: passPharse)
     }
-    
-    
 }
