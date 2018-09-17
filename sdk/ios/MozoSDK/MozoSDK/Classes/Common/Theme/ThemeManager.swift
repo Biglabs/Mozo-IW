@@ -20,7 +20,8 @@ public struct Theme {
     public var border: UIColor = UIColor(hexString: "e0e0e0")
     public var background: UIColor = UIColor(hexString: "fff")
     public var menu: UIColor = UIColor(hexString: "f3f3f3")
-    
+    public var error: UIColor = UIColor(hexString: "f05454")
+    public var success: UIColor = UIColor(hexString: "17b978")
 }
 
 public struct ThemeManager {

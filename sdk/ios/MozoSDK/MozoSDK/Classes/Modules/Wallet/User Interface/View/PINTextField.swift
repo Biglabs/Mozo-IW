@@ -324,9 +324,10 @@ extension PinTextField: UIKeyInput {
             text = newText
             delegate?.textFieldValueChanged(self)
             if (newText.count == characterLimit) {
-                if (delegate?.textFieldShouldEndEditing(self) ?? true) {
-                    let _ = resignFirstResponder()
-                }
+                delegate?.textFieldDidEndEditing(self)
+//                if (delegate?.textFieldShouldEndEditing(self) ?? true) {
+//                    let _ = resignFirstResponder()
+//                }
             }
         }
     }
