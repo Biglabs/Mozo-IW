@@ -15,6 +15,10 @@ public class AccessTokenManager {
         return UserDefaults.standard.string(forKey: Configuration.ACCESS_TOKEN_ANONYMOUS)
     }
     
+    public static func getAccessToken() -> String? {
+        return UserDefaults.standard.string(forKey: Configuration.ACCESS_TOKEN)
+    }
+    
     public static func saveToken(_ token: String?) {
         UserDefaults.standard.set(token, forKey: Configuration.ACCESS_TOKEN)
     }
