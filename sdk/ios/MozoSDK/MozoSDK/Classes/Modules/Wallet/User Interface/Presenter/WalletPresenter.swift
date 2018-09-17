@@ -55,10 +55,12 @@ extension WalletPresenter: WalletInteractorOutput {
     
     func finishedCheckServer(result: Bool) {
         if result {
-            walletWireframe?.dismissWalletInterface()
-            walletModuleDelegate?.walletModuleDidFinish()
+            walletWireframe?.presentPINInterface(passPharse: nil)
+//            walletWireframe?.dismissWalletInterface()
+//            walletModuleDelegate?.walletModuleDidFinish()
         } else {
-            walletInteractor?.checkServerWalletExisting()
+            walletWireframe?.presentPassPhraseInterface()
+            
         }
     }
     
@@ -66,7 +68,7 @@ extension WalletPresenter: WalletInteractorOutput {
         if result {
             walletWireframe?.presentPINInterface(passPharse: nil)
         } else {
-            walletWireframe?.presentPassPhraseInterface()
+            walletInteractor?.checkServerWalletExisting()
         }
     }
     
