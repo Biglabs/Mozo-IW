@@ -10,15 +10,14 @@ import Foundation
 import UIKit
 
 class PINViewController : MozoBasicViewController {
+    @IBOutlet weak var checkView: UIView!
+    @IBOutlet weak var pinTextField: PinTextField!
     @IBOutlet weak var enterPINLabel: UILabel!
     
     var eventHandler : WalletModuleInterface?
     var passPhrase : String?
     private var pin : String?
     private var isConfirm = false
-    
-    //MARK: Property
-    let kPasswordDigit = 6
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +26,44 @@ class PINViewController : MozoBasicViewController {
     }
     
     func configureView() {
+        pinTextField.becomeFirstResponder()
+        pinTextField.delegate = self as PinTextFieldDelegate
+        pinTextField.keyboardType = .numberPad
         if self.passPhrase != nil {
             // Enter new pin and confirm new pin
-//            enterPINLabel.text = "Enter new PIN"
+            enterPINLabel.text = "ENTER YOUR SECURITY PIN TO RESTORE WALLET"
         }
+    }
+    
+    override public var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
+    override public var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+}
+
+extension PINViewController: PinTextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: PinTextField) -> Bool {
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: PinTextField) {
+        
+    }
+    
+    func textFieldValueChanged(_ textField: PinTextField) {
+        let value = textField.text ?? ""
+        print("value changed: \(value)")
+    }
+    
+    func textFieldShouldEndEditing(_ textField: PinTextField) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: PinTextField) -> Bool {
+        return true
     }
 }
 
