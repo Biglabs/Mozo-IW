@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ENTER YOUR SECURITY PIN" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyt-PW-ZpL">
-                                <rect key="frame" x="77.5" y="103" width="220" height="18"/>
+                                <rect key="frame" x="77.5" y="59" width="220" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="220" id="zBk-sI-qmB"/>
                                 </constraints>
@@ -28,7 +28,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security PIN should be 6 di-git numbers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DzT-vO-JtQ">
-                                <rect key="frame" x="48" y="164" width="280" height="18"/>
+                                <rect key="frame" x="48" y="120" width="280" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="hmc-Aq-bWg"/>
                                 </constraints>
@@ -37,7 +37,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YOA-dH-2Xf" userLabel="CheckView">
-                                <rect key="frame" x="87.5" y="213" width="200" height="23"/>
+                                <rect key="frame" x="87.5" y="169" width="200" height="23"/>
                                 <subviews>
                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_check_success" translatesAutoresizingMaskIntoConstraints="NO" id="uHY-g1-lDE">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
@@ -141,7 +141,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xDm-fU-gJy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1096.376811594203" y="-296.33152173913044"/>
+            <point key="canvasLocation" x="444" y="-276"/>
         </scene>
         <!--Mozo Basic View Controller-->
         <scene sceneID="xp8-GB-oqW">
@@ -355,24 +355,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j4J-5g-IBD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1391.304347826087" y="-296.73913043478262"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Ir7-6h-cme">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9CT-2h-TUO" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vlL-bS-Qkt">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="kIe-cV-lG0" kind="relationship" relationship="rootViewController" id="9b0-Vd-H23"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f7K-fh-eLA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="188.40579710144928" y="-296.73913043478262"/>
         </scene>
     </scenes>
     <resources>

@@ -14,6 +14,15 @@ public class MozoNavigationController : UINavigationController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    public override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
+        super.setViewControllers(viewControllers, animated: animated)
+        scanAllViewControllers()
+    }
+    
+    func scanAllViewControllers() {
+        print("Mozo Navigation Controller, scan all view controllers")
         for viewController in self.viewControllers {
             // TODO: Apply translation according to localizaion
             print("Controller title: \(viewController.navigationItem.title ?? "DEFAULT")")
@@ -26,12 +35,6 @@ public class MozoNavigationController : UINavigationController {
     func addCloseBtn(item: UINavigationItem) {
         print("Add close button.")
         let view = loadViewFromNib()
-        
-        //        let titleLabel = UILabel.init()
-        //        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        //        titleLabel.textColor = ThemeManager.shared.title
-        //        let icon = UIImage.init(named: "ic_close")!
-        //        titleLabel.addTextWithImage(text: NSLocalizedString("Close", comment: "Close"), image: icon, imageBehindText: false, keepPreviousText: true)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapCloseBtn))
         tap.numberOfTapsRequired = 1
