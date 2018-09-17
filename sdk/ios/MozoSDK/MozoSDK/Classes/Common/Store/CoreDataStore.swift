@@ -11,46 +11,6 @@ import PromiseKit
 import CoreStore
 
 class CoreDataStore : NSObject {
-    // MARK: Core Data stack
-//    lazy var applicationDocumentsDirectory: URL = {
-//        // The directory the application uses to store the Core Data store file. This code uses a directory named "self.com.AG.TaskIt" in the application's documents Application Support directory.
-//        let domains = FileManager.SearchPathDomainMask.userDomainMask
-//        let directory = FileManager.SearchPathDirectory.documentDirectory
-//
-//        let applicationDocumentsDirectory = FileManager.default.urls(for: directory, in: domains).first!
-//        return applicationDocumentsDirectory
-//    }()
-//    lazy var managedObjectModel : NSManagedObjectModel = {
-//        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-//        let bundle = BundleManager.podBundle()
-//        let modelURL = bundle.url(forResource: "Mozo", withExtension: "momd")!
-//        return NSManagedObjectModel(contentsOf: modelURL)!
-//    }()
-    
-//    lazy var persistentStoreCoordinator : NSPersistentStoreCoordinator? = {
-//        // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-//        // Create the coordinator and store
-//        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-//
-//        let options = [NSMigratePersistentStoresAutomaticallyOption : true, NSInferMappingModelAutomaticallyOption : true]
-//
-//        let storeURL = applicationDocumentsDirectory.appendingPathComponent("Mozo.sqlite")
-//
-//        try! coordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: "", at: storeURL, options: options)
-//        return coordinator
-//    }()
-//
-//    lazy var managedObjectContext: NSManagedObjectContext? = {
-//        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
-//        let coordinator = self.persistentStoreCoordinator
-//        if coordinator == nil {
-//            return nil
-//        }
-//        let managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
-//        managedObjectContext.persistentStoreCoordinator = coordinator
-//        return managedObjectContext
-//    }()
-    
     var stack : DataStack!
     
     override init() {
@@ -80,9 +40,9 @@ class CoreDataStore : NSObject {
         return Promise { seal in
             if let userEntity = stack.fetchOne(From<ManagedUser>().where(\.id == id)) {
                 print("Wallets count: [\(userEntity.wallets?.count ?? -1)]")
-                let wallets = userEntity.wallets?.map {
+                let wallets : [WalletModel]? = userEntity.wallets?.map {
                     let wallet = $0 as! ManagedWallet
-                    _ = WalletModel(address: wallet.address, privateKey: wallet.privateKey)
+                    return WalletModel(address: wallet.address, privateKey: wallet.privateKey)
                 }
                 let userModel = UserModel(id: userEntity.id, mnemonic: userEntity.mnemonic, pin: userEntity.pin, wallets: NSSet(array: wallets!))
                 seal.fulfill(userModel)
@@ -91,32 +51,7 @@ class CoreDataStore : NSObject {
             }
         }
     }
-    
-//    func fetchEntriesWithPredicate(_ predicate: NSPredicate, completionBlock: (([ManagedUser]) -> Void)!) {
-//        let fetchRequest: NSFetchRequest<NSFetchRequestResult>  = NSFetchRequest(entityName: "User")
-//        fetchRequest.predicate = predicate
-//
-//        mainContext.perform {
-//            do {
-//                let queryResults = try self.mainContext.fetch(fetchRequest)
-//                let managedResults = queryResults as! [ManagedUser]
-//                completionBlock(managedResults)
-//            } catch {
-//                print("Fetch users with predicate error: [\(error)]")
-//            }
-//        }
-//    }
-//
-//    func fetchWallets(completionBlock: (([ManagedWallet]) -> Void)!) {
-//        let fetchRequest: NSFetchRequest<NSFetchRequestResult>  = NSFetchRequest(entityName: "Wallet")
-//
-//        mainContext.perform {
-//            let queryResults = try? self.mainContext.fetch(fetchRequest)
-//            let managedResults = queryResults as! [ManagedWallet]
-//            completionBlock(managedResults)
-//        }
-//    }
-//
+
     func addNewUser(userModel: UserModel) -> Bool {
         do {
             _ = try stack.perform(synchronous: { (transaction) -> ManagedUser in
@@ -195,20 +130,5 @@ class CoreDataStore : NSObject {
             })
         }
     }
-//
-//    func newWallet() -> ManagedWallet {
-//        let newEntry = NSEntityDescription.insertNewObject(forEntityName: "Wallet", into: mainContext) as! ManagedWallet
-//
-//        return newEntry
-//    }
-    
-//    func save() throws {
-//        do {
-//            try mainContext.save()
-//        } catch {
-//            print("Core data save error: [\(error.localizedDescription)]")
-//            throw error
-//        }
-//    }
 }
 
