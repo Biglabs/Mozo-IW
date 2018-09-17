@@ -14,8 +14,7 @@ class CoreWireframe : MozoWireframe {
     
     func requestForAuthentication() {
         presentWaitingInterface()
-        walletWireframe?.presentPassPhraseInterface()
-//        corePresenter?.requestForAuthentication()
+        corePresenter?.requestForAuthentication()
     }
     
     func requestForLogout() {

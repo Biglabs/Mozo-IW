@@ -28,10 +28,18 @@ class WalletDataManager : NSObject {
      0.1
      */
     func updateWallet(_ wallet: WalletModel, id : String) {
-        let count = coreDataStore?.countById(id)
-        if count != nil && count! > 0 {
-            _ = coreDataStore?.updateWallet(wallet, toUser: id)
-        }
+        _ = coreDataStore?.getUserById(id).done({ (user) in
+            let wallets : [WalletModel]? = user.wallets?.allObjects as? [WalletModel]
+            let isContains = wallets?.contains(where: { (item) -> Bool in
+                return item.address == wallet.address
+            })
+            if isContains == true {
+                print("No need to update.")
+            } else {
+                print("Update wallet for user.")
+                _ = self.coreDataStore?.updateWallet(wallet, toUser: id)
+            }
+        })
     }
     
     /**
