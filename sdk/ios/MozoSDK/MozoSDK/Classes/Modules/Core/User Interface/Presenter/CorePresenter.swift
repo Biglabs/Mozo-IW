@@ -10,7 +10,7 @@ import Foundation
 class CorePresenter : NSObject {
     var coreWireframe : CoreWireframe?
     var coreInteractor : CoreInteractorInput?
-    var sdkDelegate: AuthenticationDelegate?
+    var authDelegate: AuthenticationDelegate?
 }
 
 extension CorePresenter : CoreModuleInterface {
@@ -20,12 +20,12 @@ extension CorePresenter : CoreModuleInterface {
     
     func requestForLogout() {
         coreInteractor?.logout()
-        sdkDelegate?.mozoLogoutDidFinish()
+        authDelegate?.mozoLogoutDidFinish()
     }
     
     func requestForCloseAllMozoUIs() {
         coreWireframe?.requestForCloseAllMozoUIs()
-        sdkDelegate?.mozoUIDidCloseAll()
+        authDelegate?.mozoUIDidCloseAll()
     }
 }
 
@@ -37,7 +37,16 @@ extension CorePresenter : AuthModuleDelegate {
     func authModuleDidFinishLogout() {
         // Maybe: Close all existing Mozo's UIs
         // Send delegate back to the app
-        sdkDelegate?.mozoLogoutDidFinish()
+        authDelegate?.mozoLogoutDidFinish()
+    }
+}
+
+extension CorePresenter: WalletModuleDelegate {
+    func walletModuleDidFinish() {
+        // Close all existing Mozo's UIs
+        coreWireframe?.requestForCloseAllMozoUIs()
+        // Send delegate back to the app
+        authDelegate?.mozoAuthenticationDidFinish()
     }
 }
 

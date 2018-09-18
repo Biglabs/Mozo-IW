@@ -10,6 +10,7 @@ import Foundation
 class CoreWireframe : MozoWireframe {
     var authWireframe: AuthWireframe?
     var walletWireframe: WalletWireframe?
+    var txWireframe: TransactionWireframe?
     var corePresenter: CorePresenter?
     
     func requestForAuthentication() {
@@ -19,6 +20,11 @@ class CoreWireframe : MozoWireframe {
     
     func requestForLogout() {
         corePresenter?.requestForLogout()
+    }
+    
+    func requestForTransfer() {
+//        presentWaitingInterface()
+        txWireframe?.presentTransferInterface()
     }
     
     func requestForCloseAllMozoUIs() {

@@ -7,8 +7,12 @@
 
 import Foundation
 
-protocol AuthenticationDelegate {
+public protocol AuthenticationDelegate {
     func mozoAuthenticationDidFinish()
     func mozoLogoutDidFinish()
     func mozoUIDidCloseAll()
+}
+
+protocol UserInterfaceDelegate {
+    
 }

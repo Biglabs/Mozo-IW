@@ -12,6 +12,7 @@ import UIKit
 let PINViewControllerIdentifier = "PINViewController"
 let PassPhraseViewControllerIdentifier = "PassPhraseViewController"
 let WaitingViewControllerIdentifier = "WaitingViewController"
+let TransferViewControllerIdentifier = "TransferViewController"
 
 class RootWireframe : NSObject {
     let mozoNavigationController = MozoNavigationController()
@@ -32,6 +33,12 @@ class RootWireframe : NSObject {
         mozoNavigationController.viewControllers = newViewControllers
     }
     
+    func presentViewController(_ viewController: UIViewController) {
+        mozoNavigationController.viewControllers = [viewController]
+        let top = getTopViewController()
+        top?.present(mozoNavigationController, animated: true, completion: nil)
+    }
+    
     func dismissTopViewController() {
         _ = mozoNavigationController.viewControllers.popLast()
     }
@@ -43,6 +50,9 @@ class RootWireframe : NSObject {
     }
     
     public func closeAllMozoUIs() {
-        
+        mozoNavigationController.viewControllers = []
+        mozoNavigationController.dismiss(animated: false) {
+            print("Mozo: Dismiss Navigation Controller")
+        }
     }
 }

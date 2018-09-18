@@ -26,6 +26,7 @@ class ModuleDependencies {
     let coreWireframe = CoreWireframe()
     let walletWireframe = WalletWireframe()
     let authWireframe = AuthWireframe()
+    let txWireframe = TransactionWireframe()
     
     let apiManager = ApiManager()
     
@@ -35,8 +36,8 @@ class ModuleDependencies {
         configureDependencies()
     }
     
-    func installRootViewControllerIntoWindow(_ window: UIWindow) {
-        authWireframe.presentInitialAuthInterface()
+    func setAuthDelegate(_ delegate: AuthenticationDelegate) {
+        coreWireframe.corePresenter?.authDelegate = delegate
     }
     
     func authenticate() {
@@ -47,6 +48,10 @@ class ModuleDependencies {
         coreWireframe.requestForLogout()
     }
     
+    func transferMozo() {
+        coreWireframe.requestForTransfer()
+    }
+    
     func configureDependencies() {
         // MARK: Core
         coreDependencies()
@@ -54,6 +59,8 @@ class ModuleDependencies {
         authDependencies()
         // MARK: Wallet
         walletDependencies()
+        // MARK: Transaction
+        transactionDependencies()
     }
     
     func coreDependencies() {
@@ -73,7 +80,18 @@ class ModuleDependencies {
         coreWireframe.corePresenter = corePresenter
         coreWireframe.authWireframe = authWireframe
         coreWireframe.walletWireframe = walletWireframe
+        coreWireframe.txWireframe = txWireframe
         coreWireframe.rootWireframe = rootWireframe
+    }
+    
+    func transactionDependencies() {
+        let txPresenter = TransactionPresenter()
+        
+        let txInteractor = TransactionInteractor()
+        txInteractor.output = txPresenter
+        
+        txWireframe.txPresenter = txPresenter
+        txWireframe.rootWireframe = rootWireframe
     }
     
     func authDependencies() {
@@ -103,6 +121,7 @@ class ModuleDependencies {
         
         walletPresenter.walletInteractor = walletInteractor
         walletPresenter.walletWireframe = walletWireframe
+        walletPresenter.walletModuleDelegate = coreWireframe.corePresenter
         
         walletWireframe.walletPresenter = walletPresenter
         walletWireframe.rootWireframe = rootWireframe

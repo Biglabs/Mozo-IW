@@ -16,9 +16,8 @@ public class MozoSDK {
         moduleDependencies.apiKey = key
     }
     
-    public static func installRootViewControllerIntoWindow(_ window: UIWindow) {
-        
-        moduleDependencies.installRootViewControllerIntoWindow(window)
+    public static func setAuthDelegate(_ delegate: AuthenticationDelegate) {
+        moduleDependencies.setAuthDelegate(delegate)
     }
     
     public static func authenticate() {
@@ -27,5 +26,9 @@ public class MozoSDK {
     
     public static func logout() {
         moduleDependencies.logout()
+    }
+    
+    public static func transferMozo() {
+        moduleDependencies.transferMozo()
     }
 }
