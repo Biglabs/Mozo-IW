@@ -8,10 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		20116C6521257C8700541649 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20116C6421257C8700541649 /* AppDelegate.swift */; };
-		20116C6721257C8700541649 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20116C6621257C8700541649 /* ViewController.swift */; };
+		20116C6721257C8700541649 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20116C6621257C8700541649 /* DemoViewController.swift */; };
 		20116C6A21257C8700541649 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20116C6821257C8700541649 /* Main.storyboard */; };
 		20116C6C21257C8900541649 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20116C6B21257C8900541649 /* Assets.xcassets */; };
 		20116C6F21257C8900541649 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20116C6D21257C8900541649 /* LaunchScreen.storyboard */; };
+		2066878C21509CAC003C0D78 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2066878B21509CAC003C0D78 /* AppDependencies.swift */; };
+		2066878E2150A786003C0D78 /* DemoWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2066878D2150A786003C0D78 /* DemoWireframe.swift */; };
+		206687902150A7C0003C0D78 /* DemoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2066878F2150A7C0003C0D78 /* DemoPresenter.swift */; };
+		206687922150A892003C0D78 /* DemoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206687912150A892003C0D78 /* DemoInteractor.swift */; };
 		20709A30212A665C00582BD8 /* RootWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20709A2F212A665C00582BD8 /* RootWireframe.swift */; };
 		A8735C9CA67B3E4141C343A1 /* Pods_Shopper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E65C9066E11277903D3D04 /* Pods_Shopper.framework */; };
 /* End PBXBuildFile section */
@@ -20,11 +24,15 @@
 		0091743E004A42F144CDDB6B /* Pods-Shopper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shopper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Shopper/Pods-Shopper.debug.xcconfig"; sourceTree = "<group>"; };
 		20116C6121257C8700541649 /* Shopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20116C6421257C8700541649 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		20116C6621257C8700541649 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		20116C6621257C8700541649 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		20116C6921257C8700541649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		20116C6B21257C8900541649 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		20116C6E21257C8900541649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		20116C7021257C8900541649 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2066878B21509CAC003C0D78 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
+		2066878D2150A786003C0D78 /* DemoWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoWireframe.swift; sourceTree = "<group>"; };
+		2066878F2150A7C0003C0D78 /* DemoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoPresenter.swift; sourceTree = "<group>"; };
+		206687912150A892003C0D78 /* DemoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoInteractor.swift; sourceTree = "<group>"; };
 		20709A2F212A665C00582BD8 /* RootWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWireframe.swift; sourceTree = "<group>"; };
 		B798E0B5214D6A1500CFDFC2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		B798E0B6214D6A1500CFDFC2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -93,19 +101,10 @@
 		20116C7A2126BEB500541649 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				20116C7B2126BEBC00541649 /* Auth */,
+				2066878121509BE9003C0D78 /* Demo */,
 				20116CA82126C67200541649 /* Todos */,
 			);
 			path = Modules;
-			sourceTree = "<group>";
-		};
-		20116C7B2126BEBC00541649 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				20116C802126BF9200541649 /* Login */,
-				20116C812126BF9800541649 /* Signup */,
-			);
-			path = Auth;
 			sourceTree = "<group>";
 		};
 		20116C7C2126BEE200541649 /* Model */ = {
@@ -138,104 +137,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		20116C802126BF9200541649 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				20709A26212A5DC500582BD8 /* Application Logic */,
-				20709A2E212A5DC500582BD8 /* Module Interface */,
-				20709A29212A5DC500582BD8 /* User Interface */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		20116C812126BF9800541649 /* Signup */ = {
-			isa = PBXGroup;
-			children = (
-				20116C942126C1F800541649 /* Application Logic */,
-				20116C972126C1F900541649 /* Module Interface */,
-				20116C982126C1F900541649 /* User Interface */,
-			);
-			path = Signup;
-			sourceTree = "<group>";
-		};
-		20116C942126C1F800541649 /* Application Logic */ = {
-			isa = PBXGroup;
-			children = (
-				20116C952126C1F800541649 /* Manager */,
-				20116C962126C1F800541649 /* Interactor */,
-			);
-			path = "Application Logic";
-			sourceTree = "<group>";
-		};
-		20116C952126C1F800541649 /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Manager;
-			sourceTree = "<group>";
-		};
-		20116C962126C1F800541649 /* Interactor */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Interactor;
-			sourceTree = "<group>";
-		};
-		20116C972126C1F900541649 /* Module Interface */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Module Interface";
-			sourceTree = "<group>";
-		};
-		20116C982126C1F900541649 /* User Interface */ = {
-			isa = PBXGroup;
-			children = (
-				20116C992126C1F900541649 /* Transition */,
-				20116C9A2126C1F900541649 /* Presenter */,
-				20116C9B2126C1F900541649 /* Wireframe */,
-				20116C9C2126C1F900541649 /* View */,
-			);
-			path = "User Interface";
-			sourceTree = "<group>";
-		};
-		20116C992126C1F900541649 /* Transition */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Transition;
-			sourceTree = "<group>";
-		};
-		20116C9A2126C1F900541649 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Presenter;
-			sourceTree = "<group>";
-		};
-		20116C9B2126C1F900541649 /* Wireframe */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Wireframe;
-			sourceTree = "<group>";
-		};
-		20116C9C2126C1F900541649 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		20116CA62126C2A700541649 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				20116C7A2126BEB500541649 /* Modules */,
 				20116C792126BEAF00541649 /* Common */,
+				20116C7A2126BEB500541649 /* Modules */,
 				20116C6421257C8700541649 /* AppDelegate.swift */,
-				20116C6621257C8700541649 /* ViewController.swift */,
 				20116C6821257C8700541649 /* Main.storyboard */,
 				20116C6D21257C8900541649 /* LaunchScreen.storyboard */,
+				2066878B21509CAC003C0D78 /* AppDependencies.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -319,73 +229,87 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		20709A26212A5DC500582BD8 /* Application Logic */ = {
+		2066878121509BE9003C0D78 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				20709A27212A5DC500582BD8 /* Manager */,
-				20709A28212A5DC500582BD8 /* Interactor */,
+				2066878321509C5B003C0D78 /* Application Logic */,
+				2066878221509C5B003C0D78 /* Module Interface */,
+				2066878621509C5B003C0D78 /* User Interface */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		2066878221509C5B003C0D78 /* Module Interface */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Module Interface";
+			sourceTree = "<group>";
+		};
+		2066878321509C5B003C0D78 /* Application Logic */ = {
+			isa = PBXGroup;
+			children = (
+				2066878521509C5B003C0D78 /* Interactor */,
+				2066878421509C5B003C0D78 /* Manager */,
 			);
 			path = "Application Logic";
 			sourceTree = "<group>";
 		};
-		20709A27212A5DC500582BD8 /* Manager */ = {
+		2066878421509C5B003C0D78 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = Manager;
 			sourceTree = "<group>";
 		};
-		20709A28212A5DC500582BD8 /* Interactor */ = {
+		2066878521509C5B003C0D78 /* Interactor */ = {
 			isa = PBXGroup;
 			children = (
+				206687912150A892003C0D78 /* DemoInteractor.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
 		};
-		20709A29212A5DC500582BD8 /* User Interface */ = {
+		2066878621509C5B003C0D78 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				20709A2A212A5DC500582BD8 /* Transition */,
-				20709A2B212A5DC500582BD8 /* Presenter */,
-				20709A2C212A5DC500582BD8 /* Wireframe */,
-				20709A2D212A5DC500582BD8 /* View */,
+				2066878721509C5B003C0D78 /* Transition */,
+				2066878821509C5B003C0D78 /* Presenter */,
+				2066878921509C5B003C0D78 /* Wireframe */,
+				2066878A21509C5B003C0D78 /* View */,
 			);
 			path = "User Interface";
 			sourceTree = "<group>";
 		};
-		20709A2A212A5DC500582BD8 /* Transition */ = {
+		2066878721509C5B003C0D78 /* Transition */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = Transition;
 			sourceTree = "<group>";
 		};
-		20709A2B212A5DC500582BD8 /* Presenter */ = {
+		2066878821509C5B003C0D78 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				2066878F2150A7C0003C0D78 /* DemoPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		20709A2C212A5DC500582BD8 /* Wireframe */ = {
+		2066878921509C5B003C0D78 /* Wireframe */ = {
 			isa = PBXGroup;
 			children = (
+				2066878D2150A786003C0D78 /* DemoWireframe.swift */,
 			);
 			path = Wireframe;
 			sourceTree = "<group>";
 		};
-		20709A2D212A5DC500582BD8 /* View */ = {
+		2066878A21509C5B003C0D78 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				20116C6621257C8700541649 /* DemoViewController.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		20709A2E212A5DC500582BD8 /* Module Interface */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Module Interface";
 			sourceTree = "<group>";
 		};
 		2E83C5860C46D0CEBBB9B0A6 /* Pods */ = {
@@ -537,9 +461,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20116C6721257C8700541649 /* ViewController.swift in Sources */,
+				2066878C21509CAC003C0D78 /* AppDependencies.swift in Sources */,
+				20116C6721257C8700541649 /* DemoViewController.swift in Sources */,
 				20116C6521257C8700541649 /* AppDelegate.swift in Sources */,
+				206687902150A7C0003C0D78 /* DemoPresenter.swift in Sources */,
+				2066878E2150A786003C0D78 /* DemoWireframe.swift in Sources */,
 				20709A30212A665C00582BD8 /* RootWireframe.swift in Sources */,
+				206687922150A892003C0D78 /* DemoInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

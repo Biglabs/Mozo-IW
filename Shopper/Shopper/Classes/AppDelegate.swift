@@ -13,16 +13,16 @@ import MozoSDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let appDependencies = AppDependencies()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MozoSDK.configure(key: "")
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-//        MozoSDK.installRootViewControllerIntoWindow(self.window!)
-        MozoSDK.authenticate()
+//        appDependencies.installRootViewControllerIntoWindow(window!)
         
-        self.window?.makeKeyAndVisible()
+//        self.window = UIWindow(frame: UIScreen.main.bounds)
+//        MozoSDK.authenticate()
+        
         return true
     }
     
