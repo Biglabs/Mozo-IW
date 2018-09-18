@@ -141,7 +141,11 @@ private extension PINViewController {
         statusImg.isHidden = false
         statusLabel.isHidden = false
         confirmImg.isHighlighted = true
-        statusLabel.text = "Create Security PIN successful"
+        if !isConfirm {
+            statusLabel.text = "You entered an correct PIN"
+        } else {
+            statusLabel.text = "Create Security PIN successful"
+        }
         statusLabel.textColor = ThemeManager.shared.success
     }
     
