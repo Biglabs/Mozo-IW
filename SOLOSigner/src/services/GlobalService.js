@@ -33,7 +33,7 @@ function checkWalletExisting() {
     } else {
       AsyncStorage.getItem(FLAG_APP_INFO_KEY, (error, result) => {
         console.log("Check Wallet exist: " + result);
-        if (result) {
+        if (result && !result[0].pin) {
           console.log(result);
           Actions.reset('security_pin',{
             isNewPIN: false,

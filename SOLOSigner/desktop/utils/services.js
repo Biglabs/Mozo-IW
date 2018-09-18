@@ -45,7 +45,7 @@ function extractWalletData(walletInfo) {
       mnemonic: walletInfo.encryptSeedPhrase
     }
   ];
-
+  userReference.set("App", app_info);
 }
 
 async function getUserProfile(callback) {
