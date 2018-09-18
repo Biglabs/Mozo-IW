@@ -160,12 +160,16 @@ const Constants = {
     FLAG_ADDRESS_SYNC: '@addressSync:key',
     FLAG_BACKUP_WALLET: '@backupWallet:key',
     FLAG_CONFIRM_TIME_OUT: '@confirmTimeout:key',
+    FLAG_OAUTH2TOKEN: "OAuth2Token",
+    FLAG_WALLET_KEY: "Address",
+    FLAG_APP_INFO_KEY : "App"
 };
 
 const DEFAULT_COINS = [
-    Constants.COIN_TYPE.ETH,
-    Constants.COIN_TYPE.ETH_TEST,
-    Constants.COIN_TYPE.ETH_ROPSTEN
+    // Constants.COIN_TYPE.ETH,
+    // Constants.COIN_TYPE.ETH_TEST,
+    // Constants.COIN_TYPE.ETH_ROPSTEN
+    Constants.COIN_TYPE.SOLO
 ].map(c => {
     c.isDefault = true;
     return c;

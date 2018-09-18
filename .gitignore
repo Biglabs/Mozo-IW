@@ -89,6 +89,9 @@ xcuserdata
 # expo
 .expo/
 
+# Editor
+*~
+
 dist
 SOLOSigner/\.idea/inspectionProfiles/
 SOLOSigner/desktop/dist/

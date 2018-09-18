@@ -5,7 +5,10 @@
  */
 
 const grpc = require('grpc');
+
+const main = require('../main');
 var grpcLoader = require("../grpcserver/GrpcLoader");
+const app_config = require("../app_settings").APP_SETTINGS;
 
 /**
  * create stub for client
@@ -17,23 +20,41 @@ const grpcClient = new grpcLoader.sign_service_proto.Transaction(
 /**
  * create a proxy using grpc-express to register rpc service as rest endpoint
  */
-const grpcExpress = require('grpc-express');
 const express = require('express');
 const app = express();
-const port = 33013;
+
+const server_host = app_config.proxy_server.host;
+const port = app_config.proxy_server.port;
+
+const mozo_service_host = app_config.mozo_services.api.host;
 
 const userReference = require('electron-settings');
+const oauth2 = require('../utils/oauth2');
+const services = require('../utils/services');
 
 let httpServer = null;
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers",
+             "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
 
 app.use(express.json());
+
+app.get('/oauth2-getcode', async (req, res, next) => {
+  const code = req.query.code;
+  const redirect_uri = "http://" + server_host + ":" + port + "/oauth2-getcode";
+  const access_token = await oauth2.getTokenFromAuthCode(code, redirect_uri);
+  if (access_token) {
+    await services.getUserProfile(null);
+  }
+  main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
+  //res.send({ result : "SUCCESS" });
+});
+
 
 app.get('/checkWallet', (req, res, next) => {
   let wallet = userReference.get("Address");

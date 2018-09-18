@@ -21,6 +21,15 @@ export default class LocalUserReference {
     }
 
     /**
+     * Remove item
+     *
+     * @param {String} schemaName
+     */
+    delete(schemaName) {
+        userReference.delete(schemaName);
+    }
+
+    /**
      * Insert new item into a list which is stored in user reference.
      *
      * @param {String} schemaName
@@ -36,7 +45,7 @@ export default class LocalUserReference {
 
     /**
      * get item base on schema name and key
-     * @param {String} schemaName 
+     * @param {String} schemaName
      * @param {String} key
      * @returns {*} return address object or null
      */
@@ -51,6 +60,6 @@ export default class LocalUserReference {
             return rs[0];
         }
         return null;
-        
+
     }
 }

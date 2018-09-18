@@ -12,6 +12,8 @@ const PATH_APP_NODE_MODULES = path.join(__dirname, 'node_modules');
 require('module').globalPaths.push(PATH_APP_NODE_MODULES);
 console.log("PATH_APP_NODE_MODULES: " + PATH_APP_NODE_MODULES); */
 
+app_config = require("./app_settings").APP_SETTINGS;
+
 // start grpc server
 const grpcServer = require('./grpcserver/SignerGrpcServer');
 grpcServer.start();
@@ -20,18 +22,20 @@ grpcServer.start();
 const proxy = require('./proxy/GrpcProxy');
 proxy.start();
 
+const services = require('./utils/services');
 
 const { app, BrowserWindow, protocol } = require('electron');
-const PROTOCOL_PREFIX = "solosigner";
+const PROTOCOL_PREFIX = app_config.app.deeplink;
 
 /**
  * Get instance of electron-settings
  * In order to ensure ensuring that no more than one unique electron-settings instances don't exist simultaneously.
  * You must require electron-settings in the renderer process, use require('electron').remote.require('electron-settings').
  */
-//const userReference = require('electron-settings');
+// const userReference = require('electron-settings');
 
-//userReference.deleteAll();
+// console.log(JSON.stringify(userReference.getAll(), null, 2));
+// userReference.deleteAll();
 
 let mainWindow = null;
 let deeplinkingUrl = null;
@@ -112,6 +116,7 @@ const createWindow = () => {
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
+
 
   /**
    * expose mainWindow for outside
@@ -245,6 +250,8 @@ exports.handleMainRequest = (param) => {
     grpcServer.returnSignRequest(param);
   }
 }
+
+exports.updateWalletInfo = services.updateWalletInfo;
 
 /**
  * sample for calling using rest client like Postman
