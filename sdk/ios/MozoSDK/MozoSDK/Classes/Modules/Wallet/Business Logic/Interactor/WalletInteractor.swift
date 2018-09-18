@@ -86,7 +86,7 @@ extension WalletInteractor : WalletInteractorInput {
                         print("😞 Invalid mnemonics")
                         compareResult = false
                     } else {
-                        self.updateMnemonicAndPinForCurrentUser(mnemonic: mnemonic!, pin: pin)
+                        self.updateMnemonicAndPinForCurrentUser(mnemonic: (userObj.profile?.walletInfo?.encryptSeedPhrase)!, pin: pin)
                         compareResult = true
                     }
                 }
