@@ -54,7 +54,7 @@ const Constants = {
         SOLO: {
             displayName: "SOLO",
             name: "SOLO",
-            value: 0,
+            value: 60,
             network: "SOLO",
             icon: icCoinSolo
         },

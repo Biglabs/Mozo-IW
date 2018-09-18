@@ -3,7 +3,7 @@ const userReference = require('electron-settings');
 var request = require('request');
 
 const oauth2 = require('./oauth2');
-const constants = require("../constants").CONSTANTS;
+const ERRORS = require("../constants").ERRORS;
 
 const app_config = require("../app_settings").APP_SETTINGS;
 const mozo_service_host = app_config.mozo_services.api.host;
@@ -46,7 +46,6 @@ function extractWalletData(walletInfo) {
     }
   ];
 
-  userReference.set("App", app_info);
 }
 
 async function getUserProfile(callback) {
@@ -118,4 +117,137 @@ exports.updateWalletInfo = async function() {
     }
   });
 
+};
+
+exports.createTransaction = async function(tx_info, res, callback) {
+  let tx_req = {
+    fees: 0,
+    gasLimit: 0,
+    gasPrice: 0,
+    inputs: [
+      {
+        addresses: [ tx_info.from ]
+      }
+    ],
+    outputs: [
+      {
+        addresses: [ tx_info.to ],
+        value: tx_info.value
+      }
+    ]
+  };
+
+  let options = await setRequestData();
+  options.url = mozo_service_host + "/api/eth/solo/txs";
+  options.method = "POST";
+  options.json = true;
+  options.body = tx_req;
+
+  request(options, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      callback(body, res);
+    } else {
+      console.log(error);
+      let response_data = {
+        status: "ERROR",
+        error: ERRORS.INTERNAL_ERROR
+      };
+      res.send({ result : response_data });
+    }
+  });
+
+};
+
+/**
+ * Global variable for callback, work around in
+ * waiting confirmation screen case
+ * Currently can only handle 1 transaction at 1 time only
+ */
+var signHttpCallback = null;
+var timerCountInterval = null;
+var timerCount = 0;
+var isFinishedConfirmationInput = false;
+
+exports.confirmTransaction = async function(tx_server_req, res_callback) {
+  if (signHttpCallback && timerCount > 0) {
+    let response_data = {
+      status: "ERROR",
+      error: ERRORS.PENDING_TRANSACTION
+    };
+    res_callback({ result : response_data });
+    return;
+  }
+  let request_data = {
+    coinType: "SOLO",
+    network: "SOLO",
+    action: "SIGN",
+    params: tx_server_req,
+  };
+  const main = require('../main');
+  main.mainWindow.webContents.send('open-confirm-transaction-screen', request_data);
+  signHttpCallback = res_callback;
+  timerCount = 60; // number of seconds
+  isFinishedConfirmationInput = false;
+
+  // Add timer count
+  timerCountInterval = setInterval(function() {
+    if (timerCount > 0 && !isFinishedConfirmationInput) {
+      timerCount -= 1;
+    } else {
+      clearInterval(timerCountInterval);
+      timerCountInterval = null;
+      let error_obj = {
+        status: "ERROR",
+        signedTransaction: null,
+        error: {
+          code: "ERR-012",
+          title: "Transaction confirmation timeout",
+          detail: "No transaction confirmation input from user.",
+          type: "Business"
+        }
+      };
+      sendSignRequest({result: error_obj});
+    }
+  }, 1000);
+
+};
+
+async function sendSignRequest(signed_req, callback) {
+  let response_data = {
+    status: "ERROR",
+    error: ERRORS.CANCEL_REQUEST
+  };
+
+  if (signed_req.result.error) {
+    if (signHttpCallback) {
+      isFinishedConfirmationInput = true;
+      signHttpCallback.send(response_data);
+      signHttpCallback = null;
+    }
+    return;
+  }
+
+  let options = await setRequestData();
+  options.url = mozo_service_host + "/api/eth/solo/txs/send-signed-tx";
+  options.method = "POST";
+  options.json = true;
+  console.log(signed_req.result.signedTransaction);
+  options.body = JSON.parse(signed_req.result.signedTransaction);
+
+  request(options, function(error, response, body) {
+    console.log(response.statusCode);
+    console.log(body);
+    if (!error && response.statusCode == 200) {
+      console.log(body);
+      signHttpCallback.send(body);
+    } else {
+      console.log(error);
+      response_data.error = ERRORS.INTERNAL_ERROR;
+      signHttpCallback.send(response_data);
+    }
+    isFinishedConfirmationInput = true;
+    signHttpCallback = null;
+  });
 }
+
+exports.sendSignRequest = sendSignRequest;

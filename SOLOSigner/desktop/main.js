@@ -32,10 +32,10 @@ const PROTOCOL_PREFIX = app_config.app.deeplink;
  * In order to ensure ensuring that no more than one unique electron-settings instances don't exist simultaneously.
  * You must require electron-settings in the renderer process, use require('electron').remote.require('electron-settings').
  */
-// const userReference = require('electron-settings');
+const userReference = require('electron-settings');
 
 // console.log(JSON.stringify(userReference.getAll(), null, 2));
-// userReference.deleteAll();
+userReference.deleteAll();
 
 let mainWindow = null;
 let deeplinkingUrl = null;
@@ -247,7 +247,8 @@ exports.sendMessageToRender = (param) => {
 
 exports.handleMainRequest = (param) => {
   if (param.action == "SIGN") {
-    grpcServer.returnSignRequest(param);
+    // grpcServer.returnSignRequest(param);
+    services.sendSignRequest(param);
   }
 }
 

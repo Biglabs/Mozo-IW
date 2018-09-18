@@ -27,13 +27,14 @@ function checkExistingOAuth2Token() {
 
 function checkWalletExisting() {
   AsyncStorage.getItem(FLAG_WALLET_KEY, (error, result) => {
-    console.log(result);
     if (result) {
       /* has wallet */
       Actions.reset('security_pin', {isNewPIN: false});
     } else {
       AsyncStorage.getItem(FLAG_APP_INFO_KEY, (error, result) => {
-        if (result && !result[0].pin) {
+        console.log("Check Wallet exist: " + result);
+        if (result) {
+          console.log(result);
           Actions.reset('security_pin',{
             isNewPIN: false,
             encryptedWallet: true

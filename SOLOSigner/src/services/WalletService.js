@@ -95,7 +95,8 @@ generateAddressAtIndex = function(wallet, coinType, addressIndex) {
             if (hasPrivkey) {
                 privkey = keyPair.toWIF();
             }
-        } else if (coinType == Constant.COIN_TYPE.ETH.value){
+        } else if (coinType == Constant.COIN_TYPE.ETH.value ||
+                  coinType == Constant.COIN_TYPE.SOLO.value){
             // Ethereum values are different
             var privKeyBuffer = keyPair.d.toBuffer(32);
             privkey = privKeyBuffer.toString('hex');
