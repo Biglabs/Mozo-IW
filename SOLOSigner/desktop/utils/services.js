@@ -53,7 +53,6 @@ async function getUserProfile(callback) {
   if (!options) {
     return;
   }
-  var user_profile = null;
 
   await request(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -69,7 +68,6 @@ async function getUserProfile(callback) {
       console.log(error);
     }
   });
-  return user_profile;
 }
 getUserProfile(null);
 
@@ -144,6 +142,8 @@ exports.createTransaction = async function(tx_info, res, callback) {
   options.body = tx_req;
 
   request(options, function(error, response, body) {
+    console.log(body);
+    console.log(response.statusCode);
     if (!error && response.statusCode == 200) {
       callback(body, res);
     } else {

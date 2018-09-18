@@ -27,7 +27,6 @@ export default class KeyCloakScreen extends React.Component {
   componentDidMount() {
     const keycloak = Keycloak({
       url : "https://dev.keycloak.mozocoin.io/auth",
-      // url : "http://192.168.56.1:8080/auth",
       realm: "mozo",
       clientId: "desktop_app"
     });
