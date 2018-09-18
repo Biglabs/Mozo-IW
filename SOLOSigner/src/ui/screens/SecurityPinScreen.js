@@ -52,9 +52,47 @@ export default class SecurityPinScreen extends Component<Props> {
                 this.state.title = inputConfirmPIN;
                 this.clearPin();
             }
+        } else if (this.props.encryptedWallet) {
+          // Get PIN code
+          let pin = JSON.stringify(this.pinCode);
+          // Try to decrypt mnemonic
+          let mnemonicPhrase = WalletService.viewBackupPhrase(pin);
+          console.log("mnemonic Phrase: " + mnemonicPhrase);
+          if (!mnemonicPhrase) {
+            let error = Constant.ERROR_TYPE.WRONG_PASSWORD;
+            console.log("handleEnterCorrectPin, error: ", error);
+            this.handleIncorrectPIN(error);
+            return;
+          }
+
+          // Import the decrypted mnemonic
+          const isNewPIN = true;
+          this.setState({isShowingLoading: true}, () => {
+            setTimeout(() => {
+              this.handleImportedMnemonic(isNewPIN, pin, mnemonicPhrase);
+            }, 5);
+          });
+
         } else {
-            this.handleEnterCorrectPin();
+          this.handleEnterCorrectPin();
         }
+    }
+
+    handleImportedMnemonic(isNewPIN, pin, mnemonicPhrase) {
+      WalletService.manageWallet(
+        isNewPIN, pin, mnemonicPhrase,
+        this.props.coinTypes, (error, result) => {
+          //Check error type
+          console.log("handleEnterCorrectPin, error: ", error);
+          if (error && error == Constant.ERROR_TYPE.WRONG_PASSWORD) {
+              this.handleIncorrectPIN(error);
+              return;
+          }
+          this.props.isNewPIN = false;
+          // Open Home Screen
+          let pin = JSON.stringify(this.pinCode);
+          Actions.home({pin: pin});
+        });
     }
 
     handleIncorrectPIN(error) {
@@ -71,18 +109,9 @@ export default class SecurityPinScreen extends Component<Props> {
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
                 let pin = JSON.stringify(this.pinCode);
-                WalletService.manageWallet(this.props.isNewPIN, pin, this.props.importedPhrase, this.props.coinTypes, (error, result) => {
-                    //Check error type
-                    console.log("handleEnterCorrectPin, error: ", error);
-                    if (error && error == Constant.ERROR_TYPE.WRONG_PASSWORD) {
-                        this.handleIncorrectPIN(error);
-                        return;
-                    }
-                    this.props.isNewPIN = false;
-                    // Open Home Screen
-                    let pin = JSON.stringify(this.pinCode);
-                    Actions.home({pin: pin});
-                });                
+                this.handleImportedMnemonic(
+                    this.props.isNewPIN, pin,
+                    this.props.importedPhrase);
             }, 5);
         });
     }

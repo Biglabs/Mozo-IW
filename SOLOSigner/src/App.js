@@ -8,6 +8,7 @@ import stores from "./stores";
 /* general screens */
 import SplashScreen from './ui/screens/SplashScreen';
 import WelcomeScreen from './ui/screens/WelcomeScreen';
+import KeyCloakScreen from './ui/screens/KeyCloakScreen';
 import HomeScreen from './ui/screens/HomeScreen';
 import SecurityPinScreen from './ui/screens/SecurityPinScreen';
 
@@ -64,6 +65,7 @@ export default () => {
                     {/* general screens */}
                     <Scene key="splash" component={SplashScreen} hideNavBar initial type="reset"/>
                     <Scene key="welcome" component={WelcomeScreen} hideNavBar type="reset"/>
+                    <Scene key="keycloak" component={KeyCloakScreen} hideNavBar type="reset"/>
                     <Scene key="security_pin" component={SecurityPinScreen} hideNavBar/>
                     <Scene key="home" component={HomeScreen} hideNavBar type="reset"/>
 

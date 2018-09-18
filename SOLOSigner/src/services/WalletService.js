@@ -93,9 +93,10 @@ generateAddressAtIndex = function(wallet, coinType, addressIndex) {
             var hasPrivkey = !userWallet.isNeutered();
             var privkey = "NA";
             if (hasPrivkey) {
-                privkey = keyPair.toWIF();                
+                privkey = keyPair.toWIF();
             }
-        } else if (coinType == Constant.COIN_TYPE.ETH.value){
+        } else if (coinType == Constant.COIN_TYPE.ETH.value ||
+                  coinType == Constant.COIN_TYPE.SOLO.value){
             // Ethereum values are different
             var privKeyBuffer = keyPair.d.toBuffer(32);
             privkey = privKeyBuffer.toString('hex');
@@ -193,7 +194,7 @@ storeWalletInfo = function(walletInfo, addresses, callback){
         }
     }
 }
- 
+
 /**
  * Create a new wallet, addresses or import a wallet depending on current state.
  * @param {Bool} isNewPin
@@ -215,42 +216,57 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         let wallets = createNewWallet(importedPhrase, pin, standardTypes, true);
         let addresses = createAddressList(wallets, pin, coinTypes);
         let publicKey = wallets[0].neutered().toBase58();
-        registerWalletAndSyncAddress(publicKey, addresses, (error, result) => {
-            console.log("Callback after registering wallet.");
+        if (isWebPlatform()) {
+            var {remote} = require('electron');
+            var main = remote.require("./main.js");
+            main.updateWalletInfo();
             if (typeof callback === 'function') {
-                if (result) {
-                    callback(null, result);
-                } else {
-                    callback(error, null);
-                }
+              callback(null, null);
             }
-        });
+        } else {
+            registerWalletAndSyncAddress(publicKey, addresses, (error, result) => {
+                console.log("Callback after registering wallet.");
+                if (typeof callback === 'function') {
+                    if (result) {
+                        callback(null, result);
+                    } else {
+                        callback(error, null);
+                    }
+                }
+            });
+        }
     } else {
         //Compare PIN
         let isEqual = appDAO.checkPin(pin);
         if (isEqual) {
-            // Check wallet is registered on server or not
+          // Check wallet is registered on server or not
+          if (isWebPlatform()) {
+            if (typeof callback === 'function') {
+              callback(null, null);
+            }
+          } else {
             AsyncStorage.getItem(Constant.FLAG_PUBLIC_KEY, (error, result) => {
-                if (!error && result) {
-                    let publicKey = result;
-                    let addresses = addressDAO.getAllAddresses();
-                    if (addresses && addresses.length > 0) {
-                        registerWalletAndSyncAddress(publicKey, addresses, (error, result) => {
-                            if (typeof callback === 'function') {
-                                if (result) {
-                                    callback(null, result);
-                                } else {
-                                    callback(error, null);
-                                }
-                            }
-                        });
-                    }
-                } else {
+              if (!error && result) {
+                let publicKey = result;
+                let addresses = addressDAO.getAllAddresses();
+                if (addresses && addresses.length > 0) {
+                  registerWalletAndSyncAddress(publicKey, addresses, (error, result) => {
                     if (typeof callback === 'function') {
-                        callback(null, true);
+                      if (result) {
+                        callback(null, result);
+                      } else {
+                        callback(error, null);
+                      }
                     }
+                  });
                 }
+              } else {
+                if (typeof callback === 'function') {
+                  callback(null, true);
+                }
+              }
             });
+          }
         } else {
             if (typeof callback === 'function') {
                 callback(Constant.ERROR_TYPE.WRONG_PASSWORD, null);
@@ -297,9 +313,10 @@ getStandardCoinTypes = function(){
     var standardCoinTypes = [];
     for(var property in Constant.COIN_TYPE){
         var item = Constant.COIN_TYPE[property];
-        if (item.name != "SOLO") {
-            standardCoinTypes.push(item);
-        }
+        standardCoinTypes.push(item);
+        // if (item.name != "SOLO") {
+        //     standardCoinTypes.push(item);
+        // }
     }
     return standardCoinTypes;
 }
@@ -317,7 +334,7 @@ module.exports.loadInUseCoinTypes = function(){
             var item = Constant.COIN_TYPE[property];
             if (address.coin == item.name && address.network == item.network){
                 coinTypes.push(item);
-                return;        
+                return;
             }
         }
     });

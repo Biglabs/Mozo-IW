@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, YellowBox} from 'react-native';
 import TimerMixin from 'react-timer-mixin';
+import Keycloak from 'keycloak-js';
 
 import {colorPrimary, dimenScreenWidth, icons} from '../../res';
 import {AnimatedView} from "../components";
@@ -10,7 +11,6 @@ import Globals from '../../services/GlobalService';
 import {SvgView} from '../components/';
 
 export default class SplashScreen extends React.Component {
-
     componentDidMount() {
         YellowBox.ignoreWarnings(['Warning: isMounted(...)']);
         YellowBox.ignoreWarnings(['Warning: Failed prop type']);
@@ -22,7 +22,7 @@ export default class SplashScreen extends React.Component {
 
     handleFlow() {
         TimerMixin.clearTimeout(this.timer);
-        Globals.checkWalletExisting(); // Open right screen
+        Globals.checkExistingOAuth2Token(); // Open right screen
     }
 
     render() {

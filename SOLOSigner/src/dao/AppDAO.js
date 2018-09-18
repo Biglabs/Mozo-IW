@@ -1,5 +1,7 @@
 import service from '../services/DataService';
 
+import {isWebPlatform} from "../helpers/PlatformUtils";
+
 // For mobile
 DataService = service.getInstance().constructor;
 /**
@@ -33,11 +35,16 @@ export function updateMnemonicWithPin(mnemonic, pin){
     let hashPin = HashUtils.convertToHash(pin);
     let service = DataService;
     if(appInfo){
-        //Remove old PIN
-        service.localStorage.write(() => {
+        if (isWebPlatform()) {
+            service.localStorage.delete("App");
+            appInfo = null;
+        } else {
+            //Remove old PIN
+            service.localStorage.write(() => {
             service.localStorage.delete(appInfo);
-        });
-    } 
+            });
+        }
+    }
     //Add new
     addMnemonicWithPin(mnemonic, hashPin);
     return hashPin;

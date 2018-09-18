@@ -1,20 +1,52 @@
 import {Linking, Platform} from "react-native";
 import {Actions} from "react-native-router-flux";
-import {FLAG_DB_EXISTING} from '../helpers/Constants';
+import {
+  FLAG_OAUTH2TOKEN,
+  FLAG_WALLET_KEY,
+  FLAG_APP_INFO_KEY
+} from '../helpers/Constants';
 import AsyncStorage from '../helpers/AsyncStorageUtils';
 import {isWebPlatform} from "../helpers/PlatformUtils";
 
-function checkWalletExisting() {
-    AsyncStorage.getItem(FLAG_DB_EXISTING, (error, result) => {
-        console.log(`checkWalletExisting ${result}`);
-        if (result === 'true') {
-             /* has wallet */
-             Actions.reset('security_pin', {isNewPIN: false});
-        } else {
-             /* no wallet, create a new one */
-             Actions.reset('welcome');
+
+function checkExistingOAuth2Token() {
+  AsyncStorage.getItem(FLAG_OAUTH2TOKEN, (error, result) => {
+    if (result) {
+      Actions.reset('keycloak', {
+        token : {
+          access_token: result.access_token,
+          refresh_token: result.refresh_token,
+          id_token: result.id_token
         }
-    });
+      });
+    } else {
+      Actions.reset('keycloak');
+    }
+  });
+}
+
+function checkWalletExisting() {
+  AsyncStorage.getItem(FLAG_WALLET_KEY, (error, result) => {
+    if (result) {
+      /* has wallet */
+      Actions.reset('security_pin', {isNewPIN: false});
+    } else {
+      AsyncStorage.getItem(FLAG_APP_INFO_KEY, (error, result) => {
+        console.log("Check Wallet exist: " + result);
+        if (result && !result[0].pin) {
+          console.log(result);
+          Actions.reset('security_pin',{
+            isNewPIN: false,
+            encryptedWallet: true
+          });
+        } else {
+          /* no wallet, create a new one */
+          //Actions.reset('create_wallet');
+          Actions.reset('security_pin', { isNewPIN: true });
+        }
+      });
+    }
+  });
 }
 
 function responseToReceiver(result, jsonData) {
@@ -47,6 +79,7 @@ function convertToHash(inputPIN){
 }
 
 module.exports = {
+    checkExistingOAuth2Token: checkExistingOAuth2Token,
     checkWalletExisting: checkWalletExisting,
     responseToReceiver: responseToReceiver,
     convertToHash: convertToHash
