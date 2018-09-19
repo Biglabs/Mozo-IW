@@ -11,13 +11,21 @@ import UIKit
 class TransactionWireframe: MozoWireframe {
     var txPresenter : TransactionPresenter?
     var transferViewController : TransferViewController?
+    var scannerViewController: ScannerViewController?
     
     func presentTransferInterface() {
         let viewController = TransferViewControllerFromStoryboard()
-//        viewController.eventHandler = txPresenter
+        viewController.eventHandler = txPresenter
         transferViewController = viewController
-//        txPresenter?.pinUserInterface = viewController
-//        rootWireframe?.replaceTopViewController(viewController)
+        
+        txPresenter?.transferUserInterface = viewController
+        rootWireframe?.replaceTopViewController(viewController)
+    }
+    
+    func presentScannerQRCodeInterface() {
+        let viewController = ScannerViewController()
+        viewController.eventHandler = txPresenter
+        scannerViewController = viewController
         rootWireframe?.presentViewController(viewController)
     }
     

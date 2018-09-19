@@ -251,6 +251,9 @@
                                         <state key="normal" title="Address Book" image="ic_user">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="btnAddressBookTapped:" destination="ljP-Qq-otX" eventType="touchUpInside" id="evA-lE-aly"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oNl-gy-Upb">
                                         <rect key="frame" x="194" y="182" width="161" height="45"/>
@@ -262,6 +265,14 @@
                                         <state key="normal" title="Scan QR Code" image="ic_scan">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                <color key="value" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="btnScanTapped:" destination="ljP-Qq-otX" eventType="touchUpInside" id="O1T-s4-KmV"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fni-8e-uNL">
                                         <rect key="frame" x="20" y="255" width="162" height="15"/>
@@ -307,7 +318,7 @@
                                             <color key="titleColor" red="0.69803921568627447" green="0.69803921568627447" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="continueBtnTapped:" destination="EjY-q1-tUu" eventType="touchUpInside" id="NFO-io-4rq"/>
+                                            <action selector="btnContinueTapped:" destination="ljP-Qq-otX" eventType="touchUpInside" id="XPl-gp-RHX"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -359,6 +370,7 @@
                     </view>
                     <connections>
                         <outlet property="btnAddressBook" destination="meu-jZ-fu5" id="CKA-7O-uZx"/>
+                        <outlet property="btnContinue" destination="UQi-ge-hcb" id="hip-lV-Yub"/>
                         <outlet property="btnScan" destination="oNl-gy-Upb" id="rpB-sa-kXt"/>
                         <outlet property="lbBalance" destination="ydh-nN-cPy" id="l2o-ko-YCC"/>
                         <outlet property="lbExchange" destination="ilu-2G-NSK" id="kjn-Uq-Chi"/>
@@ -537,6 +549,7 @@
                     <connections>
                         <outlet property="checkImg" destination="ZC4-xe-iX8" id="CQD-cq-hg0"/>
                         <outlet property="checkLabel" destination="eua-vR-3gy" id="QSU-sv-Zpa"/>
+                        <outlet property="checkView" destination="SIW-Xr-hF0" id="qX4-P8-gAg"/>
                         <outlet property="continueBtn" destination="8ey-JI-Pbd" id="Md3-4J-0DR"/>
                         <outlet property="passPhraseTextView" destination="bxt-DA-ZgU" id="KKj-4e-6KO"/>
                     </connections>

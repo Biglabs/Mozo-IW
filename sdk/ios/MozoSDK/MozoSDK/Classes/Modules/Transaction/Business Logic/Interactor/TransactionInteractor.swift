@@ -12,4 +12,7 @@ class TransactionInteractor : NSObject {
 }
 
 extension TransactionInteractor : TransactionInteractorInput {
+    func getBalance() {
+        
+    }
 }

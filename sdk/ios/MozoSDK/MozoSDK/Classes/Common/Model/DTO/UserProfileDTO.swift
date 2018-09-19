@@ -17,6 +17,10 @@ public class UserProfileDTO: Codable, ResponseObjectSerializable {
     public var exchangeInfo: ExchangeInfoDTO?
     public var settings: String?
     
+    public required init(walletInfo: WalletInfoDTO?){
+        self.walletInfo = walletInfo
+    }
+    
     public required init?(json: SwiftyJSON.JSON) {
         self.id = json["id"].int
         self.userId = json["userId"].string

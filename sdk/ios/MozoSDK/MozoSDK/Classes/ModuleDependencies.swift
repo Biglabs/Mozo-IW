@@ -90,6 +90,9 @@ class ModuleDependencies {
         let txInteractor = TransactionInteractor()
         txInteractor.output = txPresenter
         
+        txPresenter.txInteractor = txInteractor
+        txPresenter.txWireframe = txWireframe
+        
         txWireframe.txPresenter = txPresenter
         txWireframe.rootWireframe = rootWireframe
     }

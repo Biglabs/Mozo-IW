@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TransactionInteractorInput {
-    
+    func getBalance()
 }
 
 protocol TransactionInteractorOutput {

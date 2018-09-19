@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class TransferViewController: MozoBasicViewController {
-    
+    var eventHandler : TransactionModuleInterface?
     @IBOutlet weak var lbBalance: UILabel!
     @IBOutlet weak var lbExchange: UILabel!
     @IBOutlet weak var txtAddress: UITextField!
@@ -36,10 +36,16 @@ class TransferViewController: MozoBasicViewController {
     }
     
     @IBAction func btnScanTapped(_ sender: Any) {
-        
+        eventHandler?.showScanQRCodeInterface()
     }
     
     @IBAction func btnContinueTapped(_ sender: Any) {
+        
+    }
+}
+
+extension TransferViewController : TransferViewInterface {
+    func showAddressFromScanner(address: String) {
         
     }
 }

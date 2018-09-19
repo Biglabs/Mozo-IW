@@ -9,4 +9,6 @@ import Foundation
 
 protocol TransactionModuleInterface {
     func performTransfer()
+    func showScanQRCodeInterface()
+    func goBack()
 }
