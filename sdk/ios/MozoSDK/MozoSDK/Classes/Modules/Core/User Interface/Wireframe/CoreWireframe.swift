@@ -15,7 +15,7 @@ class CoreWireframe : MozoWireframe {
     
     func requestForAuthentication() {
         presentWaitingInterface()
-        corePresenter?.requestForAuthentication()
+        corePresenter?.requestForAuthentication(module: Module.Wallet)
     }
     
     func requestForLogout() {
@@ -23,16 +23,22 @@ class CoreWireframe : MozoWireframe {
     }
     
     func requestForTransfer() {
-//        presentWaitingInterface()
-        txWireframe?.presentTransferInterface()
+        presentWaitingInterface()
+        corePresenter?.requestForAuthentication(module: Module.Transaction)
     }
     
-    func requestForCloseAllMozoUIs() {
-        rootWireframe?.closeAllMozoUIs()
+    func requestForCloseAllMozoUIs(completion: (() -> Swift.Void)? = nil) {
+        rootWireframe?.closeAllMozoUIs(completion: {
+            completion!()
+        })
     }
     
     func authenticate() {
         authWireframe?.presentInitialAuthInterface()
+    }
+    
+    func prepareForTransferInterface() {
+        txWireframe?.presentTransferInterface()
     }
     
     func prepareForWalletInterface() {

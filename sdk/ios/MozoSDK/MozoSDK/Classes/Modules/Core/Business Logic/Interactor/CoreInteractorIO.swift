@@ -8,12 +8,12 @@
 import Foundation
 
 protocol CoreInteractorInput {
-    func checkForAuthentication()
+    func checkForAuthentication(module: Module)
     func handleAferAuth(accessToken: String?)
     func logout()
 }
 
 protocol CoreInteractorOutput {
-    func finishedCheckAuthentication(keepGoing: Bool)
+    func finishedCheckAuthentication(keepGoing: Bool, module: Module)
     func finishedHandleAferAuth()
 }

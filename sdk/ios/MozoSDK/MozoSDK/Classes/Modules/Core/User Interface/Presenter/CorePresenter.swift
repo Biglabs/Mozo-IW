@@ -10,12 +10,12 @@ import Foundation
 class CorePresenter : NSObject {
     var coreWireframe : CoreWireframe?
     var coreInteractor : CoreInteractorInput?
-    var authDelegate: AuthenticationDelegate?
+    weak var authDelegate: AuthenticationDelegate?
 }
 
 extension CorePresenter : CoreModuleInterface {
-    func requestForAuthentication() {
-        coreInteractor?.checkForAuthentication()
+    func requestForAuthentication(module: Module) {
+        coreInteractor?.checkForAuthentication(module: module)
     }
     
     func requestForLogout() {
@@ -24,8 +24,9 @@ extension CorePresenter : CoreModuleInterface {
     }
     
     func requestForCloseAllMozoUIs() {
-        coreWireframe?.requestForCloseAllMozoUIs()
-        authDelegate?.mozoUIDidCloseAll()
+        coreWireframe?.requestForCloseAllMozoUIs(completion: {
+            self.authDelegate?.mozoUIDidCloseAll()
+        })
     }
 }
 
@@ -44,18 +45,24 @@ extension CorePresenter : AuthModuleDelegate {
 extension CorePresenter: WalletModuleDelegate {
     func walletModuleDidFinish() {
         // Close all existing Mozo's UIs
-        coreWireframe?.requestForCloseAllMozoUIs()
-        // Send delegate back to the app
-        authDelegate?.mozoAuthenticationDidFinish()
+        coreWireframe?.requestForCloseAllMozoUIs(completion: {
+            // Send delegate back to the app
+            self.authDelegate?.mozoAuthenticationDidFinish()
+        })
     }
 }
 
 extension CorePresenter : CoreInteractorOutput {
-    func finishedCheckAuthentication(keepGoing: Bool) {
+    func finishedCheckAuthentication(keepGoing: Bool, module: Module) {
         if keepGoing {
             coreWireframe?.authenticate()
         } else {
-            coreWireframe?.prepareForWalletInterface()
+            // Should continue with any module
+            switch module {
+                case.Transaction:
+                    coreWireframe?.prepareForTransferInterface()
+                default: coreWireframe?.prepareForWalletInterface()
+            }
         }
     }
     

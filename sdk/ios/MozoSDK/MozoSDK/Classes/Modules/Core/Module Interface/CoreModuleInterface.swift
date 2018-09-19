@@ -8,7 +8,7 @@
 import Foundation
 
 protocol CoreModuleInterface {
-    func requestForAuthentication()
+    func requestForAuthentication(module: Module)
     func requestForLogout()
     func requestForCloseAllMozoUIs()
 }

@@ -37,18 +37,18 @@ class CoreInteractor: NSObject {
 }
 
 extension CoreInteractor: CoreInteractorInput {
-    func checkForAuthentication() {
+    func checkForAuthentication(module: Module) {
         if AccessTokenManager.getAccessToken() != nil {
             if SessionStoreManager.loadCurrentUser() != nil {
-                output?.finishedCheckAuthentication(keepGoing: false)
+                output?.finishedCheckAuthentication(keepGoing: false, module: module)
             } else {
                 print("😎 Load user info.")
                 _ = getUserProfile().done({ () in
-                    self.output?.finishedCheckAuthentication(keepGoing: false)
+                    self.output?.finishedCheckAuthentication(keepGoing: false, module: module)
                 })
             }
         } else {
-            output?.finishedCheckAuthentication(keepGoing: true)
+            output?.finishedCheckAuthentication(keepGoing: true, module: module)
         }
     }
     
