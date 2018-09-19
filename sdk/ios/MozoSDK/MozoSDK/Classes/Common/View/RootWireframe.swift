@@ -34,9 +34,8 @@ class RootWireframe : NSObject {
     }
     
     func presentViewController(_ viewController: UIViewController) {
-        mozoNavigationController.viewControllers = [viewController]
         let top = getTopViewController()
-        top?.present(mozoNavigationController, animated: true, completion: nil)
+        top?.present(viewController, animated: true, completion: nil)
     }
     
     func dismissTopViewController() {
@@ -49,10 +48,11 @@ class RootWireframe : NSObject {
         return nil
     }
     
-    public func closeAllMozoUIs() {
+    public func closeAllMozoUIs(completion: (() -> Swift.Void)? = nil) {
         mozoNavigationController.viewControllers = []
         mozoNavigationController.dismiss(animated: false) {
             print("Mozo: Dismiss Navigation Controller")
+            completion!()
         }
     }
 }
