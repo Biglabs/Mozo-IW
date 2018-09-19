@@ -65,7 +65,7 @@ extension WalletInteractor : WalletInteractorInput {
         if let userObj = SessionStoreManager.loadCurrentUser() {
             // Get UserProfile
             let profile = userObj.profile
-            self.output?.finishedCheckServer(result: profile?.walletInfo != nil)
+            self.output?.finishedCheckServer(result: profile?.walletInfo?.encryptSeedPhrase != nil && profile?.walletInfo?.offchainAddress != nil)
         }
     }
     
