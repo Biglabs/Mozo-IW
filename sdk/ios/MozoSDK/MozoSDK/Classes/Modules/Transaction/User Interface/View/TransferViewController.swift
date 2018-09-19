@@ -17,6 +17,7 @@ class TransferViewController: MozoBasicViewController {
     @IBOutlet weak var btnScan: UIButton!
     @IBOutlet weak var txtAmount: UITextField!
     @IBOutlet weak var lbSpendable: UILabel!
+    @IBOutlet weak var btnContinue: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,5 +29,17 @@ class TransferViewController: MozoBasicViewController {
         btnAddressBook.layer.borderColor = ThemeManager.shared.main.cgColor
         btnScan.layer.borderWidth = 1
         btnScan.layer.borderColor = ThemeManager.shared.main.cgColor
+    }
+    
+    // MARK: Button tap events
+    @IBAction func btnAddressBookTapped(_ sender: Any) {
+    }
+    
+    @IBAction func btnScanTapped(_ sender: Any) {
+        
+    }
+    
+    @IBAction func btnContinueTapped(_ sender: Any) {
+        
     }
 }
