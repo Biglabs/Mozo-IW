@@ -251,13 +251,6 @@
                                         <state key="normal" title="Address Book" image="ic_user">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="2"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="0.3529411764705882" green="0.61176470588235299" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
-                                        </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oNl-gy-Upb">
                                         <rect key="frame" x="194" y="182" width="161" height="45"/>
@@ -269,14 +262,6 @@
                                         <state key="normal" title="Scan QR Code" image="ic_scan">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="2"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
-                                                <color key="value" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fni-8e-uNL">
                                         <rect key="frame" x="20" y="255" width="162" height="15"/>
@@ -372,6 +357,15 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hva-tw-Mgm"/>
                     </view>
+                    <connections>
+                        <outlet property="btnAddressBook" destination="meu-jZ-fu5" id="CKA-7O-uZx"/>
+                        <outlet property="btnScan" destination="oNl-gy-Upb" id="rpB-sa-kXt"/>
+                        <outlet property="lbBalance" destination="ydh-nN-cPy" id="l2o-ko-YCC"/>
+                        <outlet property="lbExchange" destination="ilu-2G-NSK" id="kjn-Uq-Chi"/>
+                        <outlet property="lbSpendable" destination="brE-a9-qvM" id="GBv-XK-F5Z"/>
+                        <outlet property="txtAddress" destination="cPJ-fc-yvr" id="qef-h9-ptr"/>
+                        <outlet property="txtAmount" destination="Eb8-Io-Hbg" id="z5S-MJ-uzJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cks-2p-x2Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
