@@ -15,6 +15,10 @@ class WalletPresenter : NSObject {
     var pinUserInterface : PINViewInterface?
     var passPharseUserInterface : PassPhraseViewInterface?
     var walletModuleDelegate : WalletModuleDelegate?
+    
+    func handleEndingWalletFlow() {
+        walletModuleDelegate?.walletModuleDidFinish()
+    }
 }
 
 extension WalletPresenter: WalletModuleInterface {
@@ -49,24 +53,20 @@ extension WalletPresenter: WalletModuleInterface {
 
 extension WalletPresenter: WalletInteractorOutput {
     func updatedWallet() {
-        walletWireframe?.dismissWalletInterface()
-        walletModuleDelegate?.walletModuleDidFinish()
+        handleEndingWalletFlow()
     }
     
     func finishedCheckServer(result: Bool) {
         if result {
             walletWireframe?.presentPINInterface(passPharse: nil)
-//            walletWireframe?.dismissWalletInterface()
-//            walletModuleDelegate?.walletModuleDidFinish()
         } else {
             walletWireframe?.presentPassPhraseInterface()
-            
         }
     }
     
     func finishedCheckLocal(result: Bool) {
         if result {
-            walletWireframe?.presentPINInterface(passPharse: nil)
+            handleEndingWalletFlow()
         } else {
             walletInteractor?.checkServerWalletExisting()
         }

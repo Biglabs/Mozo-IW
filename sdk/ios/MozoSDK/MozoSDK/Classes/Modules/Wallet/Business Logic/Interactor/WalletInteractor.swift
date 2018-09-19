@@ -81,7 +81,7 @@ extension WalletInteractor : WalletInteractorInput {
                 } else {
                     // Incase: restore wallet from server mnemonics
                     let mnemonic = userObj.profile?.walletInfo?.encryptSeedPhrase?.decrypt(key: pin)
-                    
+                    // TODO: Handle mnemonic nil here
                     if BIP39.mnemonicsToEntropy(mnemonic!) == nil {
                         print("😞 Invalid mnemonics")
                         compareResult = false
