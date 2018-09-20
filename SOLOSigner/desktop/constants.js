@@ -14,6 +14,13 @@ const ERRORS = {
     type: "Business"
   },
 
+  NO_WALLET_NETWORK: {
+    code: "ERR-096",
+    title: "No network in request",
+    detail: "No network in the request parameter.",
+    type: "Business"
+  },
+
   PENDING_TRANSACTION : {
     code: "ERR-097",
     title: "Pending transaction confirmation",

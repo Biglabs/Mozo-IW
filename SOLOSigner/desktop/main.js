@@ -35,7 +35,7 @@ const PROTOCOL_PREFIX = app_config.app.deeplink;
 const userReference = require('electron-settings');
 
 // console.log(JSON.stringify(userReference.getAll(), null, 2));
-// userReference.deleteAll();
+userReference.deleteAll();
 
 let mainWindow = null;
 let deeplinkingUrl = null;

@@ -9,8 +9,8 @@ const app_config = require("../app_settings").APP_SETTINGS;
 const mozo_service_host = app_config.mozo_services.api.host;
 
 
-async function setRequestData() {
-  let token_header = await oauth2.tokenHeader();
+function setRequestData() {
+  let token_header = oauth2.tokenHeader();
   if (!token_header) {
     return null;
   }
@@ -48,32 +48,30 @@ function extractWalletData(walletInfo) {
   userReference.set("App", app_info);
 }
 
-async function getUserProfile(callback) {
-  let options = await setRequestData();
+function getUserProfile() {
+  let options = setRequestData();
   if (!options) {
     return;
   }
 
-  await request(options, function(error, response, body) {
+  request(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log("User profile: " + body);
       user_profile = JSON.parse(body);
       if (user_profile.walletInfo) {
         extractWalletData(user_profile.walletInfo);
       }
-      if (callback) {
-        callback(user_profile);
-      }
     } else {
-      console.log(error);
+      console.log(response.statusCode);
+      console.log(body);
     }
   });
 }
-getUserProfile(null);
+getUserProfile();
 
 exports.getUserProfile = getUserProfile;
 
-exports.updateWalletInfo = async function() {
+exports.updateWalletInfo = function() {
   const app_info = userReference.get("App");
   if (!app_info) {
     return;
@@ -98,7 +96,7 @@ exports.updateWalletInfo = async function() {
     return;
   }
 
-  let options = await setRequestData();
+  let options = setRequestData();
   options.url = mozo_service_host + "/api/user-profile/wallet";
   options.method = "PUT";
   options.json = true;
@@ -107,7 +105,7 @@ exports.updateWalletInfo = async function() {
     offchainAddress : offchain_address
   };
 
-  await request(options, function(error, response, body) {
+  request(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log("User profile: " + JSON.stringify(body));
     } else {
@@ -117,11 +115,8 @@ exports.updateWalletInfo = async function() {
 
 };
 
-exports.createTransaction = async function(tx_info, res, callback) {
+exports.createTransaction = function(tx_info, res) {
   let tx_req = {
-    fees: 0,
-    gasLimit: 0,
-    gasPrice: 0,
     inputs: [
       {
         addresses: [ tx_info.from ]
@@ -135,8 +130,8 @@ exports.createTransaction = async function(tx_info, res, callback) {
     ]
   };
 
-  let options = await setRequestData();
-  options.url = mozo_service_host + "/api/eth/solo/txs";
+  let options = setRequestData();
+  options.url = mozo_service_host + "/api/solo/contract/solo-token/transfer";
   options.method = "POST";
   options.json = true;
   options.body = tx_req;
@@ -145,7 +140,7 @@ exports.createTransaction = async function(tx_info, res, callback) {
     console.log(body);
     console.log(response.statusCode);
     if (!error && response.statusCode == 200) {
-      callback(body, res);
+      confirmTransaction(body, res);
     } else {
       console.log(error);
       let response_data = {
@@ -168,7 +163,7 @@ var timerCountInterval = null;
 var timerCount = 0;
 var isFinishedConfirmationInput = false;
 
-exports.confirmTransaction = async function(tx_server_req, res_callback) {
+function confirmTransaction(tx_server_req, res_callback) {
   if (signHttpCallback && timerCount > 0) {
     let response_data = {
       status: "ERROR",
@@ -212,7 +207,7 @@ exports.confirmTransaction = async function(tx_server_req, res_callback) {
 
 };
 
-async function sendSignRequest(signed_req, callback) {
+function sendSignRequest(signed_req, callback) {
   let response_data = {
     status: "ERROR",
     error: ERRORS.CANCEL_REQUEST
@@ -227,8 +222,8 @@ async function sendSignRequest(signed_req, callback) {
     return;
   }
 
-  let options = await setRequestData();
-  options.url = mozo_service_host + "/api/eth/solo/txs/send-signed-tx";
+  let options = setRequestData();
+  options.url = mozo_service_host + "/api/solo/contract/solo-token/send-signed-tx";
   options.method = "POST";
   options.json = true;
   console.log(signed_req.result.signedTransaction);
@@ -239,15 +234,65 @@ async function sendSignRequest(signed_req, callback) {
     console.log(body);
     if (!error && response.statusCode == 200) {
       console.log(body);
-      signHttpCallback.send(body);
+      response_data = {
+        status: "SUCCESS",
+        tx_info: body
+      };
     } else {
       console.log(error);
       response_data.error = ERRORS.INTERNAL_ERROR;
-      signHttpCallback.send(response_data);
     }
+    signHttpCallback.send({ result : response_data });
     isFinishedConfirmationInput = true;
     signHttpCallback = null;
   });
 }
 
 exports.sendSignRequest = sendSignRequest;
+
+exports.getWalletBalance = function(network) {
+  let wallet_addrs = userReference.get("Address");
+  let response_data = {
+    status: "ERROR",
+    error: ERRORS.NO_WALLET
+  };
+
+  if (!wallet_addrs) {
+    return null;
+  }
+
+  let address = null;
+
+  for (var index = 0; index < wallet_addrs.length; ++index) {
+    let addr = wallet_addrs[index];
+    if (addr.network == network) {
+      address = addr.address;
+      break;
+    }
+  }
+
+  if (!address) {
+    return null;
+  }
+
+  let options = setRequestData();
+  if (!options) {
+    return null;
+  }
+
+  options.url = mozo_service_host +
+    "/api/solo/contract/solo-token/balance/" + address;
+
+  return new Promise(function(resolve, reject) {
+    request(options, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log("Balance Info: " + body);
+        balance_info = JSON.parse(body);
+        resolve(balance_info);
+      } else {
+        console.log(error);
+        reject(error);
+      }
+    });
+  });
+}
