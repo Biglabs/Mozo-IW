@@ -17,7 +17,6 @@ class ScannerViewController: MozoBasicViewController, AVCaptureMetadataOutputObj
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.createBackBarButton()
         view.backgroundColor = .black
         captureSession = AVCaptureSession()
 
@@ -55,12 +54,33 @@ class ScannerViewController: MozoBasicViewController, AVCaptureMetadataOutputObj
         view.layer.addSublayer(previewLayer)
 
         captureSession.startRunning()
+        
+        self.createBackButton()
     }
 
-    func createBackBarButton() {
-        let backBarButton = UIBarButtonItem.init(image: UIImage.init(named: "ic_left_arrow"), style: .plain, target: self, action: #selector(self.back))
+    func createBackButton() {
+        let frame = CGRect(x: 19, y: view.frame.size.height - 27, width: 65, height: 18)
+        let backView = UIView(frame: frame)
         
-        self.navigationItem.leftBarButtonItem = backBarButton
+        let imageFrame = CGRect(x: 0, y: 0, width: 19, height: 15)
+        let imageView = UIImageView(frame: imageFrame)
+        imageView.image = UIImage(named: "ic_left_arrow_white", in: BundleManager.mozoBundle(), compatibleWith: nil)
+        backView.addSubview(imageView)
+        
+        let lbFrame = CGRect(x: imageFrame.size.width + 9, y: 0, width: 36, height: 18)
+        let label = UILabel(frame: lbFrame)
+        label.text = "Back"
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = .white
+        backView.addSubview(label)
+        
+        backView.backgroundColor = .clear
+        view.addSubview(backView)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.back))
+        tap.numberOfTapsRequired = 1
+        backView.isUserInteractionEnabled = true
+        backView.addGestureRecognizer(tap)
     }
 
     func failed() {
