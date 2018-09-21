@@ -75,11 +75,12 @@ extension TransactionInteractor : TransactionInteractorInput {
     }
     
     func performTransfer(pin: String) {
-//        _ = TransactionSignManager.signTransaction(transactionData!, pin: pin).done { (signedInterTx) in
-//
-//            }.catch({ (err) in
-//
-//            })
+        signManager?.signTransaction(transactionData!, pin: pin)
+            .done { (signedInterTx) in
+
+            }.catch({ (err) in
+
+            })
     }
     
     func loadTokenInfo() {
