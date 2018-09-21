@@ -56,7 +56,7 @@ function getUserProfile() {
 
   request(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log("User profile: " + body);
+      // console.log("User profile: " + body);
       user_profile = JSON.parse(body);
       if (user_profile.walletInfo) {
         extractWalletData(user_profile.walletInfo);
