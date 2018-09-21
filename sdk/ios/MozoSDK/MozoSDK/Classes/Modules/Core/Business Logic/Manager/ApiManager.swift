@@ -33,7 +33,7 @@ public class ApiManager {
     }
     
     private func getToken() -> String{
-        if let accessToken = AccessTokenManager.loadToken() {
+        if let accessToken = AccessTokenManager.getAccessToken() {
             return "bearer " + accessToken
         }
         return ""
@@ -105,8 +105,6 @@ public class ApiManager {
         let headers = self.buildHTTPHeaders(withToken: false)
         return self.execute(method, url: url, headers: headers, body: parameters!)
     }
-    
-    
     
     func execute(_ method: Alamofire.HTTPMethod, url: String, parameters: Any? = nil) -> Promise<[String: Any]> {
         print("Execute url: " + url)

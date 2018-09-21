@@ -8,5 +8,9 @@
 import Foundation
 
 protocol TransferViewInterface {
-    func showAddressFromScanner(address: String)
+    func updateUserInterfaceWithTokenInfo(_ tokenInfo: TokenInfoDTO)
+    func updateUserInterfaceWithAddress(_ address: String)
+    func displayError(_ error: String)
+    func displaySpinner()
+    func removeSpinner()
 }

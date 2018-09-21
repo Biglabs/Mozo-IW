@@ -70,3 +70,7 @@ extension CorePresenter : CoreInteractorOutput {
         coreWireframe?.prepareForWalletInterface()
     }
 }
+
+extension CorePresenter: TransactionModuleDelegate {
+    
+}

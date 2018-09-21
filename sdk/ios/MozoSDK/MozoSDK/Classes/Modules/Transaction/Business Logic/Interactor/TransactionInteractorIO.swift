@@ -8,9 +8,14 @@
 import Foundation
 
 protocol TransactionInteractorInput {
-    func getBalance()
+    func loadTokenInfo()
+    func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?)
+    func performTransfer(pin: String)
 }
 
 protocol TransactionInteractorOutput {
-    
+    func didLoadTokenInfo(_ tokenInfo: TokenInfoDTO)
+    func didReceiveError(_ error: String?)
+    func requestPinTosignTransaction()
+    func didValidateTransferTransaction(_ error: String?)
 }

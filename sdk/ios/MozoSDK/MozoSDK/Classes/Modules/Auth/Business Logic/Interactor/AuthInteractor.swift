@@ -33,9 +33,9 @@ extension AuthInteractor : AuthInteractorInput {
         }
     }
     
-    func handleRedirectUrl(_ url: URL) -> Bool {
-        return authManager?.handleRedirectUrl(url) ?? false
-    }
+//    func handleRedirectUrl(_ url: URL) -> Bool {
+//        return authManager?.handleRedirectUrl(url) ?? false
+//    }
     
     func buildAuthRequest() {
         _ = authManager?.buildAuthRequest().done({ (request) in

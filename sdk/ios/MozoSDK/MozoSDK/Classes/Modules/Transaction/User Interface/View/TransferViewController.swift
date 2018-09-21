@@ -19,9 +19,16 @@ class TransferViewController: MozoBasicViewController {
     @IBOutlet weak var lbSpendable: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
     
+    private let refreshControl = UIRefreshControl()
+    var spinnerView : UIView?
+    var tokenInfo : TokenInfoDTO?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        eventHandler?.loadTokenInfo()
         setBtnLayer()
+        addDoneButtonOnKeyboard()
+//        setRefreshControl()
     }
     
     func setBtnLayer() {
@@ -29,6 +36,38 @@ class TransferViewController: MozoBasicViewController {
         btnAddressBook.layer.borderColor = ThemeManager.shared.main.cgColor
         btnScan.layer.borderWidth = 1
         btnScan.layer.borderColor = ThemeManager.shared.main.cgColor
+    }
+    
+    func addDoneButtonOnKeyboard()
+    {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        doneToolbar.barStyle = UIBarStyle.default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.doneButtonAction))
+        
+        doneToolbar.items = [flexSpace, done]
+        doneToolbar.sizeToFit()
+        
+        self.txtAmount.inputAccessoryView = doneToolbar
+    }
+    
+    @objc func doneButtonAction()
+    {
+        txtAmount.resignFirstResponder()
+    }
+    
+    // MARK: Refresh Control
+    func setRefreshControl() {
+        view.addSubview(refreshControl)
+        self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+    }
+    
+    @objc func refresh(_ sender: Any? = nil) {
+        eventHandler?.loadTokenInfo()
+        if let refreshControl = sender as? UIRefreshControl, refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
     }
     
     // MARK: Button tap events
@@ -40,12 +79,47 @@ class TransferViewController: MozoBasicViewController {
     }
     
     @IBAction func btnContinueTapped(_ sender: Any) {
-        
+        if let tokenInfo = self.tokenInfo {
+            eventHandler?.validateTransferTransaction(tokenInfo: tokenInfo, toAdress: txtAddress.text, amount: txtAmount.text)
+        }
     }
 }
 
 extension TransferViewController : TransferViewInterface {
-    func showAddressFromScanner(address: String) {
+    func displaySpinner() {
+        spinnerView = UIView.init(frame: self.view.bounds)
+        spinnerView?.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        ai.startAnimating()
+        ai.center = (spinnerView?.center)!
         
+        DispatchQueue.main.async {
+            self.spinnerView?.addSubview(ai)
+            self.view.addSubview(self.spinnerView!)
+        }
+    }
+    
+    func removeSpinner() {
+        DispatchQueue.main.async {
+            self.spinnerView?.removeFromSuperview()
+        }
+    }
+    
+    func updateUserInterfaceWithTokenInfo(_ tokenInfo: TokenInfoDTO) {
+        self.tokenInfo = tokenInfo
+        let balance = tokenInfo.balance ?? 0
+        let displayBalance = balance.convertOutputValue(decimal: tokenInfo.decimals!)
+        lbBalance.text = "\(displayBalance)"
+        lbSpendable.text = "\(displayBalance)"
+    }
+    
+    func updateUserInterfaceWithAddress(_ address: String) {
+        txtAddress.text = address
+    }
+    
+    func displayError(_ error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }

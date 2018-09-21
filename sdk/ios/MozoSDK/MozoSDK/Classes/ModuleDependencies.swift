@@ -87,12 +87,17 @@ class ModuleDependencies {
     func transactionDependencies() {
         let txPresenter = TransactionPresenter()
         
-        let txInteractor = TransactionInteractor()
+        let txInteractor = TransactionInteractor(apiManager: apiManager)
         txInteractor.output = txPresenter
+        
+        let txDataManager = TransactionDataManager()
+        txDataManager.coreDataStore = coreDataStore
+        txInteractor.signManager = TransactionSignManager(dataManager: txDataManager)
         
         txPresenter.txInteractor = txInteractor
         txPresenter.txWireframe = txWireframe
         
+        txWireframe.walletWireframe = walletWireframe
         txWireframe.txPresenter = txPresenter
         txWireframe.rootWireframe = rootWireframe
     }

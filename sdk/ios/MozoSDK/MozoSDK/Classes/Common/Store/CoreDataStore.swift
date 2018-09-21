@@ -31,6 +31,8 @@ class CoreDataStore : NSObject {
         }
     }
     
+    // MARK: User
+    
     func countById(_ id: String) -> Int? {
         let count = stack.fetchCount(From<ManagedUser>().where(\.id == id))
         return count
@@ -83,6 +85,30 @@ class CoreDataStore : NSObject {
         }
     }
     
+    func updateUser(_ userModel: UserModel) -> Promise<Any?>{
+        return Promise { seal in
+            stack.perform(asynchronous: { (transaction) -> ManagedUser in
+                let userEntity = transaction.fetchOne(
+                    From<ManagedUser>()
+                        .where(\.id == userModel.id!)
+                )
+                userEntity?.mnemonic = userModel.mnemonic
+                userEntity?.pin = userModel.pin
+                
+                return userEntity!
+            }, success: { (userTransaction) in
+                let newUser = self.stack.fetchExisting(userTransaction)!
+                print("😁 Success to update user, mnemonic: [\(newUser.mnemonic ?? "")]")
+                seal.fulfill(true)
+            }, failure: { (csError) in
+                print("😞 Failed to update user, error: [\(csError)]")
+                seal.reject(csError)
+            })
+        }
+    }
+    
+    // MARK: Wallet
+    
     func updateWallet(_ walletModel: WalletModel, toUser id: String) -> Promise<Any?>{
         return Promise { seal in
             stack.perform(asynchronous: { (transaction) -> ManagedUser in
@@ -109,25 +135,18 @@ class CoreDataStore : NSObject {
         }
     }
     
-    func updateUser(_ userModel: UserModel) -> Promise<Any?>{
+    func getWalletByUserId(_ id: String) -> Promise<WalletModel>{
         return Promise { seal in
-            stack.perform(asynchronous: { (transaction) -> ManagedUser in
-                let userEntity = transaction.fetchOne(
-                    From<ManagedUser>()
-                        .where(\.id == userModel.id!)
-                )
-                userEntity?.mnemonic = userModel.mnemonic
-                userEntity?.pin = userModel.pin
-                
-                return userEntity!
-            }, success: { (userTransaction) in
-                let newUser = self.stack.fetchExisting(userTransaction)!
-                print("😁 Success to update user, mnemonic: [\(newUser.mnemonic ?? "")]")
-                seal.fulfill(true)
-            }, failure: { (csError) in
-                print("😞 Failed to update user, error: [\(csError)]")
-                seal.reject(csError)
-            })
+            if let userEntity = stack.fetchOne(From<ManagedUser>().where(\.id == id)) {
+                print("Wallets count: [\(userEntity.wallets?.count ?? -1)]")
+                let wallets : [WalletModel]? = userEntity.wallets?.map {
+                    let wallet = $0 as! ManagedWallet
+                    return WalletModel(address: wallet.address, privateKey: wallet.privateKey)
+                }
+                seal.fulfill((wallets?.first)!)
+            } else {
+                seal.reject(ConnectionError.unknowError)
+            }
         }
     }
 }

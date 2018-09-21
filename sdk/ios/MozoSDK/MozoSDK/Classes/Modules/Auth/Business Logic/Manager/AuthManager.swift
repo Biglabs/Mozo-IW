@@ -17,17 +17,40 @@ class AuthManager : NSObject {
     // A property to store the auth state
     private (set) var authState: OIDAuthState?
     
+    override init() {
+        super.init()
+        authState = AuthDataManager.loadAuthState()
+        if authState != nil {
+            checkAuthorization()
+        }
+    }
+    
+    private func checkAuthorization(){
+        let expiresAt : Date = (authState?.lastTokenResponse?.accessTokenExpirationDate)!
+        if(expiresAt.timeIntervalSinceNow < 60)
+        {
+            print("Token expired, refresh token.")
+            let additionalParams = [
+                "grant_type" : OIDGrantTypeRefreshToken
+            ]
+            authState?.performAction(freshTokens: { (accessToken, ic, error) in
+                print("Did refresh token, new access token: \(accessToken ?? "NULL")")
+                AccessTokenManager.saveToken(accessToken)
+            }, additionalRefreshParameters: additionalParams)
+        }
+    }
+    
     func setCurrentAuthorizationFlow(_ authorizationFlow: OIDAuthorizationFlowSession?) {
         self.currentAuthorizationFlow = authorizationFlow
     }
     
-    func handleRedirectUrl(_ url: URL) -> Bool {
-        if currentAuthorizationFlow?.resumeAuthorizationFlow(with: url) == true {
-            setCurrentAuthorizationFlow(nil)
-            return true
-        }
-        return false
-    }
+//    func handleRedirectUrl(_ url: URL) -> Bool {
+//        if currentAuthorizationFlow?.resumeAuthorizationFlow(with: url) == true {
+//            setCurrentAuthorizationFlow(nil)
+//            return true
+//        }
+//        return false
+//    }
     
     func buildAuthRequest() -> Promise<OIDAuthorizationRequest?> {
         return Promise { seal in

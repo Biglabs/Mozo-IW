@@ -216,3 +216,17 @@ internal extension Int {
         }
     }
 }
+
+public extension Double {
+    func convertTokenValue(decimal: Int) -> NSNumber{
+        let retValue = NSNumber(value: self * Double(truncating: pow(10, decimal) as NSNumber))
+        return retValue
+    }
+}
+
+public extension NSNumber {
+    func convertOutputValue(decimal: Int) -> Double{
+        let retValue = Double(truncating: self) / Double(truncating: pow(10, decimal) as NSNumber)
+        return retValue
+    }
+}
