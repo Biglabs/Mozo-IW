@@ -1,0 +1,102 @@
+mozo-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color:rgba(0, 0, 0, 0.2);
+    z-index: 100000;
+
+    > div {
+    
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 5px 22px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    position: fixed;
+    top: 30%;
+    width: 350px;
+    left: calc(50% - 175px);
+    z-index: 100001;
+    padding: 15px;
+    opacity: 0;
+    animation-name: AMbounceIn;
+    animation-duration: 350ms;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    will-change: transform;
+
+    & .am-icon-box {
+      width: 80px;
+      height: 80px;
+      border-width: 4px;
+      border-style: solid;
+      border-color: rgb(255, 64, 64);
+      border-radius: 50%;
+      padding: 0;
+      position: relative;
+      box-sizing: content-box;
+      margin: 20px auto;
+    }
+
+    & .am-icon-error {
+      background-color: rgb(255, 64, 64);
+    }
+
+    & .am-icon {}
+
+    & .am-icon-error-line {
+      position: absolute;
+      height: 5px;
+      width: 47px;
+      display: block;
+      top: 37px;
+      border-radius: 2px;
+    }
+
+    & .am-icon-error-line-right {
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      right: 16px;
+    }
+
+    & .am-icon-error-line-left {
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+      left: 17px;
+    }
+
+    & button {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      font: inherit;
+      cursor: pointer;
+      color: purple;
+    }
+
+  }
+}
+
+@keyframes AMbounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translate3d(0, 0, 0);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  80% {
+    opacity: 1;
+    transform: scale(0.93);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}

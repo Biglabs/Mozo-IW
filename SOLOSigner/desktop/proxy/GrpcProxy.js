@@ -26,6 +26,7 @@ const app = express();
 
 const server_host = app_config.proxy_server.host;
 const port = app_config.proxy_server.port;
+const public_host = app_config.proxy_server.public_host;
 
 const mozo_service_host = app_config.mozo_services.api.host;
 
@@ -46,15 +47,18 @@ app.use(function(req, res, next) {
 app.use(express.json());
 
 
-app.get('/oauth2-getcode', async (req, res, next) => {
+app.get('/oauth2-getcode', (req, res, next) => {
   const code = req.query.code;
   const redirect_uri = "http://" + server_host + ":" + port + "/oauth2-getcode";
-  const access_token = await oauth2.getTokenFromAuthCode(code, redirect_uri);
-  if (access_token) {
-    await services.getUserProfile(null);
-  }
-  main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
-  //res.send({ result : "SUCCESS" });
+  oauth2.getTokenFromAuthCode(code, redirect_uri).then(function(access_token) {
+    if (access_token) {
+      services.getUserProfile();
+    }
+    main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
+  }, function(err) {
+    main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
+  });
+
 });
 
 
@@ -79,32 +83,97 @@ app.get('/getWalletAddress', (req, res, next) => {
     status: "ERROR",
     error: ERRORS.NO_WALLET
   }
-  if (wallet) {
-    let addr_network = req.query.network;
-    response_data["error"]["detail"] = "No wallet address with `" +
-      addr_network + "` network";
 
-    for (var index = 0; index < wallet.length; ++index) {
-      let wallet_obj = wallet[index];
-      if (wallet_obj.network == addr_network) {
-        response_data = {
-          status: "SUCCESS",
-          wallet_address: wallet_obj.address,
-          error: {}
-        };
-        break;
-      }
+  if (!wallet) {
+    res.send({ result : response_data });
+    return;
+  }
+
+  let get_all_addresses = false;
+
+  let addr_network = req.query.network;
+  if (!addr_network) {
+    get_all_addresses = true;
+  } else {
+    if ((typeof addr_network) == "string") {
+      addr_network = [ addr_network ];
+    }
+    addr_network = addr_network.map(x => x.toUpperCase());
+  }
+
+  wallet_arr = [];
+
+  for (var index = 0; index < wallet.length; ++index) {
+    let wallet_obj = wallet[index];
+    if (get_all_addresses || addr_network.includes(wallet_obj.network)) {
+      wallet_arr.push({
+        network: wallet_obj.network,
+        address: wallet_obj.address
+      });
     }
   }
+  response_data = {
+    status: "SUCCESS",
+    wallet_addreses: wallet_arr,
+    error: null
+  };
   res.send({ result : response_data });
 });
 
-app.get('/cleanUpWalletAddress', (req, res, next) => {
-  userReference.deleteAll();
-  res.send({ result : "SUCCESS" });
+app.get('/getWalletBalance', (req, res, next) => {
+  let response_data = {
+    status: "ERROR",
+    error: ERRORS.NO_WALLET
+  };
+
+  let addr_network = req.query.network;
+  if (!addr_network) {
+    response_data.error = ERRORS.NO_WALLET_NETWORK;
+    res.send({ result : response_data });
+    return;
+  }
+  let balance_info = services.getWalletBalance(addr_network).then(function(balance_info) {
+    if (balance_info) {
+      response_data = {
+        status: "SUCCESS",
+        balance_info: balance_info,
+        error: null
+      };
+    }
+    res.send({ result : response_data });
+  }, function(err) {
+    res.send({ result : response_data });
+  });
 });
 
-app.post('/transaction/send', async (req, res, next) => {
+// app.get('/cleanUpWalletAddress', (req, res, next) => {
+//   userReference.deleteAll();
+//   res.send({ result : "SUCCESS" });
+// });
+
+var RNCryptor = require('jscryptor');
+
+app.post('/test-data/encrypt', (req, res, next) => {
+  let data = req.body.data;
+  let password = req.body.password;
+  console.log("Data: " + data);
+  let encrypted_data = RNCryptor.Encrypt(data, password);
+  res.send( { data : encrypted_data.toString() } );
+});
+
+app.post('/test-data/decrypt', (req, res, next) => {
+  let data = req.body.data;
+  let password = req.body.password;
+  try {
+    let decrypted_data = RNCryptor.Decrypt(data, password);
+    res.send({ data : decrypted_data.toString() });
+  } catch (e) {
+    console.log(e);
+    res.send({ data: "" });
+  }
+});
+
+app.post('/transaction/send', (req, res, next) => {
   let tx_send_data = req.body;
   let wallet_addrs = userReference.get("Address");
   let response_data = {
@@ -120,7 +189,7 @@ app.post('/transaction/send', async (req, res, next) => {
   for (var index = 0; index < wallet_addrs.length; ++index) {
     let addr = wallet_addrs[index];
     // Currently support SOLO only
-    if (addr.network == "SOLO") {
+    if (addr.network == tx_send_data.network.toUpperCase()) {
       tx_send_data.from = addr.address;
       break;
     }
@@ -134,28 +203,6 @@ app.post('/transaction/send', async (req, res, next) => {
   services.createTransaction(tx_send_data, res, services.confirmTransaction);
 });
 
-app.post('/transaction/sign', (req, res, next) => {
-  grpcClient.sign(req.body, function(err, grpc_res) {
-    if (err) {
-      console.log(err);
-      let signServiceProto = grpcLoader.sign_service_proto;
-      let error_obj = {
-        status: "ERROR",
-        signedTransaction: null,
-        error: {
-          code: "ERR-099",
-          title: "Internal error request",
-          detail: "Internal error",
-          type: "Infrastructure"
-        }
-      };
-      res.send({result: error_obj});
-    } else {
-      res.send(grpc_res);
-    }
-  });
-});
-
 /**
  * export start proxy server to outside
  */
@@ -163,7 +210,8 @@ module.exports.start = function(){
   /**
    * forward rest call to grpc and vice versal
    */
-  httpServer = app.listen(port, "0.0.0.0", async () => {
-    console.log("Proxy is listening on port " + port + "!");
+  httpServer = app.listen(port, public_host, async () => {
+    console.log("Proxy is listening on host: " + public_host +
+                " port: " + port + "!");
   });
 };

@@ -6,6 +6,7 @@ const APP_SETTINGS = {
 
   proxy_server: {
     host: "127.0.0.1",
+    public_host: "127.0.0.1",
     port: 33013
   },
 

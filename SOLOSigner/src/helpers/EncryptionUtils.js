@@ -1,16 +1,22 @@
-let CryptoJS = require('crypto-js');
+// let CryptoJS = require('crypto-js');
+
+import RESTService from '../services/RESTService';
+
+var RNCryptor = require('electron').remote.require('jscryptor');
 
 module.exports.encrypt = function (data, password) {
-    return CryptoJS.AES.encrypt(data, password).toString();
-};
+  let encrypted_data = RNCryptor.Encrypt(data, password);
+  return encrypted_data.toString();
+}
 
 module.exports.decrypt = function (data, password) {
-    try {
-        let bytes = CryptoJS.AES.decrypt(data, password);
-        return bytes.toString(CryptoJS.enc.Utf8);
-    } catch (e) {
-        return null;
-    }
+  try {
+    let decrypted_data = RNCryptor.Decrypt(data, password);
+    return decrypted_data.toString();
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
 };
 
 /**

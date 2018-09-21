@@ -12,8 +12,6 @@ const PATH_APP_NODE_MODULES = path.join(__dirname, 'node_modules');
 require('module').globalPaths.push(PATH_APP_NODE_MODULES);
 console.log("PATH_APP_NODE_MODULES: " + PATH_APP_NODE_MODULES); */
 
-app_config = require("./app_settings").APP_SETTINGS;
-
 // start grpc server
 const grpcServer = require('./grpcserver/SignerGrpcServer');
 grpcServer.start();
@@ -25,7 +23,9 @@ proxy.start();
 const services = require('./utils/services');
 
 const { app, BrowserWindow, protocol } = require('electron');
+const app_config = require("./app_settings").APP_SETTINGS;
 const PROTOCOL_PREFIX = app_config.app.deeplink;
+
 
 /**
  * Get instance of electron-settings
@@ -44,17 +44,29 @@ let deeplinkingUrl = null;
 const shouldQuit = app.makeSingleInstance((argv, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
 
-  // Protocol handler for win32
+  // Protocol handler for win32 and linux
   // argv: An array of the second instance’s (command line / deep linked) arguments
-  if (process.platform == 'win32') {
+  if (['win32', 'linux'].includes(process.platform)) {
     // Keep only command line / deep linked arguments
-    deeplinkingUrl = argv.slice(1);
+    if (argv.length > 1) {
+      for (var index = 1; index < argv.length; ++index) {
+        if (argv[index].startsWith(PROTOCOL_PREFIX + "://")) {
+          deeplinkingUrl = argv[index];
+          break;
+        }
+      }
+    }
   }
 
   if (mainWindow) {
-    if (mainWindow.isMinimized())
-      mainWindow.restore();
-    mainWindow.focus();
+    if (deeplinkingUrl) {
+      handleDeepLinkURL(deeplinkingUrl);
+      deeplinkingUrl = null;
+    } else {
+      if (mainWindow.isMinimized())
+        mainWindow.restore();
+      mainWindow.focus();
+    }
   }
 });
 if (shouldQuit) {
@@ -75,31 +87,14 @@ const createWindow = () => {
     show: false */
   });
 
-  // Protocol handler for win32
-  if (process.platform == 'win32') {
+  // Protocol handler for win32 and linux
+  if (['win32', 'linux'].includes(process.platform)) {
     // Keep only command line / deep linked arguments
     deeplinkingUrl = process.argv.slice(1);
   }
 
   protocol.registerHttpProtocol(PROTOCOL_PREFIX, (req, cb) => {
-    console.log("Protocol log: %s", req.url);
-    let split_array = req.url.split("://");
-
-    // Handle case we have an empty string after splitting
-    if (split_array[1] && split_array[1] != "") {
-      let request_data = JSON.parse(split_array[1]);
-
-      // Stop the function if the data cannot be parse
-      if (!request_data) {
-        // Show the mainwindow when calling from deep link
-        mainWindow.show();
-        return;
-      }
-
-      if (request_data.action == "SIGN") {
-        grpcServer.returnSignRequest(request_data);
-      }
-    }
+    handleDeepLinkURL(req.url);
   });
 
   //hide default menu of browser
@@ -124,8 +119,44 @@ const createWindow = () => {
   exports.mainWindow = mainWindow;
 }
 
+function handleDeepLinkURL(url) {
+  let split_array = url.split("://");
+
+  // Handle case we have an empty string after splitting
+  if (split_array[1] && split_array[1] != "") {
+    let request_data = null;
+    try {
+      request_data = JSON.parse(split_array[1]);
+    } catch(e) {
+      console.log(e);
+      return;
+    }
+
+    // Stop the function if the data cannot be parse
+    if (!request_data) {
+      // Show the mainwindow when calling from deep link
+      mainWindow.show();
+      return;
+    }
+
+    if (request_data.action == "SIGN") {
+      grpcServer.returnSignRequest(request_data);
+    } else if (request_data.start == "minimized")  {
+      mainWindow.minimize();
+    }
+  }
+};
+
 app.on('ready', () => {
   createWindow();
+  if (process.argv.length > 1) {
+    for (var index = 1; index < process.argv.length; ++index) {
+      if (process.argv[index].startsWith(PROTOCOL_PREFIX + "://")) {
+        handleDeepLinkURL(process.argv[index]);
+        break;
+      }
+    }
+  }
 });
 
 // Quit when all windows are closed.
@@ -153,7 +184,7 @@ app.on('open-url', function (event, url) {
   event.preventDefault();
   //dialog.showErrorBox('Welcome Back', `You arrived from: ${url}`);
   deeplinkingUrl = url;
-  //console.log("in open-url handler........");
+  // console.log("in open-url handler........");
 })
 
 
@@ -243,7 +274,6 @@ function showErrorDialog() {
 exports.sendMessageToRender = (param) => {
   console.log("send-message-to-render: " + param);
 };
-
 
 exports.handleMainRequest = (param) => {
   if (param.action == "SIGN") {
