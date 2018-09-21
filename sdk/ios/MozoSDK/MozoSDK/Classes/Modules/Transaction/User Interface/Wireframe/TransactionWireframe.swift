@@ -10,6 +10,7 @@ import UIKit
 
 class TransactionWireframe: MozoWireframe {
     var txPresenter : TransactionPresenter?
+    var walletWireframe: WalletWireframe?
     var transferViewController : TransferViewController?
     var scannerViewController: ScannerViewController?
     
@@ -19,7 +20,12 @@ class TransactionWireframe: MozoWireframe {
         transferViewController = viewController
         
         txPresenter?.transferUserInterface = viewController
-        rootWireframe?.replaceTopViewController(viewController)
+        rootWireframe?.displayViewController(viewController)
+    }
+    
+    func presentPINInterface() {
+        walletWireframe?.walletPresenter?.pinModuleDelegate = txPresenter
+        walletWireframe?.presentPINInterface(passPharse: nil)
     }
     
     func presentScannerQRCodeInterface() {

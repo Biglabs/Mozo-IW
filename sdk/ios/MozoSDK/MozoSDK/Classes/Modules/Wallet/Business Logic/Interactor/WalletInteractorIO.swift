@@ -24,7 +24,7 @@ protocol WalletInteractorOutput {
     func finishedCheckLocal(result: Bool)
     func finishedCheckServer(result: Bool)
     
-    func verifiedPIN(result: Bool)
+    func verifiedPIN(_ pin: String, result: Bool, needManagedWallet: Bool)
     
     func generatedMnemonics(mnemonic: String)
     

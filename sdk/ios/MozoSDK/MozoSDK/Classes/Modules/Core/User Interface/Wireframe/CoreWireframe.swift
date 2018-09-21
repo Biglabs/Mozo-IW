@@ -44,4 +44,8 @@ class CoreWireframe : MozoWireframe {
     func prepareForWalletInterface() {
         walletWireframe?.presentInitialWalletInterface()
     }
+    
+    func presentPINInterface() {
+        walletWireframe?.presentPINInterface(passPharse: nil)
+    }
 }

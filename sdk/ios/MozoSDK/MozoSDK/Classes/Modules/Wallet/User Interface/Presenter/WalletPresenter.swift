@@ -15,6 +15,7 @@ class WalletPresenter : NSObject {
     var pinUserInterface : PINViewInterface?
     var passPharseUserInterface : PassPhraseViewInterface?
     var walletModuleDelegate : WalletModuleDelegate?
+    var pinModuleDelegate: PinModuleDelegate?
     
     func handleEndingWalletFlow() {
         walletModuleDelegate?.walletModuleDidFinish()
@@ -72,11 +73,15 @@ extension WalletPresenter: WalletInteractorOutput {
         }
     }
     
-    func verifiedPIN(result: Bool) {
+    func verifiedPIN(_ pin: String, result: Bool, needManagedWallet: Bool) {
         if result {
-            // Input PIN is correct
-            pinUserInterface?.showCreatingInterface()
-            // -> Manage wallet
+            if needManagedWallet {
+                pinUserInterface?.showCreatingInterface()
+            } else {
+                walletWireframe?.dismissWalletInterface()
+                // Delegate 
+                pinModuleDelegate?.verifiedPINSuccess(pin)
+            }
         } else {
             // Input PIN is NOT correct
             pinUserInterface?.showVerificationFailed()

@@ -10,3 +10,8 @@ import Foundation
 protocol WalletModuleDelegate {
     func walletModuleDidFinish()
 }
+
+protocol PinModuleDelegate {
+    func verifiedPINSuccess(_ pin: String)
+}
+

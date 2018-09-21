@@ -129,6 +129,7 @@ private extension PINViewController {
             if self.passPhrase != nil {
                 eventHandler?.enterPIN(pin: input)
             } else {
+                // TODO: Should handle freeze UI here
                 eventHandler?.verifyPIN(pin: input)
             }
         } else {
@@ -142,9 +143,9 @@ private extension PINViewController {
         statusLabel.isHidden = false
         confirmImg.isHighlighted = true
         if !isConfirm {
-            statusLabel.text = "You entered an correct PIN"
+            statusLabel.text = "You entered a correct PIN"
         } else {
-            statusLabel.text = "Create Security PIN successful"
+            statusLabel.text = "Create Security PIN successfully"
         }
         statusLabel.textColor = ThemeManager.shared.success
     }

@@ -75,10 +75,12 @@ extension WalletInteractor : WalletInteractorInput {
             // Get ManagedUser from User.id
             _ = dataManager.getUserById(userObj.id!).done { (user) in
                 var compareResult = false
+                var needManageWallet = false
                 if user.pin?.isEmpty == false {
                     // Compare PIN
                     compareResult = pin.toSHA512() == user.pin
                 } else {
+                    needManageWallet = true
                     // Incase: restore wallet from server mnemonics
                     let mnemonic = userObj.profile?.walletInfo?.encryptSeedPhrase?.decrypt(key: pin)
                     // TODO: Handle mnemonic nil here
@@ -90,7 +92,7 @@ extension WalletInteractor : WalletInteractorInput {
                         compareResult = true
                     }
                 }
-                self.output?.verifiedPIN(result: compareResult)
+                self.output?.verifiedPIN(pin, result: compareResult, needManagedWallet: needManageWallet)
             }
         }
     }
@@ -118,7 +120,7 @@ extension WalletInteractor : WalletInteractorInput {
     
     func verifyConfirmPIN(pin: String, confirmPin: String) {
         let compareResult = (pin == confirmPin)
-        self.output?.verifiedPIN(result: compareResult)
+        self.output?.verifiedPIN(pin, result: compareResult, needManagedWallet: true)
     }
     
     func generateMnemonics(){

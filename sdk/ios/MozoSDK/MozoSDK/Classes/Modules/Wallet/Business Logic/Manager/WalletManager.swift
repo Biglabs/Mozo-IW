@@ -12,9 +12,9 @@ import web3swift
 class WalletManager : NSObject {
     
     func generateMnemonics() -> String? {
-//        let mnemonics = try! BIP39.generateMnemonics(bitsOfEntropy: 128)
+        let mnemonics = try! BIP39.generateMnemonics(bitsOfEntropy: 128)
+        return mnemonics
 //        printTest()
-        return "test pizza drift whip rebel empower flame mother service grace sweet kangaroo"
     }
     
     func createNewWallet(mnemonics: String) -> WalletModel {
