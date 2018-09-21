@@ -70,7 +70,7 @@ exports.getTokenFromAuthCode = function(auth_code, redirect_uri) {
   return new Promise(function(resolve, reject) {
     oauth2.authorizationCode.getToken(token_config).then(function(result) {
       access_token = oauth2.accessToken.create(result);
-      userReference.set(constants.OAUTH2TOKEN_KEY, result);
+      userReference.set(constants.OAUTH2TOKEN_KEY, access_token.token);
       resolve(access_token);
     }, function(err) {
       console.log(err);
