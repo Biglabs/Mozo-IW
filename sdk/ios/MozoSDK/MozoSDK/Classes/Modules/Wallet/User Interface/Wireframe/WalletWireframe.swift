@@ -24,7 +24,7 @@ class WalletWireframe: MozoWireframe {
         viewController.passPhrase = passPharse
         pinViewController = viewController
         walletPresenter?.pinUserInterface = viewController
-        rootWireframe?.replaceTopViewController(viewController)
+        rootWireframe?.displayViewController(viewController)
     }
     
     func presentPassPhraseInterface() {
@@ -32,7 +32,7 @@ class WalletWireframe: MozoWireframe {
         viewController.eventHandler = walletPresenter
         passPhraseViewController = viewController
         walletPresenter?.passPharseUserInterface = viewController
-        rootWireframe?.replaceTopViewController(viewController)
+        rootWireframe?.displayViewController(viewController)
     }
     
     func dismissWalletInterface() {
