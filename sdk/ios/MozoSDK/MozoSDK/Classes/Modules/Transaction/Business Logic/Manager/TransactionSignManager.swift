@@ -43,11 +43,11 @@ public class TransactionSignManager {
      - Returns: Signed message, that can be verified at https://www.myetherwallet.com/signmsg.html
      or **nil** if something goes wrong
      */
-//    func signMessage(_ message: Data, address: String, privateKey: Data) -> String? {
-//        guard let hashData = Web3.Utils.hashPersonalMessage(message) else { return nil }
-//        
-//        guard let signedData = SECP256K1.signForRecovery(hash: hashData, privateKey: privateKey, useExtraEntropy: false).serializedSignature else { return nil }
-//        let signedMessage = signedData.toHexString().addHexPrefix()
-//        return signedMessage
-//    }
+    func signMessage(_ message: Data, address: String, privateKey: Data) -> String? {
+        guard let hashData = Web3.Utils.hashPersonalMessage(message) else { return nil }
+        
+        guard let signedData = SECP256K1.signForRecovery(hash: hashData, privateKey: privateKey, useExtraEntropy: false).serializedSignature else { return nil }
+        let signedMessage = signedData.toHexString().addHexPrefix()
+        return signedMessage
+    }
 }
