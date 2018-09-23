@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/Biglabs/Mozo-IW.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
+  s.swift_version = '4.1'
   s.ios.deployment_target = '10.0'
 
   s.source_files  = "MozoSDK/Classes/**/*.{swift}"
@@ -47,7 +48,9 @@ Pod::Spec.new do |s|
 
    s.dependency 'SwiftyJSON', '~> 3.1.4'
   # s.dependency 'EstimoteSDK'
-  s.dependency 'web3swift', '~> 0.8.1'
+  s.dependency 'web3swift', '~> 1.1.1'
+  s.dependency 'secp256k1_ios', '~> 0.1'
+  s.dependency 'BigInt', '~> 3.1'
   s.dependency 'RNCryptor', '~> 5.0.3'
   s.dependency 'PromiseKit/Alamofire', '~> 6.0'
   s.dependency 'CoreStore', '~> 5.0'
