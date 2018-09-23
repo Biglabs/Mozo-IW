@@ -236,7 +236,7 @@ function sendSignRequest(signed_req, callback) {
       console.log(body);
       response_data = {
         status: "SUCCESS",
-        tx_info: body
+        data: body
       };
     } else {
       console.log(error);

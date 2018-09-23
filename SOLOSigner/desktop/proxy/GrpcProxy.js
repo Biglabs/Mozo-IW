@@ -114,7 +114,7 @@ app.get('/getWalletAddress', (req, res, next) => {
   }
   response_data = {
     status: "SUCCESS",
-    wallet_addreses: wallet_arr,
+    data: wallet_arr,
     error: null
   };
   res.send({ result : response_data });
@@ -136,7 +136,7 @@ app.get('/getWalletBalance', (req, res, next) => {
     if (balance_info) {
       response_data = {
         status: "SUCCESS",
-        balance_info: balance_info,
+        data: balance_info,
         error: null
       };
     }
