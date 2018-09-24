@@ -29,7 +29,8 @@ extension SECP256K1Service {
         let result = hash.withUnsafeBytes { (hashPointer:UnsafePointer<UInt8>) -> Int32 in
             privateKey.withUnsafeBytes { (privateKeyPointer:UnsafePointer<UInt8>) -> Int32 in
                 withUnsafeMutablePointer(to: &signature, { (recSignaturePtr: UnsafeMutablePointer<secp256k1_ecdsa_signature>) -> Int32 in
-                    let res = secp256k1_ecdsa_sign(context!, recSignaturePtr, hashPointer, privateKeyPointer, nil, nil)
+                    
+                    let res = secp256k1_ecdsa_sign(context!, recSignaturePtr, hashPointer, privateKeyPointer, secp256k1_nonce_function_rfc6979, nil)
                     return res
                 })
             }
@@ -38,12 +39,22 @@ extension SECP256K1Service {
             print("Failed to sign!")
             return nil
         }
+        
         return signature
     }
     
+    /// Unmarshals a 65 byte recoverable EC signature into internal structure.
+    static func unmarshalSignature(signatureData:Data) -> SECP256K1Service.UnmarshaledSignature? {
+        if (signatureData.count != 65) {return nil}
+        let bytes = signatureData.bytes
+        let r = Array(bytes[0..<32])
+        let s = Array(bytes[32..<64])
+        return SECP256K1Service.UnmarshaledSignature(v: bytes[27], r: r, s: s)
+    }
+    
     static func serializeDerFormat(signature: inout secp256k1_ecdsa_signature) -> Data? {
-        var sig = [UInt8](repeating: 0, count:74)
-        var siglen: Int = 74
+        var sig = [UInt8](repeating: 0, count:71)
+        var siglen: Int = sig.count
         _ = secp256k1_ecdsa_signature_serialize_der(context!, &sig, &siglen, &signature)
         
         return Data(sig)
@@ -66,13 +77,15 @@ extension String {
      or **nil** if something goes wrong
      */
     func ethSign(privateKey: String) -> String? {
-        let buffer = privateKey.data(using: .utf8)
-        let tosign = self.data(using: .utf8)
-//            .replace("0x", withString: "")
-        // EC sign
-        var signature = SECP256K1Service.sign(hash: tosign!, privateKey: buffer!)
+        let buffer = Data(hex: privateKey)
+        let tosign = self.replace("0x", withString: "").data(using: .utf8)
         
-//        let marshall = Data(signature)
+        let data = Data(hex: self)
+        
+        // EC sign
+        var signature = SECP256K1Service.sign(hash: data, privateKey: buffer)
+        
+//        let marshall = SECP256K1Service.unmarshalSignature(signatureData: Data(signature?.data))
         
         // Serialize with DER format
         let signatureData = SECP256K1Service.serializeDerFormat(signature: &signature!)
@@ -81,6 +94,8 @@ extension String {
         
         return signedMessage
     }
+    
+    
     
     func addHexPrefix() -> String {
         if !self.hasPrefix("0x") {

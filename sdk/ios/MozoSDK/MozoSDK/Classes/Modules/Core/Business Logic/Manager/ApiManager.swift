@@ -160,7 +160,7 @@ public class ApiManager {
             request.allHTTPHeaderFields = headers
             request.httpBody = param.data(using: String.Encoding.utf8)
 
-            self.client.request(request as URLRequestConvertible)
+            self.client.request(request)
                 .validate()
                 .responseJSON { response in
                     switch response.result {

@@ -23,31 +23,19 @@ public class TransactionSignManager {
                     if !wallet.privateKey.isEmpty {
                         let decryptedPrivateKey = wallet.privateKey.decrypt(key: pin)
                         let buffer = decryptedPrivateKey.data(using: .utf8)
-                        let tosign = interTx.tosign?.first?.replace("0x", withString: "").data(using: .utf8)
+                        let tosign = interTx.tosign?.first?.replace("0x", withString: "")
                         
                         let publicData = Web3Utils.privateToPublic(buffer!)
                         
+                        let signature = tosign?.ethSign(privateKey: decryptedPrivateKey)
+                        
+                        interTx.signatures![0] = signature!
+                        interTx.pubkeys![0] = (publicData?.toHexString())!
+                        
+                        seal.fulfill(interTx)
                     }
                 })
             }
         }
-    }
-    
-    /**
-     Signing message by using private key
-     
-     - Parameter message: Message that should be signed
-     - Parameter address: Public address
-     - Parameter privateKey: Address's private key
-     
-     - Returns: Signed message, that can be verified at https://www.myetherwallet.com/signmsg.html
-     or **nil** if something goes wrong
-     */
-    func signMessage(_ message: Data, address: String, privateKey: Data) -> String? {
-        guard let hashData = Web3.Utils.hashPersonalMessage(message) else { return nil }
-        
-        guard let signedData = SECP256K1.signForRecovery(hash: hashData, privateKey: privateKey, useExtraEntropy: false).serializedSignature else { return nil }
-        let signedMessage = signedData.toHexString().addHexPrefix()
-        return signedMessage
     }
 }

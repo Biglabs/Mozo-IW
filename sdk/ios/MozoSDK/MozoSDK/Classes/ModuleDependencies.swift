@@ -138,11 +138,18 @@ class ModuleDependencies {
     
     func testSign() {
         let tosign = "3e7c8671c98af65e4f957d0843a15ce0616a0624cc5fbc3e6f72b7871f118ac1"
-        let privatekey = "0xb7643ad0c07b2f2a1232fc4d276c5554e05fa1c8fddb2aed738c7ae0526f5350"
+        let privatekey = "b7643ad0c07b2f2a1232fc4d276c5554e05fa1c8fddb2aed738c7ae0526f5350"
         let result = "30440220742c8b23491f5560804bcb884cf1866a14598562819afe5fadd8c56a50c26fe5022030d2a9fe32c7f99a4f4adeb62442a360cdc2178f49f7f2907325c470a1d14d59"
         
         let signR : String? = tosign.ethSign(privateKey: privatekey)
         print("Sign result: \(signR)")
+        
+        let ts = "52204d20fd0131ae1afd173fd80a3a746d2dcc0cddced8c9dc3d61cc7ab6e966"
+        let pk = "16f243e962c59e71e54189e67e66cf2440a1334514c09c00ddcc21632bac9808"
+        let rs = "304402204019e4c591580b2a626beef77f92f21fb30e9c201c6a01ed6e7e6dcbf788ff56022074ae76e4f47a3c23dbaa930994a4f98c2cc1e03cb39c73fd8a246c16e2f3d1a8"
+        
+        let sr : String? = ts.ethSign(privateKey: pk)
+        print("Sign result: \(sr)")
     }
     
     func testUpdateProfile() {
