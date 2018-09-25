@@ -35,6 +35,11 @@ class TxDetailViewController: MozoBasicViewController {
         }
         lbTxType.text = action
         
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "MMM dd, yyyy - HH:mm a"
+        let date = Date()
+        lbDateTime.text = dateFormatterPrint.string(from: date)
+        
         let amount = transaction?.tx?.outputs![0].value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0)
         
         let reBalance = (tokenInfo?.balance?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0))! - amount!
