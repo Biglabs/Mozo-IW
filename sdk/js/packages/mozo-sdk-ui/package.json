@@ -1,6 +1,6 @@
 {
   "name": "mozo-sdk-ui",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Mozo wallet component",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
