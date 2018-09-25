@@ -5,6 +5,7 @@
  */
 
 const grpc = require('grpc');
+const R = require('ramda');
 
 const main = require('../main');
 var grpcLoader = require("../grpcserver/GrpcLoader");
@@ -82,7 +83,7 @@ app.get('/getWalletAddress', (req, res, next) => {
   let response_data = {
     status: "ERROR",
     error: ERRORS.NO_WALLET
-  }
+  };
 
   if (!wallet) {
     res.send({ result : response_data });
@@ -101,17 +102,14 @@ app.get('/getWalletAddress', (req, res, next) => {
     addr_network = addr_network.map(x => x.toUpperCase());
   }
 
-  wallet_arr = [];
-
-  for (var index = 0; index < wallet.length; ++index) {
-    let wallet_obj = wallet[index];
-    if (get_all_addresses || addr_network.includes(wallet_obj.network)) {
-      wallet_arr.push({
-        network: wallet_obj.network,
-        address: wallet_obj.address
-      });
+  let wallet_arr = R.map(x => {
+    return {
+      network: x.network,
+      address: x.address,
     }
-  }
+  }, R.filter(x => addr_network.includes(x.network), wallet));
+
+  console.log(JSON.stringify(wallet_arr));
   response_data = {
     status: "SUCCESS",
     data: wallet_arr,
@@ -137,6 +135,32 @@ app.get('/getWalletBalance', (req, res, next) => {
       response_data = {
         status: "SUCCESS",
         data: balance_info,
+        error: null
+      };
+    }
+    res.send({ result : response_data });
+  }, function(err) {
+    res.send({ result : response_data });
+  });
+});
+
+app.get('/getTxHistory', (req, res, next) => {
+  let response_data = {
+    status: "ERROR",
+    error: ERRORS.NO_WALLET
+  };
+
+  let addr_network = req.query.network;
+  if (!addr_network) {
+    response_data.error = ERRORS.NO_WALLET_NETWORK;
+    res.send({ result : response_data });
+    return;
+  }
+  let balance_info = services.getTransactionHistory(addr_network).then(function(txhistory) {
+    if (txhistory) {
+      response_data = {
+        status: "SUCCESS",
+        data: txhistory,
         error: null
       };
     }
