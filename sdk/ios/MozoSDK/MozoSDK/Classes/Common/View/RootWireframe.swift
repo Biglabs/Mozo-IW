@@ -30,7 +30,10 @@ class RootWireframe : NSObject {
     }
     
     func displayViewController(_ viewController: UIViewController) {
-        mozoNavigationController.pushViewController(viewController, animated: false)
+        // Need to call override function to push view controller
+        var viewControllers : [UIViewController] = mozoNavigationController.viewControllers
+        viewControllers.append(viewController)
+        mozoNavigationController.setViewControllers(viewControllers, animated: false)
     }
     
     func presentViewController(_ viewController: UIViewController) {
