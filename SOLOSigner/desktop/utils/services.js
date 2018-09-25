@@ -258,6 +258,7 @@ function sendSignRequest(signed_req, callback) {
       signHttpCallback.send(response_data);
       signHttpCallback = null;
       if (previous_state && previous_state == "minimized") {
+        previous_state = null;
         main.mainWindow.minimize();
       }
     }
@@ -288,6 +289,7 @@ function sendSignRequest(signed_req, callback) {
     isFinishedConfirmationInput = true;
     signHttpCallback = null;
     if (previous_state && previous_state == "minimized") {
+      previous_state = null;
       main.mainWindow.minimize();
     }
   });
