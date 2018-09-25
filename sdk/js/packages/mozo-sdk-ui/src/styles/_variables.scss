@@ -1,0 +1,21 @@
+$enable-rounded: true;
+
+$background: #5a9cf5;
+$hover-background: #006dff;
+$active-background: #0c56ba;
+$disabled-background: #f2f2f2;
+
+$border: $background;
+$hover-border: $hover-background;
+$active-border: $active-background;
+$disabled-border: $disabled-background;
+
+$font-size: 14px;
+$line-height: 18px;
+$border-radius: 5px;
+
+$padding-x: 15px;
+$padding-y: 10px;
+
+$input-border: #d1d7dd;
+$input-active-border: $background;

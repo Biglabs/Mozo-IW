@@ -1,3 +1,6 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
 mozo-modal {
     display: none;
     position: fixed;
@@ -10,7 +13,7 @@ mozo-modal {
 
     > div {
     
-    text-align: center;
+    text-align: left;
     font-family: Arial, Helvetica, sans-serif;
     box-shadow: 0 5px 22px 0 rgba(0, 0, 0, 0.2);
     background-color: white;
@@ -19,13 +22,20 @@ mozo-modal {
     width: 350px;
     left: calc(50% - 175px);
     z-index: 100001;
-    padding: 15px;
+    padding: 20px;
     opacity: 0;
     animation-name: AMbounceIn;
     animation-duration: 350ms;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
     will-change: transform;
+    @include border-radius($border-radius);
+
+    .btn-close {
+      position: absolute;
+      right: 8px;
+      top: 10px;
+    }
 
     & .am-icon-box {
       width: 80px;
@@ -67,14 +77,14 @@ mozo-modal {
       left: 17px;
     }
 
-    & button {
-      background-color: transparent;
-      border: none;
-      outline: none;
-      font: inherit;
-      cursor: pointer;
-      color: purple;
-    }
+    // & button {
+    //   background-color: transparent;
+    //   border: none;
+    //   outline: none;
+    //   font: inherit;
+    //   cursor: pointer;
+    //   color: purple;
+    // }
 
   }
 }

@@ -29,6 +29,40 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface MozoMessageTransferSuccess {
+      'hash': string;
+      'transferMozo': (e: any) => Promise<void>;
+    }
+  }
+
+  interface HTMLMozoMessageTransferSuccessElement extends StencilComponents.MozoMessageTransferSuccess, HTMLStencilElement {}
+
+  var HTMLMozoMessageTransferSuccessElement: {
+    prototype: HTMLMozoMessageTransferSuccessElement;
+    new (): HTMLMozoMessageTransferSuccessElement;
+  };
+  interface HTMLElementTagNameMap {
+    'mozo-message-transfer-success': HTMLMozoMessageTransferSuccessElement;
+  }
+  interface ElementTagNameMap {
+    'mozo-message-transfer-success': HTMLMozoMessageTransferSuccessElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'mozo-message-transfer-success': JSXElements.MozoMessageTransferSuccessAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface MozoMessageTransferSuccessAttributes extends HTMLAttributes {
+      'hash'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface MozoModal {
       'closeModal': () => void;
       'content': HTMLElement;
@@ -68,9 +102,9 @@ declare global {
 
   namespace StencilComponents {
     interface MozoTransferForm {
+      'amount': number;
       'toAddress': string;
       'transferMozo': (e: any) => Promise<void>;
-      'value': number;
     }
   }
 
@@ -93,8 +127,8 @@ declare global {
   }
   namespace JSXElements {
     export interface MozoTransferFormAttributes extends HTMLAttributes {
+      'amount'?: number;
       'toAddress'?: string;
-      'value'?: number;
     }
   }
 }
@@ -104,6 +138,7 @@ declare global {
 
   namespace StencilComponents {
     interface MozoTransfer {
+      'amount': number;
       'toAddress': string;
       'transferMozo': (e: any) => Promise<void>;
       'value': string;
@@ -129,6 +164,7 @@ declare global {
   }
   namespace JSXElements {
     export interface MozoTransferAttributes extends HTMLAttributes {
+      'amount'?: number;
       'toAddress'?: string;
       'value'?: string;
     }

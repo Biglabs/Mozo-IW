@@ -7,6 +7,7 @@ export const config: Config = {
     { components: ['my-component'] },
     { components: ['mozo-transfer'] }
   ],
+  globalStyle: 'src/styles/app.scss',
   plugins: [
     sass()
   ],

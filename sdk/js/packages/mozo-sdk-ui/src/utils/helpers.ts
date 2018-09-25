@@ -1,7 +1,7 @@
 //import { Element } from '@stencil/core';
 import protocolCheck from 'custom-protocol-detection'
 import { Services } from "../services"
-const uri = 'solosigner://'
+const uri = 'solosigner:'
 
 async function _checkModalAvailable() {
   const body = document.querySelector('body');
@@ -49,15 +49,15 @@ async function AccessWalletFail() {
     await mozoModal.componentOnReady()
     let modalContent = await mozoModal.querySelector('modal-content');
     modalContent.innerHTML = `
-      <div>
-        <h5>Please access to Mozo Wallet</h5>
-        <button>Access to MOZO Wallet</button>
+      <div class="mozo-form">
+        <h3>Please access to Mozo Wallet</h3>
+        <button class="mozo-btn" id="accessMOZOWallet">Access to MOZO Wallet</button>
         <p>If you have not installed the Mozo wallet yet. Please click here to download the installation file.</p>
       </div>
       `;
 
     // listen for close event
-    const button = mozoModal.querySelector('button');
+    const button = mozoModal.querySelector('#accessMOZOWallet');
     button.addEventListener('click', () => {
       _openWallet(() => {
         mozoModal.closeModal()
@@ -92,7 +92,7 @@ async function InstallWalletMessage() {
   }
 }
 
-async function ShowTransactionForm(toAddress: string) {
+async function ShowTransactionForm(data: any) {
 
   let mozoModal = await _checkModalAvailable();
 
@@ -102,8 +102,31 @@ async function ShowTransactionForm(toAddress: string) {
 
 
     modalContent.innerHTML = `
-      <mozo-transfer-form to-address=${toAddress}>
+      <mozo-transfer-form amount=${data.amount || 0} to-address=${data.toAddress || ""}>
       </mozo-transfer-form>
+      `;
+
+    // listen for close event
+    // const button = mozoModal.querySelector('button');
+    // button.addEventListener('click', () => {
+    //   mozoModal.closeModal();
+    // });
+    await mozoModal.componentOnReady()
+    mozoModal.openModal()
+  }
+}
+
+async function ShowTransferSuccess(hash: string) {
+  let mozoModal = await _checkModalAvailable();
+
+  if (mozoModal) {
+    await mozoModal.componentOnReady()
+    let modalContent = mozoModal.querySelector('modal-content');
+
+
+    modalContent.innerHTML = `
+      <mozo-message-transfer-success hash=${hash}>
+      </mozo-message-transfer-success>
       `;
 
     // listen for close event
@@ -124,5 +147,6 @@ export const ShowMessage = {
   closeModal: CloseModal,
   accessWalletFail: AccessWalletFail,
   showTransactionForm: ShowTransactionForm,
-  showTransactionWallet: ShowTransactionWallet
+  showTransactionWallet: ShowTransactionWallet,
+  showTransferSuccess: ShowTransferSuccess
 }

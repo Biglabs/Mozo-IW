@@ -19,7 +19,7 @@ async function _sendRequest(url, method, data = null) {
   await fetch(request, options)
     .then(async function (response) {
       await response.json().then(function(data) {
-        result = data
+        result = data.result
       });
     })
     .catch(function (err) {
@@ -40,8 +40,3 @@ export async function get(url, data = null) {
   return await _sendRequest(url, "GET", data)
 
 }
-
-// export const Requests = {
-//   post: post,
-//   get: get
-// }

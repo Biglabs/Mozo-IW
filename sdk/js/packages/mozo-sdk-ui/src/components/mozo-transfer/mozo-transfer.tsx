@@ -9,13 +9,13 @@ import {Services} from "../../services"
 
 @Component({
   tag: 'mozo-transfer',
-  styleUrl: 'mozo-transfer.css',
-  shadow: true
+  styleUrl: 'mozo-transfer.css'
 })
 export class MozoTransfer {
 
   @Prop() value: string = "MOZO Payment";
-  @Prop() toAddress: string = "0x000000000";
+  @Prop() toAddress: string = "";
+  @Prop() amount: number = 0;
 
   @Element() el!: HTMLElement;
 
@@ -36,9 +36,8 @@ export class MozoTransfer {
     let result = await Services.checkWallet()
     console.log(result)
     if(result) {
-      result = result.result
       if(result.status == "SUCCESS") {
-        await ShowMessage.showTransactionForm(this.toAddress)
+        await ShowMessage.showTransactionForm({toAddress: this.toAddress, amount: this.amount})
       } else {
         await ShowMessage.accessWalletFail()
       }
@@ -85,7 +84,7 @@ export class MozoTransfer {
   render() {
     return (
       <div>
-        <input type="button" value={this.value} onClick={(e) =>  this.transferMozo(e)} />
+        <input class="mozo-btn" type="button" value={this.value} onClick={(e) =>  this.transferMozo(e)} />
       </div>
 
     );

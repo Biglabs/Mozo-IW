@@ -1,0 +1,79 @@
+@mixin create-button($background, $border, $hover-background: darken($background, 7.5%), $hover-border: darken($border, 10%), $active-background: darken($background, 10%), $active-border: darken($border, 12.5%)) {
+  color: color-yiq($background);
+  background-color: $background;
+  border-color: $border;
+
+  padding: $padding-y $padding-x;
+  font-size: $font-size;
+  line-height: $line-height;
+  border-width: 0;
+  cursor: pointer;
+  outline: 0;
+
+  @if $enable-rounded {
+    @include border-radius($border-radius);
+  } @else {
+    @include border-radius(0);
+  }
+
+  &:hover {
+    color: color-yiq($hover-background);
+    background-color: $hover-background;
+    border-color: $hover-border;
+  }
+
+  &:not(:disabled):not(.disabled):active,
+  &:not(:disabled):not(.disabled).active {
+    color: color-yiq($active-background);
+    background-color: $active-background;
+    border-color: $active-border;
+
+    @include box-shadow(inset 0 2px 3px rgba(#000, .2));
+  }
+}
+
+
+.mozo-btn {
+    @include create-button($background, $border, $hover-background, $hover-border, $active-background, $active-border)
+}
+
+
+.mozo-btn {
+    &.disabled,
+    &:disabled {
+      color: color-yiq($disabled-background);
+      background-color: $disabled-background;
+      border-color: $disabled-border;
+      cursor: not-allowed;
+    }
+    
+    &.w-md {
+      min-width: 100px;
+    }
+
+    &.w-lg {
+      min-width: 120px;
+    }
+
+    &.w-x-lg {
+      min-width: 150px;
+    }
+
+    &.w-xx-lg {
+      min-width: 150px;
+    }
+}
+
+.mozo-btn + .mozo-btn {
+    margin-left: 5px;
+}
+
+.btn-close{
+  background: none;
+  border: none;
+  padding: 3px;
+  outline: 0;
+  cursor: pointer;
+}
+
+
