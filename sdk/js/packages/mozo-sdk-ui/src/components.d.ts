@@ -29,6 +29,72 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface MozoMessagesAccessWallet {
+      'call': () => void;
+    }
+  }
+
+  interface HTMLMozoMessagesAccessWalletElement extends StencilComponents.MozoMessagesAccessWallet, HTMLStencilElement {}
+
+  var HTMLMozoMessagesAccessWalletElement: {
+    prototype: HTMLMozoMessagesAccessWalletElement;
+    new (): HTMLMozoMessagesAccessWalletElement;
+  };
+  interface HTMLElementTagNameMap {
+    'mozo-messages-access-wallet': HTMLMozoMessagesAccessWalletElement;
+  }
+  interface ElementTagNameMap {
+    'mozo-messages-access-wallet': HTMLMozoMessagesAccessWalletElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'mozo-messages-access-wallet': JSXElements.MozoMessagesAccessWalletAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface MozoMessagesAccessWalletAttributes extends HTMLAttributes {
+      'call'?: () => void;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface MozoMessageTransferFail {
+      'transferMozo': (e: any) => Promise<void>;
+    }
+  }
+
+  interface HTMLMozoMessageTransferFailElement extends StencilComponents.MozoMessageTransferFail, HTMLStencilElement {}
+
+  var HTMLMozoMessageTransferFailElement: {
+    prototype: HTMLMozoMessageTransferFailElement;
+    new (): HTMLMozoMessageTransferFailElement;
+  };
+  interface HTMLElementTagNameMap {
+    'mozo-message-transfer-fail': HTMLMozoMessageTransferFailElement;
+  }
+  interface ElementTagNameMap {
+    'mozo-message-transfer-fail': HTMLMozoMessageTransferFailElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'mozo-message-transfer-fail': JSXElements.MozoMessageTransferFailAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface MozoMessageTransferFailAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface MozoMessageTransferSuccess {
       'hash': string;
       'transferMozo': (e: any) => Promise<void>;
