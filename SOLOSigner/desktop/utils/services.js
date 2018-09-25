@@ -2,6 +2,7 @@
 const userReference = require('electron-settings');
 var request = require('request');
 
+const main = require('../main');
 const oauth2 = require('./oauth2');
 const ERRORS = require("../constants").ERRORS;
 
@@ -115,6 +116,30 @@ exports.updateWalletInfo = function() {
 
 };
 
+function getTokenInfo() {
+  let options = setRequestData();
+  if (!options) {
+    return;
+  }
+
+  options.url = mozo_service_host +
+    "/api/solo/contract/solo-token";
+
+  return new Promise(function(resolve, reject) {
+    request(options, function(error, response, body) {
+      console.log(body);
+      console.log(response.statusCode);
+      if (!error && response.statusCode == 200) {
+        token_info = JSON.parse(body);
+        resolve(token_info);
+      } else {
+        console.log(error);
+        reject(error);
+      }
+    });
+  });
+};
+
 exports.createTransaction = function(tx_info, res) {
   let tx_req = {
     inputs: [
@@ -122,12 +147,7 @@ exports.createTransaction = function(tx_info, res) {
         addresses: [ tx_info.from ]
       }
     ],
-    outputs: [
-      {
-        addresses: [ tx_info.to ],
-        value: tx_info.value
-      }
-    ]
+    outputs: null
   };
 
   let options = setRequestData();
@@ -136,19 +156,34 @@ exports.createTransaction = function(tx_info, res) {
   options.json = true;
   options.body = tx_req;
 
-  request(options, function(error, response, body) {
-    console.log(body);
-    console.log(response.statusCode);
-    if (!error && response.statusCode == 200) {
-      confirmTransaction(body, res);
-    } else {
-      console.log(error);
-      let response_data = {
-        status: "ERROR",
-        error: ERRORS.INTERNAL_ERROR
-      };
-      res.send({ result : response_data });
+  console.log("Request data: " + JSON.stringify(options));
+  getTokenInfo().then(function(token_info) {
+    if (token_info) {
+      console.log("Real value: " + tx_info.value * Math.pow(10, token_info.decimals));
+      options.body.outputs = [
+        {
+          addresses: [ tx_info.to ],
+          value: tx_info.value * Math.pow(10, token_info.decimals)
+        }
+      ];
+
+      request(options, function(error, response, body) {
+        console.log(response.statusCode);
+        if (!error && response.statusCode == 200) {
+          console.log("Transaction info: " + JSON.stringify(body));
+          confirmTransaction(body, res);
+        } else {
+          console.log(error);
+          let response_data = {
+            status: "ERROR",
+            error: ERRORS.INTERNAL_ERROR
+          };
+          res.send({ result : response_data });
+        }
+      });
     }
+  }, function(err) {
+    console.log(err);
   });
 
 };
@@ -162,6 +197,7 @@ var signHttpCallback = null;
 var timerCountInterval = null;
 var timerCount = 0;
 var isFinishedConfirmationInput = false;
+var previous_state = null;
 
 function confirmTransaction(tx_server_req, res_callback) {
   if (signHttpCallback && timerCount > 0) {
@@ -178,7 +214,10 @@ function confirmTransaction(tx_server_req, res_callback) {
     action: "SIGN",
     params: tx_server_req,
   };
-  const main = require('../main');
+
+  if (main.mainWindow.isMinimized()) {
+    previous_state = "minimized";
+  }
   main.mainWindow.webContents.send('open-confirm-transaction-screen', request_data);
   signHttpCallback = res_callback;
   timerCount = 60; // number of seconds
@@ -218,6 +257,10 @@ function sendSignRequest(signed_req, callback) {
       isFinishedConfirmationInput = true;
       signHttpCallback.send(response_data);
       signHttpCallback = null;
+      if (previous_state && previous_state == "minimized") {
+        previous_state = null;
+        main.mainWindow.minimize();
+      }
     }
     return;
   }
@@ -231,20 +274,24 @@ function sendSignRequest(signed_req, callback) {
 
   request(options, function(error, response, body) {
     console.log(response.statusCode);
-    console.log(body);
     if (!error && response.statusCode == 200) {
-      console.log(body);
+      console.log(JSON.stringify(body));
       response_data = {
         status: "SUCCESS",
         data: body
       };
     } else {
       console.log(error);
+      console.log(body);
       response_data.error = ERRORS.INTERNAL_ERROR;
     }
     signHttpCallback.send({ result : response_data });
     isFinishedConfirmationInput = true;
     signHttpCallback = null;
+    if (previous_state && previous_state == "minimized") {
+      previous_state = null;
+      main.mainWindow.minimize();
+    }
   });
 }
 
@@ -295,4 +342,53 @@ exports.getWalletBalance = function(network) {
       }
     });
   });
-}
+};
+
+exports.getTransactionHistory = function(network) {
+  let wallet_addrs = userReference.get("Address");
+  let response_data = {
+    status: "ERROR",
+    error: ERRORS.NO_WALLET
+  };
+
+  if (!wallet_addrs) {
+    return null;
+  }
+
+  let address = null;
+
+  for (var index = 0; index < wallet_addrs.length; ++index) {
+    let addr = wallet_addrs[index];
+    if (addr.network == network) {
+      address = addr.address;
+      break;
+    }
+  }
+
+  if (!address) {
+    return null;
+  }
+
+  let options = setRequestData();
+  if (!options) {
+    return null;
+  }
+
+  options.url = mozo_service_host +
+    "/api/solo/contract/solo-token/txhistory/" + address;
+
+  return new Promise(function(resolve, reject) {
+    request(options, function(error, response, body) {
+      console.log(body);
+      console.log(response.statusCode);
+      if (!error && response.statusCode == 200) {
+        console.log("Tx History: " + body);
+        txhistory = JSON.parse(body);
+        resolve(txhistory);
+      } else {
+        console.log(error);
+        reject(error);
+      }
+    });
+  });
+};

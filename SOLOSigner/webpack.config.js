@@ -84,8 +84,13 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(true),
+      __DEV__: JSON.stringify(true)
     })
   ],
+  devServer: {
+    //contentBase: [path.resolve(__dirname, 'desktop')],
+    host: '0.0.0.0',
+    port: 8082
+  },
   target: 'electron-renderer',
 }

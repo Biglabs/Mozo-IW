@@ -52,7 +52,11 @@ export default class ConfirmationScreen extends React.Component {
                 }
             });
             if (this.value > 0) {
+              if (props.txData.coinType == Constant.COIN_TYPE.SOLO.name) {
+                this.value /= 100;
+              } else {
                 this.value /= (props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
+              }
             }
 
             this.fees = props.txData.params.tx.fees / (props.txData.coinType == Constant.COIN_TYPE.BTC.name ? Constant.SATOSHI_UNIT : Constant.WEI_UNIT);
