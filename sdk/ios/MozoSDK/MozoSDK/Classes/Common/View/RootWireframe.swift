@@ -15,6 +15,7 @@ let WaitingViewControllerIdentifier = "WaitingViewController"
 let TransferViewControllerIdentifier = "TransferViewController"
 let ConfirmTransferViewControllerIdentifier = "ConfirmTransferViewController"
 let TxCompletionViewControllerIdentifier = "TxCompletionViewController"
+let TxDetailViewControllerIdentifier = "TxDetailViewController"
 
 class RootWireframe : NSObject {
     let mozoNavigationController = MozoNavigationController()

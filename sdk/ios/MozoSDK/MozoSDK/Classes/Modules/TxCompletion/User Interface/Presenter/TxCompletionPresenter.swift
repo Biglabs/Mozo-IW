@@ -16,7 +16,7 @@ extension TxCompletionPresenter : TxCompletionModuleInterface {
         completionModuleDelegate?.requestAddToAddressBook(address)
     }
     
-    func requestShowDetail(_ tx: IntermediaryTransactionDTO) {
-        completionModuleDelegate?.requestShowDetail(tx)
+    func requestShowDetail(_ tx: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
+        completionModuleDelegate?.requestShowDetail(tx, tokenInfo: tokenInfo)
     }
 }

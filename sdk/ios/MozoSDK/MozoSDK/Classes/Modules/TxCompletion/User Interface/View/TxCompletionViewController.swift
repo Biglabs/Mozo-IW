@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import UIKit
 
 class TxCompletionViewController: MozoBasicViewController {
@@ -38,7 +37,10 @@ class TxCompletionViewController: MozoBasicViewController {
     }
     
     @IBAction func btnSaveTapped(_ sender: Any) {
+        
     }
+    
     @IBAction func btnDetailTapped(_ sender: Any) {
+        eventHandler?.requestShowDetail(transaction!, tokenInfo: tokenInfo!)
     }
 }

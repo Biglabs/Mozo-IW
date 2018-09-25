@@ -91,7 +91,7 @@ extension CorePresenter: TxCompletionModuleDelegate {
         
     }
     
-    func requestShowDetail(_ tx: IntermediaryTransactionDTO) {
-        
+    func requestShowDetail(_ tx: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
+        coreWireframe?.presentTransactionDetailInterface(tx, tokenInfo: tokenInfo)
     }
 }
