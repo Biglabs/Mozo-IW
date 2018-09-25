@@ -11,6 +11,7 @@ class CoreWireframe : MozoWireframe {
     var authWireframe: AuthWireframe?
     var walletWireframe: WalletWireframe?
     var txWireframe: TransactionWireframe?
+    var txCompleteWireframe: TxCompletionWireframe?
     var corePresenter: CorePresenter?
     
     func requestForAuthentication() {
@@ -52,5 +53,9 @@ class CoreWireframe : MozoWireframe {
     
     func presentPINInterface() {
         walletWireframe?.presentPINInterface(passPharse: nil)
+    }
+    
+    func presentTransactionCompleteInterface(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
+        txCompleteWireframe?.presentTransactionCompleteInterface(transaction, tokenInfo: tokenInfo)
     }
 }

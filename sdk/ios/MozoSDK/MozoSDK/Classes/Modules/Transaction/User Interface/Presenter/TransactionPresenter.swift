@@ -62,8 +62,8 @@ extension TransactionPresenter : TransactionInteractorOutput {
         transactionModuleDelegate?.requestPINInterfaceForTransaction()
     }
     
-    func didSendTransactionSuccess(_ transaction: IntermediaryTransactionDTO) {
-        transactionModuleDelegate?.didSendTxSuccess(transaction)
+    func didSendTransactionSuccess(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
+        transactionModuleDelegate?.didSendTxSuccess(transaction, tokenInfo: tokenInfo)
     }
 }
 

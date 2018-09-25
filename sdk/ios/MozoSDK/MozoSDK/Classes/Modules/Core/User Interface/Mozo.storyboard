@@ -743,6 +743,128 @@
             </objects>
             <point key="canvasLocation" x="2441" y="-298"/>
         </scene>
+        <!--Tx Completion View Controller-->
+        <scene sceneID="zSl-Em-MyY">
+            <objects>
+                <viewController storyboardIdentifier="TxCompletionViewController" id="sIl-JK-ZNw" customClass="TxCompletionViewController" customModule="MozoSDK" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="40n-O0-ho1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_tx_complete" translatesAutoresizingMaskIntoConstraints="NO" id="t5u-76-0Jb">
+                                <rect key="frame" x="105" y="170" width="165" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="165" id="Adk-VL-uNk"/>
+                                    <constraint firstAttribute="height" constant="100" id="tf8-JC-31x"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send Complete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PcD-jC-ehP">
+                                <rect key="frame" x="115" y="286" width="145" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You sent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8K-Sq-Bw6">
+                                <rect key="frame" x="28" y="322" width="60" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x97309d360C015695cf50892f035E516ccA1898F0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYu-pz-fjF">
+                                <rect key="frame" x="20" y="348" width="335" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{200}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="khh-OQ-ZW7">
+                                <rect key="frame" x="90" y="322" width="42" height="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mozo Offchain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r31-Hu-546">
+                                <rect key="frame" x="134" y="322" width="107" height="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="to address:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gq2-Sb-CNq">
+                                <rect key="frame" x="243" y="322" width="77" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wVU-ca-OfZ">
+                                <rect key="frame" x="20" y="399" width="161" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="g5A-bK-O6J"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="5" maxY="0.0"/>
+                                <state key="normal" title="Save Address" image="ic_user_add">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnSaveTapped:" destination="sIl-JK-ZNw" eventType="touchUpInside" id="uZo-ld-MQj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kas-ba-Yvj">
+                                <rect key="frame" x="194" y="399" width="161" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="KWO-FI-j7j"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="5" maxY="0.0"/>
+                                <state key="normal" title="Transaction detail" image="ic_paper">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                        <color key="value" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="btnDetailTapped:" destination="sIl-JK-ZNw" eventType="touchUpInside" id="wpA-eE-E79"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="jbD-L8-hq5" firstAttribute="trailing" secondItem="kas-ba-Yvj" secondAttribute="trailing" constant="20" id="0N1-Ne-srT"/>
+                            <constraint firstItem="PcD-jC-ehP" firstAttribute="centerX" secondItem="40n-O0-ho1" secondAttribute="centerX" id="8pS-Q7-hqu"/>
+                            <constraint firstItem="r31-Hu-546" firstAttribute="centerX" secondItem="40n-O0-ho1" secondAttribute="centerX" id="D3q-lV-tWw"/>
+                            <constraint firstItem="kas-ba-Yvj" firstAttribute="width" secondItem="BYu-pz-fjF" secondAttribute="width" multiplier="0.48" id="FkA-mx-UZ5"/>
+                            <constraint firstItem="khh-OQ-ZW7" firstAttribute="baseline" secondItem="r31-Hu-546" secondAttribute="baseline" id="Ifb-uW-PnT"/>
+                            <constraint firstItem="Gq2-Sb-CNq" firstAttribute="baseline" secondItem="r31-Hu-546" secondAttribute="baseline" id="Nxu-kB-sj6"/>
+                            <constraint firstItem="BYu-pz-fjF" firstAttribute="leading" secondItem="jbD-L8-hq5" secondAttribute="leading" constant="20" id="QIb-Bb-Blr"/>
+                            <constraint firstAttribute="trailing" secondItem="BYu-pz-fjF" secondAttribute="trailing" constant="20" id="VXO-69-Xan"/>
+                            <constraint firstItem="S8K-Sq-Bw6" firstAttribute="baseline" secondItem="khh-OQ-ZW7" secondAttribute="baseline" id="WkZ-oK-nxd"/>
+                            <constraint firstItem="kas-ba-Yvj" firstAttribute="centerY" secondItem="wVU-ca-OfZ" secondAttribute="centerY" id="Z1G-2d-wQa"/>
+                            <constraint firstItem="r31-Hu-546" firstAttribute="leading" secondItem="khh-OQ-ZW7" secondAttribute="trailing" constant="2" id="ZDz-Vt-90J"/>
+                            <constraint firstItem="Gq2-Sb-CNq" firstAttribute="leading" secondItem="r31-Hu-546" secondAttribute="trailing" constant="2" id="Zfm-Ql-030"/>
+                            <constraint firstItem="wVU-ca-OfZ" firstAttribute="top" secondItem="BYu-pz-fjF" secondAttribute="bottom" constant="15" id="c7g-ED-HoV"/>
+                            <constraint firstItem="BYu-pz-fjF" firstAttribute="top" secondItem="S8K-Sq-Bw6" secondAttribute="bottom" constant="8" id="gLW-h4-bws"/>
+                            <constraint firstItem="wVU-ca-OfZ" firstAttribute="leading" secondItem="jbD-L8-hq5" secondAttribute="leading" constant="20" id="hKp-L9-CMy"/>
+                            <constraint firstItem="t5u-76-0Jb" firstAttribute="top" secondItem="jbD-L8-hq5" secondAttribute="top" constant="150" id="oaP-WL-a6a"/>
+                            <constraint firstItem="t5u-76-0Jb" firstAttribute="centerX" secondItem="40n-O0-ho1" secondAttribute="centerX" id="sMH-Kr-JX6"/>
+                            <constraint firstItem="r31-Hu-546" firstAttribute="top" secondItem="PcD-jC-ehP" secondAttribute="bottom" constant="12" id="tSj-O9-Npz"/>
+                            <constraint firstItem="PcD-jC-ehP" firstAttribute="top" secondItem="t5u-76-0Jb" secondAttribute="bottom" constant="16" id="ufs-5S-sH8"/>
+                            <constraint firstItem="khh-OQ-ZW7" firstAttribute="leading" secondItem="S8K-Sq-Bw6" secondAttribute="trailing" constant="2" id="vBI-bj-zWL"/>
+                            <constraint firstItem="wVU-ca-OfZ" firstAttribute="width" secondItem="BYu-pz-fjF" secondAttribute="width" multiplier="0.48" id="yUz-Rh-o8W"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="jbD-L8-hq5"/>
+                    </view>
+                    <connections>
+                        <outlet property="btnDetail" destination="kas-ba-Yvj" id="H1q-B8-bwa"/>
+                        <outlet property="btnSave" destination="wVU-ca-OfZ" id="6nZ-Gb-dlf"/>
+                        <outlet property="lbAddress" destination="BYu-pz-fjF" id="emB-5V-5Sj"/>
+                        <outlet property="lbAmount" destination="khh-OQ-ZW7" id="BWf-40-f3p"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x9f-Ms-EbW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3198" y="-297"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic_check" width="24" height="24"/>
@@ -750,7 +872,10 @@
         <image name="ic_check_success" width="23" height="23"/>
         <image name="ic_info" width="18" height="18"/>
         <image name="ic_mozo_offchain" width="24" height="24"/>
+        <image name="ic_paper" width="12" height="15"/>
         <image name="ic_scan" width="19" height="18"/>
+        <image name="ic_tx_complete" width="165" height="100"/>
         <image name="ic_user" width="13" height="18"/>
+        <image name="ic_user_add" width="19" height="16"/>
     </resources>
 </document>

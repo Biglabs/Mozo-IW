@@ -20,5 +20,5 @@ protocol TransactionInteractorOutput {
     func requestPinToSignTransaction()
     func didValidateTransferTransaction(_ error: String?)
     func continueWithTransaction(_ transaction: TransactionDTO, tokenInfo: TokenInfoDTO)
-    func didSendTransactionSuccess(_ transaction: IntermediaryTransactionDTO)
+    func didSendTransactionSuccess(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO)
 }

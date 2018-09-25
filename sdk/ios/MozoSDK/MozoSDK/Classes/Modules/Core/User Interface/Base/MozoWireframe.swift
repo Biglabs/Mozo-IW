@@ -28,4 +28,10 @@ class MozoWireframe: NSObject {
     public func getTopViewController() -> UIViewController! {
         return rootWireframe?.getTopViewController()
     }
+    
+    public func viewControllerFromStoryBoard(_ identifier: String) -> UIViewController {
+        let storyboard = StoryboardManager.mozoStoryboard()
+        let viewController = storyboard.instantiateViewController(withIdentifier: identifier)
+        return viewController
+    }
 }

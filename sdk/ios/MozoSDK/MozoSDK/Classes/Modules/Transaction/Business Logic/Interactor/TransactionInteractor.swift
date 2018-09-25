@@ -13,6 +13,7 @@ class TransactionInteractor : NSObject {
     let apiManager : ApiManager
     
     var transactionData : IntermediaryTransactionDTO?
+    var tokenInfo: TokenInfoDTO?
     
     init(apiManager: ApiManager) {
         self.apiManager = apiManager
@@ -75,6 +76,7 @@ extension TransactionInteractor : TransactionInteractorInput {
         }
 
         let tx = createTransactionToTransfer(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
+        self.tokenInfo = tokenInfo
         output?.continueWithTransaction(tx!, tokenInfo: tokenInfo!)
     }
     
@@ -82,9 +84,8 @@ extension TransactionInteractor : TransactionInteractorInput {
         signManager?.signTransaction(transactionData!, pin: pin)
             .done { (signedInterTx) in
                 self.apiManager.sendSignedTransaction(signedInterTx).done({ (receivedTx) in
-                    let hash = receivedTx.tx?.hash
-                    print("Hash: \(hash)")
-                    self.output?.didSendTransactionSuccess(receivedTx)
+                    print("Send successfully with hash: \(receivedTx.tx?.hash ?? "NULL")")
+                    self.output?.didSendTransactionSuccess(receivedTx, tokenInfo: self.tokenInfo!)
                 }).catch({ (err) in
                     self.output?.didReceiveError(err.localizedDescription)
                 })

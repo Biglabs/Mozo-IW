@@ -27,6 +27,7 @@ class ModuleDependencies {
     let walletWireframe = WalletWireframe()
     let authWireframe = AuthWireframe()
     let txWireframe = TransactionWireframe()
+    let txComWireframe = TxCompletionWireframe()
     
     let apiManager = ApiManager()
     
@@ -61,6 +62,7 @@ class ModuleDependencies {
         walletDependencies()
         // MARK: Transaction
         transactionDependencies()
+        transactionCompletionDependencies()
     }
     
     func coreDependencies() {
@@ -81,7 +83,17 @@ class ModuleDependencies {
         coreWireframe.authWireframe = authWireframe
         coreWireframe.walletWireframe = walletWireframe
         coreWireframe.txWireframe = txWireframe
+        coreWireframe.txCompleteWireframe = txComWireframe
         coreWireframe.rootWireframe = rootWireframe
+    }
+    
+    func transactionCompletionDependencies() {
+        let txComPresenter = TxCompletionPresenter()
+        
+        txComPresenter.completionModuleDelegate = coreWireframe.corePresenter
+        
+        txComWireframe.txComPresenter = txComPresenter
+        txComWireframe.rootWireframe = rootWireframe
     }
     
     func transactionDependencies() {

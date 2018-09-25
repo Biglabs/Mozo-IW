@@ -33,7 +33,7 @@ class ConfirmTransferViewController: MozoBasicViewController {
         lbBalance.text = "\(displayBalance)"
         
         lbAddress.text = transaction?.outputs?.first?.addresses![0]
-        lbAmountValue.text = String(format: "%.1f", (transaction?.outputs?.first?.value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0))!)
+        lbAmountValue.text = "\((transaction?.outputs?.first?.value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0))!)"
     }
     
     @IBAction func btnSendTapped(_ sender: Any) {

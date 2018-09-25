@@ -80,7 +80,18 @@ extension CorePresenter: TransactionModuleDelegate {
         coreWireframe?.walletWireframe?.walletPresenter?.pinModuleDelegate = nil
     }
     
-    func didSendTxSuccess(_ tx: IntermediaryTransactionDTO) {
+    func didSendTxSuccess(_ tx: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
         // Display transaction completion interface
+        coreWireframe?.presentTransactionCompleteInterface(tx, tokenInfo: tokenInfo)
+    }
+}
+
+extension CorePresenter: TxCompletionModuleDelegate {
+    func requestAddToAddressBook(_ address: String) {
+        
+    }
+    
+    func requestShowDetail(_ tx: IntermediaryTransactionDTO) {
+        
     }
 }
