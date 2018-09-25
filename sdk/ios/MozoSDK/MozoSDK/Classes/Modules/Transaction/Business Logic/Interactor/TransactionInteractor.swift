@@ -18,7 +18,7 @@ class TransactionInteractor : NSObject {
         self.apiManager = apiManager
     }
     
-    func sendTransactionToTransfer(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?) {
+    func createTransactionToTransfer(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?) -> TransactionDTO? {
         let input = InputDTO(addresses: [(tokenInfo?.address)!])!
         let trimToAddress = toAdress?.trimmingCharacters(in: .whitespacesAndNewlines)
         var value = 0.0
@@ -31,18 +31,22 @@ class TransactionInteractor : NSObject {
         let output = OutputDTO(addresses: [trimToAddress!], value: txValue)!
         let transaction = TransactionDTO(inputs: [input], outputs: [output])
         
-        _ = apiManager.transferTransaction(transaction!).done { (interTx) in
-            if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
-                self.output?.didReceiveError((interTx.errors?.first)!)
-            } else {
-                self.transactionData = interTx
-                self.output?.requestPinTosignTransaction()
-            }
-        }
+        return transaction
     }
 }
 
 extension TransactionInteractor : TransactionInteractorInput {
+    func sendUserConfirmTransaction(_ transaction: TransactionDTO) {
+        _ = apiManager.transferTransaction(transaction).done { (interTx) in
+            if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
+                self.output?.didReceiveError((interTx.errors?.first)!)
+            } else {
+                self.transactionData = interTx
+                self.output?.requestPinToSignTransaction()
+            }
+        }
+    }
+    
     func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?) {
         var error : String? = nil
         if toAdress == nil || toAdress == "" {
@@ -69,17 +73,23 @@ extension TransactionInteractor : TransactionInteractorInput {
             output?.didValidateTransferTransaction(error)
             return
         }
-        
-        output?.didValidateTransferTransaction(nil)
-        sendTransactionToTransfer(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
+
+        let tx = createTransactionToTransfer(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
+        output?.continueWithTransaction(tx!, tokenInfo: tokenInfo!)
     }
     
     func performTransfer(pin: String) {
         signManager?.signTransaction(transactionData!, pin: pin)
             .done { (signedInterTx) in
-
+                self.apiManager.sendSignedTransaction(signedInterTx).done({ (receivedTx) in
+                    let hash = receivedTx.tx?.hash
+                    print("Hash: \(hash)")
+                    self.output?.didSendTransactionSuccess(receivedTx)
+                }).catch({ (err) in
+                    self.output?.didReceiveError(err.localizedDescription)
+                })
             }.catch({ (err) in
-
+                self.output?.didReceiveError(err.localizedDescription)
             })
     }
     

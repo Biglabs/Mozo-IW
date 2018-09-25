@@ -72,5 +72,15 @@ extension CorePresenter : CoreInteractorOutput {
 }
 
 extension CorePresenter: TransactionModuleDelegate {
+    func requestPINInterfaceForTransaction() {
+        coreWireframe?.presentPINInterfaceForTransaction()
+    }
     
+    func removePINDelegate() {
+        coreWireframe?.walletWireframe?.walletPresenter?.pinModuleDelegate = nil
+    }
+    
+    func didSendTxSuccess(_ tx: IntermediaryTransactionDTO) {
+        // Display transaction completion interface
+    }
 }

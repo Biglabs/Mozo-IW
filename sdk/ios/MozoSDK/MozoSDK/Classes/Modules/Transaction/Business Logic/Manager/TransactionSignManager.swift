@@ -22,15 +22,16 @@ public class TransactionSignManager {
                 _ = dataManager.getWalletByUserId(userId).done({ (wallet) in
                     if !wallet.privateKey.isEmpty {
                         let decryptedPrivateKey = wallet.privateKey.decrypt(key: pin)
-                        let buffer = decryptedPrivateKey.data(using: .utf8)
+                        let buffer = Data(hex: decryptedPrivateKey)
                         let tosign = interTx.tosign?.first?.replace("0x", withString: "")
                         
-                        let publicData = Web3Utils.privateToPublic(buffer!)
+                        let publicData = Web3Utils.privateToPublic(buffer)?.dropFirst()
+                        let publicStr = publicData?.toHexString().addHexPrefix()
                         
                         let signature = tosign?.ethSign(privateKey: decryptedPrivateKey)
                         
-                        interTx.signatures![0] = signature!
-                        interTx.pubkeys![0] = (publicData?.toHexString())!
+                        interTx.signatures = [signature!]
+                        interTx.pubkeys = [publicStr!]
                         
                         seal.fulfill(interTx)
                     }

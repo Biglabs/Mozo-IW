@@ -20,7 +20,6 @@ class TransferViewController: MozoBasicViewController {
     @IBOutlet weak var btnContinue: UIButton!
     
     private let refreshControl = UIRefreshControl()
-    var spinnerView : UIView?
     var tokenInfo : TokenInfoDTO?
     
     override func viewDidLoad() {
@@ -86,25 +85,6 @@ class TransferViewController: MozoBasicViewController {
 }
 
 extension TransferViewController : TransferViewInterface {
-    func displaySpinner() {
-        spinnerView = UIView.init(frame: self.view.bounds)
-        spinnerView?.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
-        ai.startAnimating()
-        ai.center = (spinnerView?.center)!
-        
-        DispatchQueue.main.async {
-            self.spinnerView?.addSubview(ai)
-            self.view.addSubview(self.spinnerView!)
-        }
-    }
-    
-    func removeSpinner() {
-        DispatchQueue.main.async {
-            self.spinnerView?.removeFromSuperview()
-        }
-    }
-    
     func updateUserInterfaceWithTokenInfo(_ tokenInfo: TokenInfoDTO) {
         self.tokenInfo = tokenInfo
         let balance = tokenInfo.balance ?? 0

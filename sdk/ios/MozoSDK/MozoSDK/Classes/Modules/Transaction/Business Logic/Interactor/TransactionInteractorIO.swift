@@ -10,12 +10,15 @@ import Foundation
 protocol TransactionInteractorInput {
     func loadTokenInfo()
     func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?)
+    func sendUserConfirmTransaction(_ transaction: TransactionDTO)
     func performTransfer(pin: String)
 }
 
 protocol TransactionInteractorOutput {
     func didLoadTokenInfo(_ tokenInfo: TokenInfoDTO)
     func didReceiveError(_ error: String?)
-    func requestPinTosignTransaction()
+    func requestPinToSignTransaction()
     func didValidateTransferTransaction(_ error: String?)
+    func continueWithTransaction(_ transaction: TransactionDTO, tokenInfo: TokenInfoDTO)
+    func didSendTransactionSuccess(_ transaction: IntermediaryTransactionDTO)
 }

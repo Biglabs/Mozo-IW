@@ -27,4 +27,9 @@ public class MozoBasicViewController : UIViewController {
         }
         return true
     }
+    
+    func enableBackBarButton() {
+        self.navigationController?.navigationBar.backItem?.title = "Back"
+        navigationItem.hidesBackButton = false
+    }
 }

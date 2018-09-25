@@ -11,10 +11,16 @@ class TransactionPresenter : NSObject {
     var txWireframe : TransactionWireframe?
     var txInteractor: TransactionInteractorInput?
     var transferUserInterface : TransferViewInterface?
+    var confirmUserInterface : ConfirmTransferViewInterface?
     var transactionModuleDelegate: TransactionModuleDelegate?
 }
 
 extension TransactionPresenter: TransactionModuleInterface {
+    func sendConfirmTransaction(_ transaction: TransactionDTO) {
+        confirmUserInterface?.displaySpinner()
+        txInteractor?.sendUserConfirmTransaction(transaction)
+    }
+    
     func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?) {
         txInteractor?.validateTransferTransaction(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
     }
@@ -27,19 +33,19 @@ extension TransactionPresenter: TransactionModuleInterface {
         txWireframe?.presentScannerQRCodeInterface()
     }
     
-    func goBack() {
-        
-    }
-    
     func loadTokenInfo() {
         txInteractor?.loadTokenInfo()
     }
 }
 
 extension TransactionPresenter : TransactionInteractorOutput {
+    func continueWithTransaction(_ transaction: TransactionDTO, tokenInfo: TokenInfoDTO) {
+        txWireframe?.presentConfirmInterface(transaction: transaction, tokenInfo: tokenInfo)
+    }
+    
     func didReceiveError(_ error: String?) {
-        transferUserInterface?.removeSpinner()
-        transferUserInterface?.displayError(error!)
+        confirmUserInterface?.removeSpinner()
+        confirmUserInterface?.displayError(error!)
     }
     
     func didLoadTokenInfo(_ tokenInfo: TokenInfoDTO) {
@@ -49,19 +55,22 @@ extension TransactionPresenter : TransactionInteractorOutput {
     func didValidateTransferTransaction(_ error: String?) {
         if let error = error {
             transferUserInterface?.displayError(error)
-        } else {
-            transferUserInterface?.displaySpinner()
         }
     }
     
-    func requestPinTosignTransaction() {
-        txWireframe?.presentPINInterface()
+    func requestPinToSignTransaction() {
+        transactionModuleDelegate?.requestPINInterfaceForTransaction()
+    }
+    
+    func didSendTransactionSuccess(_ transaction: IntermediaryTransactionDTO) {
+        transactionModuleDelegate?.didSendTxSuccess(transaction)
     }
 }
 
 extension TransactionPresenter : PinModuleDelegate {
     func verifiedPINSuccess(_ pin: String) {
         print("Did receive PIN: \(pin)")
+        transactionModuleDelegate?.removePINDelegate()
         txInteractor?.performTransfer(pin: pin)
     }
 }

@@ -8,5 +8,7 @@
 import Foundation
 
 protocol TransactionModuleDelegate {
-    
+    func requestPINInterfaceForTransaction()
+    func removePINDelegate()
+    func didSendTxSuccess(_ tx: IntermediaryTransactionDTO)
 }

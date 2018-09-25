@@ -41,7 +41,6 @@ class ModuleDependencies {
     }
     
     func authenticate() {
-        testSign()
         coreWireframe.requestForAuthentication()
     }
     
@@ -97,8 +96,8 @@ class ModuleDependencies {
         
         txPresenter.txInteractor = txInteractor
         txPresenter.txWireframe = txWireframe
+        txPresenter.transactionModuleDelegate = coreWireframe.corePresenter
         
-        txWireframe.walletWireframe = walletWireframe
         txWireframe.txPresenter = txPresenter
         txWireframe.rootWireframe = rootWireframe
     }

@@ -57,4 +57,28 @@ public extension ApiManager {
             }
         }
     }
+    
+    public func sendSignedTransaction(_ transaction: IntermediaryTransactionDTO) -> Promise<IntermediaryTransactionDTO> {
+        return Promise { seal in
+            let url = Configuration.BASE_URL + TX_API_PATH + "send-signed-tx"
+            let param = transaction.toJSON()
+            self.execute(.post, url: url, parameters: param)
+                .done { json -> Void in
+                    // JSON info
+                    print(json)
+                    let jobj = SwiftyJSON.JSON(json)
+                    let tx = IntermediaryTransactionDTO(json: jobj)
+                    seal.fulfill(tx!)
+                }
+                .catch { error in
+                    //Handle error or give feedback to the user
+                    let err = error as! ConnectionError
+                    print(err.localizedDescription)
+                    seal.reject(err)
+                }
+                .finally {
+                    //                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            }
+        }
+    }
 }

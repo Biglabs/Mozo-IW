@@ -10,9 +10,9 @@ import UIKit
 
 class TransactionWireframe: MozoWireframe {
     var txPresenter : TransactionPresenter?
-    var walletWireframe: WalletWireframe?
     var transferViewController : TransferViewController?
     var scannerViewController: ScannerViewController?
+    var confirmViewController: ConfirmTransferViewController?
     
     func presentTransferInterface() {
         let viewController = TransferViewControllerFromStoryboard()
@@ -23,9 +23,15 @@ class TransactionWireframe: MozoWireframe {
         rootWireframe?.displayViewController(viewController)
     }
     
-    func presentPINInterface() {
-        walletWireframe?.walletPresenter?.pinModuleDelegate = txPresenter
-        walletWireframe?.presentPINInterface(passPharse: nil)
+    func presentConfirmInterface(transaction: TransactionDTO, tokenInfo: TokenInfoDTO) {
+        let viewController = ConfirmTransferViewControllerFromStoryboard()
+        viewController.eventHandler = txPresenter
+        viewController.transaction = transaction
+        viewController.tokenInfo = tokenInfo
+        confirmViewController = viewController
+        
+        txPresenter?.confirmUserInterface = viewController
+        rootWireframe?.displayViewController(viewController)
     }
     
     func presentScannerQRCodeInterface() {
@@ -38,6 +44,12 @@ class TransactionWireframe: MozoWireframe {
     func TransferViewControllerFromStoryboard() -> TransferViewController {
         let storyboard = StoryboardManager.mozoStoryboard()
         let viewController = storyboard.instantiateViewController(withIdentifier: TransferViewControllerIdentifier) as! TransferViewController
+        return viewController
+    }
+    
+    func ConfirmTransferViewControllerFromStoryboard() -> ConfirmTransferViewController {
+        let storyboard = StoryboardManager.mozoStoryboard()
+        let viewController = storyboard.instantiateViewController(withIdentifier: ConfirmTransferViewControllerIdentifier) as! ConfirmTransferViewController
         return viewController
     }
 }

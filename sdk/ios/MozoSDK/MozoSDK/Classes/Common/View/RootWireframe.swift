@@ -13,6 +13,7 @@ let PINViewControllerIdentifier = "PINViewController"
 let PassPhraseViewControllerIdentifier = "PassPhraseViewController"
 let WaitingViewControllerIdentifier = "WaitingViewController"
 let TransferViewControllerIdentifier = "TransferViewController"
+let ConfirmTransferViewControllerIdentifier = "ConfirmTransferViewController"
 
 class RootWireframe : NSObject {
     let mozoNavigationController = MozoNavigationController()
