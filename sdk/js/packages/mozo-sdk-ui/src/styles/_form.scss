@@ -1,0 +1,46 @@
+.mozo-form {
+  .form-group {
+      padding-bottom: $padding-y + 6;
+      position: relative;
+
+      input[type="text"] {
+          border: none;
+          border-bottom: 1px solid $input-border;
+          padding: 8px 0;
+          width: 100%;
+          font-size: $font-size;
+          outline: 0;
+          margin-top: $padding-y + 6;
+          margin-bottom: 3px;
+
+          &:focus, &:active {
+              border-color: $input-active-border;
+
+              + label {
+                  color: $input-active-border;
+              }
+          }
+      }
+
+      label {
+          position: absolute;
+          top: 0;
+          left: 0;
+          font-size: 80%;
+      }
+
+      &.logo{
+          padding-bottom: 20px;
+      }
+
+  }
+
+  .form-action{
+      padding-top: $padding-y;
+      text-align: center;
+
+      .mozo-btn {
+          @include border-radius(0)
+      }
+  }
+}
