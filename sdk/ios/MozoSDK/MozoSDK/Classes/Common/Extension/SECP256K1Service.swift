@@ -31,7 +31,7 @@ public struct SECP256K1Service {
     }
     
     static func serializeDerFormat(signature: inout secp256k1_ecdsa_signature) -> Data? {
-        var sig = [UInt8](repeating: 0, count:70)
+        var sig = [UInt8](repeating: 0, count:72)
         var siglen: Int = sig.count
         _ = secp256k1_ecdsa_signature_serialize_der(context!, &sig, &siglen, &signature)
         
