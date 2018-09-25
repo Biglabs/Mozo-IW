@@ -11,10 +11,10 @@ import { Services } from "../../services"
 })
 export class MozoTransferForm {
 
-  @Prop() amount: number = 0;
+  @Prop() amount: number;
   @Prop() toAddress: string = "";
 
-  @State() amountState: number = 0;
+  @State() amountState: number;
   @State() toAddressState: string = "";
   @State() addressIsWrong: boolean = false;
   @State() amountIsWrong: boolean = false;
@@ -48,13 +48,13 @@ export class MozoTransferForm {
     this.amountState = this.amount;
     this.toAddressState = this.toAddress;
 
-    if (!(/^(0x)?[0-9a-fA-F]{40}$/.test(this.toAddress.trim()))) {
+    if (this.toAddress.trim() != "" && !(/^(0x)?[0-9a-fA-F]{40}$/.test(this.toAddress.trim()))) {
       this.addressIsWrong = true
     } else {
       this.addressIsWrong = false
     }
 
-    if (isNaN(this.amountState)) {
+    if (this.amountState.toString().trim() != "" && isNaN(this.amountState)) {
       this.amountIsWrong = true
     } else {
       this.amountIsWrong = false
@@ -102,7 +102,7 @@ export class MozoTransferForm {
           {this.amountIsWrong && <small class="mozo-error-message">{this.amountState.toString().trim() == ""? "This field is required": "Amount is not a number"}</small>}
         </div>
         <div class="form-action">
-          <input disabled = {this.addressIsWrong || this.amountIsWrong } class="mozo-btn w-xx-lg" type="button" value="Submit" onClick={(e) => this.transferMozo(e)} />
+          <input disabled = {this.addressIsWrong || this.toAddressState.trim() == "" || this.amountIsWrong || this.amountState.toString().trim() == "" } class="mozo-btn w-xx-lg" type="button" value="Submit" onClick={(e) => this.transferMozo(e)} />
         </div>
       </div>
     );
