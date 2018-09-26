@@ -1,18 +1,19 @@
 // let CryptoJS = require('crypto-js');
 
-import RESTService from '../services/RESTService';
-
-var RNCryptor = require('electron').remote.require('jscryptor');
+var sjcl = require('./sjcl');
+var RNCryptor = require('./rncryptor');
 
 module.exports.encrypt = function (data, password) {
-  let encrypted_data = RNCryptor.Encrypt(data, password);
-  return encrypted_data.toString();
+  let encrypted_data = RNCryptor.Encrypt(
+    password, sjcl.codec.utf8String.toBits(data));
+  return encrypted_data;
 }
 
 module.exports.decrypt = function (data, password) {
   try {
-    let decrypted_data = RNCryptor.Decrypt(data, password);
-    return decrypted_data.toString();
+    let decrypted_data = RNCryptor.Decrypt(
+      password, sjcl.codec.base64.toBits(data));
+    return decrypted_data;
   } catch (e) {
     console.log(e);
     return null;
