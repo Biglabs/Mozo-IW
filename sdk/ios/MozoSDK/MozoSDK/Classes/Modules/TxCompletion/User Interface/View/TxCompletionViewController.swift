@@ -10,8 +10,7 @@ import UIKit
 
 class TxCompletionViewController: MozoBasicViewController {
     var eventHandler : TxCompletionModuleInterface?
-    var transaction: IntermediaryTransactionDTO?
-    var tokenInfo: TokenInfoDTO?
+    var detailItem: TxDetailDisplayItem!
     
     @IBOutlet weak var lbAmount: UILabel!
     @IBOutlet weak var lbAddress: UILabel!
@@ -25,8 +24,8 @@ class TxCompletionViewController: MozoBasicViewController {
     }
     
     func updateView() {
-        lbAddress.text = transaction?.tx?.outputs?.first?.addresses![0]
-        lbAmount.text = "{\((transaction?.tx?.outputs?.first?.value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0))!)}"
+        lbAddress.text = detailItem.addressTo
+        lbAmount.text = "{\(detailItem.amount.convertOutputValue(decimal: detailItem.decimal))}"
     }
     
     func setBtnLayer() {
@@ -41,6 +40,6 @@ class TxCompletionViewController: MozoBasicViewController {
     }
     
     @IBAction func btnDetailTapped(_ sender: Any) {
-        eventHandler?.requestShowDetail(transaction!, tokenInfo: tokenInfo!)
+        eventHandler?.requestShowDetail(detailItem)
     }
 }

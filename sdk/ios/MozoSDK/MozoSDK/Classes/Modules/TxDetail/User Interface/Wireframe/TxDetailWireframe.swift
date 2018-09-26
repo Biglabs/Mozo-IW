@@ -10,10 +10,9 @@ import Foundation
 class TxDetailWireframe : MozoWireframe {
     var txDetailViewController: TxDetailViewController?
     
-    func presentTransactionDetailInterface(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
+    func presentTransactionDetailInterface(_ detail: TxDetailDisplayItem) {
         let viewController = viewControllerFromStoryBoard(TxDetailViewControllerIdentifier) as! TxDetailViewController
-        viewController.transaction = transaction
-        viewController.tokenInfo = tokenInfo
+        viewController.displayItem = detail
         txDetailViewController = viewController
         
         rootWireframe?.displayViewController(viewController)

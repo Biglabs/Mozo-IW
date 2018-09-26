@@ -9,5 +9,5 @@ import Foundation
 
 protocol TxCompletionModuleDelegate {
     func requestAddToAddressBook(_ address: String)
-    func requestShowDetail(_ tx: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO)
+    func requestShowDetail(_ detail: TxDetailDisplayItem)
 }

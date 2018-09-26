@@ -11,11 +11,10 @@ class TxCompletionWireframe : MozoWireframe {
     var txComPresenter: TxCompletionPresenter?
     var txComViewController: TxCompletionViewController?
     
-    func presentTransactionCompleteInterface(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
+    func presentTransactionCompleteInterface(_ detail: TxDetailDisplayItem) {
         let viewController = viewControllerFromStoryBoard(TxCompletionViewControllerIdentifier) as! TxCompletionViewController
         viewController.eventHandler = txComPresenter
-        viewController.transaction = transaction
-        viewController.tokenInfo = tokenInfo
+        viewController.detailItem = detail
         txComViewController = viewController
         
         rootWireframe?.displayViewController(viewController)

@@ -9,8 +9,7 @@ import Foundation
 import UIKit
 
 class TxDetailViewController: MozoBasicViewController {
-    var transaction: IntermediaryTransactionDTO?
-    var tokenInfo: TokenInfoDTO?
+    var displayItem: TxDetailDisplayItem!
     
     @IBOutlet weak var lbTxType: UILabel!
     @IBOutlet weak var lbDateTime: UILabel!
@@ -27,25 +26,16 @@ class TxDetailViewController: MozoBasicViewController {
     }
     
     func updateView() {
-        var action = ""
-        if tokenInfo?.address == transaction?.tx?.inputs![0].addresses![0] {
-            action = "SENT"
-        } else {
-            action = "RECEIVED"
-        }
-        lbTxType.text = action
+        lbTxType.text = displayItem.action ?? displayItem.buildAction()
+
+        lbDateTime.text = displayItem.buildDateString()
         
-        let dateFormatterPrint = DateFormatter()
-        dateFormatterPrint.dateFormat = "MMM dd, yyyy - HH:mm a"
-        let date = Date()
-        lbDateTime.text = dateFormatterPrint.string(from: date)
+        let amount = displayItem.amount.convertOutputValue(decimal: displayItem.decimal)
         
-        let amount = transaction?.tx?.outputs![0].value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0)
-        
-        let reBalance = (tokenInfo?.balance?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0))! - amount!
+        let reBalance = displayItem.currentBalance.convertOutputValue(decimal: displayItem.decimal) - amount
         lbBalance.text = "\(reBalance)"
         
-        lbAddress.text = transaction?.tx?.outputs![0].addresses![0]
-        lbAmountValue.text = "\(amount ?? 0.0)"
+        lbAddress.text = displayItem.addressTo
+        lbAmountValue.text = "\(amount)"
     }
 }

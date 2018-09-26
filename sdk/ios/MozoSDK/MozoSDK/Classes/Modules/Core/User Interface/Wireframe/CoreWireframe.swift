@@ -56,11 +56,11 @@ class CoreWireframe : MozoWireframe {
         walletWireframe?.presentPINInterface(passPharse: nil)
     }
     
-    func presentTransactionCompleteInterface(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
-        txCompleteWireframe?.presentTransactionCompleteInterface(transaction, tokenInfo: tokenInfo)
+    func presentTransactionCompleteInterface(_ detail: TxDetailDisplayItem) {
+        txCompleteWireframe?.presentTransactionCompleteInterface(detail)
     }
     
-    func presentTransactionDetailInterface(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
-        txDetailWireframe?.presentTransactionDetailInterface(transaction, tokenInfo: tokenInfo)
+    func presentTransactionDetailInterface(_ detail: TxDetailDisplayItem) {
+        txDetailWireframe?.presentTransactionDetailInterface(detail)
     }
 }

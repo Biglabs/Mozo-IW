@@ -12,6 +12,7 @@ class TransactionInteractor : NSObject {
     var signManager : TransactionSignManager?
     let apiManager : ApiManager
     
+    var originalTransaction: TransactionDTO?
     var transactionData : IntermediaryTransactionDTO?
     var tokenInfo: TokenInfoDTO?
     
@@ -42,6 +43,8 @@ extension TransactionInteractor : TransactionInteractorInput {
             if (interTx.errors != nil) && (interTx.errors?.count)! > 0 {
                 self.output?.didReceiveError((interTx.errors?.first)!)
             } else {
+                // Fix issue: Should keep previous value of transaction
+                self.originalTransaction = transaction
                 self.transactionData = interTx
                 self.output?.requestPinToSignTransaction()
             }
@@ -85,6 +88,9 @@ extension TransactionInteractor : TransactionInteractorInput {
             .done { (signedInterTx) in
                 self.apiManager.sendSignedTransaction(signedInterTx).done({ (receivedTx) in
                     print("Send successfully with hash: \(receivedTx.tx?.hash ?? "NULL")")
+                    // Fix issue: Should keep previous value of transaction
+                    receivedTx.tx?.outputs![0].value = self.originalTransaction?.outputs![0].value
+                    print("Original output value: \(receivedTx.tx?.outputs![0].value ?? 0)")
                     self.output?.didSendTransactionSuccess(receivedTx, tokenInfo: self.tokenInfo!)
                 }).catch({ (err) in
                     self.output?.didReceiveError(err.localizedDescription)

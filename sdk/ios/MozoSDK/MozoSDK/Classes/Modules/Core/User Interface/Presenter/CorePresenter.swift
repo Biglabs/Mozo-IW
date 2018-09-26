@@ -81,8 +81,10 @@ extension CorePresenter: TransactionModuleDelegate {
     }
     
     func didSendTxSuccess(_ tx: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
+        // Build transaction detail item
+        let detailItem = TxDetailDisplayItem(transaction: tx, tokenInfo: tokenInfo  )
         // Display transaction completion interface
-        coreWireframe?.presentTransactionCompleteInterface(tx, tokenInfo: tokenInfo)
+        coreWireframe?.presentTransactionCompleteInterface(detailItem)
     }
 }
 
@@ -91,7 +93,7 @@ extension CorePresenter: TxCompletionModuleDelegate {
         
     }
     
-    func requestShowDetail(_ tx: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
-        coreWireframe?.presentTransactionDetailInterface(tx, tokenInfo: tokenInfo)
+    func requestShowDetail(_ detail: TxDetailDisplayItem) {
+        coreWireframe?.presentTransactionDetailInterface(detail)
     }
 }
