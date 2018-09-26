@@ -34,22 +34,22 @@ public class MozoNavigationController : UINavigationController {
     
     func addCloseBtn(item: UINavigationItem) {
         print("Add close button.")
-        let view = loadViewFromNib()
+        let button = loadButtonFromNib()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapCloseBtn))
         tap.numberOfTapsRequired = 1
-        view?.isUserInteractionEnabled = true
-        view?.addGestureRecognizer(tap)
+        button?.isUserInteractionEnabled = true
+        button?.addGestureRecognizer(tap)
     
-        item.rightBarButtonItem = UIBarButtonItem(customView: view!)
+        item.rightBarButtonItem = UIBarButtonItem(customView: button!)
     }
     
-    func loadViewFromNib() -> UIView! {
+    func loadButtonFromNib() -> UIButton! {
         let bundle = BundleManager.mozoBundle()
         let nib = UINib(nibName: "CloseView", bundle: bundle)
-        let view = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
-        
-        return view
+        let button = nib.instantiate(withOwner: self, options: nil)[0] as! UIButton
+        button.imageEdgeInsets = UIEdgeInsetsMake(15, 12, 15, 68)
+        return button
     }
     
     @objc func tapCloseBtn() {

@@ -81,6 +81,8 @@ class ModuleDependencies {
         corePresenter.coreInteractor = coreInteractor
         corePresenter.coreWireframe = coreWireframe
         
+        rootWireframe.mozoNavigationController.coreEventHandler = corePresenter
+        
         coreWireframe.corePresenter = corePresenter
         coreWireframe.authWireframe = authWireframe
         coreWireframe.walletWireframe = walletWireframe

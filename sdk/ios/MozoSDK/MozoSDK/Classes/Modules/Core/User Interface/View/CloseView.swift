@@ -8,8 +8,9 @@
 
 import UIKit
 
-class CloseView : UIView {
-    @IBOutlet weak var imgClose: UIImageView!
+class CloseButton : UIButton {
     override func awakeFromNib() {
+        super.awakeFromNib()
+        self.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: 60, height: 24)
     }
 }
