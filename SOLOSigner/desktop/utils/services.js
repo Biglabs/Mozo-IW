@@ -56,15 +56,19 @@ function getUserProfile() {
   }
 
   request(options, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      // console.log("User profile: " + body);
-      user_profile = JSON.parse(body);
-      if (user_profile.walletInfo) {
-        extractWalletData(user_profile.walletInfo);
+    if (!error) {
+      if (response.statusCode == 200) {
+        // console.log("User profile: " + body);
+        user_profile = JSON.parse(body);
+        if (user_profile.walletInfo) {
+          extractWalletData(user_profile.walletInfo);
+        }
+      } else {
+        console.log(response.statusCode);
+        console.log(body);
       }
     } else {
-      console.log(response.statusCode);
-      console.log(body);
+      console.log(error);
     }
   });
 }
@@ -168,6 +172,7 @@ exports.createTransaction = function(tx_info, res) {
       ];
 
       request(options, function(error, response, body) {
+        console.log(JSON.stringify(options));
         console.log(response.statusCode);
         if (!error && response.statusCode == 200) {
           console.log("Transaction info: " + JSON.stringify(body));

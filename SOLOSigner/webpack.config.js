@@ -43,7 +43,8 @@ module.exports = {
             path.resolve(__dirname, './node_modules/react-navigation'),
             path.resolve(__dirname, './node_modules/react-native-tab-view'),
             path.resolve(__dirname, './node_modules/react-native-safe-area-view'),
-  
+
+            path.resolve(__dirname, './node_modules/react-native-screen'),
             path.resolve(__dirname, './node_modules/react-native-svg'),
             path.resolve(__dirname, './node_modules/react-native-svg-uri'),
             path.resolve(__dirname, './node_modules/react-native-qrcode'),
