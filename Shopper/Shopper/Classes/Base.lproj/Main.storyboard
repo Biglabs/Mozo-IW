@@ -18,16 +18,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euv-Yc-vxp">
-                                <rect key="frame" x="138" y="318" width="99" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cuN-jp-fng" customClass="MozoLogoutButton" customModule="MozoSDK">
+                                <rect key="frame" x="164" y="377" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Transfer Mozo"/>
-                                <connections>
-                                    <action selector="transferTapped:" destination="PDB-oh-f31" eventType="touchUpInside" id="kwe-uM-w8t"/>
-                                </connections>
+                                <state key="normal" title="Button"/>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ro-3f-xiu" customClass="MozoSendView" customModule="MozoSDK">
+                                <rect key="frame" x="112" y="311" width="150" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.42745098040000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ylH-Vg-TF2" customClass="MozoSigninView" customModule="MozoSDK">
+                                <rect key="frame" x="105" y="115" width="165" height="45"/>
+                                <color key="backgroundColor" red="0.56792475657608976" green="1" blue="0.52416137451183964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="165" id="DHY-wU-e3s"/>
+                                    <constraint firstAttribute="height" constant="45" id="ng7-E7-s11"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ylH-Vg-TF2" firstAttribute="centerX" secondItem="JEu-er-mpW" secondAttribute="centerX" id="C3I-0w-aOb"/>
+                            <constraint firstItem="ylH-Vg-TF2" firstAttribute="top" secondItem="Mk0-7U-FzU" secondAttribute="top" constant="50" id="JFg-IY-DPU"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Mk0-7U-FzU"/>
                     </view>
                     <navigationItem key="navigationItem" title="DEMO COMPONENTS" id="l4O-cT-E55"/>
