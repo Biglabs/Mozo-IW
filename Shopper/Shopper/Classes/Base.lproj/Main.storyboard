@@ -18,17 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cuN-jp-fng" customClass="MozoLogoutButton" customModule="MozoSDK">
-                                <rect key="frame" x="164" y="377" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ro-3f-xiu" customClass="MozoSendView" customModule="MozoSDK">
-                                <rect key="frame" x="112" y="311" width="150" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.42745098040000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ylH-Vg-TF2" customClass="MozoSigninView" customModule="MozoSDK">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ylH-Vg-TF2" customClass="MozoSigninView" customModule="MozoSDK">
                                 <rect key="frame" x="105" y="115" width="165" height="45"/>
                                 <color key="backgroundColor" red="0.56792475657608976" green="1" blue="0.52416137451183964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -36,11 +26,31 @@
                                     <constraint firstAttribute="height" constant="45" id="ng7-E7-s11"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ro-3f-xiu" customClass="MozoSendView" customModule="MozoSDK">
+                                <rect key="frame" x="112" y="191" width="150" height="45"/>
+                                <color key="backgroundColor" red="0.0" green="0.42745098040000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="tVa-lF-Svi"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vaz-of-med" customClass="MozoLogoutView" customModule="MozoSDK">
+                                <rect key="frame" x="105" y="255" width="165" height="45"/>
+                                <color key="backgroundColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Aiv-ho-Wba"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="5ro-3f-xiu" firstAttribute="centerX" secondItem="JEu-er-mpW" secondAttribute="centerX" id="1Ig-kw-ZUR"/>
+                            <constraint firstItem="5ro-3f-xiu" firstAttribute="width" secondItem="ylH-Vg-TF2" secondAttribute="width" id="8Mc-Ma-BJj"/>
                             <constraint firstItem="ylH-Vg-TF2" firstAttribute="centerX" secondItem="JEu-er-mpW" secondAttribute="centerX" id="C3I-0w-aOb"/>
                             <constraint firstItem="ylH-Vg-TF2" firstAttribute="top" secondItem="Mk0-7U-FzU" secondAttribute="top" constant="50" id="JFg-IY-DPU"/>
+                            <constraint firstItem="Vaz-of-med" firstAttribute="centerX" secondItem="JEu-er-mpW" secondAttribute="centerX" id="QWt-mR-x1z"/>
+                            <constraint firstItem="Vaz-of-med" firstAttribute="top" secondItem="5ro-3f-xiu" secondAttribute="bottom" constant="20" id="ShA-q4-yCl"/>
+                            <constraint firstItem="Vaz-of-med" firstAttribute="width" secondItem="5ro-3f-xiu" secondAttribute="width" id="VzF-22-RJD"/>
+                            <constraint firstItem="5ro-3f-xiu" firstAttribute="top" secondItem="ylH-Vg-TF2" secondAttribute="bottom" constant="20" id="cUw-Vb-Ya9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mk0-7U-FzU"/>
                     </view>

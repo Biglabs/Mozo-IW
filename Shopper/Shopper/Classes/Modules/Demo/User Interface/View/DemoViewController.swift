@@ -14,7 +14,7 @@ class DemoViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "DEMO COMPONENTS"
 //        MozoSDK.authenticate()
-//        MozoSDK.setAuthDelegate(self)
+        MozoSDK.setAuthDelegate(self)
     }
     
     @IBAction func transferTapped(_ sender: Any) {

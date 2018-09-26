@@ -11,25 +11,13 @@ import UIKit
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var button: UIButton!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        initNib()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        initNib()
-    }
-    
-    func initNib() {
+    override func loadViewFromNib() {
         containerView = loadView(identifier: "MozoSendView")
-        
-        containerView.frame = bounds
-        containerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         addSubview(containerView)
     }
     
     @IBAction func touchedUpInside(_ sender: Any) {
-        print("touchedUpInside")
+        print("Touched Up Inside Button Send Mozo")
+        MozoSDK.transferMozo()
     }
 }

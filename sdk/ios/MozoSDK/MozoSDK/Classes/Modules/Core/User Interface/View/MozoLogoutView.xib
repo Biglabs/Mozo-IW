@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoLogoutView" customModule="MozoSDK" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="MozoLogoutView" id="dyx-Tz-iBZ">
+            <rect key="frame" x="0.0" y="0.0" width="150" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lio-Wz-SrA">
+                    <rect key="frame" x="0.0" y="0.0" width="150" height="45"/>
+                    <color key="backgroundColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <inset key="imageEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Logout Mozo" image="ic_logout">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="tapped:" destination="-1" eventType="touchUpInside" id="GPK-Ab-JCc"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="lio-Wz-SrA" firstAttribute="leading" secondItem="SGY-F2-pyr" secondAttribute="leading" id="08t-yA-cOJ"/>
+                <constraint firstItem="SGY-F2-pyr" firstAttribute="trailing" secondItem="lio-Wz-SrA" secondAttribute="trailing" id="Jzy-SM-2yA"/>
+                <constraint firstItem="lio-Wz-SrA" firstAttribute="top" secondItem="SGY-F2-pyr" secondAttribute="top" id="ZLP-jv-yzJ"/>
+                <constraint firstItem="SGY-F2-pyr" firstAttribute="bottom" secondItem="lio-Wz-SrA" secondAttribute="bottom" id="gqG-5c-ey5"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="SGY-F2-pyr"/>
+            <point key="canvasLocation" x="-50" y="-264.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_logout" width="15" height="15"/>
+    </resources>
+</document>
