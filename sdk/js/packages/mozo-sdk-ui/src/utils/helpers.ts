@@ -1,7 +1,7 @@
 //import { Element } from '@stencil/core';
 import protocolCheck from 'custom-protocol-detection'
 import { Services } from "../services"
-const uri = 'solosigners:'
+const uri = 'solosigner:'
 
 async function _checkModalAvailable() {
   const body = document.querySelector('body');
@@ -26,7 +26,7 @@ function CloseModal() {
   }
 }
 
-function _openWallet(callBack) {
+function OpenWallet(callBack) {
   protocolCheck(uri,
     async () => {
       await InstallWalletMessage()
@@ -69,7 +69,7 @@ async function AccessWalletFail() {
     const button = mozoModal.querySelector('#accessMOZOWallet');
     button.addEventListener('click', () => {
       button.setAttribute("disabled", "disabled")
-      _openWallet(() => {
+      OpenWallet(() => {
         mozoModal.closeModal()
         button.removeAttribute("disabled")
       })
@@ -162,7 +162,7 @@ async function ShowTransferSuccess(hash: string) {
   }
 }
 
-async function ShowTransferFail() {
+async function ShowTransferFail(message: string = "Server error") {
   let mozoModal = await _checkModalAvailable();
 
   if (mozoModal) {
@@ -171,7 +171,7 @@ async function ShowTransferFail() {
 
 
     modalContent.innerHTML = `
-      <mozo-message-transfer-fail>
+      <mozo-message-transfer-fail message="${message}">
       </mozo-message-transfer-fail>
       `;
 
@@ -195,5 +195,6 @@ export const ShowMessage = {
   showTransactionForm: ShowTransactionForm,
   showTransactionWallet: ShowTransactionWallet,
   showTransferSuccess: ShowTransferSuccess,
-  showTransferFail: ShowTransferFail
+  showTransferFail: ShowTransferFail,
+  openWallet: OpenWallet
 }

@@ -12,13 +12,13 @@ async function _sendRequest(url, method, data = null) {
     })
   };
 
-  if(data) {
+  if (data) {
     options["body"] = JSON.stringify(data)
   }
 
   await fetch(request, options)
     .then(async function (response) {
-      await response.json().then(function(data) {
+      await response.json().then(function (data) {
         result = data.result
       });
     })
@@ -26,7 +26,7 @@ async function _sendRequest(url, method, data = null) {
       result = err
     });
 
-   return result
+  return result
 }
 
 export async function post(url, data = null) {
@@ -36,7 +36,15 @@ export async function post(url, data = null) {
 }
 
 export async function get(url, data = null) {
+  var query = ""
 
-  return await _sendRequest(url, "GET", data)
+  if(data) {
+    var esc = encodeURIComponent;
+    query = Object.keys(data)
+    .map(k => esc(k) + '=' + esc(data[k]))
+    .join('&');
+  }
+
+  return await _sendRequest(query.trim() != "" ? (url + "?" + query) : url , "GET", null)
 
 }

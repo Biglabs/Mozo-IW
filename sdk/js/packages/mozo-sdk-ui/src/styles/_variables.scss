@@ -1,9 +1,13 @@
 $enable-rounded: true;
 
-$background: #5a9cf5;
+$primary-color: #5a9cf5;
+
+
+
+$background: $primary-color;
 $hover-background: #006dff;
 $active-background: #0c56ba;
-$disabled-background: #f2f2f2;
+$disabled-background: #cacaca;
 
 $border: $background;
 $hover-border: $hover-background;
@@ -15,7 +19,12 @@ $line-height: 18px;
 $border-radius: 5px;
 
 $padding-x: 15px;
-$padding-y: 10px;
+$padding-y: 12px;
 
 $input-border: #d1d7dd;
 $input-active-border: $background;
+
+$text-color: #141a22;
+$text-error: #f25250;
+$label-color: #969696;
+$text-note-color: #c1c1c1;

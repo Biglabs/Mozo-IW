@@ -5,7 +5,8 @@ export const config: Config = {
   namespace: 'mozo-sdk-ui',
   bundles: [
     { components: ['my-component'] },
-    { components: ['mozo-transfer'] }
+    { components: ['mozo-transfer'] },
+    { components: ['mozo-offchain'] }
   ],
   globalStyle: 'src/styles/app.scss',
   plugins: [

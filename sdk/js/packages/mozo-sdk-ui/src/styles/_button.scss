@@ -45,6 +45,7 @@
       background-color: $disabled-background;
       border-color: $disabled-border;
       cursor: not-allowed;
+      opacity: 0.3;
     }
     
     &.w-md {

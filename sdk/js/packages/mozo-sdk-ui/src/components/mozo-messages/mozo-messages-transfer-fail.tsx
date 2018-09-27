@@ -1,38 +1,30 @@
-import { Component, Method } from "@stencil/core";
+import { Component, Method, Prop } from "@stencil/core";
 
 @Component({
   tag: 'mozo-message-transfer-fail',
   styleUrl: 'mozo-messages.scss'
 })
 export class MozoMessageTransferFail {
-  
+
+  @Prop() message: string = ""
+ 
   @Method()
   async transferMozo(e) {
     e.preventDefault()
   }
   render() {
-
+    console.log(this.message)
     return (
       <div class="mozo-form text-center">
-        <div class="form-group">
-          <svg xmlns="http://www.w3.org/2000/svg" width="165" height="60" viewBox="0 0 165 100">
-            <g fill="none" fill-rule="evenodd">
-              <g transform="translate(65)">
-                <circle cx="50" cy="50" r="50" fill="#5A9CF5" fill-rule="nonzero" />
-                <path fill="#FFF" d="M74.76 34.133c.16.323.24.564.24.726 0 .16-.08.403-.24.725l-29.928 38.69c-.481.484-.842.726-1.082.726-.4 0-.801-.202-1.202-.605L25.601 57.952l-.36-.363c-.16-.322-.241-.564-.241-.725 0-.08.08-.282.24-.605l.24-.242c2.244-2.418 4.007-4.272 5.29-5.561.48-.484.8-.726.96-.726.321 0 .722.242 1.203.726l9.615 9.43 24.039-31.073c.16-.161.4-.242.72-.242.241 0 .522.081.842.242l6.61 5.32z" />
-              </g>
-              <g fill="#5A9CF5" fill-rule="nonzero" transform="translate(0 33)">
-                <rect width="59" height="5" rx="2.5" />
-                <rect width="14" height="5" x="45" y="30" rx="2.5" />
-                <rect width="29" height="5" x="26" y="15" rx="2.5" />
-              </g>
-            </g>
+        <div class="form-group mt-md">
+          <svg xmlns="http://www.w3.org/2000/svg" width="77" height="50" viewBox="0 0 77 73">
+            <path fill="#F05454" fill-rule="evenodd" d="M76.449 67.969L40.824 1.406A3.153 3.153 0 0 0 39.808.391 2.598 2.598 0 0 0 38.402 0c-.52 0-.99.13-1.406.39-.417.261-.755.6-1.016 1.016L.355 67.97c-.26.416-.377.872-.351 1.367.026.495.143.95.351 1.367.26.417.612.742 1.055.977.443.234.898.351 1.367.351h71.25c.469 0 .924-.117 1.367-.351.443-.235.794-.56 1.055-.977.208-.417.325-.872.351-1.367a2.293 2.293 0 0 0-.351-1.367zm-34.063-3.906h-7.968v-8.047h7.968v8.047zm0-14.063h-7.968V24.062h7.968V50z" />
           </svg>
         </div>
-        <h3>Your transaction is fail</h3>
-        <div class="form-group">
-          
-        </div>
+        <h3>{this.message}</h3>
+        {/* <div class="form-group">
+
+        </div> */}
         {/* <div class="form-group">
           <input type="text" value={this.toAddressState} onInput={(e) => this.handleChangeAddress(e)} />
           <label>Receiver Address</label>
