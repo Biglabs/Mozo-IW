@@ -133,9 +133,15 @@ function getTokenInfo() {
     request(options, function(error, response, body) {
       console.log(body);
       console.log(response.statusCode);
-      if (!error && response.statusCode == 200) {
-        token_info = JSON.parse(body);
-        resolve(token_info);
+      if (!error) {
+        if (response.statusCode == 200) {
+          token_info = JSON.parse(body);
+          resolve(token_info);
+        } else {
+          console.log(response.statusCode);
+          console.log(body);
+          resolve(null);
+        }
       } else {
         console.log(error);
         reject(error);
@@ -174,9 +180,19 @@ exports.createTransaction = function(tx_info, res) {
       request(options, function(error, response, body) {
         console.log(JSON.stringify(options));
         console.log(response.statusCode);
-        if (!error && response.statusCode == 200) {
-          console.log("Transaction info: " + JSON.stringify(body));
-          confirmTransaction(body, res);
+        if (!error) {
+          if (response.statusCode == 200) {
+            console.log("Transaction info: " + JSON.stringify(body));
+            confirmTransaction(body, res);
+          } else {
+            console.log(response.statusCode);
+            console.log(body);
+            let response_data = {
+              status: "ERROR",
+              error: ERRORS.INTERNAL_ERROR
+            };
+            res.send({ result : response_data });
+          }
         } else {
           console.log(error);
           let response_data = {
@@ -189,6 +205,11 @@ exports.createTransaction = function(tx_info, res) {
     }
   }, function(err) {
     console.log(err);
+    let response_data = {
+      status: "ERROR",
+      error: ERRORS.INTERNAL_ERROR
+    };
+    res.send({ result : response_data });
   });
 
 };
@@ -278,16 +299,19 @@ function sendSignRequest(signed_req, callback) {
   options.body = JSON.parse(signed_req.result.signedTransaction);
 
   request(options, function(error, response, body) {
-    console.log(response.statusCode);
-    if (!error && response.statusCode == 200) {
+    if (!error) {
       console.log(JSON.stringify(body));
-      response_data = {
-        status: "SUCCESS",
-        data: body
-      };
+      if (response.statusCode == 200) {
+        response_data = {
+          status: "SUCCESS",
+          data: body
+        };
+      } else {
+        console.log(response.statusCode);
+        response_data.error = ERRORS.INTERNAL_ERROR;
+      }
     } else {
       console.log(error);
-      console.log(body);
       response_data.error = ERRORS.INTERNAL_ERROR;
     }
     signHttpCallback.send({ result : response_data });
@@ -337,10 +361,16 @@ exports.getWalletBalance = function(network) {
 
   return new Promise(function(resolve, reject) {
     request(options, function(error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log("Balance Info: " + body);
-        balance_info = JSON.parse(body);
-        resolve(balance_info);
+      if (!error) {
+        if (response.statusCode == 200) {
+          console.log("Balance Info: " + body);
+          balance_info = JSON.parse(body);
+          resolve(balance_info);
+        } else {
+          console.log(response.statusCode);
+          console.log(body);
+          resolve(null);
+        }
       } else {
         console.log(error);
         reject(error);
@@ -384,12 +414,15 @@ exports.getTransactionHistory = function(network) {
 
   return new Promise(function(resolve, reject) {
     request(options, function(error, response, body) {
-      console.log(body);
-      console.log(response.statusCode);
-      if (!error && response.statusCode == 200) {
-        console.log("Tx History: " + body);
-        txhistory = JSON.parse(body);
-        resolve(txhistory);
+      if (!error) {
+        console.log(body);
+        if (response.statusCode == 200) {
+          txhistory = JSON.parse(body);
+          resolve(txhistory);
+        } else {
+          console.log(response.statusCode);
+          resolve(null);
+        }
       } else {
         console.log(error);
         reject(error);

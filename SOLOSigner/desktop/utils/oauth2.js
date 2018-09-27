@@ -1,4 +1,5 @@
 
+const main = require('../main');
 const app_config = require("../app_settings").APP_SETTINGS;
 const constants = require("../constants").CONSTANTS;
 
@@ -42,6 +43,8 @@ function isTokenValid() {
     return true;
   }, function(err) {
     console.log('Error refreshing access token: ', error.message);
+    userReference.deleteAll();
+    main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
     return false;
   });
 }
