@@ -170,12 +170,13 @@ exports.createTransaction = function(tx_info, res) {
   getTokenInfo().then(function(token_info) {
     if (token_info) {
       console.log("Real value: " + tx_info.value * Math.pow(10, token_info.decimals));
-      options.body.outputs = [
+      let outputs_tx = [
         {
           addresses: [ tx_info.to ],
           value: tx_info.value * Math.pow(10, token_info.decimals)
         }
       ];
+      options.body.outputs = outputs_tx;
 
       request(options, function(error, response, body) {
         console.log(JSON.stringify(options));
@@ -183,6 +184,7 @@ exports.createTransaction = function(tx_info, res) {
         if (!error) {
           if (response.statusCode == 200) {
             console.log("Transaction info: " + JSON.stringify(body));
+            body.tx.outputs = outputs_tx;
             confirmTransaction(body, res);
           } else {
             console.log(response.statusCode);
