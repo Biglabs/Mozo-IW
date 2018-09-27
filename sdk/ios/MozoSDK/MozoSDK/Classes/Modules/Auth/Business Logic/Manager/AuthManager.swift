@@ -13,20 +13,30 @@ typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?,
 
 class AuthManager : NSObject {
     private (set) var currentAuthorizationFlow: OIDAuthorizationFlowSession?
+    var apiManager : ApiManager? {
+        didSet {
+            authState = AuthDataManager.loadAuthState()
+            if authState != nil {
+                checkAuthorization()
+            }
+        }
+    }
     
     // A property to store the auth state
     private (set) var authState: OIDAuthState?
     
     override init() {
         super.init()
-        authState = AuthDataManager.loadAuthState()
-        if authState != nil {
-            checkAuthorization()
-        }
     }
     
-    private func checkAuthorization(){
+    private func clearAll() {
+        AccessTokenManager.clearToken()
+        SessionStoreManager.clearCurrentUser()
+    }
+    
+    private func checkRefreshToken() {
         let expiresAt : Date = (authState?.lastTokenResponse?.accessTokenExpirationDate)!
+        print("Check authorization, expires at: \(expiresAt)")
         if(expiresAt.timeIntervalSinceNow < 60)
         {
             print("Token expired, refresh token.")
@@ -38,6 +48,17 @@ class AuthManager : NSObject {
                 AccessTokenManager.saveToken(accessToken)
             }, additionalRefreshParameters: additionalParams)
         }
+    }
+    
+    private func checkAuthorization(){
+        print("Check authorization, try request.")
+        apiManager?.getTokenInfoFromAddress("").catch({ (err) in
+            let error = err as! ConnectionError
+            if error == ConnectionError.authenticationRequired {
+                print("Token expired, clear token and user info")
+                self.clearAll()
+            }
+        })
     }
     
     func setCurrentAuthorizationFlow(_ authorizationFlow: OIDAuthorizationFlowSession?) {

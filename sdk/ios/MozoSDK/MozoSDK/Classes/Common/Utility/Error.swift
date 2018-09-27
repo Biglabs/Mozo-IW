@@ -40,9 +40,16 @@ extension ConnectionError: LocalizedError {
     }
 }
 
+extension ConnectionError : Equatable {
+    public static func == (leftSide: ConnectionError, rightSide: ConnectionError) -> Bool {
+        return leftSide.errorDescription == rightSide.errorDescription
+    }
+}
+
 public enum SystemError: Error {
     case incorrectURL
     case incorrectCodeExchangeRequest
+    case noAuthen
 }
 
 extension SystemError: LocalizedError {
@@ -52,6 +59,8 @@ extension SystemError: LocalizedError {
             return "Incorrect URL"
         case .incorrectCodeExchangeRequest:
             return "Incorrect Code Exchange Request"
+        case .noAuthen:
+            return "User is an anonymous user."
         }
     }
 }
