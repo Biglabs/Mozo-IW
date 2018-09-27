@@ -19,26 +19,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ylH-Vg-TF2" customClass="MozoSigninView" customModule="MozoSDK">
-                                <rect key="frame" x="105" y="115" width="165" height="45"/>
+                                <rect key="frame" x="105" y="114" width="165" height="45"/>
                                 <color key="backgroundColor" red="0.56792475657608976" green="1" blue="0.52416137451183964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="165" id="DHY-wU-e3s"/>
                                     <constraint firstAttribute="height" constant="45" id="ng7-E7-s11"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ro-3f-xiu" customClass="MozoSendView" customModule="MozoSDK">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ro-3f-xiu" customClass="MozoSendView" customModule="MozoSDK">
                                 <rect key="frame" x="112" y="191" width="150" height="45"/>
                                 <color key="backgroundColor" red="0.0" green="0.42745098040000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="tVa-lF-Svi"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vaz-of-med" customClass="MozoLogoutView" customModule="MozoSDK">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vaz-of-med" customClass="MozoLogoutView" customModule="MozoSDK">
                                 <rect key="frame" x="105" y="255" width="165" height="45"/>
                                 <color key="backgroundColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="Aiv-ho-Wba"/>
                                 </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oEv-cP-DG5" customClass="MozoBalanceView" customModule="MozoSDK">
+                                <rect key="frame" x="67" y="336" width="270" height="196"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showDetail" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

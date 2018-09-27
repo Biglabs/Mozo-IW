@@ -18,6 +18,7 @@ public struct Theme {
     public var highlight: UIColor = UIColor(hexString: "003c8d")
     public var main: UIColor = UIColor(hexString: "5a9cf5")
     public var border: UIColor = UIColor(hexString: "e0e0e0")
+    public var borderInside: UIColor = UIColor(hexString: "99aac2")
     public var background: UIColor = UIColor(hexString: "fff")
     public var menu: UIColor = UIColor(hexString: "f3f3f3")
     public var error: UIColor = UIColor(hexString: "f05454")

@@ -8,6 +8,7 @@
 import UIKit
 
 @IBDesignable class MozoView: UIView {
+    @IBOutlet var containerView: UIView!
     override init(frame: CGRect) {
         super.init(frame: frame)
         loadViewFromNib()
@@ -37,6 +38,20 @@ import UIKit
         
     }
     
+    func updateView() {
+        containerView.removeFromSuperview()
+        loadViewFromNib()
+        setNeedsLayout()
+    }
+    
     func loadViewFromNib() {
+        if !identifier().isEmpty {
+            containerView = loadView(identifier: identifier())
+            addSubview(containerView)
+        }
+    }
+    
+    func identifier() -> String {
+        return ""
     }
 }

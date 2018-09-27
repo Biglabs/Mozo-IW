@@ -8,12 +8,10 @@
 import Foundation
 import UIKit
 @IBDesignable class MozoSigninView: MozoView {
-    @IBOutlet var containerView: UIView!
     @IBOutlet weak var button: UIButton!
     
-    override func loadViewFromNib() {
-        containerView = loadView(identifier: "MozoSigninView")
-        addSubview(containerView)
+    override func identifier() -> String {
+        return "MozoSigninView"
     }
     
     @IBAction func tapped(_ sender: Any) {

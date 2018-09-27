@@ -8,12 +8,10 @@
 import UIKit
 
 @IBDesignable class MozoSendView: MozoView {
-    @IBOutlet var containerView: UIView!
     @IBOutlet weak var button: UIButton!
     
-    override func loadViewFromNib() {
-        containerView = loadView(identifier: "MozoSendView")
-        addSubview(containerView)
+    override func identifier() -> String {
+        return "MozoSendView"
     }
     
     @IBAction func touchedUpInside(_ sender: Any) {

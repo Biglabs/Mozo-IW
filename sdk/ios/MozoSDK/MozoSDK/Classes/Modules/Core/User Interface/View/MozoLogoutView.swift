@@ -8,12 +8,10 @@
 import UIKit
 
 @IBDesignable class MozoLogoutView: MozoView {
-    @IBOutlet var containerView: UIView!
     @IBOutlet weak var button: UIButton!
     
-    override func loadViewFromNib() {
-        containerView = loadView(identifier: "MozoLogoutView")
-        addSubview(containerView)
+    override func identifier() -> String {
+        return "MozoLogoutView"
     }
     
     @IBAction func tapped(_ sender: Any) {
