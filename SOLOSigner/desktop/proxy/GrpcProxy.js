@@ -170,12 +170,6 @@ app.get('/getTxHistory', (req, res, next) => {
   });
 });
 
-app.get('/logout-app', (req, res, next) => {
-  userReference.deleteAll();
-  res.send({ result : "SUCCESS" });
-  main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
-});
-
 var sjcl = require('../utils/sjcl');
 var RNCryptor = require('../utils/rncryptor');
 

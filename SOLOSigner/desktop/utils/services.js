@@ -76,6 +76,11 @@ getUserProfile();
 
 exports.getUserProfile = getUserProfile;
 
+exports.logOut = function() {
+  userReference.deleteAll();
+  main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
+}
+
 exports.updateWalletInfo = function() {
   const app_info = userReference.get("App");
   if (!app_info) {

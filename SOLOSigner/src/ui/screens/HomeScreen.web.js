@@ -33,7 +33,6 @@ export default class HomeScreen extends React.Component {
         }
     }
 
-
     displayIcSoloTitle(){
         //check platform
         if(Platform.OS.toUpperCase() ==="WEB"){
@@ -200,6 +199,25 @@ export default class HomeScreen extends React.Component {
         }
     }
 
+  logOutApp() {
+    if(Platform.OS.toUpperCase() ==="WEB"){
+      var main_services = require('electron').remote.require("./utils/services.js");
+      main_services.logOut();
+    }
+  }
+
+  displayLogOutApp() {
+    if(Platform.OS.toUpperCase() ==="WEB"){
+      return (
+          <TouchableOpacity
+              style={styles.buttons}
+              onPress={() => this.logOutApp()}>
+              <Text style={styles.buttons_text}>Log Out</Text>
+          </TouchableOpacity>
+      );
+    }
+  }
+
     render() {
         return (
             <View style={styles.container}>
@@ -277,6 +295,9 @@ export default class HomeScreen extends React.Component {
                 {this.displayPaperWallet()}
 
                 <View style={styles.dash}/>
+
+            {this.displayLogOutApp()}
+            <View style={styles.dash}/>
 
                 <View style={styles.content}>
                 </View>
