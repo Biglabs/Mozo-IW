@@ -15,6 +15,7 @@ class CoreWireframe : MozoWireframe {
     var txDetailWireframe: TxDetailWireframe?
     var corePresenter: CorePresenter?
     
+    // MARK: Request
     func requestForAuthentication() {
         presentWaitingInterface()
         corePresenter?.requestForAuthentication(module: Module.Wallet)
@@ -35,6 +36,7 @@ class CoreWireframe : MozoWireframe {
         })
     }
     
+    // MARK: Communication with others wireframe
     func authenticate() {
         authWireframe?.presentInitialAuthInterface()
     }

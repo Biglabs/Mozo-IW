@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import PromiseKit
 
 public class MozoSDK {
     private static var moduleDependencies = ModuleDependencies()
@@ -30,5 +31,9 @@ public class MozoSDK {
     
     public static func transferMozo() {
         moduleDependencies.transferMozo()
+    }
+    
+    public static func loadBalanceInfo() -> Promise<DetailInfoDisplayItem> {
+        return (moduleDependencies.loadBalanceInfo())
     }
 }

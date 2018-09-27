@@ -72,16 +72,30 @@ public enum Module {
     }
 }
 
-@objc public enum BalanceDisplayType: Int {
-    case Normal
-    case Detail
-    case DetailWithQR
+public enum BalanceDisplayType {
+    case NormalBalance
+    case DetailBalance
+    case Full
+    case NormalAddress
+    case DetailAddress
 
-    public var value : String {
+    public var id : String {
         switch self {
-        case .Normal: return "MozoBalanceView"
-        case .Detail: return "MozoBalanceDetailQRView"
-        case .DetailWithQR: return "MozoBalanceDetailQRView"
+        case .NormalBalance: return "MozoBalanceView"
+        case .DetailBalance: return "MozoBalanceDetailView"
+        case .Full: return "MozoBalanceDetailQRView"
+        case .NormalAddress: return "MozoBalanceView"
+        case .DetailAddress: return "MozoBalanceView"
+        }
+    }
+    
+    public var anonymousId : String {
+        switch self {
+        case .NormalBalance: return "MozoBalanceDetailQRLoginView"
+        case .DetailBalance: return "MozoBalanceDetailQRLoginView"
+        case .Full: return "MozoBalanceDetailQRLoginView"
+        case .NormalAddress: return "MozoBalanceDetailQRLoginView"
+        case .DetailAddress: return "MozoBalanceDetailQRLoginView"
         }
     }
 }

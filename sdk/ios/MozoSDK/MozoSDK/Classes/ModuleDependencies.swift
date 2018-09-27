@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SwiftyJSON
+import PromiseKit
 
 class ModuleDependencies {
     // MARK: - Properties
@@ -54,6 +55,10 @@ class ModuleDependencies {
         coreWireframe.requestForTransfer()
     }
     
+    func loadBalanceInfo() -> Promise<DetailInfoDisplayItem>{
+        return (coreWireframe.corePresenter?.coreInteractorService?.loadBalanceInfo())!
+    }
+    
     func configureDependencies() {
         // MARK: Core
         coreDependencies()
@@ -79,6 +84,7 @@ class ModuleDependencies {
         coreInteractor.output = corePresenter
         
         corePresenter.coreInteractor = coreInteractor
+        corePresenter.coreInteractorService = coreInteractor
         corePresenter.coreWireframe = coreWireframe
         
         rootWireframe.mozoNavigationController.coreEventHandler = corePresenter
@@ -127,6 +133,7 @@ class ModuleDependencies {
         let authPresenter = AuthPresenter()
         
         let authManager = AuthManager()
+        authManager.apiManager = apiManager
         let authInteractor = AuthInteractor(authManager: authManager)
         authInteractor.output = authPresenter
         

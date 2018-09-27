@@ -66,3 +66,25 @@ extension CoreInteractor: CoreInteractorInput {
         AccessTokenManager.clearToken()
     }
 }
+
+extension CoreInteractor: CoreInteractorService {
+    func loadBalanceInfo() -> Promise<DetailInfoDisplayItem> {
+        return Promise { seal in
+            // TODO: Check authen and authorization first
+            if let userObj = SessionStoreManager.loadCurrentUser() {
+                if let address = userObj.profile?.walletInfo?.offchainAddress {
+                    print("Address used to load balance: \(address)")
+                    _ = apiManager.getTokenInfoFromAddress(address)
+                        .done { (tokenInfo) in
+                            let item = DetailInfoDisplayItem(tokenInfo: tokenInfo)
+                            seal.fulfill(item)
+                        }.catch({ (err) in
+                            seal.reject(err)
+                        })
+                }
+            } else {
+                seal.reject(SystemError.noAuthen)
+            }
+        }
+    }
+}

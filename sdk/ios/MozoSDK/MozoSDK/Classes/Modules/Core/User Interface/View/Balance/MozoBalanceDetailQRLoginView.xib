@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoBalanceView" customModule="MozoSDK" customModuleProvider="target">
+            <connections>
+                <outlet property="lbTitle" destination="D5P-ED-94u" id="R1T-nU-NOy"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="MozoBalanceDetailQRLoginView" id="3fr-ws-rUq">
+            <rect key="frame" x="0.0" y="0.0" width="335" height="164"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mozo Offchain Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D5P-ED-94u">
+                    <rect key="frame" x="16" y="14" width="131" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" restorationIdentifier="MozoRequireLoginView" translatesAutoresizingMaskIntoConstraints="NO" id="Jcm-fi-nMV">
+                    <rect key="frame" x="57" y="72" width="220" height="20"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You must" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaN-32-QHG">
+                            <rect key="frame" x="0.0" y="2" width="57" height="16"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHI-lv-pis">
+                            <rect key="frame" x="59" y="-4" width="34" height="28"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="Login"/>
+                            <connections>
+                                <action selector="touchedLogin:" destination="-1" eventType="touchUpInside" id="cWw-hm-C1F"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="to use this function" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W7J-AC-YMN">
+                            <rect key="frame" x="95" y="2" width="117" height="16"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="iHI-lv-pis" firstAttribute="centerY" secondItem="qaN-32-QHG" secondAttribute="centerY" id="Ce1-tG-I3z"/>
+                        <constraint firstItem="W7J-AC-YMN" firstAttribute="leading" secondItem="iHI-lv-pis" secondAttribute="trailing" constant="2" id="FmE-b2-8iB"/>
+                        <constraint firstItem="qaN-32-QHG" firstAttribute="leading" secondItem="2uo-bY-l4J" secondAttribute="leading" id="Mpd-l1-KXX"/>
+                        <constraint firstAttribute="width" constant="220" id="Oa6-vP-dsl"/>
+                        <constraint firstAttribute="height" constant="20" id="WuL-Jm-cj3"/>
+                        <constraint firstItem="W7J-AC-YMN" firstAttribute="centerY" secondItem="iHI-lv-pis" secondAttribute="centerY" id="s9h-Of-DFt"/>
+                        <constraint firstItem="iHI-lv-pis" firstAttribute="leading" secondItem="qaN-32-QHG" secondAttribute="trailing" constant="2" id="wPc-Id-Q9P"/>
+                        <constraint firstItem="qaN-32-QHG" firstAttribute="centerY" secondItem="Jcm-fi-nMV" secondAttribute="centerY" id="wiz-Gx-ZCr"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="2uo-bY-l4J"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Jcm-fi-nMV" firstAttribute="centerX" secondItem="3fr-ws-rUq" secondAttribute="centerX" id="P56-86-CRN"/>
+                <constraint firstItem="D5P-ED-94u" firstAttribute="leading" secondItem="hnQ-M3-xTO" secondAttribute="leading" constant="16" id="SJd-xA-wT3"/>
+                <constraint firstItem="D5P-ED-94u" firstAttribute="top" secondItem="hnQ-M3-xTO" secondAttribute="top" constant="14" id="sTx-eV-smX"/>
+                <constraint firstItem="Jcm-fi-nMV" firstAttribute="centerY" secondItem="3fr-ws-rUq" secondAttribute="centerY" id="zrC-vR-KJ9"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="hnQ-M3-xTO"/>
+            <point key="canvasLocation" x="-106.5" y="-187"/>
+        </view>
+    </objects>
+</document>

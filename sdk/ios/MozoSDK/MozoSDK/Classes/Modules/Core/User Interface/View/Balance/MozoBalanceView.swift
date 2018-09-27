@@ -8,23 +8,40 @@
 import Foundation
 
 @IBDesignable class MozoBalanceView : MozoView {
+    @IBOutlet weak var lbTitle: UILabel!
+    @IBOutlet weak var lbBalance: UILabel!
+    @IBOutlet weak var lbBalanceExchange: UILabel!
+    @IBOutlet weak var lbAddress: UILabel!
+    @IBOutlet weak var btnCopy: UIButton!
+    @IBOutlet weak var imgQR: UIImageView!
+    @IBOutlet weak var btnShowQR: UIButton!
+    
     //MARK: Customizable from Interface Builder
-    @IBInspectable public var showDetail: Bool = false {
+    @IBInspectable public var showFullBalanceAndAddressDetail: Bool = true {
         didSet {
-            displayType = .Detail
+            displayType = .Full
             updateView()
         }
     }
-    @IBInspectable public var showQrCode: Bool = false {
+    
+    @IBInspectable public var showOnlyBalanceDetail: Bool = false {
         didSet {
-            displayType = .DetailWithQR
+            displayType = showOnlyBalanceDetail ? .DetailBalance : .NormalBalance
             updateView()
         }
     }
-    var displayType: BalanceDisplayType = BalanceDisplayType.Normal
+    
+    @IBInspectable public var showOnlyAddressDetail: Bool = false {
+        didSet {
+            displayType = showOnlyAddressDetail ? .DetailAddress : .NormalAddress
+            updateView()
+        }
+    }
+    var displayType: BalanceDisplayType = BalanceDisplayType.Full
+    var isAnonymous: Bool = false
     
     override func identifier() -> String {
-        return displayType.value
+        return isAnonymous ? displayType.anonymousId : displayType.id
     }
     
     override func layoutSubviews() {
@@ -37,7 +54,61 @@ import Foundation
         layer.borderColor = ThemeManager.shared.borderInside.cgColor
     }
     
-    func updateData() {
+    override func loadViewFromNib() {
+        if AccessTokenManager.getAccessToken() == nil {
+            isAnonymous = true
+        } else {
+            isAnonymous = false
+        }
+        super.loadViewFromNib()
+        loadDisplayData()
+    }
+    
+    func loadDisplayData() {
+        if !isAnonymous {
+            print("Load display data.")
+            let item = DetailInfoDisplayItem(balance: 0.0, address: "")
+            updateData(displayItem: item)
+            _ = MozoSDK.loadBalanceInfo().done { (item) in
+                    print("Receive display data: \(item)")
+                    self.updateData(displayItem: item)
+                }.catch({ (error) in
+                    
+                })
+        }
+    }
+    
+    func updateData(displayItem: DetailInfoDisplayItem) {
+        if lbBalance != nil {
+            lbBalance.text = "\(displayItem.balance)"
+            lbAddress.text = displayItem.address
+            let qrImg = DisplayUtils.generateQRCode(from: displayItem.address)
+            imgQR.image = qrImg
+        }
+    }
+    
+    @IBAction func touchCopy(_ sender: Any) {
+        UIPasteboard.general.string = lbAddress.text
+    }
+    
+    @IBAction func touchedShowQR(_ sender: Any) {
         
+    }
+    @IBAction func touchedLogin(_ sender: Any) {
+        MozoSDK.authenticate()
+        MozoSDK.setAuthDelegate(self)
+    }
+}
+
+extension MozoBalanceView : AuthenticationDelegate {
+    func mozoAuthenticationDidFinish() {
+        updateView()
+    }
+    
+    func mozoLogoutDidFinish() {
+        
+    }
+    
+    func mozoUIDidCloseAll() {
     }
 }

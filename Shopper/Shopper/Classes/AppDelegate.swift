@@ -18,10 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MozoSDK.configure(key: "")
-//        appDependencies.installRootViewControllerIntoWindow(window!)
-        
-//        self.window = UIWindow(frame: UIScreen.main.bounds)
-//        MozoSDK.authenticate()
         
         return true
     }

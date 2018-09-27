@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 protocol CoreInteractorInput {
     func checkForAuthentication(module: Module)
@@ -16,4 +17,8 @@ protocol CoreInteractorInput {
 protocol CoreInteractorOutput {
     func finishedCheckAuthentication(keepGoing: Bool, module: Module)
     func finishedHandleAferAuth()
+}
+
+protocol CoreInteractorService {
+    func loadBalanceInfo() -> Promise<DetailInfoDisplayItem>
 }

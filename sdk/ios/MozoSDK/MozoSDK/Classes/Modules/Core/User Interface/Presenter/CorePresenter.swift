@@ -10,6 +10,7 @@ import Foundation
 class CorePresenter : NSObject {
     var coreWireframe : CoreWireframe?
     var coreInteractor : CoreInteractorInput?
+    var coreInteractorService : CoreInteractorService?
     weak var authDelegate: AuthenticationDelegate?
 }
 

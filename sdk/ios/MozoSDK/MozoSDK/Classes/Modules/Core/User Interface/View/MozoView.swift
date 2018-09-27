@@ -45,8 +45,9 @@ import UIKit
     }
     
     func loadViewFromNib() {
-        if !identifier().isEmpty {
-            containerView = loadView(identifier: identifier())
+        let iden = identifier()
+        if !iden.isEmpty {
+            containerView = loadView(identifier: iden)
             addSubview(containerView)
         }
     }

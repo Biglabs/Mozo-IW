@@ -10,7 +10,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoBalanceView" customModule="MozoSDK" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoBalanceView" customModule="MozoSDK" customModuleProvider="target">
+            <connections>
+                <outlet property="btnCopy" destination="Zqg-Ua-Jl4" id="cKV-gK-iRB"/>
+                <outlet property="btnShowQR" destination="Zdz-f4-6zU" id="kA2-hP-9wC"/>
+                <outlet property="imgQR" destination="TlI-89-W6G" id="f83-Ak-pff"/>
+                <outlet property="lbAddress" destination="0QS-hJ-ML6" id="F4G-bJ-uL8"/>
+                <outlet property="lbBalance" destination="zJg-x1-CVq" id="bX9-oN-upM"/>
+                <outlet property="lbBalanceExchange" destination="Gs0-D8-241" id="HHR-0G-WpJ"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" restorationIdentifier="MozoBalanceDetailQRView" id="93a-SD-5dj">
             <rect key="frame" x="0.0" y="0.0" width="335" height="164"/>
@@ -42,13 +51,13 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Mozo Offchain Wallet Address" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKd-gm-jU3">
-                    <rect key="frame" x="16" y="119" width="200" height="15"/>
+                    <rect key="frame" x="10" y="123" width="200" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x97309d360C015695cf50892f035E516ccA1898F0" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0QS-hJ-ML6">
-                    <rect key="frame" x="16" y="144" width="105" height="15"/>
+                    <rect key="frame" x="16" y="148" width="105" height="15"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="105" id="jz6-RX-Zdh"/>
                     </constraints>
@@ -57,7 +66,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zqg-Ua-Jl4">
-                    <rect key="frame" x="129" y="142" width="55" height="18"/>
+                    <rect key="frame" x="129" y="146" width="55" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="55" id="4HJ-uc-ng4"/>
                     </constraints>
@@ -66,6 +75,9 @@
                     <state key="normal" title="Copy" image="ic_copy_content">
                         <color key="titleColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="touchCopy:" destination="-1" eventType="touchUpInside" id="0eu-zX-ceq"/>
+                    </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TlI-89-W6G">
                     <rect key="frame" x="228" y="16" width="92" height="95"/>
@@ -74,22 +86,25 @@
                         <constraint firstAttribute="width" constant="92" id="Wac-fb-aML"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zdz-f4-6zU">
-                    <rect key="frame" x="238" y="116" width="72" height="24"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zdz-f4-6zU">
+                    <rect key="frame" x="238" y="111" width="72" height="24"/>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <inset key="titleEdgeInsets" minX="0.0" minY="-10" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Show QR Code">
                         <color key="titleColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="touchedShowQR:" destination="-1" eventType="touchUpInside" id="1pX-6p-NFx"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="TlI-89-W6G" firstAttribute="top" secondItem="my7-HV-Gpz" secondAttribute="top" constant="16" id="1qq-xc-b9e"/>
-                <constraint firstItem="Zdz-f4-6zU" firstAttribute="top" secondItem="TlI-89-W6G" secondAttribute="bottom" constant="5" id="7BA-L8-V6L"/>
+                <constraint firstItem="Zdz-f4-6zU" firstAttribute="top" secondItem="TlI-89-W6G" secondAttribute="bottom" id="7BA-L8-V6L"/>
                 <constraint firstItem="0QS-hJ-ML6" firstAttribute="leading" secondItem="my7-HV-Gpz" secondAttribute="leading" constant="16" id="9pn-mr-H5g"/>
-                <constraint firstItem="TlI-89-W6G" firstAttribute="leading" secondItem="my7-HV-Gpz" secondAttribute="leading" constant="228" id="DKK-LP-XS7"/>
                 <constraint firstItem="ixf-Rz-AMb" firstAttribute="leading" secondItem="my7-HV-Gpz" secondAttribute="leading" constant="14" id="Glv-dr-cci"/>
-                <constraint firstItem="YKd-gm-jU3" firstAttribute="leading" secondItem="my7-HV-Gpz" secondAttribute="leading" constant="16" id="H8a-8A-vIO"/>
+                <constraint firstItem="YKd-gm-jU3" firstAttribute="leading" secondItem="my7-HV-Gpz" secondAttribute="leading" constant="10" id="H8a-8A-vIO"/>
                 <constraint firstItem="zJg-x1-CVq" firstAttribute="centerY" secondItem="ixf-Rz-AMb" secondAttribute="centerY" id="J5k-MK-t0A"/>
                 <constraint firstItem="Gs0-D8-241" firstAttribute="top" secondItem="zJg-x1-CVq" secondAttribute="bottom" constant="8" id="Mi6-r5-qWn"/>
                 <constraint firstItem="Zdz-f4-6zU" firstAttribute="centerX" secondItem="TlI-89-W6G" secondAttribute="centerX" id="OIe-IE-z39"/>
@@ -98,7 +113,7 @@
                 <constraint firstItem="jBQ-ju-pgx" firstAttribute="leading" secondItem="my7-HV-Gpz" secondAttribute="leading" constant="16" id="bLb-UT-heL"/>
                 <constraint firstItem="Zqg-Ua-Jl4" firstAttribute="leading" secondItem="0QS-hJ-ML6" secondAttribute="trailing" constant="8" id="f53-D0-hG6"/>
                 <constraint firstItem="Gs0-D8-241" firstAttribute="leading" secondItem="my7-HV-Gpz" secondAttribute="leading" constant="14" id="nVk-Fv-nle"/>
-                <constraint firstItem="YKd-gm-jU3" firstAttribute="top" secondItem="Gs0-D8-241" secondAttribute="bottom" constant="24" id="nxw-sF-2kk"/>
+                <constraint firstItem="YKd-gm-jU3" firstAttribute="top" secondItem="Gs0-D8-241" secondAttribute="bottom" constant="28" id="nxw-sF-2kk"/>
                 <constraint firstItem="jBQ-ju-pgx" firstAttribute="top" secondItem="my7-HV-Gpz" secondAttribute="top" constant="14" id="r2D-08-RKQ"/>
                 <constraint firstItem="Zqg-Ua-Jl4" firstAttribute="centerY" secondItem="0QS-hJ-ML6" secondAttribute="centerY" id="tQq-8G-efH"/>
                 <constraint firstItem="my7-HV-Gpz" firstAttribute="trailing" secondItem="TlI-89-W6G" secondAttribute="trailing" constant="15" id="xNc-YD-S9J"/>
