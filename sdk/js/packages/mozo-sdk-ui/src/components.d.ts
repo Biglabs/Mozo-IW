@@ -63,6 +63,7 @@ declare global {
 
   namespace StencilComponents {
     interface MozoMessageTransferFail {
+      'message': string;
       'transferMozo': (e: any) => Promise<void>;
     }
   }
@@ -86,7 +87,7 @@ declare global {
   }
   namespace JSXElements {
     export interface MozoMessageTransferFailAttributes extends HTMLAttributes {
-
+      'message'?: string;
     }
   }
 }
@@ -159,6 +160,44 @@ declare global {
     export interface MozoModalAttributes extends HTMLAttributes {
       'content'?: HTMLElement;
       'title'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface MozoOffchain {
+      'amount': number;
+      'showQrCode': boolean;
+      'toAddress': string;
+      'transferMozo': (e: any) => Promise<void>;
+    }
+  }
+
+  interface HTMLMozoOffchainElement extends StencilComponents.MozoOffchain, HTMLStencilElement {}
+
+  var HTMLMozoOffchainElement: {
+    prototype: HTMLMozoOffchainElement;
+    new (): HTMLMozoOffchainElement;
+  };
+  interface HTMLElementTagNameMap {
+    'mozo-offchain': HTMLMozoOffchainElement;
+  }
+  interface ElementTagNameMap {
+    'mozo-offchain': HTMLMozoOffchainElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'mozo-offchain': JSXElements.MozoOffchainAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface MozoOffchainAttributes extends HTMLAttributes {
+      'amount'?: number;
+      'showQrCode'?: boolean;
+      'toAddress'?: string;
     }
   }
 }

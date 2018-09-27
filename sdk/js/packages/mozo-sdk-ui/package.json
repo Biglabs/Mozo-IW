@@ -16,7 +16,9 @@
     "test.watch": "jest --watch"
   },
   "dependencies": {
-    "custom-protocol-detection": "^1.0.1"
+    "copy-to-clipboard": "^3.0.8",
+    "custom-protocol-detection": "^1.0.1",
+    "qrcode": "^1.2.2"
   },
   "devDependencies": {
     "@stencil/core": "^0.11.0",

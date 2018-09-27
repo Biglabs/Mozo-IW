@@ -18,25 +18,27 @@ export class MozoTransferForm {
   @State() toAddressState: string = "";
   @State() addressIsWrong: boolean = false;
   @State() amountIsWrong: boolean = false;
+  @State() submitDisable: boolean = false;
 
   @Element() el!: HTMLElement;
 
   @Method()
   async transferMozo(e) {
     e.preventDefault()
+    this.submitDisable = true
 
     let result = await Services.checkWallet()
     if (result) {
       if (result.status == "SUCCESS") {
         const txResult = await ShowMessage.showTransactionWallet({ to: this.toAddressState, value: this.amountState, network: "SOLO" })
-
+        this.submitDisable = false
         if (txResult) {
-          if(txResult.status == "SUCCESS"){
+          if (txResult.status == "SUCCESS") {
             ShowMessage.showTransferSuccess(txResult.data.tx.hash)
           } else {
-            ShowMessage.showTransferFail()
+            ShowMessage.showTransferFail("Your transaction is fail")
           }
-          
+
         }
       } else {
         await ShowMessage.accessWalletFail()
@@ -94,15 +96,15 @@ export class MozoTransferForm {
         <div class="form-group">
           <input type="text" value={this.toAddressState} onInput={(e) => this.handleChangeAddress(e)} />
           <label>Receiver Address</label>
-          {this.addressIsWrong && <small class="mozo-error-message">{this.toAddressState.toString().trim() == ""? "This field is required": "Recipient address is invalid"}</small>}
+          {this.addressIsWrong && <small class="text-error">{this.toAddressState.toString().trim() == "" ? "This field is required" : "Recipient address is invalid"}</small>}
         </div>
         <div class="form-group">
-          <input type="text" value={this.amountState} onInput={(e) => this.handleChangeAmount(e)}/>
+          <input type="text" value={this.amountState} onInput={(e) => this.handleChangeAmount(e)} />
           <label>Amount</label>
-          {this.amountIsWrong && <small class="mozo-error-message">{this.amountState.toString().trim() == ""? "This field is required": "Amount is not a number"}</small>}
+          {this.amountIsWrong && <small class="text-error">{this.amountState.toString().trim() == "" ? "This field is required" : "Amount is not a number"}</small>}
         </div>
         <div class="form-action">
-          <input disabled = {this.addressIsWrong || this.toAddressState.trim() == "" || this.amountIsWrong || this.amountState.toString().trim() == "" } class="mozo-btn w-xx-lg" type="button" value="Submit" onClick={(e) => this.transferMozo(e)} />
+          <input disabled={this.addressIsWrong || this.toAddressState.trim() == "" || this.amountIsWrong || this.amountState.toString().trim() == "" || this.submitDisable} class="mozo-btn w-xx-lg" type="button" value="Submit" onClick={(e) => this.transferMozo(e)} />
         </div>
       </div>
     );

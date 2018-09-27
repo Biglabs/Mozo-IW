@@ -27,6 +27,7 @@
           top: 0;
           left: 0;
           font-size: 80%;
+          color: $label-color;
       }
 
       &.logo{
@@ -43,4 +44,15 @@
           @include border-radius(0)
       }
   }
+}
+
+.form-label {
+    font-size: 80%;
+    display: inline-block;
+    margin-bottom: $padding-y;
+    color: $label-color;
+}
+
+.form-text-view {
+    margin-bottom: $padding-y;
 }
