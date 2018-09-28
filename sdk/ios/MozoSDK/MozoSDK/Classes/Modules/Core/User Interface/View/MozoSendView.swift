@@ -14,6 +14,10 @@ import UIKit
         return "MozoSendView"
     }
     
+    override func checkDisable() {
+        
+    }
+    
     @IBAction func touchedUpInside(_ sender: Any) {
         print("Touched Up Inside Button Send Mozo")
         MozoSDK.transferMozo()

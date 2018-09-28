@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoBalanceView" customModule="MozoSDK" customModuleProvider="target">
             <connections>
+                <outlet property="btnLogin" destination="iHI-lv-pis" id="cWS-Cs-6h6"/>
                 <outlet property="lbTitle" destination="D5P-ED-94u" id="R1T-nU-NOy"/>
             </connections>
         </placeholder>

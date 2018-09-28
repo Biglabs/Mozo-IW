@@ -15,11 +15,12 @@ import Foundation
     @IBOutlet weak var btnCopy: UIButton!
     @IBOutlet weak var imgQR: UIImageView!
     @IBOutlet weak var btnShowQR: UIButton!
+    @IBOutlet weak var btnLogin: UIButton!
     
     //MARK: Customizable from Interface Builder
     @IBInspectable public var showFullBalanceAndAddressDetail: Bool = true {
         didSet {
-            displayType = .Full
+            displayType = showFullBalanceAndAddressDetail ? .Full : .DetailBalance
             updateView()
         }
     }
@@ -62,26 +63,46 @@ import Foundation
         }
         super.loadViewFromNib()
         loadDisplayData()
+        setupButtonBorder()
     }
     
     func loadDisplayData() {
         if !isAnonymous {
             print("Load display data.")
-            let item = DetailInfoDisplayItem(balance: 0.0, address: "")
-            updateData(displayItem: item)
             _ = MozoSDK.loadBalanceInfo().done { (item) in
                     print("Receive display data: \(item)")
                     self.updateData(displayItem: item)
                 }.catch({ (error) in
                     
                 })
+        } else {
+            switch displayType {
+            case .DetailAddress:
+                lbTitle.text = "Your Mozo Offchain Wallet Address"
+            default: break
+            }
+            print("Type \(displayType), all target: \(btnLogin.allTargets)")
+        }
+    }
+    
+    func setupButtonBorder() {
+        if displayType == .NormalAddress {
+            let color = !isAnonymous ? ThemeManager.shared.main : ThemeManager.shared.disable
+            btnShowQR.layer.borderWidth = 1
+            btnShowQR.layer.borderColor = color.cgColor
+            btnCopy.layer.borderWidth = 1
+            btnCopy.layer.borderColor = color.cgColor
         }
     }
     
     func updateData(displayItem: DetailInfoDisplayItem) {
         if lbBalance != nil {
             lbBalance.text = "\(displayItem.balance)"
+        }
+        if lbAddress != nil {
             lbAddress.text = displayItem.address
+        }
+        if imgQR != nil && (displayType == .Full || displayType == .DetailAddress) {
             let qrImg = DisplayUtils.generateQRCode(from: displayItem.address)
             imgQR.image = qrImg
         }
@@ -95,6 +116,7 @@ import Foundation
         
     }
     @IBAction func touchedLogin(_ sender: Any) {
+        print("Touch login button")
         MozoSDK.authenticate()
         MozoSDK.setAuthDelegate(self)
     }

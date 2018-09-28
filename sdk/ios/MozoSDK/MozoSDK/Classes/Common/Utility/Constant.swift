@@ -84,17 +84,17 @@ public enum BalanceDisplayType {
         case .NormalBalance: return "MozoBalanceView"
         case .DetailBalance: return "MozoBalanceDetailView"
         case .Full: return "MozoBalanceDetailQRView"
-        case .NormalAddress: return "MozoBalanceView"
-        case .DetailAddress: return "MozoBalanceView"
+        case .NormalAddress: return "MozoAddressView"
+        case .DetailAddress: return "MozoAddressDetailView"
         }
     }
     
     public var anonymousId : String {
         switch self {
-        case .NormalBalance: return "MozoBalanceDetailQRLoginView"
-        case .DetailBalance: return "MozoBalanceDetailQRLoginView"
+        case .NormalBalance: return "MozoBalanceLoginView"
+        case .DetailBalance: return "MozoAddressDetailLoginView"
         case .Full: return "MozoBalanceDetailQRLoginView"
-        case .NormalAddress: return "MozoBalanceDetailQRLoginView"
+        case .NormalAddress: return "MozoAddressLoginView"
         case .DetailAddress: return "MozoBalanceDetailQRLoginView"
         }
     }

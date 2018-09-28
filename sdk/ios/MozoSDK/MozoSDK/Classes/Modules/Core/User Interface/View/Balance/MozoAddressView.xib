@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoBalanceView" customModule="MozoSDK" customModuleProvider="target">
             <connections>
+                <outlet property="btnCopy" destination="QvO-gt-wkZ" id="ocr-T9-ats"/>
+                <outlet property="btnShowQR" destination="mmk-eI-mEP" id="JUg-Jg-xnv"/>
                 <outlet property="lbAddress" destination="CJZ-j0-tLx" id="cmj-Mp-UX5"/>
             </connections>
         </placeholder>

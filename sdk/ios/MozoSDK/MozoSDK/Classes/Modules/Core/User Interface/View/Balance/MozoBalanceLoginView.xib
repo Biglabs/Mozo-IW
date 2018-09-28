@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoBalanceView" customModule="MozoSDK" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="MozoBalanceLoginView" id="f6p-I0-4aQ">
+            <rect key="frame" x="0.0" y="0.0" width="335" height="77"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mozo Offchain Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YhO-NG-u44">
+                    <rect key="frame" x="16" y="14" width="131" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" restorationIdentifier="MozoRequireLoginView" translatesAutoresizingMaskIntoConstraints="NO" id="zQC-PH-PKj">
+                    <rect key="frame" x="16" y="46" width="220" height="20"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You must" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JGY-1X-HTF">
+                            <rect key="frame" x="0.0" y="2" width="57" height="16"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpB-mD-dmT">
+                            <rect key="frame" x="59" y="-4" width="34" height="28"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="Login"/>
+                            <connections>
+                                <action selector="touchedLogin:" destination="-1" eventType="touchUpInside" id="lxA-Tn-62g"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="to use this function" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAS-XY-scc">
+                            <rect key="frame" x="95" y="2" width="117" height="16"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="JGY-1X-HTF" firstAttribute="centerY" secondItem="zQC-PH-PKj" secondAttribute="centerY" id="2gO-gw-H8a"/>
+                        <constraint firstItem="LAS-XY-scc" firstAttribute="leading" secondItem="jpB-mD-dmT" secondAttribute="trailing" constant="2" id="8fe-kZ-aEV"/>
+                        <constraint firstAttribute="height" constant="20" id="FUz-vQ-jMY"/>
+                        <constraint firstItem="jpB-mD-dmT" firstAttribute="centerY" secondItem="JGY-1X-HTF" secondAttribute="centerY" id="Ltg-OX-Odt"/>
+                        <constraint firstItem="LAS-XY-scc" firstAttribute="centerY" secondItem="jpB-mD-dmT" secondAttribute="centerY" id="dLh-3a-lif"/>
+                        <constraint firstItem="JGY-1X-HTF" firstAttribute="leading" secondItem="ezx-db-T6j" secondAttribute="leading" id="hdm-NO-tuh"/>
+                        <constraint firstItem="jpB-mD-dmT" firstAttribute="leading" secondItem="JGY-1X-HTF" secondAttribute="trailing" constant="2" id="jPt-ia-B2f"/>
+                        <constraint firstAttribute="width" constant="220" id="orz-d5-sXy"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="ezx-db-T6j"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="YhO-NG-u44" firstAttribute="top" secondItem="x5p-O4-9LW" secondAttribute="top" constant="14" id="7B6-qV-IXn"/>
+                <constraint firstItem="zQC-PH-PKj" firstAttribute="top" secondItem="YhO-NG-u44" secondAttribute="bottom" constant="17" id="mNv-sO-uzN"/>
+                <constraint firstItem="zQC-PH-PKj" firstAttribute="leading" secondItem="YhO-NG-u44" secondAttribute="leading" id="moS-UF-YCm"/>
+                <constraint firstItem="YhO-NG-u44" firstAttribute="leading" secondItem="x5p-O4-9LW" secondAttribute="leading" constant="16" id="xP4-Y1-PVn"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="x5p-O4-9LW"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                    <real key="value" value="0.5"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="-253" y="-260"/>
+        </view>
+    </objects>
+</document>
