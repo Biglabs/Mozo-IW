@@ -10,6 +10,8 @@ import UIKit
 import MozoSDK
 
 class DemoViewController: UIViewController {
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "DEMO COMPONENTS"
@@ -17,8 +19,9 @@ class DemoViewController: UIViewController {
         MozoSDK.setAuthDelegate(self)
     }
     
-    @IBAction func transferTapped(_ sender: Any) {
-        MozoSDK.transferMozo()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1200)
     }
     
     override func didReceiveMemoryWarning() {
