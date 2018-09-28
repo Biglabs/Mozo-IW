@@ -89,7 +89,7 @@ extension TransactionInteractor : TransactionInteractorInput {
                 self.apiManager.sendSignedTransaction(signedInterTx).done({ (receivedTx) in
                     print("Send successfully with hash: \(receivedTx.tx?.hash ?? "NULL")")
                     // Fix issue: Should keep previous value of transaction
-                    receivedTx.tx?.outputs![0].value = self.originalTransaction?.outputs![0].value
+                    receivedTx.tx?.outputs![0] = (self.originalTransaction?.outputs![0])!
                     print("Original output value: \(receivedTx.tx?.outputs![0].value ?? 0)")
                     self.output?.didSendTransactionSuccess(receivedTx, tokenInfo: self.tokenInfo!)
                 }).catch({ (err) in
