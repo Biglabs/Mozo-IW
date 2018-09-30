@@ -56,7 +56,9 @@ import Foundation
     }
     
     override func loadViewFromNib() {
-        if AccessTokenManager.getAccessToken() == nil {
+        // Fix issue: Must include checking user profile in case user profile was loaded failed
+        if AccessTokenManager.getAccessToken() == nil
+            || SessionStoreManager.loadCurrentUser() == nil {
             isAnonymous = true
         } else {
             isAnonymous = false
@@ -113,7 +115,10 @@ import Foundation
     }
     
     @IBAction func touchedShowQR(_ sender: Any) {
-        
+        print("Touch Show QR code button")
+        if let address = lbAddress.text {
+            DisplayUtils.displayQRView(address: address)
+        }
     }
     @IBAction func touchedLogin(_ sender: Any) {
         print("Touch login button")
