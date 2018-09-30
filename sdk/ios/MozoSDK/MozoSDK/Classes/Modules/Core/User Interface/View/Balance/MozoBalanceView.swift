@@ -83,7 +83,6 @@ import Foundation
                 lbTitle.text = "Your Mozo Offchain Wallet Address"
             default: break
             }
-            print("Type \(displayType), all target: \(btnLogin.allTargets)")
         }
     }
     
@@ -97,9 +96,13 @@ import Foundation
         }
     }
     
+    override func updateOnlyBalance(_ balance : Double) {
+        lbBalance.text = "\(balance)"
+    }
+    
     func updateData(displayItem: DetailInfoDisplayItem) {
         if lbBalance != nil {
-            lbBalance.text = "\(displayItem.balance)"
+            updateOnlyBalance(displayItem.balance)
         }
         if lbAddress != nil {
             lbAddress.text = displayItem.address
@@ -123,19 +126,5 @@ import Foundation
     @IBAction func touchedLogin(_ sender: Any) {
         print("Touch login button")
         MozoSDK.authenticate()
-        MozoSDK.setAuthDelegate(self)
-    }
-}
-
-extension MozoBalanceView : AuthenticationDelegate {
-    func mozoAuthenticationDidFinish() {
-        updateView()
-    }
-    
-    func mozoLogoutDidFinish() {
-        
-    }
-    
-    func mozoUIDidCloseAll() {
     }
 }

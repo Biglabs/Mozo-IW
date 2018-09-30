@@ -71,6 +71,14 @@ extension CoreInteractor: CoreInteractorInput {
         SessionStoreManager.clearCurrentUser()
         AccessTokenManager.clearToken()
     }
+    
+    func notifyAuthSuccessForAllObservers() {
+        NotificationCenter.default.post(name: .didAuthenticationSuccessWithMozo, object: nil)
+    }
+    
+    func notifyLogoutForAllObservers() {
+        NotificationCenter.default.post(name: .didLogoutFromMozo, object: nil)
+    }
 }
 
 extension CoreInteractor: CoreInteractorService {

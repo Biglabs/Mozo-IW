@@ -21,7 +21,10 @@ extension CorePresenter : CoreModuleInterface {
     
     func requestForLogout() {
         coreInteractor?.logout()
+        // Send delegate back to the app
         authDelegate?.mozoLogoutDidFinish()
+        // Notify for all observing objects
+        coreInteractor?.notifyLogoutForAllObservers()
     }
     
     func requestForCloseAllMozoUIs() {
@@ -35,12 +38,6 @@ extension CorePresenter : AuthModuleDelegate {
     func authModuleDidFinishAuthentication(accessToken: String?) {
         coreInteractor?.handleAferAuth(accessToken: accessToken)
     }
-    
-    func authModuleDidFinishLogout() {
-        // Maybe: Close all existing Mozo's UIs
-        // Send delegate back to the app
-        authDelegate?.mozoLogoutDidFinish()
-    }
 }
 
 extension CorePresenter: WalletModuleDelegate {
@@ -49,6 +46,8 @@ extension CorePresenter: WalletModuleDelegate {
         coreWireframe?.requestForCloseAllMozoUIs(completion: {
             // Send delegate back to the app
             self.authDelegate?.mozoAuthenticationDidFinish()
+            // Notify for all observing objects
+            self.coreInteractor?.notifyAuthSuccessForAllObservers()
         })
     }
 }
