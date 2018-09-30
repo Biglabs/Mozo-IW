@@ -21,6 +21,15 @@ public class DisplayUtils {
         
         return UIImage.init(named: "ic_qr_code")
     }
+    
+    public static func displayQRView(address: String) {
+        let view = MozoQRView(frame: CGRect(x: 0, y: 0, width: 250, height: 285))
+        let img = generateQRCode(from: address)
+        view.qrImage = img
+        let topViewController = getTopViewController()
+        view.center = (topViewController?.view.center)!
+        topViewController?.view.addSubview(view)
+    }
 //    
 //    public static func convertInt64ToStringWithFormat(_ dateInt64: Int64, format: String) -> String{
 //        let date = Date(timeIntervalSince1970:Double(dateInt64))
