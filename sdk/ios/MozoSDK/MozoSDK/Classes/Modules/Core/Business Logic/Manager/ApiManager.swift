@@ -145,6 +145,7 @@ public class ApiManager {
                         }
                         seal.fulfill(json)
                     case .failure(let error):
+                        print("Request failed with error: \(error.localizedDescription)")
                         let connectionError = self.checkResponse(response: response, error: error)
                         seal.reject(connectionError)
                     }
@@ -170,6 +171,7 @@ public class ApiManager {
                         }
                         seal.fulfill(json)
                     case .failure(let error):
+                        print("Request failed with error: \(error.localizedDescription)")
                         let connectionError = self.checkResponse(response: response, error: error)
                         seal.reject(connectionError)
                     }
@@ -189,6 +191,7 @@ public class ApiManager {
                         }
                         seal.fulfill(json)
                     case .failure(let error):
+                        print("Request failed with error: \(error.localizedDescription)")
                         let connectionError = self.checkResponse(response: response, error: error)
                         seal.reject(connectionError)
                 }

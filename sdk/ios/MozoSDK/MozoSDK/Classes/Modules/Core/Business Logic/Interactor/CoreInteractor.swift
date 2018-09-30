@@ -24,14 +24,16 @@ class CoreInteractor: NSObject {
     private func getUserProfile() -> Promise<Void> {
         return Promise { seal in
             _ = apiManager.getUserProfile().done { (userProfile) in
-                let user = UserDTO(id: userProfile.userId, profile: userProfile)
-                SessionStoreManager.saveCurrentUser(user: user)
+                    let user = UserDTO(id: userProfile.userId, profile: userProfile)
+                    SessionStoreManager.saveCurrentUser(user: user)
                 
-                let userModel = UserModel(id: userProfile.userId, mnemonic: nil, pin: nil, wallets: nil)
-                if self.userDataManager.addNewUser(userModel) == true {
-                    seal.resolve(nil)
-                }
-            }
+                    let userModel = UserModel(id: userProfile.userId, mnemonic: nil, pin: nil, wallets: nil)
+                    if self.userDataManager.addNewUser(userModel) == true {
+                        seal.resolve(nil)
+                    }
+                }.catch({ (err) in
+                    //TODO: Handle HTTP load failed for user profile
+                })
         }
     }
 }
@@ -45,6 +47,8 @@ extension CoreInteractor: CoreInteractorInput {
                 print("😎 Load user info.")
                 _ = getUserProfile().done({ () in
                     self.output?.finishedCheckAuthentication(keepGoing: false, module: module)
+                }).catch({ (err) in
+                    //TODO: No user profile, can not continue with any module
                 })
             }
         } else {
@@ -57,6 +61,8 @@ extension CoreInteractor: CoreInteractorInput {
         anonManager.linkCoinFromAnonymousToCurrentUser()
         _ = getUserProfile().done({ () in
             self.output?.finishedHandleAferAuth()
+        }).catch({ (err) in
+            //TODO: Handle case unable to load user profile
         })
     }
     

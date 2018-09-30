@@ -25,7 +25,6 @@ public extension ApiManager {
                 .catch { error in
                     //Handle error or give feedback to the user
                     let err = error as! ConnectionError
-                    print(err.localizedDescription)
                     seal.reject(err)
                 }
                 .finally {
