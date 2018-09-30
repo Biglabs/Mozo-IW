@@ -97,3 +97,13 @@ extension CorePresenter: TxCompletionModuleDelegate {
         coreWireframe?.presentTransactionDetailInterface(detail)
     }
 }
+
+extension CorePresenter: ABDetailModuleDelegate {
+    func detailModuleDidCancelSaveAction() {
+        
+    }
+    
+    func detailModuleDidSaveAction() {
+        
+    }
+}

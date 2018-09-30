@@ -16,6 +16,8 @@ let TransferViewControllerIdentifier = "TransferViewController"
 let ConfirmTransferViewControllerIdentifier = "ConfirmTransferViewController"
 let TxCompletionViewControllerIdentifier = "TxCompletionViewController"
 let TxDetailViewControllerIdentifier = "TxDetailViewController"
+let AddressBookViewControllerIdentifier = "AddressBookViewController"
+let ABDetailViewControllerIdentifier = "ABDetailViewController"
 
 class RootWireframe : NSObject {
     let mozoNavigationController = MozoNavigationController()

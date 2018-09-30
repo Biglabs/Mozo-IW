@@ -13,6 +13,7 @@ class CoreWireframe : MozoWireframe {
     var txWireframe: TransactionWireframe?
     var txCompleteWireframe: TxCompletionWireframe?
     var txDetailWireframe: TxDetailWireframe?
+    var abDetailWireframe: ABDetailWireframe?
     var corePresenter: CorePresenter?
     
     // MARK: Request
@@ -64,5 +65,9 @@ class CoreWireframe : MozoWireframe {
     
     func presentTransactionDetailInterface(_ detail: TxDetailDisplayItem) {
         txDetailWireframe?.presentTransactionDetailInterface(detail)
+    }
+    
+    func presentAddressBookDetailInterface() {
+        
     }
 }

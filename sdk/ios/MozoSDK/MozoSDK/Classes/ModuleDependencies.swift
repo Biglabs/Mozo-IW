@@ -30,6 +30,7 @@ class ModuleDependencies {
     let txWireframe = TransactionWireframe()
     let txComWireframe = TxCompletionWireframe()
     let txDetailWireframe = TxDetailWireframe()
+    let abDetailWireframe = ABDetailWireframe()
     
     let apiManager = ApiManager()
     
@@ -70,6 +71,9 @@ class ModuleDependencies {
         transactionDependencies()
         transactionCompletionDependencies()
         transactionDetailDependencies()
+        // MARK: Address book
+        addressBookDependencies()
+        addressBookDetailDependencies()
     }
     
     func coreDependencies() {
@@ -95,7 +99,26 @@ class ModuleDependencies {
         coreWireframe.txWireframe = txWireframe
         coreWireframe.txCompleteWireframe = txComWireframe
         coreWireframe.txDetailWireframe = txDetailWireframe
+        coreWireframe.abDetailWireframe = abDetailWireframe
         coreWireframe.rootWireframe = rootWireframe
+    }
+    
+    func addressBookDetailDependencies() {
+        let abdPresenter = ABDetailPresenter()
+        
+        let abdInteractor = ABDetailInteractor()
+        abdInteractor.apiManager = apiManager
+        
+        abdPresenter.detailInteractor = abdInteractor
+        abdPresenter.detailWireframe = abDetailWireframe
+        abdPresenter.detailModuleDelegate = coreWireframe.corePresenter
+        
+        abDetailWireframe.detailPresenter = abdPresenter
+        abDetailWireframe.rootWireframe = rootWireframe
+    }
+    
+    func addressBookDependencies() {
+        
     }
     
     func transactionDetailDependencies() {
