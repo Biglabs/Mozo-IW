@@ -27,6 +27,12 @@ class ConfirmTransferViewController: MozoBasicViewController {
         updateView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Fix issue: Title is not correct after showing alert
+        self.title = "CONFIRMATION"
+    }
+    
     func updateView() {
         let balance = tokenInfo?.balance ?? 0
         let displayBalance = balance.convertOutputValue(decimal: tokenInfo?.decimals ?? 0)
@@ -64,8 +70,6 @@ extension ConfirmTransferViewController : ConfirmTransferViewInterface {
     }
     
     func displayError(_ error: String) {
-        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        displayMozoError(error)
     }
 }

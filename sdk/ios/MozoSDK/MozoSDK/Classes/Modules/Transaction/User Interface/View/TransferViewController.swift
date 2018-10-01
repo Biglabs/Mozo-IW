@@ -30,6 +30,12 @@ class TransferViewController: MozoBasicViewController {
 //        setRefreshControl()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Fix issue: Title is not correct after navigation back from child controller
+        self.title = "SEND MOZO OFFCHAIN"
+    }
+    
     func setBtnLayer() {
         btnAddressBook.layer.borderWidth = 1
         btnAddressBook.layer.borderColor = ThemeManager.shared.main.cgColor
@@ -98,8 +104,6 @@ extension TransferViewController : TransferViewInterface {
     }
     
     func displayError(_ error: String) {
-        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        displayMozoError(error)
     }
 }
