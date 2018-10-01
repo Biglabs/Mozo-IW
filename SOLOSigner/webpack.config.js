@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
   mode: 'development',
   entry: {
-    app: ['babel-regenerator-runtime', './index.web.js'],
+    app: ['./index.web.js'],
   },
   output: {
     path: path.resolve(__dirname, 'desktop', 'dist'),
@@ -18,14 +18,25 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-          // The 'react-native' preset is recommended to match React Native's packager
-          presets: ['react-native'],
-          // Re-write paths to import only the modules needed by the app
-          plugins: ['react-native-web', "transform-decorators-legacy"] // transform-decorators-legacy for mobx
-          //plugins: ['react-native-electron']
+        use: {
+            loader: 'babel-loader',
+            options: {
+                cacheDirectory: true,
+                // The 'react-native' preset is recommended to match React Native's packager
+                presets: [ '@babel/preset-env', '@babel/react', 'module:metro-react-native-babel-preset'],
+                // Re-write paths to import only the modules needed by the app
+                plugins: [
+                    ['react-native-web', { commonjs: true }],
+                    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                    ["@babel/plugin-transform-runtime", {
+                        "corejs": false,
+                        "helpers": true,
+                        "regenerator": true,
+                        "useESModules": false
+                    }]
+                ] // transform-decorators-legacy for mobx
+                //plugins: ['react-native-electron']
+        },
         },
         include: [
             path.resolve(__dirname, 'index.web.js'),
@@ -35,13 +46,16 @@ module.exports = {
             path.resolve(__dirname, './node_modules/css-mediaquery'),
             path.resolve(__dirname, './node_modules/object-resolve-path'),
             // path.resolve(__dirname, './node_modules/react-native-extended-stylesheet'),
-  
+
             path.resolve(__dirname, './node_modules/react-native-vector-icons'),
             path.resolve(__dirname, './node_modules/react-native-drawer-layout'),
             path.resolve(__dirname, './node_modules/react-native-dismiss-keyboard'),
-  
+
             path.resolve(__dirname, './node_modules/react-navigation'),
+            path.resolve(__dirname, './node_modules/react-navigation-stack'),
+            path.resolve(__dirname, './node_modules/react-navigation-tabs'),
             path.resolve(__dirname, './node_modules/react-native-tab-view'),
+            path.resolve(__dirname, './node_modules/react-navigation-deprecated-tab-navigator'),
             path.resolve(__dirname, './node_modules/react-native-safe-area-view'),
 
             path.resolve(__dirname, './node_modules/react-native-screen'),

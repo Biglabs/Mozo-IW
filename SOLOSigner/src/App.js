@@ -48,7 +48,6 @@ import {isWebPlatform} from "./helpers/PlatformUtils";
       // call method on main process
       main.sendMessageToRender('Open confirm transaction screen has been opened');
     });
-
   } else {
     Linking.getInitialURL().then((url) => {
       LinkingService.checkScheme(url);
