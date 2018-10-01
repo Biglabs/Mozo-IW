@@ -59,6 +59,10 @@ class AuthManager : NSObject {
                 self.clearAll()
             }
         })
+        // There is 2 cases here:
+        // 1. Token is alive
+        // 2. Token is dead but refresh token is still alive
+        self.checkRefreshToken()
     }
     
     func setCurrentAuthorizationFlow(_ authorizationFlow: OIDAuthorizationFlowSession?) {
