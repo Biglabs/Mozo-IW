@@ -32,4 +32,10 @@ public class MozoBasicViewController : UIViewController {
         self.navigationController?.navigationBar.backItem?.title = "Back"
         navigationItem.hidesBackButton = false
     }
+    
+    func displayMozoError(_ error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
