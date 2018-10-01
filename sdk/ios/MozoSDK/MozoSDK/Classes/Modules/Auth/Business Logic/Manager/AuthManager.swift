@@ -114,6 +114,39 @@ class AuthManager : NSObject {
             }
         }
     }
+    
+    func buildLogoutRequest()-> Promise<OIDAuthorizationRequest?> {
+        return Promise { seal in
+            guard let issuer = URL(string: Configuration.AUTH_ISSSUER) else {
+                print("😞 Error creating URL for : \(Configuration.AUTH_ISSSUER)")
+                return seal.reject(SystemError.incorrectURL)
+            }
+            print("Fetching configuration for issuer: \(issuer)")
+            
+            // discovers endpoints
+            OIDAuthorizationService.discoverConfiguration(forIssuer: issuer){ configuration, error in
+                let clientId = Configuration.AUTH_CLIENT_ID
+                guard let redirectURI = URL(string: Configuration.AUTH_REDIRECT_URL) else {
+                    print("Error creating URL for : \(Configuration.AUTH_REDIRECT_URL)")
+                    return
+                }
+                // https://dev.keycloak.mozocoin.io/auth/realms/mozo/protocol/openid-connect/logout
+                let endSessionUrl = issuer.appendingPathComponent("/protocol/openid-connect/logout")
+                
+                let config = OIDServiceConfiguration.init(authorizationEndpoint: endSessionUrl, tokenEndpoint: endSessionUrl)
+                
+                let request = OIDAuthorizationRequest(configuration: config,
+                                                      clientId: clientId,
+                                                      clientSecret: nil,
+                                                      scopes: [OIDScopeOpenID, OIDScopeProfile],
+                                                      redirectURL: redirectURI,
+                                                      responseType: OIDResponseTypeCode,
+                                                      additionalParameters: nil)
+                
+                seal.fulfill(request)
+            }
+        }
+    }
 }
 
 //MARK: AppAuth Methods

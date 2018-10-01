@@ -14,6 +14,10 @@ class AuthWireframe: MozoWireframe {
         authPresenter?.performAuthentication()
     }
     
+    func presentLogoutInterface() {
+        authPresenter?.performLogout()
+    }
+    
     func dismissAuthInterface(){
     }
 }

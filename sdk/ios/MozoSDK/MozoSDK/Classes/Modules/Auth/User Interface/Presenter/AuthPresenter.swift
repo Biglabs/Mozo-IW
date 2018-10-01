@@ -18,6 +18,10 @@ extension AuthPresenter : AuthModuleInterface {
     func performAuthentication() {
         authInteractor?.buildAuthRequest()
     }
+    
+    func performLogout() {
+        authInteractor?.buildLogoutRequest()
+    }
 }
 
 extension AuthPresenter : AuthInteractorOutput {
@@ -37,5 +41,20 @@ extension AuthPresenter : AuthInteractorOutput {
     
     func cancelledAuthenticateByUser() {
         authModuleDelegate?.authModuleDidCancelAuthentication()
+    }
+    
+    func finishBuildLogoutRequest(_ request: OIDAuthorizationRequest) {
+        let viewController = authWireframe?.getTopViewController()
+        // performs logout request
+        print("Initiating logout request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
+        OIDAuthState.authState(byPresenting: request, presenting: viewController!) { authState, error in
+            
+        }
+        // TODO: Must waiting for AppAuth WebViewController display.
+        authModuleDelegate?.authModuleDidFinishLogout()
+    }
+    
+    func finishLogout() {
+        
     }
 }

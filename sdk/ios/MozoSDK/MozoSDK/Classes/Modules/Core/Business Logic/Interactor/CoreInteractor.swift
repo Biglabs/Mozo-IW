@@ -69,7 +69,7 @@ extension CoreInteractor: CoreInteractorInput {
         })
     }
     
-    func logout() {
+    func clearAllLocalDataAfterLogout() {
         // Maybe: Call logout API to revoke token
         SessionStoreManager.clearCurrentUser()
         AccessTokenManager.clearToken()

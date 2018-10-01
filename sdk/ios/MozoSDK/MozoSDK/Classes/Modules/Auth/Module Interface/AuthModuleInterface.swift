@@ -10,4 +10,5 @@ import Foundation
 
 protocol AuthModuleInterface {
     func performAuthentication()
+    func performLogout()
 }

@@ -44,4 +44,16 @@ extension AuthInteractor : AuthInteractorInput {
     func setCurrentAuthorizationFlow(_ authorizationFlow : OIDAuthorizationFlowSession?) {
         authManager?.setCurrentAuthorizationFlow(authorizationFlow)
     }
+    
+    func buildLogoutRequest() {
+        _ = authManager?.buildLogoutRequest().done({ (request) in
+            if let rq = request {
+                self.output?.finishBuildLogoutRequest(rq)
+            }
+        })
+    }
+    
+    func handleLogoutState() {
+
+    }
 }
