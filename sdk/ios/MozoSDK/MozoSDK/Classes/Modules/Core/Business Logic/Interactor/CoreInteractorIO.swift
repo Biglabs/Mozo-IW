@@ -23,4 +23,5 @@ protocol CoreInteractorOutput {
 
 protocol CoreInteractorService {
     func loadBalanceInfo() -> Promise<DetailInfoDisplayItem>
+    func downloadAddressBookAndStoreAtLocal()
 }

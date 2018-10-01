@@ -35,4 +35,6 @@ public class SessionStoreManager {
     public static func saveAnonymousUUID(_ UUID: String?) {
         UserDefaults.standard.setValue(UUID, forKey: Configuration.USER_ID_ANONYMOUS)
     }
+    
+    public static var addressBookList : [AddressBookDTO] = []    
 }

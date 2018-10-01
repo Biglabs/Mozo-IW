@@ -85,6 +85,7 @@ class ModuleDependencies {
         userDataManager.coreDataStore = coreDataStore
         
         let coreInteractor = CoreInteractor(anonManager: anonManager, apiManager: apiManager, userDataManager: userDataManager)
+        coreInteractor.downloadAddressBookAndStoreAtLocal()
         coreInteractor.output = corePresenter
         
         corePresenter.coreInteractor = coreInteractor

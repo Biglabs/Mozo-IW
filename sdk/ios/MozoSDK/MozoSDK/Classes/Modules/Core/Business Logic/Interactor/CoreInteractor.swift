@@ -43,6 +43,7 @@ extension CoreInteractor: CoreInteractorInput {
         if AccessTokenManager.getAccessToken() != nil {
             if SessionStoreManager.loadCurrentUser() != nil {
                 output?.finishedCheckAuthentication(keepGoing: false, module: module)
+                // TODO: Handle update local user profile data
             } else {
                 print("😎 Load user info.")
                 _ = getUserProfile().done({ () in
@@ -58,6 +59,8 @@ extension CoreInteractor: CoreInteractorInput {
     
     func handleAferAuth(accessToken: String?) {
         AccessTokenManager.saveToken(accessToken)
+        // TODO: Start all background services including web socket
+        downloadAddressBookAndStoreAtLocal()
         anonManager.linkCoinFromAnonymousToCurrentUser()
         _ = getUserProfile().done({ () in
             self.output?.finishedHandleAferAuth()
@@ -99,6 +102,17 @@ extension CoreInteractor: CoreInteractorService {
             } else {
                 seal.reject(SystemError.noAuthen)
             }
+        }
+    }
+    
+    func downloadAddressBookAndStoreAtLocal() {
+        if AccessTokenManager.getAccessToken() != nil {
+            print("😎 Load address book list.")
+            _ = apiManager.getListAddressBook().done({ (list) in
+                SessionStoreManager.addressBookList = list
+            }).catch({ (error) in
+                //TODO: Handle case unable to load address book list
+            })
         }
     }
 }
