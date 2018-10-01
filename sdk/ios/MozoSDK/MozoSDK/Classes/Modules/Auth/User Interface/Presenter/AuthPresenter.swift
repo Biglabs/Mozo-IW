@@ -36,6 +36,6 @@ extension AuthPresenter : AuthInteractorOutput {
     }
     
     func cancelledAuthenticateByUser() {
-        authWireframe?.dismissAuthInterface()
+        authModuleDelegate?.authModuleDidCancelAuthentication()
     }
 }
