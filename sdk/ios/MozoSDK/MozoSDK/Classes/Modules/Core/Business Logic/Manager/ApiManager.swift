@@ -140,12 +140,12 @@ public class ApiManager {
                 .responseJSON { response in
                     switch response.result {
                     case .success(let json):
-                        guard let json = json  as? [String: Any] else {
+                        guard let json = json as? [String: Any] else {
                             return seal.reject(AFError.responseValidationFailed(reason: .dataFileNil))
                         }
                         seal.fulfill(json)
                     case .failure(let error):
-                        print("Request failed with error: \(error.localizedDescription)")
+                        print("Request failed with error: \(error.localizedDescription), url: \(url)")
                         let connectionError = self.checkResponse(response: response, error: error)
                         seal.reject(connectionError)
                     }
@@ -166,12 +166,12 @@ public class ApiManager {
                 .responseJSON { response in
                     switch response.result {
                     case .success(let json):
-                        guard let json = json  as? [String: Any] else {
+                        guard let json = json as? [String: Any] else {
                             return seal.reject(AFError.responseValidationFailed(reason: .dataFileNil))
                         }
                         seal.fulfill(json)
                     case .failure(let error):
-                        print("Request failed with error: \(error.localizedDescription)")
+                        print("Request failed with error: \(error.localizedDescription), url: \(url)")
                         let connectionError = self.checkResponse(response: response, error: error)
                         seal.reject(connectionError)
                     }
@@ -186,12 +186,13 @@ public class ApiManager {
                 .responseJSON { response in
                     switch response.result {
                     case .success(let json):
-                        guard let json = json  as? [String: Any] else {
+                        print("Response result value: \(json)")
+                        guard let json = json as? [String: Any] else {
                             return seal.reject(AFError.responseValidationFailed(reason: .dataFileNil))
                         }
                         seal.fulfill(json)
                     case .failure(let error):
-                        print("Request failed with error: \(error.localizedDescription)")
+                        print("Request failed with error: \(error.localizedDescription), url: \(url)")
                         let connectionError = self.checkResponse(response: response, error: error)
                         seal.reject(connectionError)
                 }
