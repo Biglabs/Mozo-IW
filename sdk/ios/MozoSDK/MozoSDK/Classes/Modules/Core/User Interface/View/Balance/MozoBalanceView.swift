@@ -66,6 +66,7 @@ import Foundation
         super.loadViewFromNib()
         loadDisplayData()
         setupButtonBorder()
+        addUniqueAuthObserver()
     }
     
     func loadDisplayData() {
@@ -102,6 +103,7 @@ import Foundation
     
     func updateData(displayItem: DetailInfoDisplayItem) {
         if lbBalance != nil {
+            addUniqueBalanceChangeObserver()
             updateOnlyBalance(displayItem.balance)
         }
         if lbAddress != nil {
