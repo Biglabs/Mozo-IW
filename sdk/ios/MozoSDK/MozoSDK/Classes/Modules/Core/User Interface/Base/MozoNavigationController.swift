@@ -48,7 +48,8 @@ public class MozoNavigationController : UINavigationController {
         let bundle = BundleManager.mozoBundle()
         let nib = UINib(nibName: "CloseView", bundle: bundle)
         let button = nib.instantiate(withOwner: self, options: nil)[0] as! UIButton
-        button.imageEdgeInsets = UIEdgeInsetsMake(15, 12, 15, 68)
+        button.imageEdgeInsets = UIEdgeInsetsMake(15, 30, 15, 78)
+        
         return button
     }
     
