@@ -32,6 +32,7 @@ class AuthManager : NSObject {
     private func clearAll() {
         AccessTokenManager.clearToken()
         SessionStoreManager.clearCurrentUser()
+        setAuthState(nil)
     }
     
     private func checkRefreshToken() {
@@ -62,6 +63,7 @@ class AuthManager : NSObject {
             if error == ConnectionError.authenticationRequired {
                 print("Token expired, clear token and user info")
                 self.clearAll()
+                return
             }
         })
         // There is 2 cases here:

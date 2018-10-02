@@ -26,4 +26,8 @@ class AuthDataManager {
         }
         UserDefaults.standard.set(data, forKey: Configuration.AUTH_STATE)
     }
+    
+    public static func clear() {
+        UserDefaults.standard.removeObject(forKey: Configuration.AUTH_STATE)
+    }
 }

@@ -73,6 +73,8 @@ extension CoreInteractor: CoreInteractorInput {
         // Maybe: Call logout API to revoke token
         SessionStoreManager.clearCurrentUser()
         AccessTokenManager.clearToken()
+        // TODO: Must clear at AuthModule and also clear authState
+        AuthDataManager.clear()
     }
     
     func notifyAuthSuccessForAllObservers() {
