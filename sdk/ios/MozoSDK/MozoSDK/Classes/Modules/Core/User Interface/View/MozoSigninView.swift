@@ -14,6 +14,21 @@ import UIKit
         return "MozoSigninView"
     }
     
+    override func checkDisable() {
+        if AccessTokenManager.getAccessToken() != nil {
+            isUserInteractionEnabled = false
+            button.backgroundColor = ThemeManager.shared.disable
+        } else {
+            isUserInteractionEnabled = true
+            button.backgroundColor = ThemeManager.shared.main
+        }
+    }
+    
+    override func loadViewFromNib() {
+        super.loadViewFromNib()
+        addUniqueAuthObserver()
+    }
+    
     @IBAction func tapped(_ sender: Any) {
         print("Tapped Mozo Button Login")
         MozoSDK.authenticate()

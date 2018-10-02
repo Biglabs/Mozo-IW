@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoSigninView" customModule="MozoSDK" customModuleProvider="target">
             <connections>
-                <outlet property="button" destination="090-Ef-Rie" id="Nfu-gO-U1A"/>
+                <outlet property="button" destination="090-Ef-Rie" id="lWH-Ct-urp"/>
                 <outlet property="containerView" destination="hEP-Np-bGU" id="3DC-z6-vk4"/>
             </connections>
         </placeholder>
