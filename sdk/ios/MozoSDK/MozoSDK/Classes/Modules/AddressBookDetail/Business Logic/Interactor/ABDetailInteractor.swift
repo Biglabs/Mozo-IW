@@ -17,7 +17,7 @@ extension ABDetailInteractor: ABDetailInteractorInput {
         let model = AddressBookDTO(name: name, address: address)
         _ = apiManager?.updateAddressBook(model, isCreateNew: true).done({ (addressBook) in
             SessionStoreManager.addressBookList.append(addressBook!)
-            self.output?.finishSaveAddressBook()
+            self.output?.finishSaveWithSuccess()
         }).catch({ (error) in
             self.output?.errorWhileSaving(error)
         })

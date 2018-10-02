@@ -13,6 +13,7 @@ class ABDetailViewController : MozoBasicViewController {
     @IBOutlet var txtName : UITextField!
     @IBOutlet weak var txtAddress: UITextField!
     @IBOutlet weak var btnSave: UIButton!
+    @IBOutlet weak var successView: UIView!
     
     var transitioningBackgroundView : UIView = UIView()
     var address : String?
@@ -52,14 +53,23 @@ class ABDetailViewController : MozoBasicViewController {
 
 extension ABDetailViewController: ABDetailViewInterface {
     func displaySpinner() {
-        
+        displayMozoSpinner()
     }
     
     func removeSpinner() {
-        
+        removeMozoSpinner()
     }
     
     func displayError(_ error: String) {
-        displayError(error)
+        displayMozoError(error)
+    }
+    
+    func displaySuccess() {
+        successView.isHidden = false
+        txtName.isEnabled = false
+        btnSave.isEnabled = false
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            self.eventHandler?.finishSaveAddressBook()
+        }
     }
 }

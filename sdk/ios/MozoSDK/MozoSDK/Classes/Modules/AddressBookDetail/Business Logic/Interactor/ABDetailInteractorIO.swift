@@ -11,6 +11,6 @@ protocol ABDetailInteractorInput {
 }
 
 protocol ABDetailInteractorOutput {
-    func finishSaveAddressBook()
+    func finishSaveWithSuccess()
     func errorWhileSaving(_ error: Error)
 }

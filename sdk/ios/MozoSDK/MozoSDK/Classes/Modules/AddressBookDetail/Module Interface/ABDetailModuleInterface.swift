@@ -10,4 +10,5 @@ import Foundation
 protocol ABDetailModuleInterface {
     func cancelSaveAction()
     func saveAddressBookWithName(_ name: String, address: String)
+    func finishSaveAddressBook()
 }

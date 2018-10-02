@@ -21,14 +21,18 @@ extension ABDetailPresenter : ABDetailModuleInterface {
         detailUserInterface?.displaySpinner()
         detailInteractor?.saveAddressBookWithName(name, address: address)
     }
-}
-extension ABDetailPresenter: ABDetailInteractorOutput {
+    
     func finishSaveAddressBook() {
         detailModuleDelegate?.detailModuleDidSaveAddressBook()
     }
-    
+}
+extension ABDetailPresenter: ABDetailInteractorOutput {
     func errorWhileSaving(_ error: Error) {
         detailUserInterface?.removeSpinner()
         detailUserInterface?.displayError(error.localizedDescription)
+    }
+    func finishSaveWithSuccess() {
+        detailUserInterface?.removeSpinner()
+        detailUserInterface?.displaySuccess()
     }
 }
