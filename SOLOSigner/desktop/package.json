@@ -31,7 +31,6 @@
     "https-browserify": "~0.0.0",
     "inherits": "^2.0.1",
     "js-sha512": "^0.7.1",
-    "jscryptor": "^0.0.12",
     "keycloak-js": "^4.4.0",
     "mobx": "3.6.2",
     "mobx-react": "4.4.3",
