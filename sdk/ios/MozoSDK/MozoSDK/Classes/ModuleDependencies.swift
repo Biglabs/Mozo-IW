@@ -109,6 +109,7 @@ class ModuleDependencies {
         
         let abdInteractor = ABDetailInteractor()
         abdInteractor.apiManager = apiManager
+        abdInteractor.output = abdPresenter
         
         abdPresenter.detailInteractor = abdInteractor
         abdPresenter.detailWireframe = abDetailWireframe

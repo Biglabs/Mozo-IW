@@ -23,7 +23,7 @@ class CoreWireframe : MozoWireframe {
     }
     
     func requestForLogout() {
-        corePresenter?.requestForLogout()
+        authWireframe?.presentLogoutInterface()
     }
     
     func requestForTransfer() {
@@ -67,7 +67,11 @@ class CoreWireframe : MozoWireframe {
         txDetailWireframe?.presentTransactionDetailInterface(detail)
     }
     
-    func presentAddressBookDetailInterface() {
-        
+    func presentAddressBookDetailInterface(address: String) {
+        abDetailWireframe?.presentAddressBookDetailInterfaceWithAddress(address: address)
+    }
+    
+    func dismissAddressBookDetailInterface() {
+        abDetailWireframe?.dismissAddressBookDetailInterface()
     }
 }

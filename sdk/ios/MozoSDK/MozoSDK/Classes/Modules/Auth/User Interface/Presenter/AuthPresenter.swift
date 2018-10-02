@@ -48,7 +48,7 @@ extension AuthPresenter : AuthInteractorOutput {
         // performs logout request
         print("Initiating logout request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
         OIDAuthState.authState(byPresenting: request, presenting: viewController!) { authState, error in
-            
+            print("Finish present logout, error: \(error)")
         }
         // TODO: Must waiting for AppAuth WebViewController display.
         authModuleDelegate?.authModuleDidFinishLogout()

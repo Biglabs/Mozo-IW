@@ -9,5 +9,5 @@ import Foundation
 
 protocol ABDetailModuleInterface {
     func cancelSaveAction()
-    func detailSaveActionWithName(_ name: String, address: String)
+    func saveAddressBookWithName(_ name: String, address: String)
 }

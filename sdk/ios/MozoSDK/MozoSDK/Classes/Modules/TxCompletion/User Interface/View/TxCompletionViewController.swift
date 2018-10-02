@@ -23,6 +23,11 @@ class TxCompletionViewController: MozoBasicViewController {
         updateView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.title = ""
+    }
+    
     func updateView() {
         lbAddress.text = detailItem.addressTo
         lbAmount.text = "{\(detailItem.amount.convertOutputValue(decimal: detailItem.decimal))}"
@@ -36,10 +41,15 @@ class TxCompletionViewController: MozoBasicViewController {
     }
     
     @IBAction func btnSaveTapped(_ sender: Any) {
-        
+        eventHandler?.requestAddToAddressBook(detailItem.addressTo)
     }
     
     @IBAction func btnDetailTapped(_ sender: Any) {
         eventHandler?.requestShowDetail(detailItem)
+    }
+}
+extension TxCompletionViewController : TxCompletionViewInterface {
+    func displayError(_ error: String) {
+        displayMozoError(error)
     }
 }

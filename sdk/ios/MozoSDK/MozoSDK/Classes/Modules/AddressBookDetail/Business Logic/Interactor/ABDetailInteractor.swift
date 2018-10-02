@@ -9,8 +9,17 @@ import Foundation
 
 class ABDetailInteractor : NSObject {
     var apiManager : ApiManager?
-    
-    func saveNewABWithName(_ name: String, address: String) {
-        
+    var output: ABDetailInteractorOutput?
+}
+
+extension ABDetailInteractor: ABDetailInteractorInput {
+    func saveAddressBookWithName(_ name: String, address: String) {
+        let model = AddressBookDTO(name: name, address: address)
+        _ = apiManager?.updateAddressBook(model, isCreateNew: true).done({ (addressBook) in
+            SessionStoreManager.addressBookList.append(addressBook!)
+            self.output?.finishSaveAddressBook()
+        }).catch({ (error) in
+            self.output?.errorWhileSaving(error)
+        })
     }
 }

@@ -20,11 +20,7 @@ extension CorePresenter : CoreModuleInterface {
     }
     
     func requestForLogout() {
-        coreInteractor?.logout()
-        // Send delegate back to the app
-        authDelegate?.mozoLogoutDidFinish()
-        // Notify for all observing objects
-        coreInteractor?.notifyLogoutForAllObservers()
+        
     }
     
     func requestForCloseAllMozoUIs() {
@@ -37,6 +33,23 @@ extension CorePresenter : CoreModuleInterface {
 extension CorePresenter : AuthModuleDelegate {
     func authModuleDidFinishAuthentication(accessToken: String?) {
         coreInteractor?.handleAferAuth(accessToken: accessToken)
+    }
+    
+    func authModuleDidCancelAuthentication() {
+        requestForCloseAllMozoUIs()
+    }
+    
+    func authModuleDidFinishLogout() {
+        coreInteractor?.clearAllLocalDataAfterLogout()
+        // Send delegate back to the app
+        authDelegate?.mozoLogoutDidFinish()
+        // Notify for all observing objects
+        coreInteractor?.notifyLogoutForAllObservers()
+        requestForCloseAllMozoUIs()
+    }
+    
+    func authModuleDidCancelLogout() {
+        
     }
 }
 
@@ -90,7 +103,15 @@ extension CorePresenter: TransactionModuleDelegate {
 
 extension CorePresenter: TxCompletionModuleDelegate {
     func requestAddToAddressBook(_ address: String) {
-        
+        // Verify address is existing in address book list or not
+        let list = SessionStoreManager.addressBookList
+        let contain = AddressBookDTO.arrayContainsItem(address, array: list)
+        if contain {
+            // TODO: Show message address is existing in address book list
+            
+        } else {
+            coreWireframe?.presentAddressBookDetailInterface(address: address)
+        }
     }
     
     func requestShowDetail(_ detail: TxDetailDisplayItem) {
@@ -103,7 +124,7 @@ extension CorePresenter: ABDetailModuleDelegate {
         
     }
     
-    func detailModuleDidSaveAction() {
-        
+    func detailModuleDidSaveAddressBook() {
+        coreWireframe?.dismissAddressBookDetailInterface()
     }
 }

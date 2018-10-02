@@ -7,19 +7,28 @@
 
 import Foundation
 class ABDetailPresenter : NSObject {
-    var detailInteractor : ABDetailInteractor?
+    var detailInteractor : ABDetailInteractorInput?
     var detailWireframe : ABDetailWireframe?
     var detailModuleDelegate : ABDetailModuleDelegate?
+    var detailUserInterface: ABDetailViewInterface?
 }
 extension ABDetailPresenter : ABDetailModuleInterface {
     func cancelSaveAction() {
-        detailWireframe?.dismissDetailInterface()
         detailModuleDelegate?.detailModuleDidCancelSaveAction()
     }
     
-    func detailSaveActionWithName(_ name: String, address: String) {
-        detailInteractor?.saveNewABWithName(name, address: address)
-        detailWireframe?.dismissDetailInterface()
-        detailModuleDelegate?.detailModuleDidSaveAction()
+    func saveAddressBookWithName(_ name: String, address: String) {
+        detailUserInterface?.displaySpinner()
+        detailInteractor?.saveAddressBookWithName(name, address: address)
+    }
+}
+extension ABDetailPresenter: ABDetailInteractorOutput {
+    func finishSaveAddressBook() {
+        detailModuleDelegate?.detailModuleDidSaveAddressBook()
+    }
+    
+    func errorWhileSaving(_ error: Error) {
+        detailUserInterface?.removeSpinner()
+        detailUserInterface?.displayError(error.localizedDescription)
     }
 }

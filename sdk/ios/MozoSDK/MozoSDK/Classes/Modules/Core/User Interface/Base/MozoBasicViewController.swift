@@ -38,4 +38,28 @@ public class MozoBasicViewController : UIViewController {
         alert.addAction(.init(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    // MARK: Spinner
+    var mozoSpinnerView : UIView?
+    
+    func displayMozoSpinner() {
+        navigationItem.hidesBackButton = true
+        mozoSpinnerView = UIView.init(frame: self.view.bounds)
+        mozoSpinnerView?.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        ai.startAnimating()
+        ai.center = (mozoSpinnerView?.center)!
+        
+        DispatchQueue.main.async {
+            self.mozoSpinnerView?.addSubview(ai)
+            self.view.addSubview(self.mozoSpinnerView!)
+        }
+    }
+    
+    func removeMozoSpinner() {
+        DispatchQueue.main.async {
+            self.navigationItem.hidesBackButton = false
+            self.mozoSpinnerView?.removeFromSuperview()
+        }
+    }
 }

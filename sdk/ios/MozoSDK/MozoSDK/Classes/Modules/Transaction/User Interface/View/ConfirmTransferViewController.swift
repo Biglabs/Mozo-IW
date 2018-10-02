@@ -17,7 +17,6 @@ class ConfirmTransferViewController: MozoBasicViewController {
     @IBOutlet weak var lbAmountValue: UILabel!
     @IBOutlet weak var lbAmountValueExchange: UILabel!
     
-    var spinnerView : UIView?
     var transaction : TransactionDTO?
     var tokenInfo: TokenInfoDTO?
     
@@ -49,24 +48,11 @@ class ConfirmTransferViewController: MozoBasicViewController {
 
 extension ConfirmTransferViewController : ConfirmTransferViewInterface {
     func displaySpinner() {
-        navigationItem.hidesBackButton = true
-        spinnerView = UIView.init(frame: self.view.bounds)
-        spinnerView?.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
-        ai.startAnimating()
-        ai.center = (spinnerView?.center)!
-        
-        DispatchQueue.main.async {
-            self.spinnerView?.addSubview(ai)
-            self.view.addSubview(self.spinnerView!)
-        }
+        displayMozoSpinner()
     }
     
     func removeSpinner() {
-        DispatchQueue.main.async {
-            self.navigationItem.hidesBackButton = false
-            self.spinnerView?.removeFromSuperview()
-        }
+        removeMozoSpinner()
     }
     
     func displayError(_ error: String) {

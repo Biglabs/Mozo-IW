@@ -9,5 +9,5 @@ import Foundation
 
 protocol ABDetailModuleDelegate {
     func detailModuleDidCancelSaveAction()
-    func detailModuleDidSaveAction()
+    func detailModuleDidSaveAddressBook()
 }

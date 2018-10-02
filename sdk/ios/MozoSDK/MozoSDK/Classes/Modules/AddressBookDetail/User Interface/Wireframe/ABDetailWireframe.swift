@@ -11,17 +11,21 @@ class ABDetailWireframe : MozoWireframe {
     var detailPresenter : ABDetailPresenter?
     var detailViewController : ABDetailViewController?
     
-    func presentAddInterfaceFromViewController(_ viewController: UIViewController) {
+    func presentAddressBookDetailInterfaceWithAddress(address: String) {
         let viewController = viewControllerFromStoryBoard(ABDetailViewControllerIdentifier) as! ABDetailViewController
         viewController.eventHandler = detailPresenter
-//        viewController.modalPresentationStyle = .custom
-//        viewController.transitioningDelegate = self
+        viewController.address = address
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = self
         detailViewController = viewController
+        
+        detailPresenter?.detailUserInterface = viewController
         rootWireframe?.displayViewController(viewController)
     }
     
-    func dismissDetailInterface() {
-//        presentedViewController?.dismiss(animated: true, completion: nil)
+    func dismissAddressBookDetailInterface() {
+//        detailViewController?.dismiss(animated: true, completion: nil)
+        rootWireframe?.dismissTopViewController()
     }
 }
 

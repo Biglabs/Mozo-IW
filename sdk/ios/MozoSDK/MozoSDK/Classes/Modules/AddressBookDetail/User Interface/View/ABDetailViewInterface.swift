@@ -8,5 +8,7 @@
 import Foundation
 
 protocol ABDetailViewInterface {
-    func setName(_ name: String)
+    func displayError(_ error: String)
+    func displaySpinner()
+    func removeSpinner()
 }
