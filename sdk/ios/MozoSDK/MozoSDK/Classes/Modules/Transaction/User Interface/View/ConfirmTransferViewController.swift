@@ -16,9 +16,13 @@ class ConfirmTransferViewController: MozoBasicViewController {
     @IBOutlet weak var lbAddress: UILabel!
     @IBOutlet weak var lbAmountValue: UILabel!
     @IBOutlet weak var lbAmountValueExchange: UILabel!
+    @IBOutlet weak var addressBookView: UIView!
+    @IBOutlet weak var lbName: UILabel!
+    @IBOutlet weak var lbNameAddress: UILabel!
     
     var transaction : TransactionDTO?
     var tokenInfo: TokenInfoDTO?
+    var displayName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +43,13 @@ class ConfirmTransferViewController: MozoBasicViewController {
         
         lbAddress.text = transaction?.outputs?.first?.addresses![0]
         lbAmountValue.text = "\((transaction?.outputs?.first?.value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0))!)"
+        
+        if let displayName = displayName {
+            lbAddress.isHidden = true
+            addressBookView.isHidden = false
+            lbName.text = displayName
+            lbNameAddress.text = lbAddress.text
+        }
     }
     
     @IBAction func btnSendTapped(_ sender: Any) {

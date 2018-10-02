@@ -15,7 +15,7 @@ class TransactionWireframe: MozoWireframe {
     var confirmViewController: ConfirmTransferViewController?
     
     func presentTransferInterface() {
-        let viewController = TransferViewControllerFromStoryboard()
+        let viewController = viewControllerFromStoryBoard(TransferViewControllerIdentifier) as! TransferViewController
         viewController.eventHandler = txPresenter
         transferViewController = viewController
         
@@ -23,11 +23,16 @@ class TransactionWireframe: MozoWireframe {
         rootWireframe?.displayViewController(viewController)
     }
     
-    func presentConfirmInterface(transaction: TransactionDTO, tokenInfo: TokenInfoDTO) {
-        let viewController = ConfirmTransferViewControllerFromStoryboard()
+    func updateInterfaceWithDisplayItem(_ displayItem: AddressBookDisplayItem) {
+        txPresenter?.updateInterfaceWithDisplayItem(displayItem)
+    }
+    
+    func presentConfirmInterface(transaction: TransactionDTO, tokenInfo: TokenInfoDTO, displayName: String?) {
+        let viewController = viewControllerFromStoryBoard(ConfirmTransferViewControllerIdentifier) as! ConfirmTransferViewController
         viewController.eventHandler = txPresenter
         viewController.transaction = transaction
         viewController.tokenInfo = tokenInfo
+        viewController.displayName = displayName
         confirmViewController = viewController
         
         txPresenter?.confirmUserInterface = viewController
@@ -39,17 +44,5 @@ class TransactionWireframe: MozoWireframe {
         viewController.eventHandler = txPresenter
         scannerViewController = viewController
         rootWireframe?.presentViewController(viewController)
-    }
-    
-    func TransferViewControllerFromStoryboard() -> TransferViewController {
-        let storyboard = StoryboardManager.mozoStoryboard()
-        let viewController = storyboard.instantiateViewController(withIdentifier: TransferViewControllerIdentifier) as! TransferViewController
-        return viewController
-    }
-    
-    func ConfirmTransferViewControllerFromStoryboard() -> ConfirmTransferViewController {
-        let storyboard = StoryboardManager.mozoStoryboard()
-        let viewController = storyboard.instantiateViewController(withIdentifier: ConfirmTransferViewControllerIdentifier) as! ConfirmTransferViewController
-        return viewController
     }
 }

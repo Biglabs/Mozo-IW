@@ -13,16 +13,24 @@ class TransactionPresenter : NSObject {
     var transferUserInterface : TransferViewInterface?
     var confirmUserInterface : ConfirmTransferViewInterface?
     var transactionModuleDelegate: TransactionModuleDelegate?
+    
+    func updateInterfaceWithDisplayItem(_ displayItem: AddressBookDisplayItem) {
+        transferUserInterface?.updateInterfaceWithDisplayItem(displayItem)
+    }
 }
 
 extension TransactionPresenter: TransactionModuleInterface {
+    func showAddressBookInterface() {
+        transactionModuleDelegate?.requestAddressBookInterfaceForTransaction()
+    }
+    
     func sendConfirmTransaction(_ transaction: TransactionDTO) {
         confirmUserInterface?.displaySpinner()
         txInteractor?.sendUserConfirmTransaction(transaction)
     }
     
-    func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?) {
-        txInteractor?.validateTransferTransaction(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
+    func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?, displayName: String?) {
+        txInteractor?.validateTransferTransaction(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount, displayName: displayName)
     }
     
     func updateUserInterfaceWithAddress(_ address: String) {
@@ -39,8 +47,8 @@ extension TransactionPresenter: TransactionModuleInterface {
 }
 
 extension TransactionPresenter : TransactionInteractorOutput {
-    func continueWithTransaction(_ transaction: TransactionDTO, tokenInfo: TokenInfoDTO) {
-        txWireframe?.presentConfirmInterface(transaction: transaction, tokenInfo: tokenInfo)
+    func continueWithTransaction(_ transaction: TransactionDTO, tokenInfo: TokenInfoDTO, displayName: String?) {
+        txWireframe?.presentConfirmInterface(transaction: transaction, tokenInfo: tokenInfo, displayName: displayName)
     }
     
     func didReceiveError(_ error: String?) {

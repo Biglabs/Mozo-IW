@@ -51,7 +51,7 @@ extension TransactionInteractor : TransactionInteractorInput {
         }
     }
     
-    func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?) {
+    func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?, displayName: String?) {
         var error : String? = nil
         if toAdress == nil || toAdress == "" {
             error = "Please input receive address."
@@ -80,7 +80,7 @@ extension TransactionInteractor : TransactionInteractorInput {
 
         let tx = createTransactionToTransfer(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
         self.tokenInfo = tokenInfo
-        output?.continueWithTransaction(tx!, tokenInfo: tokenInfo!)
+        output?.continueWithTransaction(tx!, tokenInfo: tokenInfo!, displayName: displayName)
     }
     
     func performTransfer(pin: String) {

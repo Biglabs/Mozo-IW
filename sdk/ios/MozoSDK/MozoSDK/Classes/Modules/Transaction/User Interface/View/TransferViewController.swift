@@ -17,6 +17,9 @@ class TransferViewController: MozoBasicViewController {
     @IBOutlet weak var btnScan: UIButton!
     @IBOutlet weak var txtAmount: UITextField!
     @IBOutlet weak var lbSpendable: UILabel!
+    @IBOutlet weak var addressBookView: UIView!
+    @IBOutlet weak var lbAbName: UILabel!
+    @IBOutlet weak var lbAbAddress: UILabel!
     @IBOutlet weak var btnContinue: UIButton!
     
     private let refreshControl = UIRefreshControl()
@@ -77,16 +80,29 @@ class TransferViewController: MozoBasicViewController {
     
     // MARK: Button tap events
     @IBAction func btnAddressBookTapped(_ sender: Any) {
+        eventHandler?.showAddressBookInterface()
     }
     
     @IBAction func btnScanTapped(_ sender: Any) {
         eventHandler?.showScanQRCodeInterface()
     }
+    @IBAction func touchedBtnClear(_ sender: Any) {
+        clearAndHideAddressBookView()
+        txtAddress.text = ""
+    }
     
     @IBAction func btnContinueTapped(_ sender: Any) {
         if let tokenInfo = self.tokenInfo {
-            eventHandler?.validateTransferTransaction(tokenInfo: tokenInfo, toAdress: txtAddress.text, amount: txtAmount.text)
+            let receiverAddress = txtAddress.isHidden ? lbAbAddress.text : txtAddress.text
+            eventHandler?.validateTransferTransaction(tokenInfo: tokenInfo, toAdress: receiverAddress, amount: txtAmount.text, displayName: txtAddress.isHidden ? lbAbName.text : nil)
         }
+    }
+    
+    func clearAndHideAddressBookView() {
+        txtAddress.isHidden = false
+        addressBookView.isHidden = true
+        lbAbName.text = ""
+        lbAbAddress.text = ""
     }
 }
 
@@ -100,10 +116,18 @@ extension TransferViewController : TransferViewInterface {
     }
     
     func updateUserInterfaceWithAddress(_ address: String) {
+        clearAndHideAddressBookView()
         txtAddress.text = address
     }
     
     func displayError(_ error: String) {
         displayMozoError(error)
+    }
+    
+    func updateInterfaceWithDisplayItem(_ displayItem: AddressBookDisplayItem) {
+        txtAddress.isHidden = true
+        addressBookView.isHidden = false
+        lbAbName.text = displayItem.name
+        lbAbAddress.text = displayItem.address
     }
 }
