@@ -119,6 +119,17 @@ public class ApiManager {
             return self.execute(method, url: url, headers: headers, body: parameters!)
         }
     }
+    
+//    func execute(_ method: Alamofire.HTTPMethod, url: String, parameters: Any? = nil) -> Promise<[Any?]> {
+//        print("Execute url: " + url)
+//        let headers = self.buildHTTPHeaders(withToken: true)
+//        if parameters == nil {
+//            return self.execute(method, url: url, headers: headers, params: nil)
+//        } else {
+//            let params = parameters as? [String: Any]
+//            return self.execute(method, url: url, headers: headers, params: params)
+//        }
+//    }
 
     private func execute(_ method: Alamofire.HTTPMethod, url: String, headers: HTTPHeaders, body: Any) -> Promise<[String: Any]> {
         return Promise { seal in
@@ -187,10 +198,14 @@ public class ApiManager {
                     switch response.result {
                     case .success(let json):
                         print("Response result value: \(json)")
-                        guard let json = json as? [String: Any] else {
-                            return seal.reject(AFError.responseValidationFailed(reason: .dataFileNil))
+                        guard let array = json as? [Any] else {
+                            guard let json = json as? [String: Any] else {
+                                return seal.reject(AFError.responseValidationFailed(reason: .dataFileNil))
+                            }
+                            return seal.fulfill(json)
                         }
-                        seal.fulfill(json)
+                        let result : [String: Any] = ["array": array]
+                        seal.fulfill(result)
                     case .failure(let error):
                         print("Request failed with error: \(error.localizedDescription), url: \(url)")
                         let connectionError = self.checkResponse(response: response, error: error)
