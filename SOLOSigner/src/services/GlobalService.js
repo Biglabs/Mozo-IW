@@ -12,13 +12,7 @@ import {isWebPlatform} from "../helpers/PlatformUtils";
 function checkExistingOAuth2Token() {
   AsyncStorage.getItem(FLAG_OAUTH2TOKEN, (error, result) => {
     if (result) {
-      Actions.reset('keycloak', {
-        token : {
-          access_token: result.access_token,
-          refresh_token: result.refresh_token,
-          id_token: result.id_token
-        }
-      });
+      checkWalletExisting();
     } else {
       Actions.reset('keycloak');
     }

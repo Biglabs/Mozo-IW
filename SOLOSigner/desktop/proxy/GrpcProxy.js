@@ -34,6 +34,7 @@ const mozo_service_host = app_config.mozo_services.api.host;
 const userReference = require('electron-settings');
 const oauth2 = require('../utils/oauth2');
 const services = require('../utils/services');
+var address_book = require('../utils/addressbook');
 
 let httpServer = null;
 
@@ -142,6 +143,52 @@ app.get('/getWalletBalance', (req, res, next) => {
   }, function(err) {
     res.send({ result : response_data });
   });
+});
+
+app.route('/address-book')
+  .get((req, res, next) => {
+    let response_data = {
+      status : "SUCCESS",
+      data : address_book.get(),
+      error : null
+    };
+    res.send({ result : response_data});
+  })
+  .post((req, res, next) => {
+    console.log(req.body);
+    let data = req.body;
+    let response_data = {
+      status: "ERROR",
+      error: ERRORS.INTERNAL_ERROR
+    };
+
+    address_book.add(data).then(function(info) {
+      response_data = {
+        status: "SUCCESS",
+        data: address_book.get(),
+        error: null
+      };
+      res.send({result : response_data});
+    }, function(err) {
+      res.send({ result : response_data });
+    });
+  });
+
+app.get('/address-book/find', (req, res, next) => {
+  let response_data = {
+    status : "SUCCESS",
+    data: [],
+    error: null
+  };
+
+  let keyword = req.query.keyword;
+  if (!keyword) {
+    res.send({result : response_data});
+    return;
+  }
+
+  response_data.data = address_book.find(keyword);
+  res.send({result : response_data});
 });
 
 app.get('/getTxHistory', (req, res, next) => {

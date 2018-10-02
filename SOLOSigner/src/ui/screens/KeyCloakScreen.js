@@ -30,39 +30,21 @@ export default class KeyCloakScreen extends React.Component {
       realm: "mozo",
       clientId: "desktop_app"
     });
-
-    if (this.state.token) {
-      const oauth2token = this.state.token;
-      keycloak.init({
-        onLoad: "check-sso",
-        responseMode: "query",
-        token: oauth2token.access_token,
-        refreshToken: oauth2token.refresh_token,
-        idToken: oauth2token.id_token
-      }).then(authenticated => {
-        if (authenticated) {
-          this.setState({
-            keycloak: keycloak,
-            authenticated: authenticated
-          });
-          Globals.checkWalletExisting();
-        } else {
-          keycloak.login({
-            redirectUri : "http://127.0.0.1:33013/oauth2-getcode",
-            scope: "offline_access"
-          });
-        }
-      });
-    } else {
-      keycloak.init({
-        onLoad: "check-sso",
-        responseMode: "query"
-      });
-      keycloak.login({
-        redirectUri : "http://127.0.0.1:33013/oauth2-getcode",
-        scope: "offline_access"
-      });
-    }
+    keycloak.init({
+      onLoad: "check-sso",
+      responseMode: "query"
+    }).then(authenticated => {
+      if (authenticated) {
+        this.setState({
+          keycloak: keycloak,
+          authenticated: authenticated
+        });
+      }
+    });
+    keycloak.login({
+      redirectUri : "http://127.0.0.1:33013/oauth2-getcode",
+      scope: "offline_access"
+    });
   }
 
   render() {
