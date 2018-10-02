@@ -25,29 +25,37 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNr-Tw-mDS" customClass="MozoSigninView" customModule="MozoSDK">
-                                                <rect key="frame" x="124.66666666666669" y="50" width="165" height="45"/>
+                                                <rect key="frame" x="20" y="13" width="165" height="45"/>
                                                 <color key="backgroundColor" red="0.56792475659999997" green="1" blue="0.5241613745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="BBL-d4-5DJ"/>
                                                     <constraint firstAttribute="width" constant="165" id="vlX-F6-w7D"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="94p-NE-Aha" customClass="MozoLogoutView" customModule="MozoSDK">
-                                                <rect key="frame" x="124.66666666666669" y="180" width="165" height="45"/>
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="94p-NE-Aha" customClass="MozoLogoutView" customModule="MozoSDK">
+                                                <rect key="frame" x="228" y="13" width="165" height="45"/>
                                                 <color key="backgroundColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="1AX-Cm-O6R"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIM-D7-igZ" customClass="MozoSendView" customModule="MozoSDK">
-                                                <rect key="frame" x="124.66666666666669" y="115" width="165" height="45"/>
+                                                <rect key="frame" x="115" y="66" width="165" height="45"/>
                                                 <color key="backgroundColor" red="0.0" green="0.42745098040000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="DGN-X1-teX"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="005-mU-edl" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="40" y="265" width="335" height="77"/>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SFa-4l-KOI" customClass="MozoTxHistoryView" customModule="MozoSDK">
+                                                <rect key="frame" x="100" y="119" width="195" height="45"/>
+                                                <color key="backgroundColor" red="0.090196078430000007" green="0.72549019609999998" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="195" id="DcM-Wi-e38"/>
+                                                    <constraint firstAttribute="height" constant="45" id="Od0-dE-Ria"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="005-mU-edl" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="170" width="335" height="77"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="335" id="Fhj-EC-6Gq"/>
@@ -58,8 +66,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showOnlyBalanceDetail" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eEF-na-Hvj" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="40" y="372" width="335" height="116"/>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eEF-na-Hvj" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="277" width="335" height="116"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="335" id="EiM-GY-IiT"/>
@@ -70,8 +78,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showOnlyAddressDetail" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqI-aP-adH" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="40" y="518" width="335" height="167"/>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yqI-aP-adH" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="423" width="335" height="167"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="167" id="3rQ-vt-O7s"/>
@@ -81,8 +89,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showDetail" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyz-Eb-aYx" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="40" y="715" width="335" height="115"/>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dyz-Eb-aYx" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="620" width="335" height="115"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="335" id="Yam-1d-Xe1"/>
@@ -93,8 +101,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showOnlyAddressDetail" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uH2-nJ-YWl" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="40" y="860" width="335" height="167"/>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uH2-nJ-YWl" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="765" width="335" height="167"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="167" id="7Ud-e1-E1a"/>
@@ -112,22 +120,24 @@
                                             <constraint firstItem="94p-NE-Aha" firstAttribute="width" secondItem="jIM-D7-igZ" secondAttribute="width" id="1i5-Rc-3pi"/>
                                             <constraint firstItem="yqI-aP-adH" firstAttribute="top" secondItem="eEF-na-Hvj" secondAttribute="bottom" constant="30" id="3iT-jW-a5Z"/>
                                             <constraint firstItem="uH2-nJ-YWl" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="41d-io-nAd"/>
-                                            <constraint firstItem="005-mU-edl" firstAttribute="top" secondItem="94p-NE-Aha" secondAttribute="bottom" constant="40" id="72Z-cO-AWa"/>
+                                            <constraint firstItem="jIM-D7-igZ" firstAttribute="top" secondItem="cNr-Tw-mDS" secondAttribute="bottom" constant="10" id="5jI-fD-4GP"/>
+                                            <constraint firstItem="005-mU-edl" firstAttribute="top" secondItem="SFa-4l-KOI" secondAttribute="bottom" constant="8" id="72Z-cO-AWa"/>
                                             <constraint firstItem="005-mU-edl" firstAttribute="width" secondItem="yqI-aP-adH" secondAttribute="width" id="8Nf-eR-Sr0"/>
-                                            <constraint firstItem="jIM-D7-igZ" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="B28-O4-hfh"/>
                                             <constraint firstItem="eEF-na-Hvj" firstAttribute="top" secondItem="005-mU-edl" secondAttribute="bottom" constant="30" id="IOX-5M-koy"/>
                                             <constraint firstItem="jIM-D7-igZ" firstAttribute="width" secondItem="cNr-Tw-mDS" secondAttribute="width" id="KaR-06-Fua"/>
-                                            <constraint firstItem="94p-NE-Aha" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="OTa-4e-nzP"/>
                                             <constraint firstItem="uH2-nJ-YWl" firstAttribute="top" secondItem="dyz-Eb-aYx" secondAttribute="bottom" constant="30" id="PmU-7K-VwS"/>
-                                            <constraint firstItem="jIM-D7-igZ" firstAttribute="top" secondItem="cNr-Tw-mDS" secondAttribute="bottom" constant="20" id="Sob-kX-dKA"/>
-                                            <constraint firstItem="cNr-Tw-mDS" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="TBe-Iu-3jP"/>
+                                            <constraint firstItem="SFa-4l-KOI" firstAttribute="top" secondItem="jIM-D7-igZ" secondAttribute="bottom" constant="10" id="QB7-Ed-5RC"/>
+                                            <constraint firstAttribute="trailing" secondItem="94p-NE-Aha" secondAttribute="trailing" constant="20" id="TPf-z6-bQO"/>
                                             <constraint firstItem="005-mU-edl" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="U42-hU-hbJ"/>
                                             <constraint firstItem="yqI-aP-adH" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="X9v-wI-VsF"/>
                                             <constraint firstItem="eEF-na-Hvj" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="e15-Jt-EX6"/>
-                                            <constraint firstItem="94p-NE-Aha" firstAttribute="top" secondItem="jIM-D7-igZ" secondAttribute="bottom" constant="20" id="gm6-Q4-h88"/>
+                                            <constraint firstItem="SFa-4l-KOI" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="gle-8L-mQf"/>
+                                            <constraint firstItem="94p-NE-Aha" firstAttribute="top" secondItem="Lfc-90-c3H" secondAttribute="top" constant="10" id="iDu-g1-sXM"/>
+                                            <constraint firstItem="jIM-D7-igZ" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="j99-PD-ggC"/>
                                             <constraint firstItem="dyz-Eb-aYx" firstAttribute="top" secondItem="yqI-aP-adH" secondAttribute="bottom" constant="30" id="j9K-KH-dMS"/>
                                             <constraint firstItem="dyz-Eb-aYx" firstAttribute="centerX" secondItem="Lfc-90-c3H" secondAttribute="centerX" id="o1i-2h-DEh"/>
-                                            <constraint firstItem="cNr-Tw-mDS" firstAttribute="top" secondItem="Lfc-90-c3H" secondAttribute="top" constant="50" id="w23-Ic-Yph"/>
+                                            <constraint firstItem="cNr-Tw-mDS" firstAttribute="leading" secondItem="Lfc-90-c3H" secondAttribute="leading" constant="20" id="rXK-gI-WLy"/>
+                                            <constraint firstItem="cNr-Tw-mDS" firstAttribute="top" secondItem="Lfc-90-c3H" secondAttribute="top" constant="10" id="vi2-7E-rHI"/>
                                         </constraints>
                                     </view>
                                 </subviews>
