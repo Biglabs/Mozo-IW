@@ -3,27 +3,15 @@ const userReference = require('electron-settings');
 var request = require('request');
 
 const main = require('../main');
-const oauth2 = require('./oauth2');
 const ERRORS = require("../constants").ERRORS;
+const CONSTANTS = require("../constants").CONSTANTS;
+const oauth2 = require('./oauth2');
+const {setRequestData} = require('./common');
+var address_book = require('./addressbook');
 
 const app_config = require("../app_settings").APP_SETTINGS;
 const mozo_service_host = app_config.mozo_services.api.host;
 
-
-function setRequestData() {
-  let token_header = oauth2.tokenHeader();
-  if (!token_header) {
-    return null;
-  }
-  let options = {
-    url: mozo_service_host + "/api/user-profile",
-    headers: {
-      'Authorization' : token_header
-    },
-    method: 'GET'
-  };
-  return options;
-}
 
 function extractWalletData(walletInfo) {
   if (!walletInfo) {
@@ -49,6 +37,31 @@ function extractWalletData(walletInfo) {
   userReference.set("App", app_info);
 }
 
+function getOffchainTokenInfo() {
+  let options = setRequestData();
+  if (!options) {
+    return;
+  }
+
+  options.url = mozo_service_host +
+    "/api/solo/contract/solo-token";
+
+  request(options, function(error, response, body) {
+    if (!error) {
+      console.log(body);
+      if (response.statusCode == 200) {
+        token_info = JSON.parse(body);
+        userReference.set(CONSTANTS.OFFCHAIN_TOKEN_INFO, token_info);
+      } else {
+        console.log(response.statusCode);
+        console.log(body);
+      }
+    } else {
+      console.log(error);
+    }
+  });
+}
+
 function getUserProfile() {
   let options = setRequestData();
   if (!options) {
@@ -63,6 +76,10 @@ function getUserProfile() {
         if (user_profile.walletInfo) {
           extractWalletData(user_profile.walletInfo);
         }
+        getOffchainTokenInfo();
+        address_book.download();
+      } else if (response.statusCode == 401)  {
+        userReference.deleteAll();
       } else {
         console.log(response.statusCode);
         console.log(body);
@@ -78,7 +95,11 @@ exports.getUserProfile = getUserProfile;
 
 exports.logOut = function() {
   userReference.deleteAll();
-  main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
+  var sess = main.mainWindow.webContents.session;
+  sess.clearCache(function() {
+    sess.clearStorageData();
+    main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
+  });
 }
 
 exports.updateWalletInfo = function() {
@@ -126,33 +147,7 @@ exports.updateWalletInfo = function() {
 };
 
 function getTokenInfo() {
-  let options = setRequestData();
-  if (!options) {
-    return;
-  }
-
-  options.url = mozo_service_host +
-    "/api/solo/contract/solo-token";
-
-  return new Promise(function(resolve, reject) {
-    request(options, function(error, response, body) {
-      console.log(body);
-      console.log(response.statusCode);
-      if (!error) {
-        if (response.statusCode == 200) {
-          token_info = JSON.parse(body);
-          resolve(token_info);
-        } else {
-          console.log(response.statusCode);
-          console.log(body);
-          resolve(null);
-        }
-      } else {
-        console.log(error);
-        reject(error);
-      }
-    });
-  });
+  return userReference.get(CONSTANTS.OFFCHAIN_TOKEN_INFO);
 };
 
 exports.createTransaction = function(tx_info, res) {
@@ -172,53 +167,50 @@ exports.createTransaction = function(tx_info, res) {
   options.body = tx_req;
 
   console.log("Request data: " + JSON.stringify(options));
-  getTokenInfo().then(function(token_info) {
-    if (token_info) {
-      console.log("Real value: " + tx_info.value * Math.pow(10, token_info.decimals));
-      let outputs_tx = [
-        {
-          addresses: [ tx_info.to ],
-          value: tx_info.value * Math.pow(10, token_info.decimals)
-        }
-      ];
-      options.body.outputs = outputs_tx;
+  const token_info = getTokenInfo();
+  if (token_info) {
+    console.log("Real value: " + tx_info.value * Math.pow(10, token_info.decimals));
+    let outputs_tx = [
+      {
+        addresses: [ tx_info.to ],
+        value: tx_info.value * Math.pow(10, token_info.decimals)
+      }
+    ];
+    options.body.outputs = outputs_tx;
 
-      request(options, function(error, response, body) {
-        console.log(JSON.stringify(options));
-        console.log(response.statusCode);
-        if (!error) {
-          if (response.statusCode == 200) {
-            console.log("Transaction info: " + JSON.stringify(body));
-            body.tx.outputs = outputs_tx;
-            confirmTransaction(body, res);
-          } else {
-            console.log(response.statusCode);
-            console.log(body);
-            let response_data = {
-              status: "ERROR",
-              error: ERRORS.INTERNAL_ERROR
-            };
-            res.send({ result : response_data });
-          }
+    request(options, function(error, response, body) {
+      console.log(JSON.stringify(options));
+      console.log(response.statusCode);
+      if (!error) {
+        if (response.statusCode == 200) {
+          console.log("Transaction info: " + JSON.stringify(body));
+          body.tx.outputs = outputs_tx;
+          confirmTransaction(body, res);
         } else {
-          console.log(error);
+          console.log(response.statusCode);
+          console.log(body);
           let response_data = {
             status: "ERROR",
             error: ERRORS.INTERNAL_ERROR
           };
           res.send({ result : response_data });
         }
-      });
-    }
-  }, function(err) {
-    console.log(err);
+      } else {
+        console.log(error);
+        let response_data = {
+          status: "ERROR",
+          error: ERRORS.INTERNAL_ERROR
+        };
+        res.send({ result : response_data });
+      }
+    });
+  } else {
     let response_data = {
       status: "ERROR",
       error: ERRORS.INTERNAL_ERROR
     };
     res.send({ result : response_data });
-  });
-
+  }
 };
 
 /**
@@ -372,6 +364,9 @@ exports.getWalletBalance = function(network) {
         if (response.statusCode == 200) {
           console.log("Balance Info: " + body);
           balance_info = JSON.parse(body);
+          if (balance_info.decimals && balance_info.decimals > 0) {
+            balance_info.balance /= Math.pow(10, token_info.decimals);
+          }
           resolve(balance_info);
         } else {
           console.log(response.statusCode);

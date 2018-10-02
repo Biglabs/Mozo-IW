@@ -1,6 +1,8 @@
 
 const CONSTANTS = {
   OAUTH2TOKEN_KEY : "OAuth2Token",
+  OFFCHAIN_TOKEN_INFO : "OffchainTokenInfo",
+  ADDRESS_BOOK : "AddressBook"
 };
 
 exports.CONSTANTS = CONSTANTS;
