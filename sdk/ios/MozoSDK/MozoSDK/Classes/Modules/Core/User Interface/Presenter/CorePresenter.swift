@@ -99,6 +99,10 @@ extension CorePresenter: TransactionModuleDelegate {
         // Display transaction completion interface
         coreWireframe?.presentTransactionCompleteInterface(detailItem)
     }
+    
+    func requestAddressBookInterfaceForTransaction() {
+        coreWireframe?.presentAddressBookInterfaceForTransaction()
+    }
 }
 
 extension CorePresenter: TxCompletionModuleDelegate {
@@ -108,7 +112,6 @@ extension CorePresenter: TxCompletionModuleDelegate {
         let contain = AddressBookDTO.arrayContainsItem(address, array: list)
         if contain {
             // TODO: Show message address is existing in address book list
-            
         } else {
             coreWireframe?.presentAddressBookDetailInterface(address: address)
         }
@@ -116,6 +119,13 @@ extension CorePresenter: TxCompletionModuleDelegate {
     
     func requestShowDetail(_ detail: TxDetailDisplayItem) {
         coreWireframe?.presentTransactionDetailInterface(detail)
+    }
+}
+
+extension CorePresenter: AddressBookModuleDelegate {
+    func addressBookModuleDidChooseItemOnUI(addressBook: AddressBookDisplayItem) {
+        coreWireframe?.updateAddressBookInterfaceForTransaction(displayItem: addressBook)
+        coreWireframe?.dismissAddressBookInterface()
     }
 }
 

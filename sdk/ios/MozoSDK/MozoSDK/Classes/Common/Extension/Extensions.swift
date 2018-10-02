@@ -59,6 +59,11 @@ public extension String {
     public func capitalizingFirstLetter() -> String {
         return prefix(1).uppercased() + dropFirst()
     }
+    
+    public func hasPrefix(_ prefix: String, caseSensitive: Bool) -> Bool {
+        if !caseSensitive { return hasPrefix(prefix) }
+        return self.lowercased().hasPrefix(prefix.lowercased())
+    }
 }
 
 internal extension String {

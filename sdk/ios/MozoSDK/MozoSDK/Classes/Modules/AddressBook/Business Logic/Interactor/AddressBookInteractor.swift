@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+class AddressBookInteractor: NSObject {
+    var output: AddressBookInteractorOutput?
+    
+    
+}
+extension AddressBookInteractor : AddressBookInteractorInput {
+    func getListAddressBook() {
+        output?.finishGetListAddressBook(SessionStoreManager.addressBookList)
+    }
+}

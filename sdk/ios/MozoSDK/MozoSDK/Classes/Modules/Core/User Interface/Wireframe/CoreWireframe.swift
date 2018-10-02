@@ -13,6 +13,7 @@ class CoreWireframe : MozoWireframe {
     var txWireframe: TransactionWireframe?
     var txCompleteWireframe: TxCompletionWireframe?
     var txDetailWireframe: TxDetailWireframe?
+    var abWireframe: AddressBookWireframe?
     var abDetailWireframe: ABDetailWireframe?
     var corePresenter: CorePresenter?
     
@@ -73,5 +74,17 @@ class CoreWireframe : MozoWireframe {
     
     func dismissAddressBookDetailInterface() {
         abDetailWireframe?.dismissAddressBookDetailInterface()
+    }
+    
+    func presentAddressBookInterfaceForTransaction() {
+        abWireframe?.presentAddressBookInterface()
+    }
+    
+    func updateAddressBookInterfaceForTransaction(displayItem: AddressBookDisplayItem) {
+        txWireframe?.updateInterfaceWithDisplayItem(displayItem)
+    }
+    
+    func dismissAddressBookInterface() {
+        abWireframe?.dismissAddressBookInterface()
     }
 }
