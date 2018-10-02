@@ -52,7 +52,12 @@ class AuthManager : NSObject {
     
     private func checkAuthorization(){
         print("Check authorization, try request.")
-        apiManager?.getTokenInfoFromAddress("").catch({ (err) in
+        apiManager?.getListAddressBook().done({ (array) in
+            // Store downloaded address book
+            SessionStoreManager.addressBookList = array
+            // TODO: Reload user info in case error with user info at the latest login
+            // Remember: Authen flow and wallet flow might be affected by reloading here
+        }).catch({ (err) in
             let error = err as! ConnectionError
             if error == ConnectionError.authenticationRequired {
                 print("Token expired, clear token and user info")
