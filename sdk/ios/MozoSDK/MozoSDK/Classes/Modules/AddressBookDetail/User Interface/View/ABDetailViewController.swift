@@ -65,10 +65,10 @@ extension ABDetailViewController: ABDetailViewInterface {
     }
     
     func displaySuccess() {
-        successView.isHidden = false
-        txtName.isEnabled = false
-        btnSave.isEnabled = false
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        self.successView.isHidden = false
+        self.txtName.isEnabled = false
+        self.btnSave.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.eventHandler?.finishSaveAddressBook()
         }
     }
