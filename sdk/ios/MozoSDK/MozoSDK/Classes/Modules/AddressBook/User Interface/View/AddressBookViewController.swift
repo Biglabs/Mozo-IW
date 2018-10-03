@@ -97,7 +97,8 @@ extension AddressBookViewController: UITableViewDataSource {
         }
         
         searchFooter.setNotFiltering()
-        return addrBooks.count
+        
+        return displayData?.sections[section].items.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -112,12 +113,13 @@ extension AddressBookViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MozoAddressBookCell", for: indexPath)
         cell.textLabel!.text = ""
         cell.detailTextLabel!.text = ""
-        if (displayData?.sections[indexPath.section].items.count)! > 0 {
+        let itemCount = (displayData?.sections[indexPath.section].items.count)!
+        if itemCount > 0 {
             let item: AddressBookDisplayItem
             if isFiltering() {
                 item = filteredAbs[indexPath.row]
             } else {
-                item = addrBooks[indexPath.row]
+                item = (displayData?.sections[indexPath.section].items[indexPath.row])!
             }
             cell.textLabel!.text = item.name
             cell.detailTextLabel!.text = item.address
