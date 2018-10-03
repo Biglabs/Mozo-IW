@@ -54,7 +54,7 @@ export default class SecurityPinScreen extends Component<Props> {
             }
         } else if (this.props.encryptedWallet) {
           // Get PIN code
-          let pin = JSON.stringify(this.pinCode);
+          let pin = this.pinCode.join("");
           // Try to decrypt mnemonic
           let mnemonicPhrase = WalletService.viewBackupPhrase(pin);
           console.log("mnemonic Phrase: " + mnemonicPhrase);
@@ -90,7 +90,7 @@ export default class SecurityPinScreen extends Component<Props> {
           }
           this.props.isNewPIN = false;
           // Open Home Screen
-          let pin = JSON.stringify(this.pinCode);
+          let pin = this.pinCode.join("");
           Actions.home({pin: pin});
         });
     }
@@ -108,7 +108,7 @@ export default class SecurityPinScreen extends Component<Props> {
         let me = this;
         this.setState({isShowingLoading: true}, () => {
             setTimeout(() => {
-                let pin = JSON.stringify(this.pinCode);
+                let pin = this.pinCode.join("");
                 this.handleImportedMnemonic(
                     this.props.isNewPIN, pin,
                     this.props.importedPhrase);

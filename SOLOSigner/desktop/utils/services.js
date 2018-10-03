@@ -14,11 +14,11 @@ const mozo_service_host = app_config.mozo_services.api.host;
 
 
 function extractWalletData(walletInfo) {
-  if (!walletInfo) {
-    return;
-  }
-
-  if (!walletInfo.encryptSeedPhrase) {
+  if (!walletInfo || !walletInfo.encryptSeedPhrase) {
+    userReference.set(
+      CONSTANTS.IS_NEW_WALLET_KEY,
+      "true"
+    );
     return;
   }
 
@@ -35,6 +35,10 @@ function extractWalletData(walletInfo) {
     }
   ];
   userReference.set("App", app_info);
+
+  if (userReference.get(CONSTANTS.IS_NEW_WALLET_KEY)) {
+    userReference.delete(CONSTANTS.IS_NEW_WALLET_KEY);
+  }
 }
 
 function getOffchainTokenInfo() {
@@ -103,6 +107,11 @@ exports.logOut = function() {
 }
 
 exports.updateWalletInfo = function() {
+  const is_new_wallet = userReference.get(CONSTANTS.IS_NEW_WALLET_KEY);
+  if (!is_new_wallet) {
+    return;
+  }
+
   const app_info = userReference.get("App");
   if (!app_info) {
     return;
@@ -138,6 +147,7 @@ exports.updateWalletInfo = function() {
 
   request(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
+      userReference.delete(CONSTANTS.IS_NEW_WALLET_KEY);
       console.log("User profile: " + JSON.stringify(body));
     } else {
       console.log(error);

@@ -141,6 +141,7 @@ app.get('/getWalletBalance', (req, res, next) => {
     }
     res.send({ result : response_data });
   }, function(err) {
+    response_data.error = ERRORS.INTERNAL_ERROR;
     res.send({ result : response_data });
   });
 });
@@ -213,33 +214,9 @@ app.get('/getTxHistory', (req, res, next) => {
     }
     res.send({ result : response_data });
   }, function(err) {
+    response_data.error = ERRORS.INTERNAL_ERROR;
     res.send({ result : response_data });
   });
-});
-
-var sjcl = require('../utils/sjcl');
-var RNCryptor = require('../utils/rncryptor');
-
-app.post('/test-data/encrypt', (req, res, next) => {
-  let data = req.body.data;
-  let password = req.body.password;
-  console.log("Data: " + data);
-  let encrypted_data = RNCryptor.Encrypt(
-    password, sjcl.codec.utf8String.toBits(data));
-  res.send( { data : encrypted_data } );
-});
-
-app.post('/test-data/decrypt', (req, res, next) => {
-  let data = req.body.data;
-  let password = req.body.password;
-  try {
-    let decrypted_data = RNCryptor.Decrypt(
-      password, sjcl.codec.base64.toBits(data));
-    res.send({ data : decrypted_data });
-  } catch (e) {
-    console.log(e);
-    res.send({ data: "" });
-  }
 });
 
 app.post('/transaction/send', (req, res, next) => {
