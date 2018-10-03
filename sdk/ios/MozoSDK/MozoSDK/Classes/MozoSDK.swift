@@ -33,6 +33,10 @@ public class MozoSDK {
         moduleDependencies.transferMozo()
     }
     
+    public static func displayTransactionHistory() {
+        moduleDependencies.displayTransactionHistory()
+    }
+    
     public static func loadBalanceInfo() -> Promise<DetailInfoDisplayItem> {
         return (moduleDependencies.loadBalanceInfo())
     }

@@ -31,6 +31,6 @@ import UIKit
     
     @IBAction func touchedUpInside(_ sender: Any) {
         print("Touched Up Inside Button Transaction history")
-        
+        MozoSDK.displayTransactionHistory()
     }
 }

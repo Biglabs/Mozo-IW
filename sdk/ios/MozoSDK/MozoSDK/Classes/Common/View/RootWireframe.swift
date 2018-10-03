@@ -18,6 +18,7 @@ let TxCompletionViewControllerIdentifier = "TxCompletionViewController"
 let TxDetailViewControllerIdentifier = "TxDetailViewController"
 let AddressBookViewControllerIdentifier = "AddressBookViewController"
 let ABDetailViewControllerIdentifier = "ABDetailViewController"
+let TxHistoryViewControllerIdentifier = "TxHistoryViewController"
 
 class RootWireframe : NSObject {
     let mozoNavigationController = MozoNavigationController()

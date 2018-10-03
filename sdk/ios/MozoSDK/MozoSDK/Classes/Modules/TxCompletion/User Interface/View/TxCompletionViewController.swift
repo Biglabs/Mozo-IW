@@ -30,7 +30,7 @@ class TxCompletionViewController: MozoBasicViewController {
     
     func updateView() {
         lbAddress.text = detailItem.addressTo
-        lbAmount.text = "{\(detailItem.amount.convertOutputValue(decimal: detailItem.decimal))}"
+        lbAmount.text = "{\(detailItem.amount)}"
     }
     
     func setBtnLayer() {

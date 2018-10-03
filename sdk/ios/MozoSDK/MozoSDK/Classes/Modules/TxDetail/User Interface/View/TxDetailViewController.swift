@@ -26,13 +26,13 @@ class TxDetailViewController: MozoBasicViewController {
     }
     
     func updateView() {
-        lbTxType.text = displayItem.action ?? displayItem.buildAction()
+        lbTxType.text = displayItem.action
 
-        lbDateTime.text = displayItem.buildDateString()
+        lbDateTime.text = displayItem.dateTime
         
-        let amount = displayItem.amount.convertOutputValue(decimal: displayItem.decimal)
+        let amount = displayItem.amount
         
-        let reBalance = displayItem.currentBalance.convertOutputValue(decimal: displayItem.decimal) - amount
+        let reBalance = displayItem.currentBalance - amount
         lbBalance.text = "\(reBalance)"
         
         lbAddress.text = displayItem.addressTo

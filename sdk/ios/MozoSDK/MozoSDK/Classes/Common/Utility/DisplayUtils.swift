@@ -30,19 +30,19 @@ public class DisplayUtils {
         view.center = (topViewController?.view.center)!
         topViewController?.view.addSubview(view)
     }
-//    
-//    public static func convertInt64ToStringWithFormat(_ dateInt64: Int64, format: String) -> String{
-//        let date = Date(timeIntervalSince1970:Double(dateInt64))
-//        return Utils.convertDateToStringWithFormat(date, format: format)
-//    }
-//    
-//    public static func convertDateToStringWithFormat(_ date: Date, format: String) -> String{
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = format
-//        dateFormatter.timeZone = TimeZone.current
-//        let dateString:String = dateFormatter.string(from: date)
-//        return dateString
-//    }
+    
+    public static func convertInt64ToStringWithFormat(_ dateInt64: Int64, format: String) -> String{
+        let date = Date(timeIntervalSince1970:Double(dateInt64))
+        return convertDateToStringWithFormat(date, format: format)
+    }
+    
+    public static func convertDateToStringWithFormat(_ date: Date, format: String) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        dateFormatter.timeZone = TimeZone.current
+        let dateString:String = dateFormatter.string(from: date)
+        return dateString
+    }
     
 //    public static func showError(_ connectionError: Error) {
 //        switch connectionError {

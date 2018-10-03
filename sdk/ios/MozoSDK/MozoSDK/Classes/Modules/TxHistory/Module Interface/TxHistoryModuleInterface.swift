@@ -8,6 +8,6 @@
 import Foundation
 
 protocol TxHistoryModuleInterface {
-//    func selectTxHistoryOnUI(_ txHistory: TxHistoryDisplayItem)
-    func updateDisplayData()
+    func selectTxHistoryOnUI(_ txHistory: TxHistoryDisplayItem)
+    func updateDisplayData(page: Int)
 }

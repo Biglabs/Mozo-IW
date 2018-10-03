@@ -28,6 +28,7 @@ class ModuleDependencies {
     let walletWireframe = WalletWireframe()
     let authWireframe = AuthWireframe()
     let txWireframe = TransactionWireframe()
+    let txhWireframe = TxHistoryWireframe()
     let txComWireframe = TxCompletionWireframe()
     let txDetailWireframe = TxDetailWireframe()
     let abDetailWireframe = ABDetailWireframe()
@@ -57,6 +58,10 @@ class ModuleDependencies {
         coreWireframe.requestForTransfer()
     }
     
+    func displayTransactionHistory() {
+        coreWireframe.requestForTxHistory()
+    }
+    
     func loadBalanceInfo() -> Promise<DetailInfoDisplayItem>{
         return (coreWireframe.corePresenter?.coreInteractorService?.loadBalanceInfo())!
     }
@@ -72,6 +77,7 @@ class ModuleDependencies {
         transactionDependencies()
         transactionCompletionDependencies()
         transactionDetailDependencies()
+        transactionHistoryDependencies()
         // MARK: Address book
         addressBookDependencies()
         addressBookDetailDependencies()
@@ -98,6 +104,7 @@ class ModuleDependencies {
         coreWireframe.authWireframe = authWireframe
         coreWireframe.walletWireframe = walletWireframe
         coreWireframe.txWireframe = txWireframe
+        coreWireframe.txhWireframe = txhWireframe
         coreWireframe.txCompleteWireframe = txComWireframe
         coreWireframe.txDetailWireframe = txDetailWireframe
         coreWireframe.abDetailWireframe = abDetailWireframe
@@ -145,6 +152,20 @@ class ModuleDependencies {
         
         txComWireframe.txComPresenter = txComPresenter
         txComWireframe.rootWireframe = rootWireframe
+    }
+    
+    func transactionHistoryDependencies() {
+        let txhPresenter = TxHistoryPresenter()
+        
+        let txhInteractor = TxHistoryInteractor(apiManager: apiManager)
+        txhInteractor.output = txhPresenter
+        
+        txhPresenter.txhInteractor = txhInteractor
+        txhPresenter.txhWireframe = txhWireframe
+        txhPresenter.txhModuleDelegate = coreWireframe.corePresenter
+        
+        txhWireframe.txhPresenter = txhPresenter
+        txhWireframe.rootWireframe = rootWireframe
     }
     
     func transactionDependencies() {
@@ -225,6 +246,21 @@ class ModuleDependencies {
         _ = apiManager.updateUserProfile(userProfile: profile!)
             .done { uProfile -> Void in
                 print("Update Wallet To User Profile result: [\(uProfile)]")
+        }
+    }
+    
+    func testSeedAndEncryption(manager: WalletManager) {
+        for i in stride(from: 1, to: 11, by: 1) {
+            print("\(i)-seed:")
+            let mnemonic = manager.generateMnemonics()
+            print(mnemonic ?? "")
+            print("\(i)-seed encrypted:")
+            print(mnemonic?.encrypt(key: "000000") ?? "")
+            let wallet = manager.createNewWallet(mnemonics: mnemonic!)
+            print("\(i)-privateKey:")
+            print(wallet.privateKey)
+            print("\(i)-privateKey encrypted:")
+            print(wallet.privateKey.encrypt(key: "000000"))
         }
     }
 }

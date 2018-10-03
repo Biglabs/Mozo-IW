@@ -91,7 +91,7 @@ public class TxHistoryDTO: ResponseObjectSerializable {
     }
     
     public static func arrayFromJson(_ json: SwiftyJSON.JSON) -> [TxHistoryDTO] {
-        let array = json.array?.filter({ TxHistoryDTO(json: $0) != nil }).map({ TxHistoryDTO(json: $0)! })
+        let array = json.array?.map({ TxHistoryDTO(json: $0)! })
         return array ?? []
     }
 }

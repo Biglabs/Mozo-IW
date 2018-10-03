@@ -99,3 +99,15 @@ public enum BalanceDisplayType {
         }
     }
 }
+
+public enum TransactionType {
+    case Sent
+    case Received
+    
+    public var value : String {
+        switch self {
+        case .Sent: return "Sent"
+        case .Received: return "Received"
+        }
+    }
+}

@@ -95,7 +95,8 @@ extension CorePresenter: TransactionModuleDelegate {
     
     func didSendTxSuccess(_ tx: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO) {
         // Build transaction detail item
-        let detailItem = TxDetailDisplayItem(transaction: tx, tokenInfo: tokenInfo  )
+        let data = TxDetailDisplayData(transaction: tx, tokenInfo: tokenInfo)
+        let detailItem = data.collectDisplayItem()
         // Display transaction completion interface
         coreWireframe?.presentTransactionCompleteInterface(detailItem)
     }
@@ -136,5 +137,16 @@ extension CorePresenter: ABDetailModuleDelegate {
     
     func detailModuleDidSaveAddressBook() {
         coreWireframe?.dismissAddressBookDetailInterface()
+    }
+}
+
+extension CorePresenter: TxHistoryModuleDelegate {
+    func txHistoryModuleDidChooseItemOnUI(txHistory: TxHistoryDisplayItem) {
+        
+//        // Build transaction detail item
+//        let data = TxDetailDisplayData(transaction: tx, tokenInfo: tokenInfo)
+//        let detailItem = data.collectDisplayItem()
+//        // Display transaction completion interface
+//        coreWireframe?.presentTransactionCompleteInterface(detailItem)
     }
 }

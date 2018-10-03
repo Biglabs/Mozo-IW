@@ -11,6 +11,7 @@ class CoreWireframe : MozoWireframe {
     var authWireframe: AuthWireframe?
     var walletWireframe: WalletWireframe?
     var txWireframe: TransactionWireframe?
+    var txhWireframe: TxHistoryWireframe?
     var txCompleteWireframe: TxCompletionWireframe?
     var txDetailWireframe: TxDetailWireframe?
     var abWireframe: AddressBookWireframe?
@@ -30,6 +31,10 @@ class CoreWireframe : MozoWireframe {
     func requestForTransfer() {
         presentWaitingInterface()
         corePresenter?.requestForAuthentication(module: Module.Transaction)
+    }
+    
+    func requestForTxHistory() {
+        txhWireframe?.presentTxHistoryInterface()
     }
     
     func requestForCloseAllMozoUIs(completion: (() -> Swift.Void)? = nil) {

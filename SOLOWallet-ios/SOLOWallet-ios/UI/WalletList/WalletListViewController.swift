@@ -167,7 +167,6 @@ extension WalletListViewController: UIGestureRecognizerDelegate {
 }
 
 extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
-    
     public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

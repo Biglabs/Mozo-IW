@@ -8,6 +8,6 @@
 import Foundation
 
 protocol TxHistoryViewInterface {
-    //    func showTxHistoryDisplayData(_ data: TxHistoryDisplayData, allItems: [TxHistoryDisplayItem])
+    func showTxHistoryDisplayData(_ data: TxHistoryDisplayCollection, forPage: Int)
     func showNoContentMessage()
 }
