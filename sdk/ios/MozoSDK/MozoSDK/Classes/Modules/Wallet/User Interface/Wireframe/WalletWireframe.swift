@@ -18,10 +18,12 @@ class WalletWireframe: MozoWireframe {
         walletPresenter?.processInitialWalletInterface()
     }
     
-    func presentPINInterface(passPharse: String?) {
+    func presentPINInterface(passPharse: String?, requestFrom module: Module = Module.Wallet) {
         let viewController = PINViewControllerFromStoryboard()
         viewController.eventHandler = walletPresenter
         viewController.passPhrase = passPharse
+        viewController.moduleRequested = module
+        
         pinViewController = viewController
         walletPresenter?.pinUserInterface = viewController
         rootWireframe?.displayViewController(viewController)

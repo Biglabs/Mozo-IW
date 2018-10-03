@@ -19,6 +19,8 @@ class PINViewController : MozoBasicViewController {
     
     var eventHandler : WalletModuleInterface?
     var passPhrase : String?
+    var moduleRequested: Module = .Wallet
+    
     private var pin : String?
     private var isConfirm = false
     
@@ -33,8 +35,14 @@ class PINViewController : MozoBasicViewController {
         pinTextField.delegate = self as PinTextFieldDelegate
         pinTextField.keyboardType = .numberPad
         if self.passPhrase == nil {
-            // Enter new pin and confirm new pin
-            enterPINLabel.text = "ENTER YOUR SECURITY PIN TO RESTORE WALLET"
+            if moduleRequested == Module.Transaction {
+                enterPINLabel.text = "ENTER YOUR SECURITY PIN"
+                descriptionLabel.text = "Security PIN must be 6 di-git numbers"
+                title = "SECURITY PIN CONFIRM"
+            } else {
+                // Enter new pin and confirm new pin
+                enterPINLabel.text = "ENTER YOUR SECURITY PIN TO RESTORE WALLET"
+            }
         }
     }
     
