@@ -1,8 +1,9 @@
 
 const CONSTANTS = {
+  ADDRESS_BOOK : "AddressBook",
+  IS_NEW_WALLET_KEY : "IsNewWallet",
   OAUTH2TOKEN_KEY : "OAuth2Token",
-  OFFCHAIN_TOKEN_INFO : "OffchainTokenInfo",
-  ADDRESS_BOOK : "AddressBook"
+  OFFCHAIN_TOKEN_INFO : "OffchainTokenInfo"
 };
 
 exports.CONSTANTS = CONSTANTS;
