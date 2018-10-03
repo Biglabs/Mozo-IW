@@ -141,12 +141,10 @@ extension CorePresenter: ABDetailModuleDelegate {
 }
 
 extension CorePresenter: TxHistoryModuleDelegate {
-    func txHistoryModuleDidChooseItemOnUI(txHistory: TxHistoryDisplayItem) {
-        
-//        // Build transaction detail item
-//        let data = TxDetailDisplayData(transaction: tx, tokenInfo: tokenInfo)
-//        let detailItem = data.collectDisplayItem()
-//        // Display transaction completion interface
-//        coreWireframe?.presentTransactionCompleteInterface(detailItem)
+    func txHistoryModuleDidChooseItemOnUI(txHistory: TxHistoryDisplayItem, tokenInfo: TokenInfoDTO) {
+        let data = TxDetailDisplayData(txHistory: txHistory, tokenInfo: tokenInfo)
+        let detailItem = data.collectDisplayItem()
+        // Display transaction completion interface
+        coreWireframe?.presentTransactionCompleteInterface(detailItem)
     }
 }

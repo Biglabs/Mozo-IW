@@ -10,4 +10,7 @@ import Foundation
 protocol TxHistoryViewInterface {
     func showTxHistoryDisplayData(_ data: TxHistoryDisplayCollection, forPage: Int)
     func showNoContentMessage()
+    func displaySpinner()
+    func removeSpinner()
+    func displayError(_ error: String)
 }

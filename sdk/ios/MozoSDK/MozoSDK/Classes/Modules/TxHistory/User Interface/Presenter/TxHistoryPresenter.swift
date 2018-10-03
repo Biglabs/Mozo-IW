@@ -15,7 +15,8 @@ class TxHistoryPresenter : NSObject {
 }
 extension TxHistoryPresenter : TxHistoryModuleInterface {
     func selectTxHistoryOnUI(_ txHistory: TxHistoryDisplayItem) {
-        txhModuleDelegate?.txHistoryModuleDidChooseItemOnUI(txHistory: txHistory)
+        txhUserInterface?.displaySpinner()
+        txhInteractor?.getTokenInfoForHistory(txHistory)
     }
     
     func updateDisplayData(page: Int) {
@@ -23,6 +24,16 @@ extension TxHistoryPresenter : TxHistoryModuleInterface {
     }
 }
 extension TxHistoryPresenter: TxHistoryInteractorOutput {
+    func finishGetTokenInfo(_ tokenInfo: TokenInfoDTO, for txHistory: TxHistoryDisplayItem) {
+        txhUserInterface?.removeSpinner()
+        txhModuleDelegate?.txHistoryModuleDidChooseItemOnUI(txHistory: txHistory, tokenInfo: tokenInfo)
+    }
+    
+    func errorWhileLoadTokenInfo(error: String) {
+        txhUserInterface?.removeSpinner()
+        txhUserInterface?.displayError(error)
+    }
+    
     func finishGetListTxHistory(_ txHistories: [TxHistoryDTO], forPage: Int) {
         if txHistories.count > 0 {
             let collection = TxHistoryDisplayCollection(items: txHistories)

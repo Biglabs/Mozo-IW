@@ -175,6 +175,18 @@ extension TxHistoryViewController : TxHistoryViewInterface {
     func showNoContentMessage() {
         
     }
+    
+    func displaySpinner() {
+        displayMozoSpinner()
+    }
+    
+    func removeSpinner() {
+        removeMozoSpinner()
+    }
+    
+    func displayError(_ error: String) {
+        displayMozoError(error)
+    }
 }
 
 extension TxHistoryViewController: UIScrollViewDelegate {
