@@ -32,8 +32,11 @@ class PassPhraseViewController: MozoBasicViewController {
     func addTapForLabel() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.checkLabelTapped))
         tap.numberOfTapsRequired = 1
-        checkView?.isUserInteractionEnabled = true
-        checkView?.addGestureRecognizer(tap)
+        checkLabel?.isUserInteractionEnabled = true
+        checkLabel?.addGestureRecognizer(tap)
+        
+        checkImg.isUserInteractionEnabled = true
+        checkImg.addGestureRecognizer(tap)
     }
     
     @objc func checkLabelTapped() {
