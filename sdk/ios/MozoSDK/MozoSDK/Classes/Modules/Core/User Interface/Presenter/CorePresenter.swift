@@ -145,6 +145,6 @@ extension CorePresenter: TxHistoryModuleDelegate {
         let data = TxDetailDisplayData(txHistory: txHistory, tokenInfo: tokenInfo)
         let detailItem = data.collectDisplayItem()
         // Display transaction completion interface
-        coreWireframe?.presentTransactionCompleteInterface(detailItem)
+        coreWireframe?.presentTransactionDetailInterface(detailItem)
     }
 }
