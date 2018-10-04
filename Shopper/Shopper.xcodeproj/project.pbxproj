@@ -17,6 +17,7 @@
 		206687902150A7C0003C0D78 /* DemoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2066878F2150A7C0003C0D78 /* DemoPresenter.swift */; };
 		206687922150A892003C0D78 /* DemoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206687912150A892003C0D78 /* DemoInteractor.swift */; };
 		20709A30212A665C00582BD8 /* RootWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20709A2F212A665C00582BD8 /* RootWireframe.swift */; };
+		20C965D22165C3CB0053311C /* DemoCryptorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C965D12165C3CB0053311C /* DemoCryptorViewController.swift */; };
 		A8735C9CA67B3E4141C343A1 /* Pods_Shopper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E65C9066E11277903D3D04 /* Pods_Shopper.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		2066878F2150A7C0003C0D78 /* DemoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoPresenter.swift; sourceTree = "<group>"; };
 		206687912150A892003C0D78 /* DemoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoInteractor.swift; sourceTree = "<group>"; };
 		20709A2F212A665C00582BD8 /* RootWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWireframe.swift; sourceTree = "<group>"; };
+		20C965D12165C3CB0053311C /* DemoCryptorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCryptorViewController.swift; sourceTree = "<group>"; };
 		B798E0B5214D6A1500CFDFC2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		B798E0B6214D6A1500CFDFC2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		D2E65C9066E11277903D3D04 /* Pods_Shopper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shopper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -308,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				20116C6621257C8700541649 /* DemoViewController.swift */,
+				20C965D12165C3CB0053311C /* DemoCryptorViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2066878C21509CAC003C0D78 /* AppDependencies.swift in Sources */,
+				20C965D22165C3CB0053311C /* DemoCryptorViewController.swift in Sources */,
 				20116C6721257C8700541649 /* DemoViewController.swift in Sources */,
 				20116C6521257C8700541649 /* AppDelegate.swift in Sources */,
 				206687902150A7C0003C0D78 /* DemoPresenter.swift in Sources */,

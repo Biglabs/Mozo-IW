@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--DEMO COMPONENTS-->
+        <!--Back-->
         <scene sceneID="OyB-co-k2K">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="PDB-oh-f31" customClass="DemoViewController" customModule="Shopper" customModuleProvider="target" sceneMemberID="viewController">
@@ -25,7 +25,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cNr-Tw-mDS" customClass="MozoSigninView" customModule="MozoSDK">
-                                                <rect key="frame" x="20" y="13" width="165" height="45"/>
+                                                <rect key="frame" x="20" y="10" width="165" height="45"/>
                                                 <color key="backgroundColor" red="0.56792475659999997" green="1" blue="0.5241613745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="BBL-d4-5DJ"/>
@@ -40,22 +40,22 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIM-D7-igZ" customClass="MozoSendView" customModule="MozoSDK">
-                                                <rect key="frame" x="115" y="66" width="165" height="45"/>
+                                                <rect key="frame" x="124.66666666666669" y="65" width="165" height="45"/>
                                                 <color key="backgroundColor" red="0.0" green="0.42745098040000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="DGN-X1-teX"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SFa-4l-KOI" customClass="MozoTxHistoryView" customModule="MozoSDK">
-                                                <rect key="frame" x="100" y="119" width="195" height="45"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFa-4l-KOI" customClass="MozoTxHistoryView" customModule="MozoSDK">
+                                                <rect key="frame" x="109.66666666666669" y="120" width="195" height="45"/>
                                                 <color key="backgroundColor" red="0.090196078430000007" green="0.72549019609999998" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="195" id="DcM-Wi-e38"/>
                                                     <constraint firstAttribute="height" constant="45" id="Od0-dE-Ria"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="005-mU-edl" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="39.666666666666657" y="170" width="335" height="77"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="005-mU-edl" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="173" width="335" height="77"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="335" id="Fhj-EC-6Gq"/>
@@ -66,8 +66,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showOnlyBalanceDetail" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eEF-na-Hvj" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="39.666666666666657" y="277" width="335" height="116"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eEF-na-Hvj" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="280" width="335" height="116"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="335" id="EiM-GY-IiT"/>
@@ -78,8 +78,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showOnlyAddressDetail" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yqI-aP-adH" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="39.666666666666657" y="423" width="335" height="167"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqI-aP-adH" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="426" width="335" height="167"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="167" id="3rQ-vt-O7s"/>
@@ -89,8 +89,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showDetail" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dyz-Eb-aYx" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="39.666666666666657" y="620" width="335" height="115"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyz-Eb-aYx" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="623" width="335" height="115"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="335" id="Yam-1d-Xe1"/>
@@ -101,8 +101,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showOnlyAddressDetail" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uH2-nJ-YWl" customClass="MozoBalanceView" customModule="MozoSDK">
-                                                <rect key="frame" x="39.666666666666657" y="765" width="335" height="167"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uH2-nJ-YWl" customClass="MozoBalanceView" customModule="MozoSDK">
+                                                <rect key="frame" x="39.666666666666657" y="768" width="335" height="167"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="167" id="7Ud-e1-E1a"/>
@@ -160,7 +160,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="feE-i8-o7e"/>
                     </view>
-                    <navigationItem key="navigationItem" title="DEMO COMPONENTS" id="l4O-cT-E55"/>
+                    <navigationItem key="navigationItem" title="Back" id="l4O-cT-E55">
+                        <barButtonItem key="rightBarButtonItem" title="Cryptor" id="P54-4d-WQ6">
+                            <connections>
+                                <segue destination="Mld-GH-vcF" kind="show" id="NyL-YQ-iuU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <size key="freeformSize" width="414" height="1200"/>
                     <connections>
                         <outlet property="contentView" destination="Lfc-90-c3H" id="2iW-AS-J5l"/>
@@ -170,6 +176,116 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9gw-fT-4ol" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4021.739130434783" y="1332.8804347826087"/>
+        </scene>
+        <!--Test Cryptor-->
+        <scene sceneID="zoI-Bh-2C9">
+            <objects>
+                <viewController title="Test Cryptor" id="Mld-GH-vcF" customClass="DemoCryptorViewController" customModule="Shopper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="k3y-QO-2fN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KaM-NN-sun">
+                                <rect key="frame" x="20" y="94" width="74" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="9OI-Hm-9Zi">
+                                <rect key="frame" x="20" y="125" width="384" height="100"/>
+                                <color key="backgroundColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="JEP-nx-gxX"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdI-DU-NgY">
+                                <rect key="frame" x="20" y="255" width="79" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FQK-Nu-qi0">
+                                <rect key="frame" x="104" y="250" width="300" height="30"/>
+                                <color key="backgroundColor" red="0.81960784310000001" green="0.84313725490000002" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="IFx-3f-Sw7"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MmH-TH-Ha9">
+                                <rect key="frame" x="70" y="311" width="100" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="DP5-b9-uqW"/>
+                                    <constraint firstAttribute="width" constant="100" id="u9O-Ri-eoJ"/>
+                                </constraints>
+                                <state key="normal" title="Encrypt"/>
+                                <connections>
+                                    <action selector="encrypt:" destination="Mld-GH-vcF" eventType="touchUpInside" id="xHu-K6-nfi"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6a8-Rv-a0F">
+                                <rect key="frame" x="240" y="311" width="100" height="45"/>
+                                <state key="normal" title="Decrypt"/>
+                                <connections>
+                                    <action selector="decrypt:" destination="Mld-GH-vcF" eventType="touchUpInside" id="xS9-83-Kwz"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Result:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSC-Bc-BBf">
+                                <rect key="frame" x="20" y="386" width="53" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Rxq-XO-kzf">
+                                <rect key="frame" x="20" y="417" width="384" height="100"/>
+                                <color key="backgroundColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="dt6-aS-63n"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Rxq-XO-kzf" firstAttribute="top" secondItem="sSC-Bc-BBf" secondAttribute="bottom" constant="10" id="0Bj-jY-QZ2"/>
+                            <constraint firstItem="MmH-TH-Ha9" firstAttribute="top" secondItem="9OI-Hm-9Zi" secondAttribute="bottom" constant="86" id="2jL-Db-Cfe"/>
+                            <constraint firstItem="6a8-Rv-a0F" firstAttribute="centerY" secondItem="MmH-TH-Ha9" secondAttribute="centerY" id="5T8-KQ-iJS"/>
+                            <constraint firstItem="6a8-Rv-a0F" firstAttribute="width" secondItem="MmH-TH-Ha9" secondAttribute="width" id="CWg-D1-eqX"/>
+                            <constraint firstItem="MmH-TH-Ha9" firstAttribute="leading" secondItem="zfs-xe-1q1" secondAttribute="leading" constant="70" id="H3S-qc-dVn"/>
+                            <constraint firstItem="6a8-Rv-a0F" firstAttribute="height" secondItem="MmH-TH-Ha9" secondAttribute="height" id="SCw-HL-was"/>
+                            <constraint firstItem="Rxq-XO-kzf" firstAttribute="leading" secondItem="sSC-Bc-BBf" secondAttribute="leading" id="SpJ-CZ-ol8"/>
+                            <constraint firstItem="sSC-Bc-BBf" firstAttribute="leading" secondItem="zfs-xe-1q1" secondAttribute="leading" constant="20" id="TZJ-7g-wHe"/>
+                            <constraint firstItem="zfs-xe-1q1" firstAttribute="trailing" secondItem="9OI-Hm-9Zi" secondAttribute="trailing" constant="10" id="U8l-dP-ECB"/>
+                            <constraint firstItem="zfs-xe-1q1" firstAttribute="trailing" secondItem="Rxq-XO-kzf" secondAttribute="trailing" constant="10" id="WFZ-hP-UhO"/>
+                            <constraint firstItem="KaM-NN-sun" firstAttribute="leading" secondItem="zfs-xe-1q1" secondAttribute="leading" constant="20" id="ZZ5-bh-43M"/>
+                            <constraint firstItem="bdI-DU-NgY" firstAttribute="top" secondItem="9OI-Hm-9Zi" secondAttribute="bottom" constant="30" id="blT-iA-8R9"/>
+                            <constraint firstItem="9OI-Hm-9Zi" firstAttribute="top" secondItem="KaM-NN-sun" secondAttribute="bottom" constant="10" id="dc2-42-alm"/>
+                            <constraint firstItem="FQK-Nu-qi0" firstAttribute="leading" secondItem="bdI-DU-NgY" secondAttribute="trailing" constant="5" id="fXj-tU-GeX"/>
+                            <constraint firstItem="KaM-NN-sun" firstAttribute="top" secondItem="zfs-xe-1q1" secondAttribute="top" constant="30" id="kt8-gW-v0J"/>
+                            <constraint firstItem="sSC-Bc-BBf" firstAttribute="top" secondItem="9OI-Hm-9Zi" secondAttribute="bottom" constant="161" id="mo6-QP-s4a"/>
+                            <constraint firstItem="FQK-Nu-qi0" firstAttribute="centerY" secondItem="bdI-DU-NgY" secondAttribute="centerY" id="rg3-JB-pwh"/>
+                            <constraint firstItem="bdI-DU-NgY" firstAttribute="leading" secondItem="9OI-Hm-9Zi" secondAttribute="leading" id="urV-ed-NPc"/>
+                            <constraint firstItem="9OI-Hm-9Zi" firstAttribute="leading" secondItem="KaM-NN-sun" secondAttribute="leading" id="vH5-ci-by5"/>
+                            <constraint firstItem="6a8-Rv-a0F" firstAttribute="leading" secondItem="MmH-TH-Ha9" secondAttribute="trailing" constant="70" id="yYw-xn-mLI"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zfs-xe-1q1"/>
+                    </view>
+                    <connections>
+                        <outlet property="txtMessage" destination="9OI-Hm-9Zi" id="4Ob-gq-7x0"/>
+                        <outlet property="txtPassword" destination="FQK-Nu-qi0" id="jyf-KI-Vh7"/>
+                        <outlet property="txtResult" destination="Rxq-XO-kzf" id="b8b-5P-owL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m5b-nT-gTV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3007.2463768115945" y="1143.75"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TQZ-XF-ymN">

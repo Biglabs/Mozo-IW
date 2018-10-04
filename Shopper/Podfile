@@ -8,6 +8,7 @@ target 'Shopper' do
 
   # Pods for Shopper
   pod 'MozoSDK', path: '../sdk/ios/MozoSDK'
+  pod 'RNCryptor', '~> 5.0'
 end
 
 post_install do |installer|
