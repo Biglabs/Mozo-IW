@@ -29,4 +29,6 @@ protocol WalletInteractorOutput {
     func generatedMnemonics(mnemonic: String)
     
     func updatedWallet()
+    
+    func errorWhileManageWallet(_ error: String)
 }

@@ -84,8 +84,8 @@ extension PINViewController : PINViewInterface {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.hideAllUIs()
             self.showActivityIndicator()
+            self.eventHandler?.manageWallet(passPhrase: self.passPhrase, pin: self.pin!)
         }
-        eventHandler?.manageWallet(passPhrase: passPhrase, pin: pin!)
     }
     
     func showVerificationFailed() {
@@ -98,6 +98,18 @@ extension PINViewController : PINViewInterface {
         descriptionLabel.text = "Re-enter your PIN"
         confirmImg.isHidden = false
         isConfirm = true
+    }
+    
+    func displayError(_ error: String) {
+        displayMozoError(error)
+    }
+    
+    func displaySpinner() {
+        displayMozoSpinner()
+    }
+    
+    func removeSpinner() {
+        removeMozoSpinner()
     }
 }
 private extension PINViewController {
@@ -129,6 +141,7 @@ private extension PINViewController {
         effectView.contentView.addSubview(activityIndicator)
         effectView.contentView.addSubview(strLabel)
         view.addSubview(effectView)
+        view.alpha = 0
     }
     
     func pinInputComplete(input: String) {
@@ -150,6 +163,7 @@ private extension PINViewController {
         statusImg.isHidden = false
         statusLabel.isHidden = false
         confirmImg.isHighlighted = true
+        pinTextField.isUserInteractionEnabled = false
         if !isConfirm {
             statusLabel.text = "You entered a correct PIN"
         } else {

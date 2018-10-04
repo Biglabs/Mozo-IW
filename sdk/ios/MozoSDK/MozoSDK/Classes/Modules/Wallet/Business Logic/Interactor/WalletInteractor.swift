@@ -45,7 +45,10 @@ class WalletInteractor : NSObject {
                             let userDto = UserDTO(id: uProfile.userId, profile: uProfile)
                             SessionStoreManager.saveCurrentUser(user: userDto)
                             print("Update Wallet To User Profile result: [\(uProfile)]")
-                    }
+                            self.output?.updatedWallet()
+                        }.catch({ (error) in
+                            
+                        })
                 }
             }
         }
@@ -114,8 +117,8 @@ extension WalletInteractor : WalletInteractorInput {
         var wallet = walletManager.createNewWallet(mnemonics: mne!)
         wallet.privateKey = wallet.privateKey.encrypt(key: pin)
         updateWalletForCurrentUser(wallet)
+        // TODO: Need to call output after updating wallet to user profile from server successfully
         updateWalletToUserProfile(offchainAddress: wallet.address)
-        output?.updatedWallet()
     }
     
     func verifyConfirmPIN(pin: String, confirmPin: String) {

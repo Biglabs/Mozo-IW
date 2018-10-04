@@ -32,6 +32,7 @@ extension WalletPresenter: WalletModuleInterface {
     }
     
     func verifyPIN(pin: String) {
+        pinUserInterface?.displaySpinner()
         walletInteractor?.verifyPIN(pin: pin)
     }
     
@@ -40,7 +41,7 @@ extension WalletPresenter: WalletModuleInterface {
     }
     
     func verifyConfirmPIN(pin: String, confirmPin: String) {
-        walletInteractor?.verifyConfirmPIN(pin: pin, confirmPin: confirmPin)
+        self.walletInteractor?.verifyConfirmPIN(pin: pin, confirmPin: confirmPin)
     }
     
     func generateMnemonics() {
@@ -53,7 +54,12 @@ extension WalletPresenter: WalletModuleInterface {
 }
 
 extension WalletPresenter: WalletInteractorOutput {
+    func errorWhileManageWallet(_ error: String) {
+        pinUserInterface?.displayError(error)
+    }
+    
     func updatedWallet() {
+        // New wallet
         handleEndingWalletFlow()
     }
     
@@ -67,6 +73,7 @@ extension WalletPresenter: WalletInteractorOutput {
     
     func finishedCheckLocal(result: Bool) {
         if result {
+            // Existing wallet
             handleEndingWalletFlow()
         } else {
             walletInteractor?.checkServerWalletExisting()
@@ -76,13 +83,15 @@ extension WalletPresenter: WalletInteractorOutput {
     func verifiedPIN(_ pin: String, result: Bool, needManagedWallet: Bool) {
         if result {
             if needManagedWallet {
+                // New wallet
                 pinUserInterface?.showCreatingInterface()
             } else {
                 walletWireframe?.dismissWalletInterface()
-                // Delegate 
+                // Delegate
                 pinModuleDelegate?.verifiedPINSuccess(pin)
             }
         } else {
+            pinUserInterface?.removeSpinner()
             // Input PIN is NOT correct
             pinUserInterface?.showVerificationFailed()
         }

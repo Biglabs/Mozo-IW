@@ -12,4 +12,8 @@ protocol PINViewInterface {
     func showConfirmPIN()
     func showVerificationFailed()
     func showCreatingInterface()
+    
+    func displaySpinner()
+    func removeSpinner()
+    func displayError(_ error: String)
 }
