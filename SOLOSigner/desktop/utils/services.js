@@ -28,9 +28,14 @@ function extractWalletData(walletInfo) {
     return;
   }
 
+  let pin = null;
+  if (app_info && app_info[0].pin) {
+    pin = app_info[0].pin;
+  }
+
   app_info = [
     {
-      pin: null,
+      pin: pin,
       mnemonic: walletInfo.encryptSeedPhrase
     }
   ];
@@ -336,6 +341,7 @@ function sendSignRequest(signed_req, callback) {
 exports.sendSignRequest = sendSignRequest;
 
 exports.getWalletBalance = function(network) {
+  network = network.toUpperCase();
   let wallet_addrs = userReference.get("Address");
   let response_data = {
     status: "ERROR",
