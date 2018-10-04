@@ -11,10 +11,12 @@ struct TxDetailDisplayItem {
     let addressFrom : String
     let addressTo : String
     let amount : Double
+    let exAmount : Double
     let dateTime : String
     var fees: Double?
     var symbol: String?
     
     let currentBalance: Double
+    let exCurrentBalance: Double
     let currentAddress: String
 }

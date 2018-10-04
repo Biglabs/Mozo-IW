@@ -34,5 +34,6 @@ public class TxHistoryTableViewCell: UITableViewCell {
             lbAmount.textColor = ThemeManager.shared.error
             lbAmount.text = "- \(txHistory?.amount ?? 0) Mozo"
         }
+        lbExchangeValue?.text = "₩\(txHistory?.exAmount ?? 0)"
     }
 }

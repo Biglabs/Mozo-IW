@@ -26,7 +26,8 @@ class TxHistoryDisplayCollection {
         let action = self.buildAction(addressFrom: txHistory.addressFrom!)
         let date = self.formattedDateTime(txHistory.time ?? 0)
         let amount = (txHistory.amount?.convertOutputValue(decimal: Int(txHistory.decimal!)))!
-        return TxHistoryDisplayItem(action: action, date: date, amount: amount, addressFrom: txHistory.addressFrom, addressTo: txHistory.addressTo)
+        let exAmount = self.calculateExchangeValue(amount)
+        return TxHistoryDisplayItem(action: action, date: date, amount: amount, exAmount: exAmount, addressFrom: txHistory.addressFrom, addressTo: txHistory.addressTo)
     }
     
     func buildAction(addressFrom: String) -> String {
@@ -48,5 +49,16 @@ class TxHistoryDisplayCollection {
             return item.action == txType.value
         })
         return filteredArray
+    }
+    
+    func calculateExchangeValue(_ value: Double) -> Double {
+        var result = 0.0
+        if let rateInfo = SessionStoreManager.exchangeRateInfo {
+            let type = CurrencyType(rawValue: rateInfo.currency?.uppercased() ?? "")
+            if let type = type, let rateValue = rateInfo.rate {
+                result = (value * rateValue).rounded(toPlaces: type.decimalRound)
+            }
+        }
+        return result
     }
 }

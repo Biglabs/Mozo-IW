@@ -43,16 +43,33 @@ class TxDetailDisplayData {
         let action = buildAction(addressFrom: addressFrom, currentAddress: currentAddress)
         let cvAmount = amount.convertOutputValue(decimal: decimal)
         let cvDate = buildDateString(dateTime)
+        let exAmount = calculateExchangeValue(cvAmount)
+        let exCurrentBalance = calculateExchangeValue(currentBalance)
         
-        let displayItem = TxDetailDisplayItem(action: action, addressFrom: addressFrom, addressTo: addressTo, amount: cvAmount, dateTime: cvDate, fees: 0, symbol: nil, currentBalance: currentBalance, currentAddress: currentAddress)
+        let displayItem = TxDetailDisplayItem(action: action, addressFrom: addressFrom, addressTo: addressTo, amount: cvAmount, exAmount: exAmount, dateTime: cvDate, fees: 0, symbol: nil, currentBalance: currentBalance, exCurrentBalance: exCurrentBalance, currentAddress: currentAddress)
         return displayItem
+    }
+    
+    func calculateExchangeValue(_ value: Double) -> Double {
+        var result = 0.0
+        if let rateInfo = SessionStoreManager.exchangeRateInfo {
+            let type = CurrencyType(rawValue: rateInfo.currency?.uppercased() ?? "")
+            if let type = type, let rateValue = rateInfo.rate {
+                result = (value * rateValue).rounded(toPlaces: type.decimalRound)
+            }
+        }
+        return result
     }
     
     func buildDisplayItemFromHistory() -> TxDetailDisplayItem {
         let balance = tokenInfo?.balance ?? 0.0
         let currentAddress = tokenInfo?.address ?? ""
         let currentBalance = balance.convertOutputValue(decimal: tokenInfo?.decimals ?? 0)
-        let displayItem = TxDetailDisplayItem(action: txHistory?.action ?? "", addressFrom: txHistory?.addressFrom ?? "", addressTo: txHistory?.addressTo ?? "", amount: txHistory?.amount ?? 0, dateTime: txHistory?.date ?? "", fees: 0, symbol: nil, currentBalance: currentBalance, currentAddress: currentAddress)
+        let amount = txHistory?.amount ?? 0
+        let exAmount = calculateExchangeValue(amount)
+        let exCurrentBalance = calculateExchangeValue(currentBalance)
+        
+        let displayItem = TxDetailDisplayItem(action: txHistory?.action ?? "", addressFrom: txHistory?.addressFrom ?? "", addressTo: txHistory?.addressTo ?? "", amount: amount, exAmount: exAmount, dateTime: txHistory?.date ?? "", fees: 0, symbol: nil, currentBalance: currentBalance, exCurrentBalance: exCurrentBalance, currentAddress: currentAddress)
         return displayItem
     }
     
