@@ -149,5 +149,26 @@ class CoreDataStore : NSObject {
             }
         }
     }
+    
+    func getAllUsers() {
+        if let list = stack.fetchAll(From<ManagedUser>()) {
+            print("User count: [\(list.count)]")
+            for item in list {
+                let userModel = UserModel(id: item.id, mnemonic: item.mnemonic, pin: item.pin, wallets: NSSet(array: []))
+                print("User: \(userModel)")
+                let wallets : [WalletModel]? = item.wallets?.map {
+                    let wallet = $0 as! ManagedWallet
+                    return WalletModel(address: wallet.address, privateKey: wallet.privateKey)
+                }
+                if let wallets = wallets {
+                    for wallet in wallets {
+                        print("Wallet: \(wallet)")
+                    }
+                }
+            }
+        } else {
+            
+        }
+    }
 }
 

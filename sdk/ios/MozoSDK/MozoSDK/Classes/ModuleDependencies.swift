@@ -269,4 +269,8 @@ class ModuleDependencies {
             print(wallet.privateKey.encrypt(key: "000000"))
         }
     }
+    
+    func testLocalData() {
+        coreDataStore.getAllUsers()
+    }
 }
