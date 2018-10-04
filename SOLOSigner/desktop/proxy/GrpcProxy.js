@@ -204,7 +204,13 @@ app.get('/getTxHistory', (req, res, next) => {
     res.send({ result : response_data });
     return;
   }
-  let balance_info = services.getTransactionHistory(addr_network).then(function(txhistory) {
+
+  let page_num = req.query.page ? req.query.page : 1;
+  let size_num = req.query.size ? req.query.size : 15;
+
+  let balance_info = services.getTransactionHistory(
+    addr_network, page_num, size_num).then(function(txhistory) {
+    console.log("TX history length: " + txhistory.length);
     if (txhistory) {
       response_data = {
         status: "SUCCESS",

@@ -167,6 +167,8 @@ function getTokenInfo() {
 
 exports.createTransaction = function(tx_info, res) {
   let tx_req = {
+    gas_price : 0,
+    gas_limit : 4300000,
     inputs: [
       {
         addresses: [ tx_info.from ]
@@ -397,7 +399,7 @@ exports.getWalletBalance = function(network) {
   });
 };
 
-exports.getTransactionHistory = function(network) {
+exports.getTransactionHistory = function(network, page_num, size_num) {
   let wallet_addrs = userReference.get("Address");
   let response_data = {
     status: "ERROR",
@@ -428,17 +430,18 @@ exports.getTransactionHistory = function(network) {
   }
 
   options.url = mozo_service_host +
-    "/api/solo/contract/solo-token/txhistory/" + address;
+    "/api/solo/contract/solo-token/txhistory/" + address +
+    "?page=" + page_num + "&size=" + size_num;
 
   return new Promise(function(resolve, reject) {
     request(options, function(error, response, body) {
       if (!error) {
-        console.log(body);
         if (response.statusCode == 200) {
           txhistory = JSON.parse(body);
           resolve(txhistory);
         } else {
           console.log(response.statusCode);
+          console.log(body);
           resolve(null);
         }
       } else {
