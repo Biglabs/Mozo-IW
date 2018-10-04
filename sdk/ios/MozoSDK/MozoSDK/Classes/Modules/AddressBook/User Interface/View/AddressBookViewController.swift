@@ -123,8 +123,19 @@ extension AddressBookViewController: UITableViewDataSource {
             }
             cell.textLabel!.text = item.name
             cell.detailTextLabel!.text = item.address
+            
+            // MARK: Border
+            let border = CALayer()
+            border.backgroundColor = ThemeManager.shared.disable.cgColor
+            let width : CGFloat = 1.0
+            border.frame = CGRect(x: 20, y: cell.frame.size.height - width, width: cell.frame.size.width - 40, height: width)
+            cell.layer.addSublayer(border)
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
     }
 }
 
