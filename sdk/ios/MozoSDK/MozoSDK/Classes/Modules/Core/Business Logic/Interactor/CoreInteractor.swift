@@ -60,7 +60,7 @@ extension CoreInteractor: CoreInteractorInput {
     func handleAferAuth(accessToken: String?) {
         AccessTokenManager.saveToken(accessToken)
         // TODO: Start all background services including web socket
-        downloadAddressBookAndStoreAtLocal()
+        downloadConvenienceDataAndStoreAtLocal()
         anonManager.linkCoinFromAnonymousToCurrentUser()
         _ = getUserProfile().done({ () in
             self.output?.finishedHandleAferAuth()
@@ -96,7 +96,16 @@ extension CoreInteractor: CoreInteractorService {
                     _ = apiManager.getTokenInfoFromAddress(address)
                         .done { (tokenInfo) in
                             let item = DetailInfoDisplayItem(tokenInfo: tokenInfo)
-                            seal.fulfill(item)
+                            if SessionStoreManager.exchangeRateInfo == nil {
+                                _ = self.apiManager.getExchangeRateInfo(currencyType: .KRW).done({ (data) in
+                                    SessionStoreManager.exchangeRateInfo = data
+                                    seal.fulfill(item)
+                                }).catch({ (error) in
+                                    seal.fulfill(item)
+                                })
+                            } else {
+                                seal.fulfill(item)
+                            }
                         }.catch({ (err) in
                             seal.reject(err)
                         })
@@ -107,14 +116,28 @@ extension CoreInteractor: CoreInteractorService {
         }
     }
     
-    func downloadAddressBookAndStoreAtLocal() {
+    func downloadConvenienceDataAndStoreAtLocal() {
         if AccessTokenManager.getAccessToken() != nil {
-            print("😎 Load address book list.")
-            _ = apiManager.getListAddressBook().done({ (list) in
-                SessionStoreManager.addressBookList = list
-            }).catch({ (error) in
-                //TODO: Handle case unable to load address book list
-            })
+            downloadAddressBookAndStoreAtLocal()
+            downloadExchangeRateInfoAndStoreAtLocal()
         }
+    }
+    
+    func downloadAddressBookAndStoreAtLocal() {
+        print("😎 Load address book list.")
+        _ = apiManager.getListAddressBook().done({ (list) in
+            SessionStoreManager.addressBookList = list
+        }).catch({ (error) in
+            //TODO: Handle case unable to load address book list
+        })
+    }
+    
+    func downloadExchangeRateInfoAndStoreAtLocal() {
+        print("😎 Load exchange rate data.")
+        _ = apiManager.getExchangeRateInfo(currencyType: .KRW).done({ (data) in
+            SessionStoreManager.exchangeRateInfo = data
+        }).catch({ (error) in
+            //TODO: Handle case unable to load exchange rate info
+        })
     }
 }

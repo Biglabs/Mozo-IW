@@ -36,5 +36,6 @@ public class SessionStoreManager {
         UserDefaults.standard.setValue(UUID, forKey: Configuration.USER_ID_ANONYMOUS)
     }
     
-    public static var addressBookList : [AddressBookDTO] = []    
+    public static var addressBookList : [AddressBookDTO] = []
+    public static var exchangeRateInfo : RateInfoDTO?
 }

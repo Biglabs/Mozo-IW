@@ -42,4 +42,29 @@ public extension ApiManager {
             }
         }
     }
+    
+    /// Call API to get exchange rate info.
+    ///
+    /// - Parameters:
+    ///   - completionHandler: handle after completed
+    public func getExchangeRateInfo(currencyType: CurrencyType = .USD) -> Promise<RateInfoDTO> {
+        return Promise { seal in
+            let url = Configuration.BASE_URL + "/api/exchange/rate?currency=\(currencyType.rawValue)&symbol=\(SymbolType.MOZO.value)"
+            self.execute(.get, url: url)
+                .done { json -> Void in
+                    // JSON info
+                    print("Finish request to get exchange rate info, json response: \(json)")
+                    let jobj = SwiftyJSON.JSON(json)
+                    let data = RateInfoDTO(json: jobj)
+                    seal.fulfill(data!)
+                }
+                .catch { error in
+                    print("Error when request get exchange rate info: " + error.localizedDescription)
+                    seal.reject(error)
+                }
+                .finally {
+                    //                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            }
+        }
+    }
 }

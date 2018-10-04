@@ -123,3 +123,27 @@ public enum MozoNetwork {
         }
     }
 }
+
+public enum CurrencyType: String {
+    case USD = "USD"
+    case KRW = "KRW"
+    
+    public var decimalRound: Int {
+        switch self {
+        case .USD: return 3
+        case .KRW: return 1
+        }
+    }
+}
+
+public enum SymbolType {
+    case SOLO
+    case MOZO
+    
+    public var value : String {
+        switch self {
+        case .SOLO: return "SOLO"
+        case .MOZO: return "MOZO"
+        }
+    }
+}
