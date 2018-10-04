@@ -47,6 +47,7 @@ class AuthManager : NSObject {
             authState?.performAction(freshTokens: { (accessToken, ic, error) in
                 print("Did refresh token, new access token: \(accessToken ?? "NULL")")
                 AccessTokenManager.saveToken(accessToken)
+                // TODO: Should pre-load some data here
             }, additionalRefreshParameters: additionalParams)
         }
     }

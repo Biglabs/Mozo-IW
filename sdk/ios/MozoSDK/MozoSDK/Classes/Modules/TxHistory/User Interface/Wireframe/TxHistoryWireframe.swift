@@ -17,6 +17,6 @@ class TxHistoryWireframe : MozoWireframe {
         txHistoryViewController = viewController
         
         txhPresenter?.txhUserInterface = viewController
-        rootWireframe?.showRootViewController(viewController, inWindow: (UIApplication.shared.delegate?.window!)!)
+        rootWireframe?.displayViewController(viewController)
     }
 }

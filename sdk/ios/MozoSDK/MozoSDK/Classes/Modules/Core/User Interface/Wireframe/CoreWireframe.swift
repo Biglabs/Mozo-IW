@@ -34,6 +34,7 @@ class CoreWireframe : MozoWireframe {
     }
     
     func requestForTxHistory() {
+        presentWaitingInterface()
         txhWireframe?.presentTxHistoryInterface()
     }
     
