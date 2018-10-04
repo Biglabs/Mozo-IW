@@ -34,10 +34,24 @@ class TxDetailViewController: MozoBasicViewController {
         
         let reBalance = displayItem.currentBalance
         lbBalance.text = "\(reBalance)"
-        lbBalanceExchange.text = "\(displayItem.exCurrentBalance)"
         
         lbAddress.text = displayItem.addressTo
         lbAmountValue.text = "\(amount)"
-        lbAmountValueExchange.text = "\(displayItem.exAmount)"
+        
+        var exBalance = "0.0"
+        var exAmount = "0.0"
+        
+        if let rateInfo = SessionStoreManager.exchangeRateInfo {
+            if let type = CurrencyType(rawValue: rateInfo.currency ?? "") {
+                let rate = rateInfo.rate ?? 0
+                let value = (displayItem.exCurrentBalance * rate).rounded(toPlaces: type.decimalRound)
+                exBalance = "\(type.unit)\(value)"
+                let amountValue = (displayItem.exAmount * rate).rounded(toPlaces: type.decimalRound)
+                exAmount = "\(type.unit)\(amountValue)"
+            }
+        }
+        
+        lbBalanceExchange.text = exBalance
+        lbAmountValueExchange.text = exAmount
     }
 }

@@ -99,14 +99,15 @@ import Foundation
     
     override func updateOnlyBalance(_ balance : Double) {
         lbBalance.text = "\(balance)"
-        var result = 0.0
+        var result = "0.0"
         if let rateInfo = SessionStoreManager.exchangeRateInfo {
             let type = CurrencyType(rawValue: rateInfo.currency?.uppercased() ?? "")
             if let type = type, let rateValue = rateInfo.rate {
-                result = (balance * rateValue).rounded(toPlaces: type.decimalRound)
+                let value = (balance * rateValue).rounded(toPlaces: type.decimalRound)
+                result = "\(type.unit)\(value)"
             }
         }
-        lbBalanceExchange.text = "₩\(result)"
+        lbBalanceExchange.text = result
     }
     
     func updateData(displayItem: DetailInfoDisplayItem) {

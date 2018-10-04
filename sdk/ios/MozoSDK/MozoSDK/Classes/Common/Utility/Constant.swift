@@ -134,6 +134,13 @@ public enum CurrencyType: String {
         case .KRW: return 1
         }
     }
+    
+    public var unit: String {
+        switch self {
+        case .USD: return "$"
+        case .KRW: return "₩"
+        }
+    }
 }
 
 public enum SymbolType {

@@ -42,7 +42,8 @@ class ConfirmTransferViewController: MozoBasicViewController {
         lbBalance.text = "\(displayBalance)"
         
         lbAddress.text = transaction?.outputs?.first?.addresses![0]
-        lbAmountValue.text = "\((transaction?.outputs?.first?.value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0))!)"
+        let amount = transaction?.outputs?.first?.value?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0) ?? 0.0
+        lbAmountValue.text = "(\(amount))"
         
         if let displayName = displayName {
             lbAddress.isHidden = true
@@ -50,6 +51,22 @@ class ConfirmTransferViewController: MozoBasicViewController {
             lbName.text = displayName
             lbNameAddress.text = lbAddress.text
         }
+        
+        var exBalance = "0.0"
+        var exAmount = "0.0"
+        
+        if let rateInfo = SessionStoreManager.exchangeRateInfo {
+            if let type = CurrencyType(rawValue: rateInfo.currency ?? "") {
+                let rate = rateInfo.rate ?? 0
+                let value = (displayBalance * rate).rounded(toPlaces: type.decimalRound)
+                exBalance = "\(type.unit)\(value)"
+                let amountValue = (amount * rate).rounded(toPlaces: type.decimalRound)
+                exAmount = "\(type.unit)\(amountValue)"
+            }
+        }
+        
+        lbExchange.text = exBalance
+        lbAmountValueExchange.text = exAmount
     }
     
     @IBAction func btnSendTapped(_ sender: Any) {

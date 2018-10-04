@@ -30,6 +30,10 @@ class TransferViewController: MozoBasicViewController {
         eventHandler?.loadTokenInfo()
         setBtnLayer()
         addDoneButtonOnKeyboard()
+        
+        // Add a "textFieldDidChange" notification method to the text field control.
+        txtAddress.addTarget(self, action: #selector(textFieldAddressDidChange), for: UIControlEvents.editingChanged)
+        txtAmount.addTarget(self, action: #selector(textFieldAmountDidChange), for: UIControlEvents.editingChanged)
 //        setRefreshControl()
     }
     
@@ -58,10 +62,12 @@ class TransferViewController: MozoBasicViewController {
         doneToolbar.sizeToFit()
         
         self.txtAmount.inputAccessoryView = doneToolbar
+        self.txtAddress.inputAccessoryView = doneToolbar
     }
     
     @objc func doneButtonAction()
     {
+        txtAddress.resignFirstResponder()
         txtAmount.resignFirstResponder()
     }
     
@@ -104,6 +110,14 @@ class TransferViewController: MozoBasicViewController {
         lbAbName.text = ""
         lbAbAddress.text = ""
     }
+    
+    @objc func textFieldAddressDidChange() {
+        
+    }
+    
+    @objc func textFieldAmountDidChange() {
+        
+    }
 }
 
 extension TransferViewController : TransferViewInterface {
@@ -111,8 +125,20 @@ extension TransferViewController : TransferViewInterface {
         self.tokenInfo = tokenInfo
         let balance = tokenInfo.balance ?? 0
         let displayBalance = balance.convertOutputValue(decimal: tokenInfo.decimals!)
+        
         lbBalance.text = "\(displayBalance)"
         lbSpendable.text = "\(displayBalance)"
+        
+        var exBalance = "0.0"
+        
+        if let rateInfo = SessionStoreManager.exchangeRateInfo {
+            if let type = CurrencyType(rawValue: rateInfo.currency ?? "") {
+                let value = (displayBalance * (rateInfo.rate ?? 0)).rounded(toPlaces: type.decimalRound)
+                exBalance = "\(type.unit)\(value)"
+            }
+        }
+        
+        lbExchange.text = exBalance
     }
     
     func updateUserInterfaceWithAddress(_ address: String) {
