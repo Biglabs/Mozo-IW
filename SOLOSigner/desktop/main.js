@@ -13,8 +13,8 @@ require('module').globalPaths.push(PATH_APP_NODE_MODULES);
 console.log("PATH_APP_NODE_MODULES: " + PATH_APP_NODE_MODULES); */
 
 // start grpc server
-const grpcServer = require('./grpcserver/SignerGrpcServer');
-grpcServer.start();
+// const grpcServer = require('./grpcserver/SignerGrpcServer');
+// grpcServer.start();
 
 // start proxy server
 const proxy = require('./proxy/GrpcProxy');
@@ -139,9 +139,7 @@ function handleDeepLinkURL(url) {
       return;
     }
 
-    if (request_data.action == "SIGN") {
-      grpcServer.returnSignRequest(request_data);
-    } else if (request_data.start == "minimized")  {
+    if (request_data.start == "minimized")  {
       mainWindow.minimize();
     }
   }
@@ -284,13 +282,3 @@ exports.handleMainRequest = (param) => {
 
 exports.updateWalletInfo = services.updateWalletInfo;
 
-/**
- * sample for calling using rest client like Postman
- * Method: POST
- * Header:
- *  Accept: application/json
- *  Content-Type: application/json
- * Body content json with following format
- *  Proxy is listening on port 3000!
- * {"coinType":"ETH","network":"ETH_TEST","params":{"tosign":["97d81abd54cae1648951f49..."],"tx":{"inputs":[{"addresses":["0x1a9acviads88"]}],"outputs":[{"addresses":["0x1234hjfnak"],"value":0.3}],"gas_price":2100,"gas_limit":300}},"action":"SIGN"}
- */
