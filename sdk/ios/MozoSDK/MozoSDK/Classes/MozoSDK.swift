@@ -13,8 +13,9 @@ import PromiseKit
 public class MozoSDK {
     private static var moduleDependencies = ModuleDependencies()
     
-    public static func configure(key: String) {
-        moduleDependencies.apiKey = key
+    public static func configure(apiKey: String = Configuration.API_KEY_DEFAULT, network: MozoNetwork = .TestNet) {
+        moduleDependencies.apiKey = apiKey
+        moduleDependencies.network = network
     }
     
     public static func setAuthDelegate(_ delegate: AuthenticationDelegate) {

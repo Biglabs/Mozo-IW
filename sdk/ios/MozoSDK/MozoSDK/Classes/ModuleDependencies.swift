@@ -21,6 +21,12 @@ class ModuleDependencies {
         }
     }
     
+    public var network: MozoNetwork = .TestNet {
+        didSet {
+           
+        }
+    }
+    
     let coreDataStore = CoreDataStore()
     let rootWireframe = RootWireframe()
     

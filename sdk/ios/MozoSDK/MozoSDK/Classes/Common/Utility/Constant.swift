@@ -111,3 +111,15 @@ public enum TransactionType {
         }
     }
 }
+
+public enum MozoNetwork {
+    case TestNet
+    case MainNet
+    
+    public var value : String {
+        switch self {
+        case .TestNet: return "TestNet"
+        case .MainNet: return "MainNet"
+        }
+    }
+}

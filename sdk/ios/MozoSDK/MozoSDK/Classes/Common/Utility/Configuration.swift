@@ -14,6 +14,8 @@ public class Configuration {
     public static let MIN_PASSWORD_LENGTH = 6
     public static var FONT_SIZE: UIFontTextSize = UIFontTextSize(.xSmall)
     public static let DEVICE_TOKEN = "DEVICE_TOKEN"
+    public static let API_KEY_DEFAULT = "API_KEY_DEFAULT"
+    
     // User id for anonymous user
     public static let USER_ID_ANONYMOUS = "Mozo@UserId@Anonymous"
     
