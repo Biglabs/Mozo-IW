@@ -16,6 +16,20 @@ public class MozoNavigationController : UINavigationController {
         super.viewDidLoad()
     }
     
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return UIInterfaceOrientationMask.portrait
+        }
+        return UIInterfaceOrientationMask.all
+    }
+    
+    public override var shouldAutorotate: Bool {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return false
+        }
+        return true
+    }
+    
     public override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
         super.setViewControllers(viewControllers, animated: animated)
         scanAllViewControllers()

@@ -14,20 +14,6 @@ public class MozoBasicViewController : UIViewController {
         self.navigationItem.hidesBackButton = true
     }
     
-    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return UIInterfaceOrientationMask.portrait
-        }
-        return UIInterfaceOrientationMask.all
-    }
-    
-    public override var shouldAutorotate: Bool {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return false
-        }
-        return true
-    }
-    
     func enableBackBarButton() {
         self.navigationController?.navigationBar.backItem?.title = "Back"
         navigationItem.hidesBackButton = false
