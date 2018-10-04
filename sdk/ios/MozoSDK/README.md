@@ -17,12 +17,6 @@ To use the Mozo SDK for iOS, you will need the following installed on your devel
 
 At the AWS GitHub repo, you can check out the [SDK source code](https://github.com/biglabs/mozo-sdk-ios).
 
-## Installation
-
-See the three subsections for details about three different installation methods.
-1. [Standard pod install](README.md#standard-pod-install)
-1. [Installing from the GitHub repo](README.md#installing-from-github)
-
 ### Standard pod install
 
 Go to
