@@ -56,6 +56,7 @@ class AuthManager : NSObject {
         apiManager?.getListAddressBook().done({ (array) in
             // Store downloaded address book
             SessionStoreManager.addressBookList = array
+            self.loadNecessaryData()
             // TODO: Reload user info in case error with user info at the latest login
             // Remember: Authen flow and wallet flow might be affected by reloading here
         }).catch({ (err) in
@@ -70,6 +71,12 @@ class AuthManager : NSObject {
         // 1. Token is alive
         // 2. Token is dead but refresh token is still alive
         self.checkRefreshToken()
+    }
+    
+    private func loadNecessaryData() {
+        _ = apiManager?.getExchangeRateInfo(currencyType: .KRW).done({ (rateInfo) in
+            SessionStoreManager.exchangeRateInfo = rateInfo
+        })
     }
     
     func setCurrentAuthorizationFlow(_ authorizationFlow: OIDAuthorizationFlowSession?) {
