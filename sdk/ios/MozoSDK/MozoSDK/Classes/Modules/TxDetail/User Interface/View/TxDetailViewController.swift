@@ -32,7 +32,7 @@ class TxDetailViewController: MozoBasicViewController {
         
         let amount = displayItem.amount
         
-        let reBalance = displayItem.currentBalance - amount
+        let reBalance = displayItem.currentBalance
         lbBalance.text = "\(reBalance)"
         
         lbAddress.text = displayItem.addressTo
