@@ -34,6 +34,7 @@ class TransferViewController: MozoBasicViewController {
         // Add a "textFieldDidChange" notification method to the text field control.
         txtAddress.addTarget(self, action: #selector(textFieldAddressDidChange), for: UIControlEvents.editingChanged)
         txtAmount.addTarget(self, action: #selector(textFieldAmountDidChange), for: UIControlEvents.editingChanged)
+        txtAmount.delegate = self
 //        setRefreshControl()
     }
     
@@ -155,5 +156,17 @@ extension TransferViewController : TransferViewInterface {
         addressBookView.isHidden = false
         lbAbName.text = displayItem.name
         lbAbAddress.text = displayItem.address
+    }
+}
+
+extension TransferViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Validate decimal format
+        let finalText = (textField.text ?? "") + string
+        if (finalText.isValidDecimalFormat() == false){
+            displayMozoError("Please input value in decimal format.")
+            return false
+        }
+        return true
     }
 }

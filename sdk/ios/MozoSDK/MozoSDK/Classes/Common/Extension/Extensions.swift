@@ -26,6 +26,11 @@ public extension String {
         return Float(self) != nil
     }
     
+    public func isValidDecimalMinValue(decimal: Int) -> Bool {
+        let divisor = pow(10.0, Double(decimal))
+        return Float(self)! >= Float(1 / divisor)
+    }
+    
     public func isValidName() -> Bool {
         let regex = try? NSRegularExpression(pattern: "^[a-zA-Z0-9_-]*$", options: .caseInsensitive)
         return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
