@@ -44,6 +44,10 @@ class CoreWireframe : MozoWireframe {
         })
     }
     
+    func requestCloseToLastMozoUIs() {
+        rootWireframe?.closeToLastMozoUIs()
+    }
+    
     // MARK: Communication with others wireframe
     func authenticate() {
         authWireframe?.presentInitialAuthInterface()

@@ -18,6 +18,7 @@ protocol CoreInteractorInput {
 
 protocol CoreInteractorOutput {
     func finishedCheckAuthentication(keepGoing: Bool, module: Module)
+    func continueWithWallet(_ callbackModule: Module)
     func finishedHandleAferAuth()
 }
 

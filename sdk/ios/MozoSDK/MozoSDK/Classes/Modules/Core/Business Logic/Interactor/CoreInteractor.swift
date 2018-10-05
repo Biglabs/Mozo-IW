@@ -42,7 +42,13 @@ extension CoreInteractor: CoreInteractorInput {
     func checkForAuthentication(module: Module) {
         if AccessTokenManager.getAccessToken() != nil {
             if SessionStoreManager.loadCurrentUser() != nil {
-                output?.finishedCheckAuthentication(keepGoing: false, module: module)
+                // Check wallet
+                if let wallet = SessionStoreManager.loadCurrentUser()?.profile?.walletInfo, wallet.encryptSeedPhrase != nil {
+                    output?.finishedCheckAuthentication(keepGoing: false, module: module)
+                } else {
+                    // Re-authenicate, manage wallet
+                    output?.continueWithWallet(module)
+                }
                 // TODO: Handle update local user profile data
             } else {
                 print("😎 Load user info.")

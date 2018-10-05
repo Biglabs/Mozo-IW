@@ -12,6 +12,7 @@ class CorePresenter : NSObject {
     var coreInteractor : CoreInteractorInput?
     var coreInteractorService : CoreInteractorService?
     weak var authDelegate: AuthenticationDelegate?
+    var callBackModule: Module?
 }
 
 extension CorePresenter : CoreModuleInterface {
@@ -27,6 +28,21 @@ extension CorePresenter : CoreModuleInterface {
         coreWireframe?.requestForCloseAllMozoUIs(completion: {
             self.authDelegate?.mozoUIDidCloseAll()
         })
+    }
+    
+    func requestCloseToLastMozoUIs() {
+        coreWireframe?.requestCloseToLastMozoUIs()
+    }
+    
+    func presentModuleInterface(_ module: Module) {
+        // Should continue with any module
+        switch module {
+        case .Transaction:
+            coreWireframe?.prepareForTransferInterface()
+        case .TxHistory:
+            coreWireframe?.prepareForTxHistoryInterface()
+        default: coreWireframe?.prepareForWalletInterface()
+        }
     }
 }
 
@@ -55,29 +71,39 @@ extension CorePresenter : AuthModuleDelegate {
 
 extension CorePresenter: WalletModuleDelegate {
     func walletModuleDidFinish() {
-        // Close all existing Mozo's UIs
-        coreWireframe?.requestForCloseAllMozoUIs(completion: {
-            // Send delegate back to the app
-            self.authDelegate?.mozoAuthenticationDidFinish()
-            // Notify for all observing objects
-            self.coreInteractor?.notifyAuthSuccessForAllObservers()
-        })
+        if callBackModule != nil {
+            // Present call back module interface
+            requestCloseToLastMozoUIs()
+            presentModuleInterface(callBackModule!)
+            callBackModule = nil
+        } else {
+            // Close all existing Mozo's UIs
+            coreWireframe?.requestForCloseAllMozoUIs(completion: {
+                // Send delegate back to the app
+                self.authDelegate?.mozoAuthenticationDidFinish()
+            })
+        }
+        // Notify for all observing objects
+        self.coreInteractor?.notifyAuthSuccessForAllObservers()
     }
 }
 
 extension CorePresenter : CoreInteractorOutput {
+    func continueWithWallet(_ callbackModule: Module) {
+        // Should display call back module (if any)
+        self.callBackModule = callbackModule
+        presentModuleInterface(.Wallet)
+    }
+    
     func finishedCheckAuthentication(keepGoing: Bool, module: Module) {
         if keepGoing {
+            // Should display call back module (if any)
+            if module != .Wallet {
+                self.callBackModule = module
+            }
             coreWireframe?.authenticate()
         } else {
-            // Should continue with any module
-            switch module {
-            case .Transaction:
-                coreWireframe?.prepareForTransferInterface()
-            case .TxHistory:
-                coreWireframe?.prepareForTxHistoryInterface()
-            default: coreWireframe?.prepareForWalletInterface()
-            }
+            presentModuleInterface(module)
         }
     }
     

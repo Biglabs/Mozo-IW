@@ -62,4 +62,9 @@ class RootWireframe : NSObject {
             completion!()
         }
     }
+    
+    public func closeToLastMozoUIs() {
+        let controllers = mozoNavigationController.viewControllers
+        mozoNavigationController.setViewControllers([controllers[0]], animated: false)
+    }
 }
