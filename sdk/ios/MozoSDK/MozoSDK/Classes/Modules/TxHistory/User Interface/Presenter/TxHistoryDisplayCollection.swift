@@ -13,8 +13,11 @@ class TxHistoryDisplayCollection {
     init(items: [TxHistoryDTO]) {
         displayItems = []
         for item in items {
-            let displayItem = displayItemForTxHistoryDTO(item)
-            displayItems.append(displayItem)
+            // Filter transaction success
+            if item.txStatus != TransactionStatusType.FAILED.rawValue {
+                let displayItem = displayItemForTxHistoryDTO(item)
+                displayItems.append(displayItem)
+            }
         }
     }
     
@@ -27,7 +30,7 @@ class TxHistoryDisplayCollection {
         let date = self.formattedDateTime(txHistory.time ?? 0)
         let amount = (txHistory.amount?.convertOutputValue(decimal: Int(txHistory.decimal!)))!
         let exAmount = self.calculateExchangeValue(amount)
-        return TxHistoryDisplayItem(action: action, date: date, amount: amount, exAmount: exAmount, addressFrom: txHistory.addressFrom, addressTo: txHistory.addressTo)
+        return TxHistoryDisplayItem(action: action, date: date, amount: amount, exAmount: exAmount, txStatus: txHistory.txStatus ?? "", addressFrom: txHistory.addressFrom, addressTo: txHistory.addressTo)
     }
     
     func buildAction(addressFrom: String) -> String {

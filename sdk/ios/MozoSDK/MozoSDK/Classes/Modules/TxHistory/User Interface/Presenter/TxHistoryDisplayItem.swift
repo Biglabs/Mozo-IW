@@ -12,6 +12,7 @@ struct TxHistoryDisplayItem {
     let date : String
     let amount: Double
     let exAmount: Double
+    let txStatus: String
     
     var addressFrom: String?
     var addressTo: String?
