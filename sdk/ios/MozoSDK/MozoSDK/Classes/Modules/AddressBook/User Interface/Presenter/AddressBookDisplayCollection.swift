@@ -30,8 +30,10 @@ class AddressBookDisplayCollection {
         for char in characters {
             let prefix = String(char)
             let filteredArr = sortedItems.filter() { $0.name.hasPrefix(prefix, caseSensitive: true) }
-            let section = AddressBookDisplaySection(sectionName: prefix, items: filteredArr)
-            displaySections.append(section)
+            if filteredArr.count > 0 {
+                let section = AddressBookDisplaySection(sectionName: prefix, items: filteredArr)
+                displaySections.append(section)
+            }
         }
         
         return displaySections

@@ -16,7 +16,8 @@ class AddressBookViewController: MozoBasicViewController {
     
     var displayData : AddressBookDisplayData?
     var addrBooks = [AddressBookDisplayItem]()
-    var filteredAbs = [AddressBookDisplayItem]()
+    var filteredSections : [AddressBookDisplaySection]?
+    
     let sectionTitles = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
     
     let searchController = UISearchController(searchResultsController: nil)
@@ -34,10 +35,7 @@ class AddressBookViewController: MozoBasicViewController {
         } else {
             tableView.tableHeaderView = searchController.searchBar
         }
-        // Setup the Scope Bar
-        searchController.searchBar.scopeButtonTitles = sectionTitles
         searchController.searchBar.delegate = self
-        
         definesPresentationContext = true
         
         // Setup the search footer
@@ -62,16 +60,11 @@ class AddressBookViewController: MozoBasicViewController {
     
     // MARK: - Private instance methods
     
-    func filterContentForSearchText(_ searchText: String, scope: String = "A") {
+    func filterContentForSearchText(_ searchText: String) {
         if addrBooks.count == 0 {
             return
         }
-        filteredAbs = addrBooks.filter({( item : AddressBookDisplayItem) -> Bool in
-            if searchBarIsEmpty() {
-                return true
-            }
-            return item.name.lowercased().contains(searchText.lowercased())
-        })
+        filteredSections = displayData?.filterByText(searchText)
         tableView.reloadData()
     }
     
@@ -80,24 +73,28 @@ class AddressBookViewController: MozoBasicViewController {
     }
     
     func isFiltering() -> Bool {
-        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
-        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+        return searchController.isActive && !searchBarIsEmpty() && filteredSections != nil
+    }
+    
+    func clearFilter() {
+        filteredSections = nil
+        tableView.reloadData()
     }
 }
 // MARK: - Table View
 extension AddressBookViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
+        if isFiltering() {
+            return filteredSections!.count
+        }
         return displayData?.sections.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering() {
-            searchFooter.setIsFilteringToShow(filteredItemCount: filteredAbs.count, of: addrBooks.count)
-            return filteredAbs.count
+            searchFooter.setIsFilteringToShow(filteredItemCount: filteredSections!.count, of: addrBooks.count)
+            return filteredSections![section].items.count
         }
-        
-        searchFooter.setNotFiltering()
-        
         return displayData?.sections[section].items.count ?? 0
     }
     
@@ -117,7 +114,7 @@ extension AddressBookViewController: UITableViewDataSource {
         if itemCount > 0 {
             let item: AddressBookDisplayItem
             if isFiltering() {
-                item = filteredAbs[indexPath.row]
+                item = filteredSections![indexPath.section].items[indexPath.row]
             } else {
                 item = (displayData?.sections[indexPath.section].items[indexPath.row])!
             }
@@ -151,8 +148,8 @@ extension AddressBookViewController: UITableViewDelegate {
         
         let headerLabel = UILabel(frame: CGRect(x: 15, y: 10, width:
             tableView.bounds.size.width, height: tableView.bounds.size.height))
-        headerLabel.textColor = ThemeManager.shared.main
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        headerLabel.textColor = ThemeManager.shared.disable
+        headerLabel.font = UIFont.boldSystemFont(ofSize: 25)
         headerLabel.text = self.tableView(self.tableView, titleForHeaderInSection: section)
         headerLabel.sizeToFit()
         headerView.addSubview(headerLabel)
@@ -167,17 +164,23 @@ extension AddressBookViewController: UITableViewDelegate {
 
 extension AddressBookViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        clearFilter()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            clearFilter()
+        }
     }
 }
 
 extension AddressBookViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
-        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-        filterContentForSearchText(searchController.searchBar.text!, scope: scope)
+        if let text = searchController.searchBar.text, !text.isEmpty {
+            filterContentForSearchText(text)
+        }
     }
 }
 
