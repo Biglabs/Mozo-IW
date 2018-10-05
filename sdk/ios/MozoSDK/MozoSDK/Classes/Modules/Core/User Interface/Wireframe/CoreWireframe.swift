@@ -35,7 +35,7 @@ class CoreWireframe : MozoWireframe {
     
     func requestForTxHistory() {
         presentWaitingInterface()
-        txhWireframe?.presentTxHistoryInterface()
+        corePresenter?.requestForAuthentication(module: Module.TxHistory)
     }
     
     func requestForCloseAllMozoUIs(completion: (() -> Swift.Void)? = nil) {
@@ -51,6 +51,10 @@ class CoreWireframe : MozoWireframe {
     
     func prepareForTransferInterface() {
         txWireframe?.presentTransferInterface()
+    }
+    
+    func prepareForTxHistoryInterface() {
+        txhWireframe?.presentTxHistoryInterface()
     }
     
     func prepareForWalletInterface() {

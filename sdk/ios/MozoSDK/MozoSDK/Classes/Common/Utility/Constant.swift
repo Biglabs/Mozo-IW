@@ -54,12 +54,14 @@ public enum Module {
     case Auth
     case Wallet
     case Transaction
+    case TxHistory
     
     public var key : String {
         switch self {
             case .Auth: return "Auth"
             case .Wallet: return "Wallet"
             case .Transaction: return "Transaction"
+            case .TxHistory: return "TxHistory"
         }
     }
     
@@ -68,6 +70,7 @@ public enum Module {
             case .Auth: return "Auth"
             case .Wallet: return "Wallet"
             case .Transaction: return "Transaction"
+            case .TxHistory: return "TxHistory"
         }
     }
 }
@@ -153,4 +156,9 @@ public enum SymbolType {
         case .MOZO: return "MOZO"
         }
     }
+}
+
+public enum TransactionStatusType: String {
+    case SUCCESS = "SUCCESS"
+    case FAILED = "FAILED"
 }

@@ -72,9 +72,11 @@ extension CorePresenter : CoreInteractorOutput {
         } else {
             // Should continue with any module
             switch module {
-                case.Transaction:
-                    coreWireframe?.prepareForTransferInterface()
-                default: coreWireframe?.prepareForWalletInterface()
+            case .Transaction:
+                coreWireframe?.prepareForTransferInterface()
+            case .TxHistory:
+                coreWireframe?.prepareForTxHistoryInterface()
+            default: coreWireframe?.prepareForWalletInterface()
             }
         }
     }
