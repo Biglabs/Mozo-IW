@@ -1,6 +1,8 @@
 
 const CONSTANTS = {
   ADDRESS_BOOK : "AddressBook",
+  CURRENCY_EXCHANGE_RATE : [ "USD", "KRW"],
+  EXCHAGE_RATE_KEY : "ExchangeRate",
   IS_NEW_WALLET_KEY : "IsNewWallet",
   OAUTH2TOKEN_KEY : "OAuth2Token",
   OFFCHAIN_TOKEN_INFO : "OffchainTokenInfo"
