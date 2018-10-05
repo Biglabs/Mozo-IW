@@ -70,6 +70,8 @@ import Foundation
     }
     
     func loadDisplayData() {
+        // Clear all data
+        clearValueOnUI()
         if !isAnonymous {
             print("\(String(describing: self)) - Load display data.")
             _ = MozoSDK.loadBalanceInfo().done { (item) in
@@ -110,6 +112,16 @@ import Foundation
             }
         }
         lbBalanceExchange.text = result
+    }
+    
+    func clearValueOnUI() {
+        if lbBalance != nil {
+            lbBalance.text = "0.0"
+            lbBalanceExchange.text = "0.0"
+        }
+        if lbAddress != nil {
+            lbAddress.text = ""
+        }
     }
     
     func updateData(displayItem: DetailInfoDisplayItem) {
