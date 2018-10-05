@@ -34,17 +34,19 @@ class WalletInteractor : NSObject {
         }
     }
     
-    func updateWalletToUserProfile(offchainAddress: String) {
+    func updateWalletToUserProfile(wallet: WalletModel) {
         if let userObj = SessionStoreManager.loadCurrentUser() {
             _ = dataManager.getUserById(userObj.id!).done { (user) in
                 let profile = userObj.profile
                 if profile?.walletInfo?.encryptSeedPhrase == nil || profile?.walletInfo?.offchainAddress == nil {
+                    let offchainAddress = wallet.address
                     let walletInfo = WalletInfoDTO(encryptSeedPhrase: user.mnemonic, offchainAddress: offchainAddress)
                     _ = self.apiManager.updateWalletToUserProfile(walletInfo: walletInfo)
                         .done { uProfile -> Void in
                             let userDto = UserDTO(id: uProfile.userId, profile: uProfile)
                             SessionStoreManager.saveCurrentUser(user: userDto)
                             print("Update Wallet To User Profile result: [\(uProfile)]")
+                            self.updateWalletForCurrentUser(wallet)
                             self.output?.updatedWallet()
                         }.catch({ (error) in
                             
@@ -116,9 +118,7 @@ extension WalletInteractor : WalletInteractorInput {
         }
         var wallet = walletManager.createNewWallet(mnemonics: mne!)
         wallet.privateKey = wallet.privateKey.encrypt(key: pin)
-        updateWalletForCurrentUser(wallet)
-        // TODO: Need to call output after updating wallet to user profile from server successfully
-        updateWalletToUserProfile(offchainAddress: wallet.address)
+        updateWalletToUserProfile(wallet: wallet)
     }
     
     func verifyConfirmPIN(pin: String, confirmPin: String) {
