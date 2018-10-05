@@ -42,6 +42,9 @@ public class DisplayUtils {
             view.coverView = coverView
             
             view.layer.cornerRadius = 0.1 * view.bounds.size.width
+            view.layer.borderWidth = 1
+            view.layer.borderColor = UIColor.white.cgColor
+            view.clipsToBounds = true
             
             view.center = parentView.center
             parentView.addSubview(view)
