@@ -71,12 +71,14 @@ import Foundation
     
     func loadDisplayData() {
         if !isAnonymous {
-            print("Load display data.")
+            print("\(String(describing: self)) - Load display data.")
             _ = MozoSDK.loadBalanceInfo().done { (item) in
-                    print("Receive display data: \(item)")
+                    print("\(String(describing: self)) - Receive display data: \(item)")
                     self.updateData(displayItem: item)
                 }.catch({ (error) in
-                    
+                    print("\(String(describing: self)) - Error: \(error.localizedDescription)")
+                    let itemNoData = DetailInfoDisplayItem(balance: 0.0, address: "")
+                    self.updateData(displayItem: itemNoData)
                 })
         } else {
             switch displayType {
@@ -119,8 +121,10 @@ import Foundation
             lbAddress.text = displayItem.address
         }
         if imgQR != nil && (displayType == .Full || displayType == .DetailAddress) {
-            let qrImg = DisplayUtils.generateQRCode(from: displayItem.address)
-            imgQR.image = qrImg
+            if !displayItem.address.isEmpty {
+                let qrImg = DisplayUtils.generateQRCode(from: displayItem.address)
+                imgQR.image = qrImg
+            }
         }
     }
     
