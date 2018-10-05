@@ -4,20 +4,20 @@
  * http://localhost:3000/service.Transaction/sign
  */
 
-const grpc = require('grpc');
+//const grpc = require('grpc');
 const R = require('ramda');
 
 const main = require('../main');
-var grpcLoader = require("../grpcserver/GrpcLoader");
+// var grpcLoader = require("../grpcserver/GrpcLoader");
 const app_config = require("../app_settings").APP_SETTINGS;
 const ERRORS = require("../constants").ERRORS;
 
 /**
  * create stub for client
  */
-const grpcClient = new grpcLoader.sign_service_proto.Transaction(
-    'localhost:50051', grpc.credentials.createInsecure()
-);
+// const grpcClient = new grpcLoader.sign_service_proto.Transaction(
+//     'localhost:50051', grpc.credentials.createInsecure()
+// );
 
 /**
  * create a proxy using grpc-express to register rpc service as rest endpoint

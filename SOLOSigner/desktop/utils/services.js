@@ -1,5 +1,6 @@
 
 const userReference = require('electron-settings');
+const R = require('ramda');
 var request = require('request');
 
 const main = require('../main');
@@ -71,6 +72,41 @@ function getOffchainTokenInfo() {
   });
 }
 
+function getExchangeRateInfo() {
+  let options = setRequestData();
+  if (!options) {
+    return;
+  }
+
+  let network_name = "SOLO";
+
+  for (var index = 0; index < CONSTANTS.CURRENCY_EXCHANGE_RATE.length; ++index) {
+    let exchange_rate_name = network_name + "_" +
+        CONSTANTS.CURRENCY_EXCHANGE_RATE[index];
+    options.url = mozo_service_host +
+      "/api/exchange/rate?currency=" + CONSTANTS.CURRENCY_EXCHANGE_RATE[index] +
+      "&symbol=" + network_name;
+
+    request(options, function(error, response, body) {
+      if (!error) {
+        console.log(body);
+        if (response.statusCode == 200) {
+          exchange_info = JSON.parse(body);
+          userReference.set(exchange_rate_name, exchange_info);
+        } else {
+          console.log(response.statusCode);
+          console.log(body);
+        }
+      } else {
+        console.log(error);
+      }
+    });
+
+  }
+}
+
+let exchange_rate_interval = null;
+
 function getUserProfile() {
   let options = setRequestData();
   if (!options) {
@@ -87,6 +123,11 @@ function getUserProfile() {
         }
         getOffchainTokenInfo();
         address_book.download();
+        getExchangeRateInfo();
+        if (!exchange_rate_interval) {
+          // Get exchange every 10 minutes
+          exchange_rate_interval = setInterval(getExchangeRateInfo, 600000);
+        }
       } else if (response.statusCode == 401)  {
         userReference.deleteAll();
       } else {
@@ -342,8 +383,11 @@ function sendSignRequest(signed_req, callback) {
 
 exports.sendSignRequest = sendSignRequest;
 
-exports.getWalletBalance = function(network) {
-  network = network.toUpperCase();
+exports.getWalletBalance = function(network_data) {
+  if (!network_data) {
+    return null;
+  }
+  let network = network_data.toUpperCase();
   let wallet_addrs = userReference.get("Address");
   let response_data = {
     status: "ERROR",
@@ -385,6 +429,16 @@ exports.getWalletBalance = function(network) {
           if (balance_info.decimals && balance_info.decimals > 0) {
             balance_info.balance /= Math.pow(10, token_info.decimals);
           }
+          let exchange_rates = R.map(x => {
+            let exchange_rate_data = userReference.get(network + "_" + x);
+            if (exchange_rate_data) {
+              return {
+                currency : exchange_rate_data.currency,
+                value: balance_info.balance * exchange_rate_data.rate
+              };
+            }
+          }, CONSTANTS.CURRENCY_EXCHANGE_RATE);
+          balance_info.exchange_rates = exchange_rates;
           resolve(balance_info);
         } else {
           console.log(response.statusCode);
