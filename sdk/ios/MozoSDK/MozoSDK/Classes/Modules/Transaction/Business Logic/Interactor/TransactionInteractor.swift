@@ -77,6 +77,12 @@ extension TransactionInteractor : TransactionInteractorInput {
             output?.didValidateTransferTransaction(error)
             return
         }
+        
+        if (amount?.isValidDecimalMinValue(decimal: tokenInfo?.decimals ?? 0) == false){
+            error = "Too low, please input valid amount."
+            output?.didValidateTransferTransaction(error)
+            return
+        }
 
         let tx = createTransactionToTransfer(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
         self.tokenInfo = tokenInfo
