@@ -23,12 +23,29 @@ public class DisplayUtils {
     }
     
     public static func displayQRView(address: String) {
-        let view = MozoQRView(frame: CGRect(x: 0, y: 0, width: 250, height: 285))
-        let img = generateQRCode(from: address)
-        view.qrImage = img
         let topViewController = getTopViewController()
-        view.center = (topViewController?.view.center)!
-        topViewController?.view.addSubview(view)
+        if let parentView = topViewController?.view {
+        
+            let displayWidth: CGFloat = parentView.frame.width
+            let displayHeight: CGFloat = parentView.frame.height
+            let viewFrame = CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight)
+            
+            // cover view
+            let coverView = UIView(frame: viewFrame)
+            coverView.backgroundColor = .black
+            coverView.alpha = 0.5
+            parentView.addSubview(coverView)
+            
+            let view = MozoQRView(frame: CGRect(x: 0, y: 0, width: 250, height: 285))
+            let img = generateQRCode(from: address)
+            view.qrImage = img
+            view.coverView = coverView
+            
+            view.layer.cornerRadius = 0.1 * view.bounds.size.width
+            
+            view.center = parentView.center
+            parentView.addSubview(view)
+        }
     }
     
     public static func convertInt64ToStringWithFormat(_ dateInt64: Int64, format: String) -> String{

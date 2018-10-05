@@ -8,6 +8,8 @@
 import Foundation
 class MozoQRView : MozoView {
     @IBOutlet weak var imgQR: UIImageView!
+    weak var coverView: UIView!
+    
     var qrImage : UIImage? {
         didSet {
             loadImageData()
@@ -25,6 +27,7 @@ class MozoQRView : MozoView {
     }
     
     @IBAction func touchedCloseBtn(_ sender: Any) {
+        coverView.removeFromSuperview()
         self.removeFromSuperview()
     }
 }
