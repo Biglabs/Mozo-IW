@@ -49,7 +49,7 @@ class WalletInteractor : NSObject {
                             self.updateWalletForCurrentUser(wallet)
                             self.output?.updatedWallet()
                         }.catch({ (error) in
-                            
+                            self.output?.errorWhileManageWallet("Network error. Please try again.", showTryAgain: true)
                         })
                 }
             }

@@ -81,9 +81,11 @@ extension PINViewController: PinTextFieldDelegate {
 extension PINViewController : PINViewInterface {
     func showCreatingInterface() {
         validationSuccess()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(900)) {
             self.hideAllUIs()
             self.showActivityIndicator()
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.eventHandler?.manageWallet(passPhrase: self.passPhrase, pin: self.pin!)
         }
     }
@@ -110,6 +112,16 @@ extension PINViewController : PINViewInterface {
     
     func removeSpinner() {
         removeMozoSpinner()
+    }
+    
+    func displayTryAgain(_ error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+        alert.addAction(.init(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(.init(title: "Try again", style: .default, handler: { (action) in
+            print("User try manage wallet again.")
+            self.eventHandler?.manageWallet(passPhrase: self.passPhrase, pin: self.pin!)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 private extension PINViewController {
@@ -141,7 +153,6 @@ private extension PINViewController {
         effectView.contentView.addSubview(activityIndicator)
         effectView.contentView.addSubview(strLabel)
         view.addSubview(effectView)
-        view.alpha = 0
     }
     
     func pinInputComplete(input: String) {
