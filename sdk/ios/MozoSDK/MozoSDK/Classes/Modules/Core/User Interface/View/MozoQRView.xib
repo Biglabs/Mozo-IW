@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MozoQRView" customModule="MozoSDK" customModuleProvider="target">
             <connections>
+                <outlet property="btnClose" destination="uUg-X0-0RX" id="LGi-so-B6n"/>
+                <outlet property="imgContainerView" destination="1yr-WT-HVi" id="ERf-zF-U0j"/>
                 <outlet property="imgQR" destination="YYp-hE-Iwf" id="ZFS-hk-QuT"/>
             </connections>
         </placeholder>
@@ -20,43 +22,65 @@
             <rect key="frame" x="0.0" y="0.0" width="315" height="401"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUg-X0-0RX">
-                    <rect key="frame" x="37" y="336" width="240" height="45"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="45" id="65t-yu-Kdu"/>
-                        <constraint firstAttribute="width" constant="240" id="X9y-IE-fdJ"/>
-                    </constraints>
-                    <state key="normal" title="Close">
-                        <color key="titleColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="touchedCloseBtn:" destination="-1" eventType="touchUpInside" id="KpF-eR-xPz"/>
-                    </connections>
-                </button>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1yr-WT-HVi">
-                    <rect key="frame" x="27" y="62" width="261" height="257"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YYp-hE-Iwf">
-                            <rect key="frame" x="20" y="20" width="221" height="229"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="221" id="JDS-BQ-DTt"/>
-                                <constraint firstAttribute="height" constant="229" id="lPZ-wQ-iI8"/>
-                            </constraints>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mozo Wallet Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKX-Pu-Q3e">
                     <rect key="frame" x="77" y="27" width="161" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1yr-WT-HVi">
+                    <rect key="frame" x="37.5" y="64" width="240" height="240"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YYp-hE-Iwf">
+                            <rect key="frame" x="15.5" y="5.5" width="209" height="229"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="209" id="JDS-BQ-DTt"/>
+                                <constraint firstAttribute="height" constant="229" id="lPZ-wQ-iI8"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="4f1-ed-tus"/>
+                        <constraint firstItem="YYp-hE-Iwf" firstAttribute="centerY" secondItem="1yr-WT-HVi" secondAttribute="centerY" id="A0p-IN-oSC"/>
+                        <constraint firstAttribute="height" constant="240" id="EDa-rt-wnG"/>
+                        <constraint firstItem="YYp-hE-Iwf" firstAttribute="centerX" secondItem="1yr-WT-HVi" secondAttribute="centerX" id="rbm-ei-nZh"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <real key="value" value="1.2"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUg-X0-0RX">
+                    <rect key="frame" x="37.5" y="324" width="240" height="45"/>
+                    <color key="backgroundColor" red="0.35294117650000001" green="0.61176470589999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="65t-yu-Kdu"/>
+                        <constraint firstAttribute="width" constant="240" id="X9y-IE-fdJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Close">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="touchedCloseBtn:" destination="-1" eventType="touchUpInside" id="KpF-eR-xPz"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="1yr-WT-HVi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8qu-j6-fgF"/>
                 <constraint firstItem="pKX-Pu-Q3e" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="27" id="B7X-Ic-4Ze"/>
+                <constraint firstItem="1yr-WT-HVi" firstAttribute="top" secondItem="pKX-Pu-Q3e" secondAttribute="bottom" constant="16" id="KMK-it-QKL"/>
+                <constraint firstItem="uUg-X0-0RX" firstAttribute="centerX" secondItem="YYp-hE-Iwf" secondAttribute="centerX" id="Pqr-nm-jXt"/>
+                <constraint firstItem="uUg-X0-0RX" firstAttribute="top" secondItem="1yr-WT-HVi" secondAttribute="bottom" constant="20" id="gZc-LH-ija"/>
                 <constraint firstItem="pKX-Pu-Q3e" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="wrp-aN-HTJ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

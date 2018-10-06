@@ -23,8 +23,7 @@ public class DisplayUtils {
     }
     
     public static func displayQRView(address: String) {
-        let topViewController = getTopViewController()
-        if let parentView = topViewController?.view {
+        if let parentView = UIApplication.shared.keyWindow {
         
             let displayWidth: CGFloat = parentView.frame.width
             let displayHeight: CGFloat = parentView.frame.height
@@ -36,12 +35,12 @@ public class DisplayUtils {
             coverView.alpha = 0.5
             parentView.addSubview(coverView)
             
-            let view = MozoQRView(frame: CGRect(x: 0, y: 0, width: 250, height: 285))
+            let view = MozoQRView(frame: CGRect(x: 0, y: 0, width: 315, height: 401))
             let img = generateQRCode(from: address)
             view.qrImage = img
             view.coverView = coverView
             
-            view.layer.cornerRadius = 0.1 * view.bounds.size.width
+            view.layer.cornerRadius = 0.02 * view.bounds.size.width
             view.layer.borderWidth = 1
             view.layer.borderColor = UIColor.white.cgColor
             view.clipsToBounds = true
