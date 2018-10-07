@@ -133,7 +133,14 @@ class TransferViewController: MozoBasicViewController {
     
     @objc func textFieldAmountDidChange() {
         print("TextFieldAmountDidChange")
-        
+        if let rateInfo = SessionStoreManager.exchangeRateInfo {
+            if let type = CurrencyType(rawValue: rateInfo.currency ?? "") {
+                let value = Double(txtAmount.text ?? "0")!
+                let exValue = (value * (rateInfo.rate ?? 0)).rounded(toPlaces: type.decimalRound)
+                let exValueStr = "\(type.unit)\(exValue )"
+                lbExchangeAmount.text = exValueStr
+            }
+        }
     }
     
     func showValidate(_ error: String?, isAddress: Bool) {
@@ -143,6 +150,7 @@ class TransferViewController: MozoBasicViewController {
             txtAddress.setBorderBottomLine(isError: true)
             lbValidateAddrError.isHidden = false
         } else {
+            lbValidateAmountError.text = error
             lbAmount.textColor = ThemeManager.shared.error
             amountBorderView.backgroundColor = ThemeManager.shared.error
             lbValidateAmountError.isHidden = false
@@ -188,6 +196,7 @@ extension TransferViewController : TransferViewInterface {
     func updateUserInterfaceWithAddress(_ address: String) {
         clearAndHideAddressBookView()
         txtAddress.text = address
+        hideValidate(isAddress: true)
     }
     
     func displayError(_ error: String) {
