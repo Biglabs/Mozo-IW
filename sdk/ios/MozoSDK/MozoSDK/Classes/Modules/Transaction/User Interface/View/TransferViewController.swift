@@ -14,10 +14,15 @@ class TransferViewController: MozoBasicViewController {
     @IBOutlet weak var lbExchange: UILabel!
     @IBOutlet weak var lbReceiverAddress: UILabel!
     @IBOutlet weak var txtAddress: UITextField!
+    @IBOutlet weak var lbValidateAddrError: UILabel!
     @IBOutlet weak var btnAddressBook: UIButton!
     @IBOutlet weak var btnScan: UIButton!
     @IBOutlet weak var lbAmount: UILabel!
     @IBOutlet weak var txtAmount: UITextField!
+    @IBOutlet weak var lbValidateAmountError: UILabel!
+    @IBOutlet weak var lbExchangeAmount: UILabel!
+    @IBOutlet weak var amountBorderView: UIView!
+    @IBOutlet weak var spendableView: UIView!
     @IBOutlet weak var lbSpendable: UILabel!
     @IBOutlet weak var addressBookView: UIView!
     @IBOutlet weak var lbAbName: UILabel!
@@ -49,7 +54,6 @@ class TransferViewController: MozoBasicViewController {
     
     func setTextFieldLayer() {
         txtAddress.setBottomBorder()
-        txtAmount.setBottomBorder()
     }
     
     func setBtnLayer() {
@@ -120,12 +124,43 @@ class TransferViewController: MozoBasicViewController {
         lbAbAddress.text = ""
     }
     
+    // MARK: Validation
+    
     @objc func textFieldAddressDidChange() {
-        
+        print("TextFieldAddressDidChange")
+        hideValidate(isAddress: true)
     }
     
     @objc func textFieldAmountDidChange() {
+        print("TextFieldAmountDidChange")
         
+    }
+    
+    func showValidate(_ error: String?, isAddress: Bool) {
+        print("Show validate error, isAddress: \(isAddress)")
+        if isAddress {
+            lbReceiverAddress.textColor = ThemeManager.shared.error
+            txtAddress.setBorderBottomLine(isError: true)
+            lbValidateAddrError.isHidden = false
+        } else {
+            lbAmount.textColor = ThemeManager.shared.error
+            amountBorderView.backgroundColor = ThemeManager.shared.error
+            lbValidateAmountError.isHidden = false
+            spendableView.isHidden = true
+        }
+    }
+    
+    func hideValidate(isAddress: Bool) {
+        if isAddress {
+            lbReceiverAddress.textColor = ThemeManager.shared.textContent
+            txtAddress.setBorderBottomLine(isError: false)
+            lbValidateAddrError.isHidden = true
+        } else {
+            lbAmount.textColor = ThemeManager.shared.textContent
+            amountBorderView.backgroundColor = ThemeManager.shared.disable
+            lbValidateAmountError.isHidden = true
+            spendableView.isHidden = false
+        }
     }
 }
 
@@ -165,6 +200,15 @@ extension TransferViewController : TransferViewInterface {
         lbAbName.text = displayItem.name
         lbAbAddress.text = displayItem.address
     }
+    
+    func showErrorValidation(_ error: String?, isAddress: Bool) {
+        showValidate(error, isAddress: isAddress)
+    }
+    
+    func hideErrorValidation() {
+        hideValidate(isAddress: true)
+        hideValidate(isAddress: false)
+    }
 }
 
 extension TransferViewController: UITextFieldDelegate {
@@ -172,9 +216,10 @@ extension TransferViewController: UITextFieldDelegate {
         // Validate decimal format
         let finalText = (textField.text ?? "") + string
         if (finalText.isValidDecimalFormat() == false){
-            displayMozoError("Please input value in decimal format.")
+            showValidate("Error: Please input value in decimal format.", isAddress: false)
             return false
         }
+        hideValidate(isAddress: false)
         return true
     }
 }

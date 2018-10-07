@@ -18,7 +18,7 @@ protocol TransactionInteractorOutput {
     func didLoadTokenInfo(_ tokenInfo: TokenInfoDTO)
     func didReceiveError(_ error: String?)
     func requestPinToSignTransaction()
-    func didValidateTransferTransaction(_ error: String?)
+    func didValidateTransferTransaction(_ error: String?, isAddress: Bool)
     func continueWithTransaction(_ transaction: TransactionDTO, tokenInfo: TokenInfoDTO, displayName: String?)
     func didSendTransactionSuccess(_ transaction: IntermediaryTransactionDTO, tokenInfo: TokenInfoDTO)
 }

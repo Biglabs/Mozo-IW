@@ -12,4 +12,6 @@ protocol TransferViewInterface {
     func updateUserInterfaceWithAddress(_ address: String)
     func displayError(_ error: String)
     func updateInterfaceWithDisplayItem(_ displayItem: AddressBookDisplayItem)
+    func showErrorValidation(_ error: String?, isAddress: Bool)
+    func hideErrorValidation()
 }

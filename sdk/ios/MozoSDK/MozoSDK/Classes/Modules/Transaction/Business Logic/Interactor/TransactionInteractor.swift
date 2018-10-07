@@ -52,41 +52,57 @@ extension TransactionInteractor : TransactionInteractorInput {
     }
     
     func validateTransferTransaction(tokenInfo: TokenInfoDTO?, toAdress: String?, amount: String?, displayName: String?) {
+        var hasError = false
+        
+        var isAddressEmpty = false
         var error : String? = nil
-        if toAdress == nil || toAdress == "" {
-            error = "Please input receive address."
-            output?.didValidateTransferTransaction(error)
-            return
+        if toAdress == nil || toAdress?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            error = "Error: The Receiver Address is not valid."
+            isAddressEmpty = true
+            hasError = true
+            output?.didValidateTransferTransaction(error, isAddress: true)
         }
+        if !isAddressEmpty, let trimAddress = toAdress?.trimmingCharacters(in: .whitespacesAndNewlines), !trimAddress.isEthAddress() {
+            error = "Error: The Receiver Address is not valid."
+            hasError = true
+            output?.didValidateTransferTransaction(error, isAddress: true)
+        }
+        
+        var isAmountEmpty = false
         let value = amount
         if value == nil || value == "" {
-            error = "Please input amount value."
-            output?.didValidateTransferTransaction(error)
-            return
+            error = "Error: Please input amount."
+            isAmountEmpty = true
+            hasError = true
+            output?.didValidateTransferTransaction(error, isAddress: false)
         }
         
-        let spendable = tokenInfo?.balance?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0)
-        if spendable! <= 0.0 {
-            error = "Your spendable is not enough for this."
-            output?.didValidateTransferTransaction(error)
-            return
-        }
-        
-        if Double(amount ?? "0")! > spendable! {
-            error = "Your spendable is not enough for this."
-            output?.didValidateTransferTransaction(error)
-            return
-        }
-        
-        if (amount?.isValidDecimalMinValue(decimal: tokenInfo?.decimals ?? 0) == false){
-            error = "Too low, please input valid amount."
-            output?.didValidateTransferTransaction(error)
-            return
+        if !isAmountEmpty {
+            let spendable = tokenInfo?.balance?.convertOutputValue(decimal: tokenInfo?.decimals ?? 0)
+            if spendable! <= 0.0 {
+                error = "Error: Your spendable is not enough for this."
+                output?.didValidateTransferTransaction(error, isAddress: false)
+                return
+            }
+            
+            if Double(amount ?? "0")! > spendable! {
+                error = "Error: Your spendable is not enough for this."
+                output?.didValidateTransferTransaction(error, isAddress: false)
+                return
+            }
+            
+            if (amount?.isValidDecimalMinValue(decimal: tokenInfo?.decimals ?? 0) == false){
+                error = "Error: Amount is too low, please input valid amount."
+                output?.didValidateTransferTransaction(error, isAddress: false)
+                return
+            }
         }
 
-        let tx = createTransactionToTransfer(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
-        self.tokenInfo = tokenInfo
-        output?.continueWithTransaction(tx!, tokenInfo: tokenInfo!, displayName: displayName)
+        if !hasError {
+            let tx = createTransactionToTransfer(tokenInfo: tokenInfo, toAdress: toAdress, amount: amount)
+            self.tokenInfo = tokenInfo
+            output?.continueWithTransaction(tx!, tokenInfo: tokenInfo!, displayName: displayName)
+        }
     }
     
     func performTransfer(pin: String) {

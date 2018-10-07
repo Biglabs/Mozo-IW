@@ -48,6 +48,7 @@ extension TransactionPresenter: TransactionModuleInterface {
 
 extension TransactionPresenter : TransactionInteractorOutput {
     func continueWithTransaction(_ transaction: TransactionDTO, tokenInfo: TokenInfoDTO, displayName: String?) {
+        transferUserInterface?.hideErrorValidation()
         txWireframe?.presentConfirmInterface(transaction: transaction, tokenInfo: tokenInfo, displayName: displayName)
     }
     
@@ -60,10 +61,8 @@ extension TransactionPresenter : TransactionInteractorOutput {
         transferUserInterface?.updateUserInterfaceWithTokenInfo(tokenInfo)
     }
     
-    func didValidateTransferTransaction(_ error: String?) {
-        if let error = error {
-            transferUserInterface?.displayError(error)
-        }
+    func didValidateTransferTransaction(_ error: String?, isAddress: Bool) {
+        transferUserInterface?.showErrorValidation(error, isAddress: isAddress)
     }
     
     func requestPinToSignTransaction() {
