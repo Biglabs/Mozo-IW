@@ -10,11 +10,12 @@ import PromiseKit
 import SwiftyJSON
 
 public extension ApiManager {
-    /// Call API to get all transaction histories from an address.
+    /// Call API to get a list transaction histories from an address.
     ///
     /// - Parameters:
     ///   - address: the address
-    ///   - completionHandler: handle after completed
+    ///   - page: the number of page data
+    ///   - size: the number of history item
     public func getListTxHistory(address: String, page: Int = 0, size: Int = 15) -> Promise<[TxHistoryDTO]> {
         return Promise { seal in
             let url = Configuration.BASE_URL + TX_API_PATH + "txhistory/\(address)?page=\(page)&size=\(size)"
@@ -46,7 +47,7 @@ public extension ApiManager {
     /// Call API to get exchange rate info.
     ///
     /// - Parameters:
-    ///   - completionHandler: handle after completed
+    /// - currencyType: The currency type
     public func getExchangeRateInfo(currencyType: CurrencyType = .USD) -> Promise<RateInfoDTO> {
         return Promise { seal in
             let url = Configuration.BASE_URL + "/api/exchange/rate?currency=\(currencyType.rawValue)&symbol=\(SymbolType.MOZO.value)"
