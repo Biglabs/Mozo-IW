@@ -427,8 +427,10 @@
                         <outlet property="btnScan" destination="oNl-gy-Upb" id="rpB-sa-kXt"/>
                         <outlet property="lbAbAddress" destination="bBm-ek-KAl" id="E15-7s-hqK"/>
                         <outlet property="lbAbName" destination="qJ4-Pp-RiS" id="HEQ-fy-lVs"/>
+                        <outlet property="lbAmount" destination="fni-8e-uNL" id="qJg-5V-LZM"/>
                         <outlet property="lbBalance" destination="ydh-nN-cPy" id="l2o-ko-YCC"/>
                         <outlet property="lbExchange" destination="ilu-2G-NSK" id="kjn-Uq-Chi"/>
+                        <outlet property="lbReceiverAddress" destination="Cn9-Fy-FwF" id="EP8-SE-liJ"/>
                         <outlet property="lbSpendable" destination="brE-a9-qvM" id="GBv-XK-F5Z"/>
                         <outlet property="txtAddress" destination="cPJ-fc-yvr" id="qef-h9-ptr"/>
                         <outlet property="txtAmount" destination="Eb8-Io-Hbg" id="z5S-MJ-uzJ"/>

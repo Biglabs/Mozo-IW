@@ -12,9 +12,11 @@ class TransferViewController: MozoBasicViewController {
     var eventHandler : TransactionModuleInterface?
     @IBOutlet weak var lbBalance: UILabel!
     @IBOutlet weak var lbExchange: UILabel!
+    @IBOutlet weak var lbReceiverAddress: UILabel!
     @IBOutlet weak var txtAddress: UITextField!
     @IBOutlet weak var btnAddressBook: UIButton!
     @IBOutlet weak var btnScan: UIButton!
+    @IBOutlet weak var lbAmount: UILabel!
     @IBOutlet weak var txtAmount: UITextField!
     @IBOutlet weak var lbSpendable: UILabel!
     @IBOutlet weak var addressBookView: UIView!
