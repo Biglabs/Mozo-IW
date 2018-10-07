@@ -33,4 +33,17 @@ public extension String {
             return ""
         }
     }
+    
+    /**
+     Checks if the given string is an address.
+     - Author:
+     Hoang Nguyen
+     
+     - Version:
+     0.1
+     */
+    public func isEthAddress() -> Bool {
+        let regex = try? NSRegularExpression(pattern: "^0x([A-Fa-f0-9]{64})$", options: .caseInsensitive)
+        return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
+    }
 }
