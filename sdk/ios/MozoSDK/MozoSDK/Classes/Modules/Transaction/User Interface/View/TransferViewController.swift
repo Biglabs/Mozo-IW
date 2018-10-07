@@ -204,6 +204,7 @@ extension TransferViewController : TransferViewInterface {
     }
     
     func updateInterfaceWithDisplayItem(_ displayItem: AddressBookDisplayItem) {
+        hideValidate(isAddress: true)
         txtAddress.isHidden = true
         addressBookView.isHidden = false
         lbAbName.text = displayItem.name
