@@ -83,7 +83,8 @@ extension PINViewController : PINViewInterface {
         validationSuccess()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(900)) {
             self.hideAllUIs()
-            self.showActivityIndicator()
+            self.displayMozoSpinner()
+//            self.showActivityIndicator()
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.eventHandler?.manageWallet(passPhrase: self.passPhrase, pin: self.pin!)
@@ -128,6 +129,8 @@ private extension PINViewController {
     func hideAllUIs() {
         self.view.endEditing(true)
         view.subviews.forEach({ $0.isHidden = true })
+        enterPINLabel.isHidden = false
+        descriptionLabel.isHidden = false
     }
     
     func showActivityIndicator() {

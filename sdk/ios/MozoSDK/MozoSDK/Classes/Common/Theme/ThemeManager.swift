@@ -12,7 +12,7 @@ import UIKit.NSAttributedString
 
 public struct Theme {
     public var title: UIColor = UIColor(hexString: "141a22")
-    public var font: UIColor = UIColor(hexString: "747474")
+    public var textContent: UIColor = UIColor(hexString: "747474")
     public var placeholder: UIColor = UIColor(hexString: "c1c1c1")
     public var disable: UIColor = UIColor(hexString: "d1d7dd")
     public var highlight: UIColor = UIColor(hexString: "003c8d")
