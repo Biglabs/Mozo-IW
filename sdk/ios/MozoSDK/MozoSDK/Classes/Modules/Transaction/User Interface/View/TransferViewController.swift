@@ -29,6 +29,7 @@ class TransferViewController: MozoBasicViewController {
         super.viewDidLoad()
         eventHandler?.loadTokenInfo()
         setBtnLayer()
+        setTextFieldLayer()
         addDoneButtonOnKeyboard()
         
         // Add a "textFieldDidChange" notification method to the text field control.
@@ -42,6 +43,11 @@ class TransferViewController: MozoBasicViewController {
         super.viewWillAppear(animated)
         // Fix issue: Title is not correct after navigation back from child controller
         self.title = "SEND MOZO OFFCHAIN"
+    }
+    
+    func setTextFieldLayer() {
+        txtAddress.setBottomBorder()
+        txtAmount.setBottomBorder()
     }
     
     func setBtnLayer() {
