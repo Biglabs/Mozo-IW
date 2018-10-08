@@ -43,7 +43,7 @@ public extension String {
      0.1
      */
     public func isEthAddress() -> Bool {
-        let regex = try? NSRegularExpression(pattern: "^0x([A-Fa-f0-9]{64})$", options: .caseInsensitive)
+        let regex = try? NSRegularExpression(pattern: "^0x([A-Fa-f0-9]{40})*$", options: .caseInsensitive)
         return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
     }
 }
