@@ -15,6 +15,7 @@ protocol AuthInteractorInput {
     
     func buildLogoutRequest()
     func handleLogoutState()
+    func clearAllAuthSession()
 }
 
 protocol AuthInteractorOutput {

@@ -29,7 +29,7 @@ class AuthManager : NSObject {
         super.init()
     }
     
-    private func clearAll() {
+    func clearAll() {
         AccessTokenManager.clearToken()
         SessionStoreManager.clearCurrentUser()
         setAuthState(nil)

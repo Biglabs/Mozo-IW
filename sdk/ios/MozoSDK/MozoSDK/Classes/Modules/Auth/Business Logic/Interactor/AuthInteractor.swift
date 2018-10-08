@@ -33,6 +33,10 @@ extension AuthInteractor : AuthInteractorInput {
         }
     }
     
+    func clearAllAuthSession() {
+        authManager?.clearAll()
+    }
+    
     func buildAuthRequest() {
         _ = authManager?.buildAuthRequest().done({ (request) in
             if let rq = request {

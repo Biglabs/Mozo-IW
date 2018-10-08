@@ -56,7 +56,6 @@ extension CorePresenter : AuthModuleDelegate {
     }
     
     func authModuleDidFinishLogout() {
-        coreInteractor?.clearAllLocalDataAfterLogout()
         // Send delegate back to the app
         authDelegate?.mozoLogoutDidFinish()
         // Notify for all observing objects

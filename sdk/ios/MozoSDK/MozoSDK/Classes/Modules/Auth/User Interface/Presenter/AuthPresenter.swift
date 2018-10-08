@@ -47,11 +47,15 @@ extension AuthPresenter : AuthInteractorOutput {
         let viewController = authWireframe?.getTopViewController()
         // performs logout request
         print("Initiating logout request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
-        OIDAuthState.authState(byPresenting: request, presenting: viewController!) { authState, error in
-            print("Finish present logout, error: \(error)")
+        let currentAuthorizationFlow = OIDAuthorizationService.present(request, presenting: viewController!) { (response, error) in
+            print("Finish present logout, error: [\(error)]")
+            if error == nil {
+                // Must waiting for AppAuth WebViewController display.
+                self.authInteractor?.clearAllAuthSession()
+                self.authModuleDelegate?.authModuleDidFinishLogout()
+            }
         }
-        // TODO: Must waiting for AppAuth WebViewController display.
-        authModuleDelegate?.authModuleDidFinishLogout()
+        authInteractor?.setCurrentAuthorizationFlow(currentAuthorizationFlow)
     }
     
     func finishLogout() {
