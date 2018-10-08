@@ -83,8 +83,6 @@ extension PINViewController : PINViewInterface {
         validationSuccess()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(900)) {
             self.hideAllUIs()
-            self.displayMozoSpinner()
-//            self.showActivityIndicator()
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.eventHandler?.manageWallet(passPhrase: self.passPhrase, pin: self.pin!)
@@ -131,30 +129,24 @@ private extension PINViewController {
         view.subviews.forEach({ $0.isHidden = true })
         enterPINLabel.isHidden = false
         descriptionLabel.isHidden = false
+        showActivityIndicator()
     }
     
     func showActivityIndicator() {
         var activityIndicator = UIActivityIndicatorView()
-        var strLabel = UILabel()
         
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         
-        strLabel = UILabel(frame: CGRect(x: 10, y: 20, width: 140, height: 46))
-        strLabel.text = "Creating Interfaces"
-        strLabel.font = .systemFont(ofSize: 14)
-        strLabel.textColor = ThemeManager.shared.main
-        
-        effectView.frame = CGRect(x: view.frame.midX - strLabel.frame.width/2, y: view.frame.midY - strLabel.frame.height, width: 140, height: 92)
+        effectView.frame = CGRect(x: view.frame.midX - 23, y: view.frame.midY - 23, width: 46, height: 46)
         effectView.layer.cornerRadius = 15
         effectView.layer.masksToBounds = true
         
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         activityIndicator.color = ThemeManager.shared.main
-        activityIndicator.frame = CGRect(x: 47, y: 0, width: 46, height: 46)
+        activityIndicator.frame = CGRect(x: 0, y: 0, width: 46, height: 46)
         activityIndicator.startAnimating()
         
         effectView.contentView.addSubview(activityIndicator)
-        effectView.contentView.addSubview(strLabel)
         view.addSubview(effectView)
     }
     
