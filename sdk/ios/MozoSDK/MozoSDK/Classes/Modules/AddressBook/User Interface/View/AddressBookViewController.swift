@@ -132,7 +132,15 @@ extension AddressBookViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        view.tintColor = .white
     }
 }
 

@@ -1445,10 +1445,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DKa-OK-Hj0">
-                                                    <rect key="frame" x="15" y="7" width="40.5" height="18"/>
+                                                    <rect key="frame" x="15" y="7" width="41" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                                    <color key="textColor" red="0.078431372549019607" green="0.10196078431372549" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lwk-Zp-pRI">
@@ -1720,7 +1720,7 @@
     <resources>
         <image name="ic_check" width="24" height="24"/>
         <image name="ic_check_disable" width="60" height="60"/>
-        <image name="ic_check_success" width="23" height="23"/>
+        <image name="ic_check_success" width="32" height="32"/>
         <image name="ic_failed" width="32" height="32"/>
         <image name="ic_info" width="18" height="18"/>
         <image name="ic_loading" width="38" height="36"/>
