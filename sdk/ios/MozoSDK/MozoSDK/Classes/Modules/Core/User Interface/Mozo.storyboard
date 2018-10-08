@@ -989,9 +989,19 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fvd-aJ-yOC">
                                 <rect key="frame" x="133" y="385" width="108" height="30"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ic_loading" translatesAutoresizingMaskIntoConstraints="NO" id="X38-sh-EUE">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_loading" translatesAutoresizingMaskIntoConstraints="NO" id="X38-sh-EUE">
                                         <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="2EM-Hr-BI6"/>
+                                            <constraint firstAttribute="width" constant="32" id="ibC-hx-htS"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_check_success" translatesAutoresizingMaskIntoConstraints="NO" id="hox-bn-bn6">
+                                        <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="32" id="J3i-8m-qB9"/>
+                                            <constraint firstAttribute="height" constant="30" id="RkZ-6c-PXv"/>
+                                        </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8FM-eL-oR4">
                                         <rect key="frame" x="40" y="5" width="57" height="18"/>
@@ -1003,7 +1013,11 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="X38-sh-EUE" firstAttribute="top" secondItem="fvd-aJ-yOC" secondAttribute="top" id="5M8-zn-x67"/>
+                                    <constraint firstItem="X38-sh-EUE" firstAttribute="leading" secondItem="fvd-aJ-yOC" secondAttribute="leading" id="8Ik-n9-xe8"/>
+                                    <constraint firstItem="hox-bn-bn6" firstAttribute="top" secondItem="fvd-aJ-yOC" secondAttribute="top" id="Fj3-CT-lGt"/>
                                     <constraint firstAttribute="height" constant="30" id="JJJ-xR-TN9"/>
+                                    <constraint firstItem="hox-bn-bn6" firstAttribute="leading" secondItem="fvd-aJ-yOC" secondAttribute="leading" id="NHM-hO-vCf"/>
                                     <constraint firstAttribute="width" constant="108" id="rav-EN-koA"/>
                                 </constraints>
                             </view>
@@ -1098,6 +1112,7 @@
                         <outlet property="txHashView" destination="lgW-0b-QBE" id="irW-mq-dYT"/>
                         <outlet property="txStatusImg" destination="X38-sh-EUE" id="v3i-Hk-y8i"/>
                         <outlet property="txStatusLabel" destination="8FM-eL-oR4" id="5fB-FO-ArV"/>
+                        <outlet property="txStatusReplaceImg" destination="hox-bn-bn6" id="3H5-ki-TFM"/>
                         <outlet property="txStatusView" destination="fvd-aJ-yOC" id="ru9-16-zTB"/>
                     </connections>
                 </viewController>
@@ -1706,7 +1721,7 @@
         <image name="ic_check" width="24" height="24"/>
         <image name="ic_check_disable" width="60" height="60"/>
         <image name="ic_check_success" width="23" height="23"/>
-        <image name="ic_failed" width="77" height="73"/>
+        <image name="ic_failed" width="32" height="32"/>
         <image name="ic_info" width="18" height="18"/>
         <image name="ic_loading" width="38" height="36"/>
         <image name="ic_mozo_offchain" width="24" height="24"/>

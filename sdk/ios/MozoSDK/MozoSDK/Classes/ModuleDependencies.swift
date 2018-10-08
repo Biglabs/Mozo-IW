@@ -154,6 +154,10 @@ class ModuleDependencies {
     func transactionCompletionDependencies() {
         let txComPresenter = TxCompletionPresenter()
         
+        let txComInteractor = TxCompletionInteractor(apiManager: apiManager)
+        txComInteractor.output = txComPresenter
+        
+        txComPresenter.completionInteractor = txComInteractor
         txComPresenter.completionModuleDelegate = coreWireframe.corePresenter
         
         txComWireframe.txComPresenter = txComPresenter
@@ -272,5 +276,10 @@ class ModuleDependencies {
     
     func testLocalData() {
         coreDataStore.getAllUsers()
+    }
+    
+    func testEthAddress() {
+        let result = "0x011df24265841dCdbf2e60984BB94007b0C1d76A".isEthAddress()
+        print(result)
     }
 }

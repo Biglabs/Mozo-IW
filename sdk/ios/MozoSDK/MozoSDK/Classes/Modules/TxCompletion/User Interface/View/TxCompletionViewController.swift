@@ -21,6 +21,7 @@ class TxCompletionViewController: MozoBasicViewController {
     
     @IBOutlet weak var txStatusView: UIView!
     @IBOutlet weak var txStatusImg: UIImageView!
+    @IBOutlet weak var txStatusReplaceImg: UIImageView!
     @IBOutlet weak var txStatusLabel: UILabel!
     
     @IBOutlet weak var lbAmount: UILabel!
@@ -29,17 +30,28 @@ class TxCompletionViewController: MozoBasicViewController {
     @IBOutlet weak var btnDetail: UIButton!
     @IBOutlet weak var btnReplaceDetail: UIButton!
     
+    var stopWaiting = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setBtnLayer()
         startSpinnerAnimation()
         updateView()
+        eventHandler?.requestWaitingForTxStatus(hash: detailItem.hash)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.title = ""
         checkAddressBook()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if self.isMovingFromParentViewController {
+            print("View controller was popped")
+            eventHandler?.requestStopWaiting()
+        }
     }
     
     func checkAddressBook() {
@@ -51,17 +63,18 @@ class TxCompletionViewController: MozoBasicViewController {
         if contain {
             btnSave.isHidden = true
             btnDetail.isHidden = true
+        }
+        if stopWaiting {
             btnReplaceDetail.isHidden = false
         }
     }
     
-    func updateView() {
-        txHashLabel.text = detailItem.hash
+    func checkTxStatus() {
+        
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
+    func updateView() {
+        txHashLabel.text = detailItem.hash
     }
     
     func startSpinnerAnimation() {
@@ -72,12 +85,18 @@ class TxCompletionViewController: MozoBasicViewController {
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
             self.txStatusImg.transform = self.txStatusImg.transform.rotated(by: CGFloat.pi)
         }) { finished in
-            self.rotateView(duration: duration)
+            if !self.stopWaiting {
+                self.rotateView(duration: duration)
+            } else {
+                self.txStatusImg.transform = .identity
+            }
         }
     }
     
-    func stopSpinnerAnimation() {
-        txStatusImg.layer.removeAllAnimations()
+    func stopSpinnerAnimation(completion: (() -> Swift.Void)? = nil) {
+        self.stopWaiting = true
+        txStatusImg.isHidden = true
+        txStatusReplaceImg.isHidden = false
     }
     
     func setBtnLayer() {
@@ -100,5 +119,20 @@ class TxCompletionViewController: MozoBasicViewController {
 extension TxCompletionViewController : TxCompletionViewInterface {
     func displayError(_ error: String) {
         displayMozoError(error)
+    }
+    
+    func updateView(status: TransactionStatusType) {
+        print("Update view with transaction status: \(status)")
+        stopSpinnerAnimation()
+        checkAddressBook()
+        switch status {
+        case .FAILED:
+            txStatusReplaceImg.image = UIImage(named: "ic_failed", in: BundleManager.mozoBundle(), compatibleWith: nil)
+        case .SUCCESS:
+            txStatusReplaceImg.image = UIImage(named: "ic_check_success", in: BundleManager.mozoBundle(), compatibleWith: nil)
+        default:
+            break;
+        }
+        txStatusLabel.text = status.rawValue.lowercased().capitalizingFirstLetter()
     }
 }

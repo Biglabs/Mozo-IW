@@ -9,4 +9,5 @@ import Foundation
 
 protocol TxCompletionViewInterface {
     func displayError(_ error: String)
+    func updateView(status: TransactionStatusType)
 }

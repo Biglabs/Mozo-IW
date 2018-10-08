@@ -161,4 +161,5 @@ public enum SymbolType {
 public enum TransactionStatusType: String {
     case SUCCESS = "SUCCESS"
     case FAILED = "FAILED"
+    case PENDING = "PENDING"
 }
