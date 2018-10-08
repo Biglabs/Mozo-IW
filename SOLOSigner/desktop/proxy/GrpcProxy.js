@@ -258,6 +258,31 @@ app.post('/transaction/send', (req, res, next) => {
   services.createTransaction(tx_send_data, res, services.confirmTransaction);
 });
 
+app.get('/transaction/txstatus', (req, res, next) => {
+  let txhash = req.query.txhash;
+  let response_data = {
+    status: "ERROR",
+    error: ERRORS.INVALID_REQUEST
+  };
+
+  if (!txhash) {
+    res.send({result : response_data});
+    return;
+  }
+
+  services.getTxHashStatus(txhash).then(function(data) {
+    response_data = {
+      status: "SUCCESS",
+      data: data,
+      error: null
+    };
+    res.send({ result : response_data });
+  }, function(err) {
+    response_data.error = INTERNAL_ERROR;
+    res.send({ result : response_data });
+  });
+});
+
 /**
  * export start proxy server to outside
  */

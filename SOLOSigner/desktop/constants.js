@@ -19,6 +19,13 @@ const ERRORS = {
     type: "Business"
   },
 
+  INVALID_REQUEST: {
+    code: "ERR-095",
+    title: "Invalid request",
+    detail: "Not enough or incorrect parameters.",
+    type: "Business"
+  },
+
   NO_WALLET_NETWORK: {
     code: "ERR-096",
     title: "No network in request",

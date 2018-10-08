@@ -291,8 +291,6 @@ exports.createTransaction = function(tx_info, res) {
     options.body.outputs = outputs_tx;
 
     request(options, function(error, response, body) {
-      console.log(JSON.stringify(options));
-      console.log(response.statusCode);
       if (!error) {
         if (response.statusCode == 200) {
           console.log("Transaction info: " + JSON.stringify(body));
@@ -406,7 +404,6 @@ function sendSignRequest(signed_req, callback) {
   options.url = mozo_service_host + "/api/solo/contract/solo-token/send-signed-tx";
   options.method = "POST";
   options.json = true;
-  console.log(signed_req.result.signedTransaction);
   options.body = JSON.parse(signed_req.result.signedTransaction);
 
   request(options, function(error, response, body) {
@@ -565,3 +562,31 @@ exports.getTransactionHistory = function(network, page_num, size_num) {
     });
   });
 };
+
+exports.getTxHashStatus = function(txhash) {
+  return new Promise(function(resolve, reject) {
+    if (!txhash) {
+      return;
+    }
+
+    let options = setRequestData();
+    options.url = mozo_service_host + "/api/eth/solo/txs/" + txhash + "/status";
+
+    request(options, function(error, response, body) {
+      if (!error) {
+        let body_parsed = JSON.parse(body);
+        if (response.statusCode == 200) {
+          resolve(body_parsed);
+        } else {
+          console.log(response.statusCode);
+          console.log(body);
+          reject(body_parsed);
+        }
+      } else {
+        console.log(error);
+        reject(error);
+      }
+    });
+  });
+};
+
