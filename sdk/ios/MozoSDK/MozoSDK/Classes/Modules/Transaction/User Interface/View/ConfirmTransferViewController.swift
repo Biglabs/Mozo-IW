@@ -19,13 +19,16 @@ class ConfirmTransferViewController: MozoBasicViewController {
     @IBOutlet weak var addressBookView: UIView!
     @IBOutlet weak var lbName: UILabel!
     @IBOutlet weak var lbNameAddress: UILabel!
+    @IBOutlet weak var ctrAmount: NSLayoutConstraint!
     
     var transaction : TransactionDTO?
     var tokenInfo: TokenInfoDTO?
     var displayName: String?
+//    var ctrAmountValue : CGFloat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        ctrAmountValue = ctrAmount.constant
         enableBackBarButton()
         updateView()
     }
@@ -50,6 +53,7 @@ class ConfirmTransferViewController: MozoBasicViewController {
             addressBookView.isHidden = false
             lbName.text = displayName
             lbNameAddress.text = lbAddress.text
+            ctrAmount.constant += 18
         }
         
         var exBalance = "0.0"
