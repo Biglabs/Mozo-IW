@@ -219,10 +219,11 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         if (isWebPlatform()) {
             var {remote} = require('electron');
             var main = remote.require("./main.js");
-            main.updateWalletInfo();
-            if (typeof callback === 'function') {
-              callback(null, null);
-            }
+            main.updateWalletInfo().then(function() {
+                if (typeof callback === 'function') {
+                    callback(null, null);
+                }
+            }, function(err) {});
         } else {
             registerWalletAndSyncAddress(publicKey, addresses, (error, result) => {
                 console.log("Callback after registering wallet.");
@@ -241,9 +242,13 @@ module.exports.manageWallet = function(isNewPin, pin, importedPhrase, coinTypes,
         if (isEqual) {
           // Check wallet is registered on server or not
           if (isWebPlatform()) {
-            if (typeof callback === 'function') {
-              callback(null, null);
-            }
+              var {remote} = require('electron');
+              var main = remote.require("./main.js");
+              main.updateWalletInfo().then(function() {
+                  if (typeof callback === 'function') {
+                      callback(null, null);
+                  }
+              }, function(err) {});
           } else {
             AsyncStorage.getItem(Constant.FLAG_PUBLIC_KEY, (error, result) => {
               if (!error && result) {

@@ -14,6 +14,11 @@ const app_config = require("../app_settings").APP_SETTINGS;
 const mozo_service_host = app_config.mozo_services.api.host;
 
 
+function setIntervalImmediately(func, timer) {
+  func();
+  return setInterval(func, timer);
+}
+
 function extractWalletData(walletInfo) {
   if (!walletInfo || !walletInfo.encryptSeedPhrase) {
     userReference.set(
@@ -21,6 +26,17 @@ function extractWalletData(walletInfo) {
       "true"
     );
     return;
+  }
+
+  if (userReference.get(CONSTANTS.IS_NEW_WALLET_KEY)) {
+    // If we have wallets from the server,
+    // and NEW wallets from local, we will delete all from local
+    // and use the info from the server
+    userReference.delete(CONSTANTS.IS_NEW_WALLET_KEY);
+    userReference.delete("@DbExisting:key");
+    userReference.delete("App");
+    userReference.delete("Address");
+    main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
   }
 
   let app_info = userReference.get("App");
@@ -108,43 +124,50 @@ function getExchangeRateInfo() {
 let exchange_rate_interval = null;
 
 function getUserProfile() {
-  let options = setRequestData();
-  if (!options) {
-    return;
-  }
-
-  request(options, function(error, response, body) {
-    if (!error) {
-      if (response.statusCode == 200) {
-        // console.log("User profile: " + body);
-        user_profile = JSON.parse(body);
-        if (user_profile.walletInfo) {
-          extractWalletData(user_profile.walletInfo);
-        }
-        getOffchainTokenInfo();
-        address_book.download();
-        getExchangeRateInfo();
-        if (!exchange_rate_interval) {
-          // Get exchange every 10 minutes
-          exchange_rate_interval = setInterval(getExchangeRateInfo, 600000);
-        }
-      } else if (response.statusCode == 401)  {
-        userReference.deleteAll();
-      } else {
-        console.log(response.statusCode);
-        console.log(body);
-      }
-    } else {
-      console.log(error);
+  return new Promise(function(resolve, reject) {
+    let options = setRequestData();
+    if (!options) {
+      return;
     }
+
+    request(options, function(error, response, body) {
+      if (!error) {
+        if (response.statusCode == 200) {
+          // console.log("User profile: " + body);
+          user_profile = JSON.parse(body);
+          extractWalletData(user_profile.walletInfo);
+          getOffchainTokenInfo();
+          address_book.download();
+          if (!!exchange_rate_interval) {
+            // Get exchange every 10 minutes
+            exchange_rate_interval = setIntervalImmediately(
+              getExchangeRateInfo, 600000);
+          }
+          resolve(null);
+        } else if (response.statusCode == 401)  {
+          userReference.deleteAll();
+        } else {
+          console.log(response.statusCode);
+          console.log(body);
+          reject(body);
+        }
+      } else {
+        console.log(error);
+        reject(error);
+      }
+    });
   });
 }
-getUserProfile();
+getUserProfile().then(function() {}, function() {});
 
 exports.getUserProfile = getUserProfile;
 
-exports.logOut = function() {
+var logOut = exports.logOut = function() {
   userReference.deleteAll();
+  if (exchange_rate_interval) {
+    clearInterval(exchange_rate_interval);
+    exchange_rate_interval = null;
+  }
   var sess = main.mainWindow.webContents.session;
   sess.clearCache(function() {
     sess.clearStorageData();
@@ -152,53 +175,84 @@ exports.logOut = function() {
   });
 }
 
+
+let send_wallet_info_interval = null;
+
+function cleanUpUpdateWalletInfoInverval() {
+  clearInterval(send_wallet_info_interval);
+  send_wallet_info_interval = null;
+}
+
 exports.updateWalletInfo = function() {
-  const is_new_wallet = userReference.get(CONSTANTS.IS_NEW_WALLET_KEY);
-  if (!is_new_wallet) {
-    return;
-  }
-
-  const app_info = userReference.get("App");
-  if (!app_info) {
-    return;
-  }
-  let encrypted_mnemonic = app_info[0].mnemonic;
-
-  let offchain_address = null;
-  let wallet_addrs = userReference.get("Address");
-  if (!wallet_addrs) {
-    return;
-  }
-
-  for (var index = 0; index < wallet_addrs.length; ++index) {
-    let addr = wallet_addrs[index];
-    if (addr.network == "SOLO") {
-      offchain_address = addr.address;
-      break;
+  return new Promise(function(resolve, reject) {
+    if (!!send_wallet_info_interval) {
+      resolve(null);
+      return;
     }
-  }
+    send_wallet_info_interval = setIntervalImmediately(function() {
+      getUserProfile().then(function() {
+        const is_new_wallet = userReference.get(CONSTANTS.IS_NEW_WALLET_KEY);
+        if (!is_new_wallet) {
+          resolve(null);
+          cleanUpUpdateWalletInfoInverval();
+          return;
+        }
 
-  if (!offchain_address) {
-    return;
-  }
+        const app_info = userReference.get("App");
+        if (!app_info) {
+          resolve(null);
+          cleanUpUpdateWalletInfoInverval();
+          return;
+        }
 
-  let options = setRequestData();
-  options.url = mozo_service_host + "/api/user-profile/wallet";
-  options.method = "PUT";
-  options.json = true;
-  options.body = {
-    encryptSeedPhrase : encrypted_mnemonic,
-    offchainAddress : offchain_address
-  };
+        let encrypted_mnemonic = app_info[0].mnemonic;
+        let offchain_address = null;
+        let wallet_addrs = userReference.get("Address");
+        if (!wallet_addrs) {
+          resolve(null);
+          cleanUpUpdateWalletInfoInverval();
+          return;
+        }
 
-  request(options, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      userReference.delete(CONSTANTS.IS_NEW_WALLET_KEY);
-      console.log("User profile: " + JSON.stringify(body));
-    } else {
-      console.log(error);
-    }
-  });
+        for (var index = 0; index < wallet_addrs.length; ++index) {
+          let addr = wallet_addrs[index];
+          if (addr.network == "SOLO") {
+            offchain_address = addr.address;
+            break;
+          }
+        }
+
+        if (!offchain_address) {
+          // The addresses and keys are not initilized correctly
+          // We need to delete all and reset to login view
+          cleanUpUpdateWalletInfoInverval();
+          logOut();
+          return;
+        }
+
+        let options = setRequestData();
+        options.url = mozo_service_host + "/api/user-profile/wallet";
+        options.method = "PUT";
+        options.json = true;
+        options.body = {
+          encryptSeedPhrase : encrypted_mnemonic,
+          offchainAddress : offchain_address
+        };
+
+        request(options, function(error, response, body) {
+          if (!error && response.statusCode == 200) {
+            userReference.delete(CONSTANTS.IS_NEW_WALLET_KEY);
+            console.log("User profile: " + JSON.stringify(body));
+            resolve(body);
+            clearInterval(send_wallet_info_interval);
+            send_wallet_info_interval = null;
+          } else {
+            console.log(error);
+          }
+        });
+      }, function(err) {});
+    }, 2000);
+  }, function(err) {});
 
 };
 
@@ -384,43 +438,49 @@ function sendSignRequest(signed_req, callback) {
 exports.sendSignRequest = sendSignRequest;
 
 exports.getWalletBalance = function(network_data) {
-  if (!network_data) {
-    return null;
-  }
-  let network = network_data.toUpperCase();
-  let wallet_addrs = userReference.get("Address");
-  let response_data = {
-    status: "ERROR",
-    error: ERRORS.NO_WALLET
-  };
-
-  if (!wallet_addrs) {
-    return null;
-  }
-
-  let address = null;
-
-  for (var index = 0; index < wallet_addrs.length; ++index) {
-    let addr = wallet_addrs[index];
-    if (addr.network == network) {
-      address = addr.address;
-      break;
-    }
-  }
-
-  if (!address) {
-    return null;
-  }
-
-  let options = setRequestData();
-  if (!options) {
-    return null;
-  }
-
-  options.url = mozo_service_host +
-    "/api/solo/contract/solo-token/balance/" + address;
-
   return new Promise(function(resolve, reject) {
+    if (!network_data) {
+      reject(null);
+      return;
+    }
+
+    let network = network_data.toUpperCase();
+    let wallet_addrs = userReference.get("Address");
+    let response_data = {
+      status: "ERROR",
+      error: ERRORS.NO_WALLET
+    };
+
+    if (!wallet_addrs) {
+      reject(null);
+      return;
+    }
+
+    let address = null;
+
+    for (var index = 0; index < wallet_addrs.length; ++index) {
+      let addr = wallet_addrs[index];
+      if (addr.network == network) {
+        address = addr.address;
+        break;
+      }
+    }
+
+    if (!address) {
+      reject(null);
+      return;
+    }
+
+    let options = setRequestData();
+    if (!options) {
+      reject(null);
+      return;
+    }
+
+    options.url = mozo_service_host +
+      "/api/solo/contract/solo-token/balance/" + address;
+
+
     request(options, function(error, response, body) {
       if (!error) {
         if (response.statusCode == 200) {

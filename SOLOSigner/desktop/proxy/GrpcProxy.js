@@ -10,6 +10,7 @@ const R = require('ramda');
 const main = require('../main');
 // var grpcLoader = require("../grpcserver/GrpcLoader");
 const app_config = require("../app_settings").APP_SETTINGS;
+const CONSTANTS = require("../constants").CONSTANTS;
 const ERRORS = require("../constants").ERRORS;
 
 /**
@@ -65,12 +66,14 @@ app.get('/oauth2-getcode', (req, res, next) => {
 
 
 app.get('/checkWallet', (req, res, next) => {
-  let wallet = userReference.get("Address");
   let response_data = {
     status: "ERROR",
     error: ERRORS.NO_WALLET
   }
-  if (wallet) {
+
+  let wallet = userReference.get("Address");
+  let is_new_wallet = userReference.get(CONSTANTS.IS_NEW_WALLET_KEY);
+  if (!is_new_wallet && wallet) {
     response_data = {
       status: "SUCCESS",
       error: {}
