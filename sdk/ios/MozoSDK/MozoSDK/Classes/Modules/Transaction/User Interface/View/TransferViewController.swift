@@ -108,6 +108,7 @@ class TransferViewController: MozoBasicViewController {
     @IBAction func touchedBtnClear(_ sender: Any) {
         clearAndHideAddressBookView()
         txtAddress.text = ""
+        hideErrorValidation()
     }
     
     @IBAction func btnContinueTapped(_ sender: Any) {
@@ -135,7 +136,8 @@ class TransferViewController: MozoBasicViewController {
         print("TextFieldAmountDidChange")
         if let rateInfo = SessionStoreManager.exchangeRateInfo {
             if let type = CurrencyType(rawValue: rateInfo.currency ?? "") {
-                let value = Double(txtAmount.text ?? "0")!
+                let text = txtAmount.text != nil ? (txtAmount.text != "" ? txtAmount.text : "0") : "0"
+                let value = Double(text ?? "0")!
                 let exValue = (value * (rateInfo.rate ?? 0)).rounded(toPlaces: type.decimalRound)
                 let exValueStr = "\(type.unit)\(exValue )"
                 lbExchangeAmount.text = exValueStr
