@@ -46,7 +46,7 @@ class TxDetailDisplayData {
         let exAmount = calculateExchangeValue(cvAmount)
         let exCurrentBalance = calculateExchangeValue(currentBalance)
         
-        let displayItem = TxDetailDisplayItem(action: action, addressFrom: addressFrom, addressTo: addressTo, amount: cvAmount, exAmount: exAmount, dateTime: cvDate, fees: 0, symbol: nil, currentBalance: currentBalance, exCurrentBalance: exCurrentBalance, currentAddress: currentAddress)
+        let displayItem = TxDetailDisplayItem(action: action, addressFrom: addressFrom, addressTo: addressTo, amount: cvAmount, exAmount: exAmount, dateTime: cvDate, fees: 0, symbol: nil, hash: transaction?.tx?.hash ?? "", currentBalance: currentBalance, exCurrentBalance: exCurrentBalance, currentAddress: currentAddress)
         return displayItem
     }
     
@@ -69,7 +69,7 @@ class TxDetailDisplayData {
         let exAmount = calculateExchangeValue(amount)
         let exCurrentBalance = calculateExchangeValue(currentBalance)
         
-        let displayItem = TxDetailDisplayItem(action: txHistory?.action ?? "", addressFrom: txHistory?.addressFrom ?? "", addressTo: txHistory?.addressTo ?? "", amount: amount, exAmount: exAmount, dateTime: txHistory?.date ?? "", fees: 0, symbol: nil, currentBalance: currentBalance, exCurrentBalance: exCurrentBalance, currentAddress: currentAddress)
+        let displayItem = TxDetailDisplayItem(action: txHistory?.action ?? "", addressFrom: txHistory?.addressFrom ?? "", addressTo: txHistory?.addressTo ?? "", amount: amount, exAmount: exAmount, dateTime: txHistory?.date ?? "", fees: 0, symbol: nil, hash: transaction?.tx?.hash ?? "", currentBalance: currentBalance, exCurrentBalance: exCurrentBalance, currentAddress: currentAddress)
         return displayItem
     }
     

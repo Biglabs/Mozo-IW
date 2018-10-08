@@ -15,6 +15,7 @@ struct TxDetailDisplayItem {
     let dateTime : String
     var fees: Double?
     var symbol: String?
+    var hash: String
     
     let currentBalance: Double
     let exCurrentBalance: Double
