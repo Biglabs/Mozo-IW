@@ -129,7 +129,7 @@ MozoSDK.displayTransactionHistory()
 
 ## Getting Started with Objective-C
 
-1. Import the AWSCore header in the application delegate.
+1. Import the MozoSDK header in the application delegate.
 
 ```objective-c
 @import MozoSDK;
@@ -141,7 +141,7 @@ MozoSDK.displayTransactionHistory()
 [MozoSDK configure];
 ```
 
-3. Import the appropriate headers for the services you are using. The header file import convention is `@import AWSServiceName;`, as in the following examples:
+3. Import the MozoSDK headers for the services you are using. The header file import convention is `@import MozoSDK;`, as in the following examples:
 
 ```objective-c
 @import MozoSDK;
