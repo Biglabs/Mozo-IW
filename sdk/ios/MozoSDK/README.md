@@ -15,7 +15,20 @@ To use the Mozo SDK for iOS, you will need the following installed on your devel
 * Xcode 9 or later
 * iOS 10 or later
 
-At the AWS GitHub repo, you can check out the [SDK source code](https://github.com/biglabs/mozo-sdk-ios).
+At the Mozo GitHub repo, you can check out the [SDK source code](https://github.com/biglabs/mozo-sdk-ios).
+
+## Requirements
+
+With iOS 10 and higher you need to add some keys to the Info.plist of your project. This should be found in 'your_project/ios/your_project/Info.plist'.
+1. The "Privacy - Camera Usage Description" key. Add the following code:
+<key>NSCameraUsageDescription</key>
+<string>Enable camera feature to scan QR Code.</string>
+2. The "Privacy - Location Always Usage Description" key.
+<key>NSLocationAlwaysUsageDescription</key>
+<string></string>
+3. The "Privacy - Bluetooth Peripheral Usage Description" key.
+<key>NSBluetoothPeripheralUsageDescription</key>
+<string></string>
 
 ### Standard pod install
 
