@@ -15,20 +15,26 @@ To use the Mozo SDK for iOS, you will need the following installed on your devel
 * Xcode 9 or later
 * iOS 10 or later
 
-At the Mozo GitHub repo, you can check out the [SDK source code](https://github.com/biglabs/mozo-sdk-ios).
+At the Mozo GitHub repo, you can check out the [SDK source code](https://github.com/biglabs/mozo-ios-sdk).
 
 ## Requirements
 
 With iOS 10 and higher you need to add some keys to the Info.plist of your project. This should be found in 'your_project/ios/your_project/Info.plist'.
 1. The "Privacy - Camera Usage Description" key. Add the following code:
+```
 <key>NSCameraUsageDescription</key>
 <string>Enable camera feature to scan QR Code.</string>
+```
 2. The "Privacy - Location Always Usage Description" key.
+```
 <key>NSLocationAlwaysUsageDescription</key>
 <string></string>
+```
 3. The "Privacy - Bluetooth Peripheral Usage Description" key.
+```
 <key>NSBluetoothPeripheralUsageDescription</key>
 <string></string>
+```
 
 ### Standard pod install
 
@@ -37,7 +43,7 @@ Go to
 
 ## Include the SDK for iOS in an Existing Application
 
-The [samples](https://github.com/biglabs/mozo-sdk-ios-samples) included with the SDK for iOS are standalone projects that are already set up for you. You can also integrate the SDK for iOS with your own existing project. Below is how to import the Mozo Mobile SDK for iOS into your project:
+The [samples](https://github.com/biglabs/mozo-ios-sdk/Examples) included with the SDK for iOS are standalone projects that are already set up for you. You can also integrate the SDK for iOS with your own existing project. Below is how to import the Mozo Mobile SDK for iOS into your project:
 
 * [CocoaPods](https://cocoapods.org/)
 
@@ -72,12 +78,7 @@ $ pod install
 
 ![image](readme-images/cocoapods-setup-02.png?raw=true)
 
-**Note**: Do **NOT** use `*.xcodeproj`. If you open up a project file instead of a workspace, you receive an error:
-
-ld: library not found for -lPods-MozoSDK
-clang: error: linker command failed with exit code 1 (use -v to see invocation)
-
-For more information, see [Preparing Your Apps for iOS 9](http://docs.aws.amazon.com/mobile/sdkforios/developerguide/ats.html).
+**Note**: Do **NOT** use `*.xcodeproj`.
 
 ## Getting Started with Swift
 
