@@ -1,5 +1,5 @@
 {
-  "name": "SOLOSigner",
+  "name": "MozoWallet",
   "version": "0.0.1",
   "private": true,
   "main": "./desktop/main.js",
@@ -18,10 +18,10 @@
     "webpack-server": "webpack-serve",
     "pack": "build --dir",
     "dist": "build",
-    "build:win": "cd desktop && yarn && cd .. && build --win --dir --x64",
+    "build:win": "cd desktop && yarn && cd .. && build --win --dir",
     "build:mac": "cd desktop && yarn && cd .. && build --mac --dir",
     "build:linux": "cd desktop && yarn && cd .. && build --linux --dir",
-    "dist:win": "build --win --x64",
+    "dist:win": "build --win",
     "dist:linux": "build --linux",
     "dist:mac": "build --mac",
     "zip": "cross-zip ./dist/SOLOSigner-0.0.1.dmg"
@@ -209,9 +209,21 @@
     ],
     "win": {
       "target": [
-        "nsis"
+        {
+          "target" : "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
       ],
-      "icon": "./assets/icon/currency_yuan_yellow.ico"
+      "icon": "./assets/icon/mozo_offchain.ico"
+    },
+    "nsis" : {
+      "artifactName" : "${productName}_${version}_${arch}.${ext}",
+      "oneClick" : false,
+      "perMachine" : false,
+      "license" : "./assets/installation/EULA.txt"
     },
     "mac": {
       "category": "signer.biglabs.com.crypto"
@@ -228,7 +240,7 @@
     }
   },
   "author": {
-    "name": "biglabs",
-    "email": "hoang.pvm@big-labs.com"
+    "name": "Biglabs",
+    "email" : ""
   }
 }
