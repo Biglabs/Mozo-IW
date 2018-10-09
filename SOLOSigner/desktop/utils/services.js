@@ -138,7 +138,7 @@ function getUserProfile() {
           extractWalletData(user_profile.walletInfo);
           getOffchainTokenInfo();
           address_book.download();
-          if (!!exchange_rate_interval) {
+          if (!exchange_rate_interval) {
             // Get exchange every 10 minutes
             exchange_rate_interval = setIntervalImmediately(
               getExchangeRateInfo, 600000);
@@ -484,7 +484,7 @@ exports.getWalletBalance = function(network_data) {
           console.log("Balance Info: " + body);
           balance_info = JSON.parse(body);
           if (balance_info.decimals && balance_info.decimals > 0) {
-            balance_info.balance /= Math.pow(10, token_info.decimals);
+            balance_info.balance /= Math.pow(10, balance_info.decimals);
           }
           let exchange_rates = R.map(x => {
             let exchange_rate_data = userReference.get(network + "_" + x);
@@ -511,44 +511,62 @@ exports.getWalletBalance = function(network_data) {
 };
 
 exports.getTransactionHistory = function(network, page_num, size_num) {
-  let wallet_addrs = userReference.get("Address");
-  let response_data = {
-    status: "ERROR",
-    error: ERRORS.NO_WALLET
-  };
-
-  if (!wallet_addrs) {
-    return null;
-  }
-
-  let address = null;
-
-  for (var index = 0; index < wallet_addrs.length; ++index) {
-    let addr = wallet_addrs[index];
-    if (addr.network == network) {
-      address = addr.address;
-      break;
-    }
-  }
-
-  if (!address) {
-    return null;
-  }
-
-  let options = setRequestData();
-  if (!options) {
-    return null;
-  }
-
-  options.url = mozo_service_host +
-    "/api/solo/contract/solo-token/txhistory/" + address +
-    "?page=" + page_num + "&size=" + size_num;
-
   return new Promise(function(resolve, reject) {
+    let wallet_addrs = userReference.get("Address");
+    let response_data = {
+      status: "ERROR",
+      error: ERRORS.NO_WALLET
+    };
+
+    if (!wallet_addrs) {
+      resolve(null);
+      return;
+    }
+
+    let address = null;
+
+    for (var index = 0; index < wallet_addrs.length; ++index) {
+      let addr = wallet_addrs[index];
+      if (addr.network == network) {
+        address = addr.address;
+        break;
+      }
+    }
+
+    if (!address) {
+      resolve(null);
+      return;
+    }
+
+    let options = setRequestData();
+    if (!options) {
+      resolve(null);
+      return;
+    }
+
+    options.url = mozo_service_host +
+      "/api/solo/contract/solo-token/txhistory/" + address +
+      "?page=" + page_num + "&size=" + size_num;
+
     request(options, function(error, response, body) {
       if (!error) {
         if (response.statusCode == 200) {
-          txhistory = JSON.parse(body);
+          let txhistory = JSON.parse(body);
+          txhistory = R.map(x => {
+            if (x.decimal) {
+              x.amount /= Math.pow(10, x.decimal);
+            }
+            x.exchange_rates = R.map(y => {
+              let exchange_rate_data = userReference.get(network + "_" + y);
+              if (exchange_rate_data) {
+                return {
+                  currency : exchange_rate_data.currency,
+                  value: x.amount * exchange_rate_data.rate
+                };
+              }
+            }, CONSTANTS.CURRENCY_EXCHANGE_RATE);
+            return x;
+          }, txhistory);
           resolve(txhistory);
         } else {
           console.log(response.statusCode);
