@@ -223,14 +223,15 @@
       "artifactName" : "${productName}_${version}_${arch}.${ext}",
       "oneClick" : false,
       "perMachine" : false,
-      "license" : "./assets/installation/EULA.txt"
+      "license" : "./assets/installation/gpl-3.0.txt"
     },
     "mac": {
       "category": "signer.biglabs.com.crypto"
     },
     "linux": {
       "target": "deb",
-      "category": "Internet"
+      "category": "Internet",
+      "icon": "./assets/icon/mozo_offchain.png"
     },
     "protocols": {
       "name": "solosigner",
@@ -241,6 +242,6 @@
   },
   "author": {
     "name": "Biglabs",
-    "email" : ""
+    "email" : "duc.tm@big-labs.com"
   }
 }
