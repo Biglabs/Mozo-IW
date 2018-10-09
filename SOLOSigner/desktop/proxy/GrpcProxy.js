@@ -113,7 +113,7 @@ app.get('/getWalletAddress', (req, res, next) => {
     }
   }, R.filter(x => addr_network.includes(x.network), wallet));
 
-  console.log(JSON.stringify(wallet_arr));
+  // console.log(JSON.stringify(wallet_arr));
   response_data = {
     status: "SUCCESS",
     data: wallet_arr,
@@ -159,7 +159,7 @@ app.route('/address-book')
     res.send({ result : response_data});
   })
   .post((req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     let data = req.body;
     let response_data = {
       status: "ERROR",
@@ -213,7 +213,7 @@ app.get('/getTxHistory', (req, res, next) => {
 
   let balance_info = services.getTransactionHistory(
     addr_network, page_num, size_num).then(function(txhistory) {
-    console.log("TX history length: " + txhistory.length);
+    // console.log("TX history length: " + txhistory.length);
     if (txhistory) {
       response_data = {
         status: "SUCCESS",
@@ -291,7 +291,7 @@ module.exports.start = function(){
    * forward rest call to grpc and vice versal
    */
   httpServer = app.listen(port, public_host, async () => {
-    console.log("Proxy is listening on host: " + public_host +
-                " port: " + port + "!");
+    // console.log("Proxy is listening on host: " + public_host +
+                // " port: " + port + "!");
   });
 };

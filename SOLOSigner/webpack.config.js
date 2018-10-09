@@ -35,11 +35,11 @@ module.exports = {
             path.resolve(__dirname, './node_modules/css-mediaquery'),
             path.resolve(__dirname, './node_modules/object-resolve-path'),
             // path.resolve(__dirname, './node_modules/react-native-extended-stylesheet'),
-  
+
             path.resolve(__dirname, './node_modules/react-native-vector-icons'),
             path.resolve(__dirname, './node_modules/react-native-drawer-layout'),
             path.resolve(__dirname, './node_modules/react-native-dismiss-keyboard'),
-  
+
             path.resolve(__dirname, './node_modules/react-navigation'),
             path.resolve(__dirname, './node_modules/react-native-tab-view'),
             path.resolve(__dirname, './node_modules/react-native-safe-area-view'),

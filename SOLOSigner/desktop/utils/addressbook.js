@@ -29,12 +29,12 @@ function downloadAddressBook(callback) {
           callback(address_book);
         }
       } else {
-        console.log(response.statusCode);
-        console.log(body);
+        // console.log(response.statusCode);
+        // console.log(body);
         callback(null);
       }
     } else {
-      console.log(error);
+      // console.log(error);
     }
   });
 }
@@ -77,12 +77,12 @@ function addAddressBook(data) {
           downloadAddressBook();
           resolve(body);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           resolve(null);
         }
       } else {
-        console.log(error);
+        // console.log(error);
         reject(error);
       }
     });
@@ -111,12 +111,12 @@ function updateAddressBook(data) {
           downloadAddressBook();
           resolve(body);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           resolve(null);
         }
       } else {
-        console.log(error);
+        // console.log(error);
         reject(error);
       }
     });
@@ -135,17 +135,17 @@ function deleteAddressBook(id) {
   return new Promise(function(resolve, reject) {
     request(options, function(error, response, body) {
       if (!error) {
-        console.log(body);
+        // console.log(body);
         if (response.statusCode == 200) {
           downloadAddressBook();
           resolve(body);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           resolve(null);
         }
       } else {
-        console.log(error);
+        // console.log(error);
         reject(error);
       }
     });

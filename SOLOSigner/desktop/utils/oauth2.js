@@ -42,7 +42,7 @@ function isTokenValid() {
     userReference.set("OAuth2Token", access_token.token);
     return true;
   }, function(err) {
-    console.log('Error refreshing access token: ', error.message);
+    //console.log('Error refreshing access token: ', error.message);
     userReference.deleteAll();
     main.mainWindow.loadURL(`file://${__dirname}/../index.html`);
     return false;
@@ -76,7 +76,7 @@ exports.getTokenFromAuthCode = function(auth_code, redirect_uri) {
       userReference.set(constants.OAUTH2TOKEN_KEY, access_token.token);
       resolve(access_token);
     }, function(err) {
-      console.log(err);
+      //console.log(err);
       reject(err);
     });
   });

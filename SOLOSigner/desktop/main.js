@@ -98,9 +98,9 @@ const createWindow = () => {
   });
 
   //hide default menu of browser
-  //mainWindow.setMenu(null);
+  mainWindow.setMenu(null);
   //open dev tools
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -252,7 +252,7 @@ function showMessageDialog(option) {
   };
 
   dialog.showMessageBox(options, function (index) {
-    console.log("Save file success...");
+    // console.log("Save file success...");
   });
 }
 
@@ -270,7 +270,7 @@ function showErrorDialog() {
  * @param {*} param
  */
 exports.sendMessageToRender = (param) => {
-  console.log("send-message-to-render: " + param);
+  // console.log("send-message-to-render: " + param);
 };
 
 exports.handleMainRequest = (param) => {

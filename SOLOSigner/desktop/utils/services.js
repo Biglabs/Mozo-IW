@@ -74,16 +74,16 @@ function getOffchainTokenInfo() {
 
   request(options, function(error, response, body) {
     if (!error) {
-      console.log(body);
+      // console.log(body);
       if (response.statusCode == 200) {
         token_info = JSON.parse(body);
         userReference.set(CONSTANTS.OFFCHAIN_TOKEN_INFO, token_info);
       } else {
-        console.log(response.statusCode);
-        console.log(body);
+        // console.log(response.statusCode);
+        // console.log(body);
       }
     } else {
-      console.log(error);
+      // console.log(error);
     }
   });
 }
@@ -105,16 +105,16 @@ function getExchangeRateInfo() {
 
     request(options, function(error, response, body) {
       if (!error) {
-        console.log(body);
+        // console.log(body);
         if (response.statusCode == 200) {
           exchange_info = JSON.parse(body);
           userReference.set(exchange_rate_name, exchange_info);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
         }
       } else {
-        console.log(error);
+        // console.log(error);
       }
     });
 
@@ -147,12 +147,12 @@ function getUserProfile() {
         } else if (response.statusCode == 401)  {
           userReference.deleteAll();
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           reject(body);
         }
       } else {
-        console.log(error);
+        // console.log(error);
         reject(error);
       }
     });
@@ -242,12 +242,12 @@ exports.updateWalletInfo = function() {
         request(options, function(error, response, body) {
           if (!error && response.statusCode == 200) {
             userReference.delete(CONSTANTS.IS_NEW_WALLET_KEY);
-            console.log("User profile: " + JSON.stringify(body));
+            // console.log("User profile: " + JSON.stringify(body));
             resolve(body);
             clearInterval(send_wallet_info_interval);
             send_wallet_info_interval = null;
           } else {
-            console.log(error);
+            // console.log(error);
           }
         });
       }, function(err) {});
@@ -278,10 +278,9 @@ exports.createTransaction = function(tx_info, res) {
   options.json = true;
   options.body = tx_req;
 
-  console.log("Request data: " + JSON.stringify(options));
+  // console.log("Request data: " + JSON.stringify(options));
   const token_info = getTokenInfo();
   if (token_info) {
-    console.log("Real value: " + tx_info.value * Math.pow(10, token_info.decimals));
     let outputs_tx = [
       {
         addresses: [ tx_info.to ],
@@ -293,12 +292,12 @@ exports.createTransaction = function(tx_info, res) {
     request(options, function(error, response, body) {
       if (!error) {
         if (response.statusCode == 200) {
-          console.log("Transaction info: " + JSON.stringify(body));
+          // console.log("Transaction info: " + JSON.stringify(body));
           body.tx.outputs = outputs_tx;
           confirmTransaction(body, res);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           let response_data = {
             status: "ERROR",
             error: ERRORS.INTERNAL_ERROR
@@ -306,7 +305,7 @@ exports.createTransaction = function(tx_info, res) {
           res.send({ result : response_data });
         }
       } else {
-        console.log(error);
+        // console.log(error);
         let response_data = {
           status: "ERROR",
           error: ERRORS.INTERNAL_ERROR
@@ -408,18 +407,18 @@ function sendSignRequest(signed_req, callback) {
 
   request(options, function(error, response, body) {
     if (!error) {
-      console.log(JSON.stringify(body));
+      // console.log(JSON.stringify(body));
       if (response.statusCode == 200) {
         response_data = {
           status: "SUCCESS",
           data: body
         };
       } else {
-        console.log(response.statusCode);
+        // console.log(response.statusCode);
         response_data.error = ERRORS.INTERNAL_ERROR;
       }
     } else {
-      console.log(error);
+      // console.log(error);
       response_data.error = ERRORS.INTERNAL_ERROR;
     }
     signHttpCallback.send({ result : response_data });
@@ -481,7 +480,7 @@ exports.getWalletBalance = function(network_data) {
     request(options, function(error, response, body) {
       if (!error) {
         if (response.statusCode == 200) {
-          console.log("Balance Info: " + body);
+          // console.log("Balance Info: " + body);
           balance_info = JSON.parse(body);
           if (balance_info.decimals && balance_info.decimals > 0) {
             balance_info.balance /= Math.pow(10, balance_info.decimals);
@@ -498,12 +497,12 @@ exports.getWalletBalance = function(network_data) {
           balance_info.exchange_rates = exchange_rates;
           resolve(balance_info);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           resolve(null);
         }
       } else {
-        console.log(error);
+        // console.log(error);
         reject(error);
       }
     });
@@ -569,12 +568,12 @@ exports.getTransactionHistory = function(network, page_num, size_num) {
           }, txhistory);
           resolve(txhistory);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           resolve(null);
         }
       } else {
-        console.log(error);
+        // console.log(error);
         reject(error);
       }
     });
@@ -596,12 +595,12 @@ exports.getTxHashStatus = function(txhash) {
         if (response.statusCode == 200) {
           resolve(body_parsed);
         } else {
-          console.log(response.statusCode);
-          console.log(body);
+          // console.log(response.statusCode);
+          // console.log(body);
           reject(body_parsed);
         }
       } else {
-        console.log(error);
+        // console.log(error);
         reject(error);
       }
     });
