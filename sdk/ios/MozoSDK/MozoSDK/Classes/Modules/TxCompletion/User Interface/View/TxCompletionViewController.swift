@@ -56,17 +56,27 @@ class TxCompletionViewController: MozoBasicViewController {
     
     func checkAddressBook() {
         print("Check address book")
-        // Check address book
-        // Verify address is existing in address book list or not
-        let list = SessionStoreManager.addressBookList
-        let contain = AddressBookDTO.arrayContainsItem(detailItem.addressTo, array: list)
-        if contain {
-            btnSave.isHidden = true
-            btnDetail.isHidden = true
-        }
+        // No need to show before waiting completed.
         if stopWaiting {
-            btnReplaceDetail.isHidden = false
+            // Check address book
+            // Verify address is existing in address book list or not
+            let list = SessionStoreManager.addressBookList
+            let contain = AddressBookDTO.arrayContainsItem(detailItem.addressTo, array: list)
+            hideOptionButtons(contain)
+            hideReplaceButton(!contain)
+        } else {
+            hideOptionButtons(true)
+            hideReplaceButton(true)
         }
+    }
+    
+    func hideOptionButtons(_ state: Bool) {
+        btnSave.isHidden = state
+        btnDetail.isHidden = state
+    }
+    
+    func hideReplaceButton(_ state: Bool) {
+        btnReplaceDetail.isHidden = state
     }
     
     func checkTxStatus() {
