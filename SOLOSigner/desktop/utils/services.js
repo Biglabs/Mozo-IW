@@ -367,7 +367,8 @@ function confirmTransaction(tx_server_req, res_callback) {
       let error_obj = {
         status: "ERROR",
         data: null,
-        error: ERRORS.TRANSACTION_REQUEST_TIMEOUT;
+        error: ERRORS.TRANSACTION_REQUEST_TIMEOUT
+      };
       sendSignRequest({result: error_obj});
     }
   }, 1000);

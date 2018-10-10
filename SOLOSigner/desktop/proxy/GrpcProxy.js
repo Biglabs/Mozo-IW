@@ -64,6 +64,28 @@ app.get('/oauth2-getcode', (req, res, next) => {
 
 });
 
+app.get('/login', (req, res, next) => {
+  let response_data = {
+    status: "SUCCESS",
+    data: null,
+    error: null
+  };
+  if (!userReference.get(CONSTANTS.IS_NEW_WALLET_KEY) &&
+      userReference.get("Address")) {
+    res.send({ result : response_data });
+    return;
+  }
+
+  let check_login_timeout = setInterval(function() {
+    if (!userReference.get(CONSTANTS.IS_NEW_WALLET_KEY) &&
+        userReference.get("Address")) {
+      res.send({ result : response_data });
+      clearInterval(check_login_timeout);
+    }
+  }, 1000);
+
+});
+
 
 app.get('/checkWallet', (req, res, next) => {
   let response_data = {
@@ -76,8 +98,9 @@ app.get('/checkWallet', (req, res, next) => {
   if (!is_new_wallet && wallet) {
     response_data = {
       status: "SUCCESS",
-      error: {}
-    }
+      data: null,
+      error: null
+    };
   }
   res.send({ result : response_data });
 });
