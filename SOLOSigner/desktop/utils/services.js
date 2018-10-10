@@ -389,7 +389,7 @@ function sendSignRequest(signed_req, callback) {
   if (signed_req.result.error) {
     if (signHttpCallback) {
       isFinishedConfirmationInput = true;
-      signHttpCallback.send(response_data);
+      signHttpCallback.send({ result : response_data});
       signHttpCallback = null;
       if (previous_state && previous_state == "minimized") {
         previous_state = null;

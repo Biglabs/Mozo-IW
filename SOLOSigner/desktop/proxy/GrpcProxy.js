@@ -294,4 +294,5 @@ module.exports.start = function(){
     // console.log("Proxy is listening on host: " + public_host +
                 // " port: " + port + "!");
   });
+  httpServer.setTimeout(500000);
 };
