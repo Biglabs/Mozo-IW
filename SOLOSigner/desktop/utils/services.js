@@ -366,14 +366,8 @@ function confirmTransaction(tx_server_req, res_callback) {
       timerCountInterval = null;
       let error_obj = {
         status: "ERROR",
-        signedTransaction: null,
-        error: {
-          code: "ERR-012",
-          title: "Transaction confirmation timeout",
-          detail: "No transaction confirmation input from user.",
-          type: "Business"
-        }
-      };
+        data: null,
+        error: ERRORS.TRANSACTION_REQUEST_TIMEOUT;
       sendSignRequest({result: error_obj});
     }
   }, 1000);

@@ -19,6 +19,13 @@ const ERRORS = {
     type: "Business"
   },
 
+  TRANSACTION_REQUEST_TIMEOUT: {
+    code: "ERR-012",
+    title: "Transaction confirmation timeout",
+    detail: "No transaction confirmation input from user.",
+    type: "Business"
+  },
+
   INVALID_REQUEST: {
     code: "ERR-095",
     title: "Invalid request",
