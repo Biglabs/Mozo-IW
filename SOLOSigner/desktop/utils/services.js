@@ -564,6 +564,23 @@ exports.getTransactionHistory = function(network, page_num, size_num) {
                 };
               }
             }, CONSTANTS.CURRENCY_EXCHANGE_RATE);
+
+            x.address_book_name = null;
+            x.addressFrom = x.addressFrom.toLowerCase();
+            x.addressTo = x.addressTo.toLowerCase();
+            let address_book_data = address_book.get();
+            let temp_address_book_data = null;
+            if (address_book_data) {
+              for (var index = 0; index < address_book_data.length; ++index) {
+                temp_address_book_data =
+                  address_book_data[index].soloAddress.toLowerCase();
+                if (x.addressFrom == temp_address_book_data ||
+                    x.addressTo == temp_address_book_data) {
+                  x.address_book_name = address_book_data[index].name;
+                  break;
+                }
+              }
+            }
             return x;
           }, txhistory);
           resolve(txhistory);
